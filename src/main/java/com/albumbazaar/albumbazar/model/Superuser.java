@@ -53,6 +53,12 @@ public class Superuser {
         this.email = email;
     }
 
+    @Override
+    public String toString() {
+        return "Superuser [email=" + email + ", id=" + id + ", name=" + name + ", password=" + password
+                + ", profile_pic=" + profile_pic + "]";
+    }
+
     
 
 }

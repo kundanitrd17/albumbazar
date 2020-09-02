@@ -12,7 +12,7 @@ public class SuperuserController {
     @Autowired
     private SuperuserRepository superuserRepo;
     
-    @GetMapping("/superuser")
+    @GetMapping("/")
     public String index() {
 
         System.out.println(superuserRepo.findAll());
