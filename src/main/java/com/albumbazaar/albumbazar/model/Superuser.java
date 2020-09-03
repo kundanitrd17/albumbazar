@@ -12,6 +12,7 @@ public class Superuser {
     private String name;
     private String profile_pic;
     private String email;
+    private String role;
 
     public int getId() {
         return id;
@@ -58,6 +59,14 @@ public class Superuser {
         return "Superuser [email=" + email + ", id=" + id + ", name=" + name + ", password=" + password
                 + ", profile_pic=" + profile_pic + "]";
     }
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 
     
 
