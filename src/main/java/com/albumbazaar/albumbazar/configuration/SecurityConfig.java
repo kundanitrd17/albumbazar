@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,9 +14,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+
 @EnableWebSecurity
 public class SecurityConfig{
-
 
     @Configuration
     @Order(1)
@@ -24,7 +25,7 @@ public class SecurityConfig{
         private UserDetailsService superuserDetailsService;
 
         @Autowired
-        public SuperuserSecurityConfig(@Qualifier("superuserDetailsService") UserDetailsService userDetailsService){
+        protected SuperuserSecurityConfig(@Qualifier("superuserDetailsService") UserDetailsService userDetailsService){
             this.superuserDetailsService = userDetailsService;
         }
 
@@ -36,10 +37,9 @@ public class SecurityConfig{
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.csrf().disable()
-                .antMatcher("/superuser/**")
+                    .antMatcher("/superuser/**")
                 .authorizeRequests()
-                    .antMatchers("/superuser/**").hasRole("SUPERUSER")
-                    .anyRequest().authenticated()
+                    .anyRequest().hasRole("SUPERUSER")
                     .and()
                 .formLogin()
                     .loginPage("/login-super")
@@ -62,7 +62,7 @@ public class SecurityConfig{
        private UserDetailsService normalUserDetailsService;
 
        @Autowired
-       public UserSecurityConfig(@Qualifier("normalUserDetailsService") UserDetailsService userDetailsService) {
+       protected UserSecurityConfig(@Qualifier("normalUserDetailsService") UserDetailsService userDetailsService) {
             this.normalUserDetailsService = userDetailsService;
        }
 
@@ -76,8 +76,7 @@ public class SecurityConfig{
             http.csrf().disable()
                 .antMatcher("/user/**")
                 .authorizeRequests()
-                    .antMatchers("/user/**").hasAnyRole("SUPERUSER", "USER")
-                    .anyRequest().authenticated()
+                    .anyRequest().hasRole("USER")
                     .and()
                 .formLogin()
                     .loginPage("/login-user")
@@ -94,6 +93,18 @@ public class SecurityConfig{
        }
 
    }
+
+   @Configuration
+   public static class GuestSecurityConfig extends WebSecurityConfigurerAdapter {
+
+       @Override
+       protected void configure(HttpSecurity http) throws Exception {
+           http.authorizeRequests()
+                   .antMatchers("/foo").authenticated()
+                   .anyRequest().permitAll();
+       }
+   }
+
 
     @Bean
     public static PasswordEncoder encoder() {
