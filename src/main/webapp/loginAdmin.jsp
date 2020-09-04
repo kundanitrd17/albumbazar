@@ -12,7 +12,6 @@
         <input type="text" name="username"> <br>
         <input type="text" name="password" > <br>
         <input type="submit" value="login">
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
     </form>
 
     <script src="./static/js/index.js"></script>

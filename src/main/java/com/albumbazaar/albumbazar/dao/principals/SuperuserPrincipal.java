@@ -21,7 +21,7 @@ public class SuperuserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        
+        System.out.println(superuser.getRole());
         return Collections.singleton(new SimpleGrantedAuthority(superuser.getRole()));
     }
     @Override

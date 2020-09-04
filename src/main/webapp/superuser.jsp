@@ -7,8 +7,14 @@
     <link rel="stylesheet" href="./static/css/index.css">
 </head>
 <body>
-    
+
     Hii Superuser
-    <script src="./static/js/index.js"></script>
+
+    <form action="/superuser/resetpassword" method="post">
+      <input type="text" name="new_password" value="" placeholder="new Password"> <br>
+      <input type="text" name="re_new_password" value="" placeholder="RE-type Password"> <br>
+        <button type="submit" name="button">Reset</button>
+    </form>
+
 </body>
 </html>

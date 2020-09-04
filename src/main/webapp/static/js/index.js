@@ -1,1 +1,1 @@
-alert("hii");
+console.log("hii");
