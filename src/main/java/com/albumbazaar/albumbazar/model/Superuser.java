@@ -1,9 +1,16 @@
 package com.albumbazaar.albumbazar.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
+@Table(
+        name = "superuser",
+        uniqueConstraints =
+                @UniqueConstraint(
+                        name = "unique_email",
+                        columnNames = {"email"}
+                )
+)
 public class Superuser {
     
     @Id
