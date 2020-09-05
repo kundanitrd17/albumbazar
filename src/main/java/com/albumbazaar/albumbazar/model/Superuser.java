@@ -1,5 +1,7 @@
 package com.albumbazaar.albumbazar.model;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -7,7 +9,7 @@ import javax.persistence.Id;
 public class Superuser {
     
     @Id
-    private int id;
+    private AtomicInteger id;
     private String password;
     private String name;
     private String profile_pic;
@@ -15,11 +17,11 @@ public class Superuser {
     private String role;
 
     public int getId() {
-        return id;
+        return id.get();
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.id.set(id);
     }
 
     public String getPassword() {

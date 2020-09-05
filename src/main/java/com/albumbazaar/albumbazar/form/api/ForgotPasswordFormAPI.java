@@ -1,6 +1,6 @@
 package com.albumbazaar.albumbazar.form.api;
 
-public abstract class ForgotPasswordAPI {
+public abstract class ForgotPasswordFormAPI {
 
     public String password1;
     public String password2;

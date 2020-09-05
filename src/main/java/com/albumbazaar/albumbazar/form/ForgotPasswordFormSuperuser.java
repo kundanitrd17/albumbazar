@@ -1,8 +1,8 @@
 package com.albumbazaar.albumbazar.form;
 
-import com.albumbazaar.albumbazar.form.api.ForgotPasswordAPI;
+import com.albumbazaar.albumbazar.form.api.ForgotPasswordFormAPI;
 
-public class ForgotPasswordFormSuperuser extends ForgotPasswordAPI {
+public class ForgotPasswordFormSuperuser extends ForgotPasswordFormAPI {
 
 
     @Override

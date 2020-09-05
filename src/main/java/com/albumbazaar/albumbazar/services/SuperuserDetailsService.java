@@ -2,13 +2,13 @@ package com.albumbazaar.albumbazar.services;
 
 import com.albumbazaar.albumbazar.dao.SuperuserRepository;
 import com.albumbazaar.albumbazar.dao.principals.SuperuserPrincipal;
-import com.albumbazaar.albumbazar.form.api.ForgotPasswordAPI;
+import com.albumbazaar.albumbazar.form.api.ForgotPasswordFormAPI;
 import com.albumbazaar.albumbazar.model.Superuser;
 import com.albumbazaar.albumbazar.services.api.SuperuserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.HttpStatus; 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -19,7 +19,7 @@ import org.springframework.ui.ModelMap;
 
 @Service
 @Qualifier("superuserDetailsService")
-public class SuperuserDetailsService implements UserDetailsService, SuperuserService<ForgotPasswordAPI>{
+public class SuperuserDetailsService implements UserDetailsService, SuperuserService{
     
     
     private final SuperuserRepository superuserRepo;
@@ -44,7 +44,7 @@ public class SuperuserDetailsService implements UserDetailsService, SuperuserSer
 
 
     @Override
-    public ModelMap resetPassword(final ForgotPasswordAPI forgotPasswordForm) {
+    public ModelMap resetPassword(final ForgotPasswordFormAPI forgotPasswordForm) {
         System.out.println("Resetting password" + forgotPasswordForm);
         ModelMap modelMap = new ModelMap();
         if(!forgotPasswordForm.isValid()) {
@@ -53,11 +53,11 @@ public class SuperuserDetailsService implements UserDetailsService, SuperuserSer
             return modelMap;
         }
 
-        final SuperuserPrincipal superuserPrincipal = (SuperuserPrincipal) SecurityContextHolder
+        final var superuserPrincipal = (SuperuserPrincipal) SecurityContextHolder
                                                                             .getContext()
                                                                                 .getAuthentication()
                                                                                     .getPrincipal();
-        final Superuser superuser = superuserPrincipal.getSuperuser();
+        final var superuser = superuserPrincipal.getSuperuser();
         
         // superuser.setPassword(NoOpPasswordEncoder.getInstance().encode(superuser.getPassword()));
         superuser
