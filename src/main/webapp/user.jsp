@@ -8,6 +8,17 @@
 </head>
 <body>
     Hii User
+
+    
+    <div>
+        <form action="/user/logout-user" method="POST">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <button type="submit">logout~admin</button>
+        </form>
+    
+    </div>
+
+
     <script src="./static/js/index.js"></script>
 </body>
 </html>

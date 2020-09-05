@@ -2,7 +2,6 @@ package com.albumbazaar.albumbazar.dao.principals;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 
 import com.albumbazaar.albumbazar.model.Superuser;
 
@@ -12,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 public class SuperuserPrincipal implements UserDetails {
 
+    private static final long serialVersionUID = 1L;
     private Superuser superuser;
 
     public SuperuserPrincipal(Superuser superuser) {
@@ -48,4 +48,18 @@ public class SuperuserPrincipal implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "SuperuserPrincipal [superuser=" + superuser + "]";
+    }
+
+    public Superuser getSuperuser() {
+        return superuser;
+    }
+
+    public void setSuperuser(Superuser superuser) {
+        this.superuser = superuser;
+    }
+    
 }

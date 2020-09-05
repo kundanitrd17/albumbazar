@@ -10,6 +10,7 @@ import java.util.Collections;
 
 public class UserPrincipal implements UserDetails {
 
+    private static final long serialVersionUID = 1L;
     private Superuser user;
 
     public UserPrincipal(Superuser user) {

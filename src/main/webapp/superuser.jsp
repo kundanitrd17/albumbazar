@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,11 +11,26 @@
 
     Hii Superuser
 
-    <form action="/superuser/resetpassword" method="post">
-      <input type="text" name="new_password" value="" placeholder="new Password"> <br>
-      <input type="text" name="re_new_password" value="" placeholder="RE-type Password"> <br>
+    <form action="/superuser/api/resetsuperuser" method="POST">
+      <input type="text" name="password1" value="" placeholder="new Password"> <br>
+      <input type="text" name="password2" value="" placeholder="RE-type Password"> <br>
+      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <button type="submit" name="button">Reset</button>
-    </form>
+    </form> 
+
+    <div>
+        <form action="/superuser/logout-super" method="POST">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+            <button type="submit">logout~admin</button>
+        </form>
+    
+    </div>
+
+    <div>
+        <% 
+            
+        %>
+    </div>
 
 </body>
 </html>

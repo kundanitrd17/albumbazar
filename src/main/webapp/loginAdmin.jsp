@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,6 +12,7 @@
     <form action="superuser/superlogin" method="POST">
         <input type="text" name="username"> <br>
         <input type="text" name="password" > <br>
+        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
         <input type="submit" value="login">
     </form>
 

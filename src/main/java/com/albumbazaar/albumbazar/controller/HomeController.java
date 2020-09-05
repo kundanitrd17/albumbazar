@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class HomeController {
+
     
     @GetMapping("/")
     public String home() {
@@ -33,7 +34,8 @@ public class HomeController {
 
    
     
-    @RequestMapping("/errorPage")
+    @RequestMapping("/errorpage")
+    @ResponseBody
     public String errorPage() {
         return "error happended";
     }

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -13,6 +12,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.csrf.CsrfTokenRepository;
 
 
 @EnableWebSecurity
@@ -36,12 +37,12 @@ public class SecurityConfig{
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.csrf().disable()
-                    .antMatcher("/superuser/**")
+            http
+                .antMatcher("/superuser/**")
                 .authorizeRequests()
                     .anyRequest().hasRole("SUPERUSER")
                     .and()
-                .formLogin()
+                .formLogin() 
                     .loginPage("/login-super")
                     .loginProcessingUrl("/superuser/superlogin")
                     .failureUrl("/login-super?error=true")
@@ -51,7 +52,11 @@ public class SecurityConfig{
                 .logout()
                     .logoutUrl("/superuser/logout-super")  // If csrf is enabled then logout must be post
                     .logoutSuccessUrl("/")
-                    .invalidateHttpSession(true);
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID", "XSRF-TOKEN");
+                    // .and()
+                // .csrf()
+                //     .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
         }
     }
 
@@ -73,11 +78,11 @@ public class SecurityConfig{
 
        @Override
        protected void configure(HttpSecurity http) throws Exception {
-            http.csrf().disable()
+            http//.csrf().disable()
                 .antMatcher("/user/**")
                 .authorizeRequests()
                     .anyRequest().hasRole("USER")
-                    .and()
+                    .and() 
                 .formLogin()
                     .loginPage("/login-user")
                     .loginProcessingUrl("/user/userlogin")
@@ -87,8 +92,9 @@ public class SecurityConfig{
                     .and()
                 .logout()
                     .logoutUrl("/user/logout-user")
-                    .logoutSuccessUrl("/")
-                    .invalidateHttpSession(true);
+                    .logoutSuccessUrl("/") 
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID", "XSRF-TOKEN");
                    
        }
 
