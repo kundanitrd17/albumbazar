@@ -1,6 +1,10 @@
 package com.albumbazaar.albumbazar.model;
 
 import javax.persistence.*;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 @Entity
 @Table(
@@ -14,18 +18,19 @@ import javax.persistence.*;
 public class Superuser {
     
     @Id
-    private int id;
+    private AtomicInteger id;
     private String password;
     private String name;
     private String profile_pic;
     private String email;
+    private String role;
 
     public int getId() {
-        return id;
+        return id.get();
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.id.set(id);
     }
 
     public String getPassword() {
@@ -65,6 +70,14 @@ public class Superuser {
         return "Superuser [email=" + email + ", id=" + id + ", name=" + name + ", password=" + password
                 + ", profile_pic=" + profile_pic + "]";
     }
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 
     
 

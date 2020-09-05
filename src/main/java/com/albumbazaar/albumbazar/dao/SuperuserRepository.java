@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface SuperuserRepository extends JpaRepository<Superuser, Integer>{
 
-    
+    Superuser findByEmail(String email);
     
 }
