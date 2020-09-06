@@ -1,43 +1,20 @@
-package com.albumbazaar.albumbazar.model;
+package com.albumbazaar.albumbazar.form;
 
-import javax.persistence.*;
-import javax.validation.constraints.Size;
-
-@Entity
-@Table(
-        name = "location",
-        uniqueConstraints =
-                @UniqueConstraint(
-                        name = "landmark_pin_street",
-                        columnNames = {"landmark", "pin", "street"}
-                )
-)
-public class Location {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    @Size(max = 200)
+public class LocationForm {
+    
     private String landmark;
-    @Size(max = 200)
     private String street;
-    @Size(max = 100)
     private String town;
-    @Size(max = 100)
     private String city;
-    @Size(max = 100)
-    private String district;
-    @Size(max = 7)
+    private String district;  
     private String pin;
-    @Size(max = 100)
     private String state;
 
-
-    public Location() {
+    public LocationForm() {
     }
-    public Location(String landmark, String street, String town, String city, String district,
-            @Size(max = 7) String pin, String state) {
-  
+    
+    public LocationForm(String landmark, String street, String town, String city, String district, String pin,
+            String state) {
         this.landmark = landmark;
         this.street = street;
         this.town = town;
@@ -45,12 +22,6 @@ public class Location {
         this.district = district;
         this.pin = pin;
         this.state = state;
-    }
-
-
-
-    public Integer getId() {
-        return id;
     }
 
     public String getLandmark() {
@@ -109,12 +80,7 @@ public class Location {
         this.state = state;
     }
 
-    @Override
-    public String toString() {
-        return "Location [city=" + city + ", district=" + district + ", id=" + id + ", landmark=" + landmark + ", pin="
-                + pin + ", state=" + state + ", street=" + street + ", town=" + town + "]";
-    }
-
 
     
+
 }
