@@ -22,23 +22,23 @@ import org.springframework.lang.Nullable;
         name = "branch",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "name"),
-                @UniqueConstraint(columnNames = "contact_no")
+                @UniqueConstraint(columnNames = "contact_no"),
+                @UniqueConstraint(columnNames = "address_id")
         }
 )
 public class Branch {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String name;
     @Column(name = "contact_no")
     private String contactNo;
-    @Nullable
     private Date date;
     private boolean active;
 
-    @OneToOne(optional = true, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(
-            name = "address_id", unique = true, nullable = true
+            name = "address_id"
     )
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Location location;
@@ -51,11 +51,11 @@ public class Branch {
         this.location = location;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

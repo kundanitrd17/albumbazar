@@ -19,7 +19,7 @@ import javax.persistence.UniqueConstraint;
 public class Superuser {
     
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String password;
     private String name;
     private String profile_pic;
@@ -72,11 +72,11 @@ public class Superuser {
 		this.role = role;
 	}
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

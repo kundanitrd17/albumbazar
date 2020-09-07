@@ -35,17 +35,15 @@ public class HomeController {
     @ResponseBody
     public String emp(){
 
-
-        
         return "Added";
     }
 
     
     @GetMapping("/")
     public String home() {
-        Branch b = (Branch) brepo.findAll().get(0);
-        brepo.deleteAll();;
-        System.out.println(b);
+        System.out.println(erepo.findAll());
+        erepo.deleteAll();;;
+        //brepo.deleteAll();
         return "home";
     }
     @GetMapping("/user")

@@ -18,6 +18,8 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(
@@ -32,9 +34,8 @@ import org.hibernate.annotations.Cascade;
 )
 public class Employee {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @NotBlank @NotNull
     @Size(max = 100) 
     private String name;
 
@@ -52,7 +53,6 @@ public class Employee {
     @Size(max = 15)
     private String home_contact;
 
-    @NotBlank @NotNull
     private Date joining_date;
 
     private Date leaving_date;
@@ -60,12 +60,10 @@ public class Employee {
     private Boolean active = true;
 
     private String profile_pic;
-    
-    @NotBlank @NotNull
+
     @Size(max = 15)
     private String personal_contact;
 
-    @NotBlank @NotNull
     @Size(max = 50)
     private String email;
 
@@ -81,7 +79,6 @@ public class Employee {
     @Size(max = 20)
     private String religion;
 
-    @NotBlank @NotNull
     @Size(max = 40)
     private String role;
 
@@ -89,16 +86,18 @@ public class Employee {
     private String password;
 
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
-        name = "branch_id", nullable = false, referencedColumnName = "id"
+            name = "branch_id"
     )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Branch branch;
     
-    @OneToOne(optional = true, fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(
-            name = "address_id", nullable = true, referencedColumnName = "id"
+            name = "address_id"
     )
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Location address;
 
     public Employee() {
@@ -115,11 +114,11 @@ public class Employee {
                 + salary + ", voter=" + voter + "]";
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

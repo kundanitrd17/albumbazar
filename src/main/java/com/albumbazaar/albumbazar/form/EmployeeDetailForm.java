@@ -2,50 +2,23 @@ package com.albumbazaar.albumbazar.form;
 
 public class EmployeeDetailForm {
     private String name;
-    
-    private String landmark;
-    private String city;
-
-    public String getLandmark() {
-        return landmark;
-    }
-
-    public void setLandmark(String landmark) {
-        this.landmark = landmark;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "EmployeeDetailForm [city=" + city + ", landmark=" + landmark + ", name=" + name + "]";
-    }
-
-    // public LocationForm getAddress() {
-    //     return address;
-    // }
-
-    // public void setAddress(LocationForm address) {
-    //     this.address = address;
-    // }
-
-    // @Override
-    // public String toString() {
-    //     return "EmployeeDetailForm [address=" + address + ", name=" + name + "]";
-    // }
+    private String father_name;
+    private String experience;
+    private String date_of_birth;
+    private String qualification;
+    private Float salary;
+    private String home_contact;
+    private String joining_date;
+    private String leaving_date;
+    private Boolean active = true;
+    private String profile_pic;
+    private String personal_contact;
+    private String email;
+    private String pan;
+    private String aadhaar;
+    private String voter;
+    private String religion;
+    private String role;
+    private String password;
     
 }

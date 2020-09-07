@@ -16,7 +16,7 @@ public class Location {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     @Size(max = 200)
     private String landmark;
     @Size(max = 200)
@@ -47,9 +47,11 @@ public class Location {
         this.state = state;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 

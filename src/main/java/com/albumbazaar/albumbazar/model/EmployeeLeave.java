@@ -14,6 +14,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 @Entity
 @Table(
     name = "employee_leave",
@@ -32,10 +35,12 @@ public class EmployeeLeave {
     private String reason;
     @Column(columnDefinition = "Text")
     private String description;
-    @ManyToOne(optional = true, fetch = FetchType.LAZY)
+    
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(
-        name = "employee_id", nullable = false
+            name = "employee_id"
     )
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Employee employee;
 
     public Long getId() {
