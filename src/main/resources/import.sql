@@ -1,12 +1,8 @@
 
 
 insert into superuser VALUES (1, "harsh", "harsh", "abc", "s", "ROLE_SUPERUSER");
-<<<<<<< HEAD
-insert into superuser VALUES (2, "kundan", "kundan", "kundan", "s", "ROLE_SUPERUSER");
-=======
 insert into superuser VALUES (2, "nishi", "nishi", "abc", "s", "ROLE_SUEPRUSER");
 
->>>>>>> 884700053791cec91e49759d7246182701454545
 
 insert into location(id, city, street, town, landmark, district, pin, state) values (1, "manberia", "sdhadhahsd", "akjdhadkhsad", "asdhjgsadhgskj", "dslhsalkhdjj", "123453", "asdsa");
 insert into location(id, city, street, town, landmark, district, pin, state) values (2, "kulti", "sdhadhahsd", "akjdhadkhsad", "asdhjgsadhgskj", "dslhsalkhdjj", "121212", "asdsa");

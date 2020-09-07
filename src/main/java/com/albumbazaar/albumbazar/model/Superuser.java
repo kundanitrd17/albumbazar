@@ -10,32 +10,16 @@ import javax.persistence.UniqueConstraint;
 @Entity
 @Table(name = "superuser", uniqueConstraints = @UniqueConstraint(name = "unique_email", columnNames = { "email" }))
 public class Superuser {
-<<<<<<< HEAD
 
     @Id
-    private Integer id;
-=======
-    
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
->>>>>>> 884700053791cec91e49759d7246182701454545
     private String password;
     private String name;
     private String profile_pic;
     private String email;
     private String role;
 
-<<<<<<< HEAD
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-=======
->>>>>>> 884700053791cec91e49759d7246182701454545
     public String getPassword() {
         return password;
     }
@@ -78,11 +62,6 @@ public class Superuser {
         return role;
     }
 
-<<<<<<< HEAD
-    public void setRole(String role) {
-        this.role = role;
-    }
-=======
     public Long getId() {
         return id;
     }
@@ -90,8 +69,5 @@ public class Superuser {
     public void setId(Long id) {
         this.id = id;
     }
-
-    
->>>>>>> 884700053791cec91e49759d7246182701454545
 
 }
