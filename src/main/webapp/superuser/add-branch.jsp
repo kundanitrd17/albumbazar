@@ -25,7 +25,7 @@
             class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 form-wizard"
           >
             <!-- Form Wizard -->
-            <form role="form" action="/superuser/add-branch" method="post">
+            <form role="form" action="" method="post">
               <input
                 type="hidden"
                 name="${_csrf.parameterName}"
@@ -115,6 +115,43 @@
                   />
                 </div>
 
+                <div class="container-fluid">
+                  <div class="row form-inline">
+                    <div class="form-group col-md-3 col-xs-3">
+                      <label>Inogration Date </label>
+                    </div>
+                    <div class="form-group col-md-3 col-xs-3">
+                      <label>Date: </label>
+                      <select class="form-control">
+                        <option>01</option>
+                        <option>02</option>
+                        <option>03</option>
+                        <option>04</option>
+                        <option>05</option>
+                      </select>
+                    </div>
+                    <div class="form-group col-md-3 col-xs-3">
+                      <label>Month: </label>
+                      <select class="form-control">
+                        <option>Jan</option>
+                        <option>Feb</option>
+                        <option>Mar</option>
+                        <option>Apr</option>
+                        <option>May</option>
+                      </select>
+                    </div>
+                    <div class="form-group col-md-3 col-xs-3">
+                      <label>Year: </label>
+                      <select class="form-control">
+                        <option>2017</option>
+                        <option>2018</option>
+                        <option>2019</option>
+                        <option>2020</option>
+                        <option>2021</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
                 <div class="form-wizard-buttons">
                   <button type="button" class="btn btn-next">Next</button>
                 </div>

@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet">
-    <link rel="stylesheet" href="./css/super-admin.css">
+    <link rel="stylesheet" href="./superuser/css/super-admin.css">
 
     <style type="text/css">
   
@@ -29,7 +29,7 @@
       <ul class="categories">
         <li><i class="fa fa-home fa-fw" aria-hidden="true"></i><a href="#"> Branch</a>
           <ul class="side-nav-dropdown">
-            <li><a href="#">Add Branch</a></li>
+            <li><a href="/superuser/add-branch">Add Branch</a></li>
             <li><a href="#">Update Branch</a></li>
             <li><a href="#">Branch Admin View</a></li>
             <li><a href="#">Branch Transection</a></li>
@@ -107,7 +107,18 @@
                   <li><a href="#"><i class="fa fa-envelope-o fw"></i> My inbox</a></li>
                   <li><a href="#"><i class="fa fa-question-circle-o fw"></i> Help</a></li>
                   <li role="separator" class="divider"></li>
-                  <li><a href="#"><i class="fa fa-sign-out"></i> Log out</a></li>
+                  <li>
+                  
+                    <form action="/superuser/logout-super" method="POST">
+                      <i class="fa fa-sign-out"></i> 
+                      <input type="submit" value="logout">
+                      <input
+                      type="hidden"
+                      name="${_csrf.parameterName}"
+                      value="${_csrf.token}"
+                    />
+                    </form>
+                  </li>
                 </ul>
               </li>
               <li><a href="#"><i class="fa fa-comments"></i><span>23</span></a></li>
@@ -302,7 +313,7 @@
       <script src='http://code.jquery.com/jquery-latest.js'></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
       <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
-      <script src='./js/super-admin.js'></script>
+      <script src='./superuser/js/super-admin.js'></script>
 
       <script type="text/javascript">
       	/*global $, console*/
