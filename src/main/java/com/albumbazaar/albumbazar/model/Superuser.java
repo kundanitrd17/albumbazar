@@ -7,30 +7,23 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 
 @Entity
-@Table(
-        name = "superuser",
-        uniqueConstraints =
-                @UniqueConstraint(
-                        name = "unique_email",
-                        columnNames = {"email"}
-                )
-)
+@Table(name = "superuser", uniqueConstraints = @UniqueConstraint(name = "unique_email", columnNames = { "email" }))
 public class Superuser {
-    
+
     @Id
-    private AtomicInteger id;
+    private Integer id;
     private String password;
     private String name;
     private String profile_pic;
     private String email;
     private String role;
 
-    public int getId() {
-        return id.get();
+    public Integer getId() {
+        return id;
     }
 
-    public void setId(int id) {
-        this.id.set(id);
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getPassword() {
@@ -71,14 +64,12 @@ public class Superuser {
                 + ", profile_pic=" + profile_pic + "]";
     }
 
-	public String getRole() {
-		return role;
-	}
+    public String getRole() {
+        return role;
+    }
 
-	public void setRole(String role) {
-		this.role = role;
-	}
-
-    
+    public void setRole(String role) {
+        this.role = role;
+    }
 
 }

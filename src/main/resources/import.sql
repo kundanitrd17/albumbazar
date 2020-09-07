@@ -1,7 +1,7 @@
 
 
-insert into superuser VALUES (1, "harsh", "harsh", "abc", "s");
-insert into superuser VALUES (2, "nishi", "nishi", "abc", "s");
+insert into superuser VALUES (1, "harsh", "harsh", "abc", "s", "ROLE_SUPERUSER");
+insert into superuser VALUES (2, "kundan", "kundan", "kundan", "s", "ROLE_SUPERUSER");
 
 insert into location(id, city, street, town, landmark, district, pin, state) values (1, "manberia", "sdhadhahsd", "akjdhadkhsad", "asdhjgsadhgskj", "dslhsalkhdjj", "123453", "asdsa");
 insert into location(id, city, street, town, landmark, district, pin, state) values (2, "kulti", "sdhadhahsd", "akjdhadkhsad", "asdhjgsadhgskj", "dslhsalkhdjj", "121212", "asdsa");
