@@ -23,7 +23,7 @@ public class OrderDetail {
     @OneToOne
     @JoinColumn(name = "delivery_location_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
-    private Location deliveryAddress;
+    private Address1 deliveryAddress;
     private Float amount;
     private String associationName;
     private String productName;
@@ -74,11 +74,11 @@ public class OrderDetail {
         this.paymentStatus = paymentStatus;
     }
 
-    public Location getDeliveryAddress() {
+    public Address1 getDeliveryAddress() {
         return deliveryAddress;
     }
 
-    public void setDeliveryAddress(Location deliveryAddress) {
+    public void setDeliveryAddress(Address1 deliveryAddress) {
         this.deliveryAddress = deliveryAddress;
     }
 

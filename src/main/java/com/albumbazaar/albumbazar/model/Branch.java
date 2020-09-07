@@ -15,7 +15,6 @@ import javax.persistence.UniqueConstraint;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.lang.Nullable;
 
 @Entity
 @Table(
@@ -34,21 +33,21 @@ public class Branch {
     @Column(name = "contact_no")
     private String contactNo;
     private Date date;
-    private boolean active;
+    private boolean active=true;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(
             name = "address_id"
     )
     @OnDelete(action = OnDeleteAction.NO_ACTION)
-    private Location location;
+    private Address1 address;
 
-    public Location getLocation() {
-        return location;
+    public Address1 getLocation() {
+        return address;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setLocation(Address1 address) {
+        this.address = address;
     }
 
     public Long getId() {
@@ -94,6 +93,6 @@ public class Branch {
     @Override
     public String toString() {
         return "Branch [active=" + active + ", contactNo=" + contactNo + ", date=" + date + ", id=" + id + ", location="
-                + location + ", name=" + name + "]";
+                + address + ", name=" + name + "]";
     }
 }

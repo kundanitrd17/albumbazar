@@ -19,14 +19,14 @@ public class Inventory {
     private Float price;
     private String itemNo;
     private Integer noOfItems;
-    @Column(name = "added_time")
+    @Column(name = "added_time", nullable = false)
     private Date addedTime;
     @ManyToOne
     @JoinColumn(name = "branch_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Branch branch;
     @ManyToOne
-    @JoinColumn(name = "employee_id")
+    @JoinColumn(name = "employee_id", nullable = false)
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Employee employee;
 

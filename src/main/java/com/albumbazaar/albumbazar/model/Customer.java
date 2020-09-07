@@ -1,6 +1,8 @@
 package com.albumbazaar.albumbazar.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+
 import java.util.List;
 
 @Entity
@@ -8,11 +10,12 @@ public class Customer {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @Email
     private String email;
     private String contactNo;
     private String password;
     @OneToMany
-    private List<Location> address;
+    private List<Address1> address;
 
     public Long getId() {
         return id;
@@ -54,11 +57,11 @@ public class Customer {
         this.password = password;
     }
 
-    public List<Location> getAddress() {
+    public List<Address1> getAddress() {
         return address;
     }
 
-    public void setAddress(List<Location> address) {
+    public void setAddress(List<Address1> address) {
         this.address = address;
     }
 

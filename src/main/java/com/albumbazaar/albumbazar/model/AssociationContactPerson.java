@@ -19,7 +19,7 @@ public class AssociationContactPerson {
     private String contact2;
     @Email
     private String email;
-    private Boolean active;
+    private Boolean active=true;
     private String password;
     @ManyToOne
     @JoinColumn(

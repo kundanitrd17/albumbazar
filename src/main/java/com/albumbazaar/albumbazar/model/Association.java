@@ -32,7 +32,7 @@ public class Association {
         name = "address_id"
     )
     @OnDelete(action = OnDeleteAction.NO_ACTION)
-    private Location address;
+    private Address1 address;
     private String password;
     private Boolean active;
 
@@ -76,11 +76,11 @@ public class Association {
         this.email = email;
     }
 
-    public Location getAddress() {
+    public Address1 getAddress() {
         return address;
     }
 
-    public void setAddress(Location address) {
+    public void setAddress(Address1 address) {
         this.address = address;
     }
 

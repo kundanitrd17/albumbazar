@@ -2,13 +2,10 @@ package com.albumbazaar.albumbazar.controller;
 
 import com.albumbazaar.albumbazar.dao.BranchRepository;
 import com.albumbazaar.albumbazar.dao.EmployeeRepository;
-import com.albumbazaar.albumbazar.dao.LocationRepository;
 import com.albumbazaar.albumbazar.dao.SuperuserRepository;
 import com.albumbazaar.albumbazar.form.EmployeeDetailForm;
 import com.albumbazaar.albumbazar.model.Branch;
 import com.albumbazaar.albumbazar.model.Employee;
-import com.albumbazaar.albumbazar.model.Location;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,8 +20,7 @@ public class HomeController {
 
     @Autowired
     private SuperuserRepository repo;
-    @Autowired
-    private LocationRepository lrepo;
+  
 
     @Autowired
     private EmployeeRepository erepo;

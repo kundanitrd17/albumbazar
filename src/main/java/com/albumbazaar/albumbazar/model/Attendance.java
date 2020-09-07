@@ -2,7 +2,6 @@ package com.albumbazaar.albumbazar.model;
 
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -15,7 +14,6 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity
 @Table(
@@ -26,7 +24,7 @@ public class Attendance {
     private Long id;
     private Date date;
     @Size(max = 10)
-    private String status;
+    private String status = "AB";
     
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(

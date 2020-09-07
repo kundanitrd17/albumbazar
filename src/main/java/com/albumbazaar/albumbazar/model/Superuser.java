@@ -11,10 +11,7 @@ import javax.persistence.UniqueConstraint;
 @Table(
         name = "superuser",
         uniqueConstraints =
-                @UniqueConstraint(
-                        name = "unique_email",
-                        columnNames = {"email"}
-                )
+                @UniqueConstraint(columnNames = {"email"})
 )
 public class Superuser {
     
