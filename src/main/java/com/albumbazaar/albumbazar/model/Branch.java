@@ -1,37 +1,44 @@
 package com.albumbazaar.albumbazar.model;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.LazyToOne;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
+
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.lang.Nullable;
-
-import javax.persistence.*;
-import java.util.Date;
-import java.util.Optional;
 
 @Entity
 @Table(
         name = "branch",
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = "name"),
-                @UniqueConstraint(columnNames = "contact_no")
+                @UniqueConstraint(columnNames = "contact_no"),
+                @UniqueConstraint(columnNames = "address_id")
         }
 )
 public class Branch {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
     private String name;
     @Column(name = "contact_no")
     private String contactNo;
-    @Nullable
     private Date date;
     private boolean active;
 
-    @OneToOne(optional = true)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(
-            name = "address_id", unique = true, nullable = true
+            name = "address_id"
     )
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Location location;
@@ -44,11 +51,11 @@ public class Branch {
         this.location = location;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -82,5 +89,11 @@ public class Branch {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    @Override
+    public String toString() {
+        return "Branch [active=" + active + ", contactNo=" + contactNo + ", date=" + date + ", id=" + id + ", location="
+                + location + ", name=" + name + "]";
     }
 }
