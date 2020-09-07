@@ -14,8 +14,9 @@ import javax.persistence.UniqueConstraint;
                 @UniqueConstraint(columnNames = {"email"})
 )
 public class Superuser {
-    
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String password;
     private String name;
@@ -61,13 +62,9 @@ public class Superuser {
                 + ", profile_pic=" + profile_pic + "]";
     }
 
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
+    public String getRole() {
+        return role;
+    }
 
     public Long getId() {
         return id;
@@ -76,7 +73,5 @@ public class Superuser {
     public void setId(Long id) {
         this.id = id;
     }
-
-    
 
 }
