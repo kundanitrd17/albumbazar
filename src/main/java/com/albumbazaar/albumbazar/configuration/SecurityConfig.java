@@ -51,16 +51,16 @@ public class SecurityConfig {
     @Order(2)
     public static class UserSecurityConfig extends WebSecurityConfigurerAdapter {
 
-        private UserDetailsService normalUserDetailsService;
+        private UserDetailsService employeeService;
 
         @Autowired
-        protected UserSecurityConfig(@Qualifier("normalUserDetailsService") UserDetailsService userDetailsService) {
-            this.normalUserDetailsService = userDetailsService;
+        protected UserSecurityConfig(@Qualifier("employeeService") UserDetailsService userDetailsService) {
+            this.employeeService = userDetailsService;
         }
 
         @Override
         protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-            auth.userDetailsService(normalUserDetailsService);
+            auth.userDetailsService(employeeService);
         }
 
         @Override

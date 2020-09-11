@@ -1,5 +1,6 @@
 package com.albumbazaar.albumbazar.model;
 
+import java.text.DateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -12,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
+import com.albumbazaar.albumbazar.form.BasicBranchInfoForm;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -42,13 +45,21 @@ public class Branch {
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Address1 address;
 
-    public Address1 getLocation() {
-        return address;
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "admin_id")
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    private Employee admin;
+
+
+    public Branch(final BasicBranchInfoForm branchDetail) {
+        this.name = branchDetail.getName();
+        this.contactNo = branchDetail.getPhone(); 
+        this.date = null;
+        this.active = true;
     }
 
-    public void setLocation(Address1 address) {
-        this.address = address;
-    }
+    public Branch() {
+    }    
 
     public Long getId() {
         return id;
@@ -95,4 +106,22 @@ public class Branch {
         return "Branch [active=" + active + ", contactNo=" + contactNo + ", date=" + date + ", id=" + id + ", location="
                 + address + ", name=" + name + "]";
     }
+
+    public Address1 getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address1 address) {
+        this.address = address;
+    }
+
+    public Employee getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Employee admin) {
+        this.admin = admin;
+    }
+
+
 }

@@ -1,16 +1,18 @@
 package com.albumbazaar.albumbazar.controller;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+
 import com.albumbazaar.albumbazar.dao.BranchRepository;
 import com.albumbazaar.albumbazar.dao.EmployeeRepository;
 import com.albumbazaar.albumbazar.dao.SuperuserRepository;
-import com.albumbazaar.albumbazar.form.EmployeeDetailForm;
-import com.albumbazaar.albumbazar.model.Branch;
-import com.albumbazaar.albumbazar.model.Employee;
+import com.albumbazaar.albumbazar.model.Superuser;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -36,10 +38,14 @@ public class HomeController {
 
     
     @GetMapping("/")
+    @ResponseBody
     public String home() {
-        System.out.println(erepo.findAll());
-        erepo.deleteAll();;;
-        //brepo.deleteAll();
+        try {
+            System.out.println(repo.findById(Long.parseLong("1")).get());
+        } catch (NoSuchElementException e) {
+            return " you";
+        }
+        
         return "home";
     }
     @GetMapping("/user")
@@ -58,7 +64,7 @@ public class HomeController {
 
     @RequestMapping("/login-super")
     public String loginSuper() {
-        return "loginAdmin";
+        return "superuser/login-super";
     }
 
    

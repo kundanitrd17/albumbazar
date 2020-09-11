@@ -21,11 +21,12 @@
     <section class="form-box">
       <div class="container">
         <div class="row">
-          <div
-            class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 form-wizard"
-          >
+
+           <div class="col-md-3 col-lg-3 col-xl-3"></div>
+
+          <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 form-wizard">
             <!-- Form Wizard -->
-            <form role="form" action="" method="post">
+            <form role="form" action="add-branch" method="POST">
               <input
                 type="hidden"
                 name="${_csrf.parameterName}"
@@ -67,12 +68,12 @@
 
               <!-- Form Step 1 -->
               <fieldset>
-                <h4>Personal Information: <span>Step 1 - 2</span></h4>
+                <h4>Branch Information: <span>Step 1 - 2</span></h4>
                 <div class="form-group">
                   <label>Branch Name <span>*</span></label>
                   <input
                     type="text"
-                    name="branch-name"
+                    name="name"
                     placeholder="Enter Branch Name"
                     class="form-control required"
                   />
@@ -81,7 +82,7 @@
                   <label>Branch Code <span>*</span></label>
                   <input
                     type="text"
-                    name="branch-code"
+                    name="code"
                     placeholder="Enter Branch Code "
                     class="form-control required"
                   />
@@ -89,17 +90,17 @@
                     <label>Phone: <span>*</span></label>
                     <input
                       type="text"
-                      name="Phone"
+                      name="phone"
                       placeholder="Phone"
                       class="form-control required"
                     />
                   </div>
                 </div>
                 <div class="form-group">
-                  <label>Branch Email <span></span></label>
+                  <label>Branch Email <span>*</span></label>
                   <input
                     type="text"
-                    name="branch-email"
+                    name="email"
                     placeholder="Branch E-mail "
                     class="form-control"
                   />
@@ -109,7 +110,7 @@
                   <label>Branch Admin <span></span></label>
                   <input
                     type="text"
-                    name="branch-admin"
+                    name="admin"
                     placeholder="Admin Id "
                     class="form-control"
                   />
@@ -117,38 +118,14 @@
 
                 <div class="container-fluid">
                   <div class="row form-inline">
-                    <div class="form-group col-md-3 col-xs-3">
+                    <div class="form-group col-md-5 col-xs-5">
                       <label>Inogration Date </label>
-                    </div>
-                    <div class="form-group col-md-3 col-xs-3">
-                      <label>Date: </label>
-                      <select class="form-control">
-                        <option>01</option>
-                        <option>02</option>
-                        <option>03</option>
-                        <option>04</option>
-                        <option>05</option>
-                      </select>
-                    </div>
-                    <div class="form-group col-md-3 col-xs-3">
-                      <label>Month: </label>
-                      <select class="form-control">
-                        <option>Jan</option>
-                        <option>Feb</option>
-                        <option>Mar</option>
-                        <option>Apr</option>
-                        <option>May</option>
-                      </select>
-                    </div>
-                    <div class="form-group col-md-3 col-xs-3">
-                      <label>Year: </label>
-                      <select class="form-control">
-                        <option>2017</option>
-                        <option>2018</option>
-                        <option>2019</option>
-                        <option>2020</option>
-                        <option>2021</option>
-                      </select>
+                      <input
+                        type="date"
+                        name="inaugrationDate"
+                        placeholder="Branch Inaugration Date "
+                        class="form-control"
+                      />
                     </div>
                   </div>
                 </div>
@@ -160,32 +137,76 @@
 
               <!-- Form Step 2 -->
               <fieldset>
-                <h4>Contact Information : <span>Step 2 - 2</span></h4>
+                <h4>Branch Address : <span>Step 2 - 2</span></h4>
 
                 <div class="form-group">
-                  <label>Address: <span>*</span></label>
+                  <label>Landmark: <span>*</span></label>
                   <input
                     type="text"
-                    name="Address"
-                    placeholder="Address"
+                    name="landmark"
+                    placeholder="Landmark"
                     class="form-control required"
                   />
                 </div>
                 <div class="form-group">
-                  <label>Zip Code: <span>*</span></label>
+                  <label>Street1: <span>*</span></label>
                   <input
                     type="text"
-                    name="Zip Code"
-                    placeholder="Zip Code"
+                    name="street"
+                    placeholder="Street"
                     class="form-control required"
-                    max="6"
                   />
                 </div>
+                <div class="form-group">
+                  <label>Town: <span>*</span></label>
+                  <input
+                    type="text"
+                    name="town"
+                    placeholder="Town"
+                    class="form-control required"
+                    
+                  />
+                </div>
+                  <div class="form-group">
+                  <label>Post Office <span>*</span></label>
+                  <input
+                    type="text"
+                    name="postOffice"
+                    placeholder="Post Office "
+                    class="form-control required"
+                  />
+                </div>
+
+
+                 <div class="form-group">
+                  <label>Pin Code: <span>*</span></label>
+                  <input
+                    type="text"
+                    name="pin"
+                    placeholder="Pin Code"
+                    class="form-control required"
+                    max=6;
+                    min=6;
+                  />
+                </div>
+
+
+                <div class="form-group">
+                  <label>District: <span>*</span></label>
+                  <input
+                    type="text"
+                    name="district"
+                    placeholder="District"
+                    class="form-control required"
+                  />
+                </div>
+
+
                 <div class="form-group">
                   <label>City: <span>*</span></label>
                   <input
                     type="text"
-                    name="City"
+                    name="city"
                     placeholder="City"
                     class="form-control required"
                   />
@@ -194,16 +215,10 @@
                   <label>State: <span>*</span></label>
                   <input
                     type="text"
-                    name="State"
+                    name="state"
                     placeholder="State"
                     class="form-control required"
                   />
-                </div>
-                <div class="form-group">
-                  <label>Country: </label>
-                  <select class="form-control">
-                    <option>India</option>
-                  </select>
                 </div>
 
                 <div class="form-wizard-buttons">

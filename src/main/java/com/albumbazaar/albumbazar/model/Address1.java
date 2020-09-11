@@ -8,6 +8,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.albumbazaar.albumbazar.form.LocationForm;
+
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -27,6 +29,16 @@ public class Address1 {
     @JoinColumn(name = "address2_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Address2 address2;
+
+    public Address1() {}
+
+    public Address1(final LocationForm locationDetail) {
+        this.landmark = locationDetail.getLandmark();
+        this.street1 = locationDetail.getStreet();
+        this.street2 = null;
+    }
+
+    
 
     public Long getId() {
         return id;

@@ -3,14 +3,15 @@ package com.albumbazaar.albumbazar.model;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
+import com.albumbazaar.albumbazar.form.LocationForm;
+
 @Entity
 @Table(
         name = "address2"
 )
 public class Address2 {
 
-    @Id
-	@Size(min = 100000, max = 999999)
+	@Id
 	@Column(name = "id")
     private Long pin;
     @Size(max = 100)
@@ -24,8 +25,19 @@ public class Address2 {
 	@Size(max = 100)
 	private String policeStation;
 	@Size(max = 100)
-    private String postOffice;
+	private String postOffice;
+	
+	public Address2() {}
 
+	public Address2(final LocationForm locationDetails) {
+		this.pin = Long.parseLong(locationDetails.getPin());
+		this.town = locationDetails.getTown();
+		this.city = locationDetails.getCity();
+		this.district = locationDetails.getDistrict();
+		this.state = locationDetails.getState();
+		this.postOffice = locationDetails.getPostOffice();
+		this.policeStation = "Barakar";
+	}
     
 
 	@Override

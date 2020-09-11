@@ -5,24 +5,13 @@ public class LocationForm {
     private String landmark;
     private String street;
     private String town;
+    private String postOffice;
     private String city;
     private String district;  
     private String pin;
     private String state;
 
-    public LocationForm() {
-    }
     
-    public LocationForm(String landmark, String street, String town, String city, String district, String pin,
-            String state) {
-        this.landmark = landmark;
-        this.street = street;
-        this.town = town;
-        this.city = city;
-        this.district = district;
-        this.pin = pin;
-        this.state = state;
-    }
 
     public String getLandmark() {
         return landmark;
@@ -78,6 +67,20 @@ public class LocationForm {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public String getPostOffice() {
+        return postOffice;
+    }
+
+    public void setPostOffice(String postOffice) {
+        this.postOffice = postOffice;
+    }
+
+    @Override
+    public String toString() {
+        return "LocationForm [city=" + city + ", district=" + district + ", landmark=" + landmark + ", pin=" + pin
+                + ", postOffice=" + postOffice + ", state=" + state + ", street=" + street + ", town=" + town + "]";
     }
 
 
