@@ -40,12 +40,6 @@ public class HomeController {
     @GetMapping("/")
     @ResponseBody
     public String home() {
-        try {
-            System.out.println(repo.findById(Long.parseLong("1")).get());
-        } catch (NoSuchElementException e) {
-            return " you";
-        }
-        
         return "home";
     }
     @GetMapping("/user")

@@ -1,33 +1,24 @@
 package com.albumbazaar.albumbazar.form.api;
 
 public abstract class BasicDetailForm {
-    public String firstName;
-    public String lastName;
+    public String name;
     public String gender;
     public String dateOfBirth;
     public String monthOfBirth;
     public String yearOfBirth;
-    public String maratialStatus; 
+    public String maritalStatus;
     public String username;
+    public String rePassword;
     public String password;
     public String email;
     public String phone;
-    
 
-    public String getFirstName() {
-        return firstName;
+    public String getRePassword() {
+        return rePassword;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setRePassword(String rePassword) {
+        this.rePassword = rePassword;
     }
 
     public String getGender() {
@@ -62,12 +53,12 @@ public abstract class BasicDetailForm {
         this.yearOfBirth = yearOfBirth;
     }
 
-    public String getMaratialStatus() {
-        return maratialStatus;
+    public String getMaritalStatus() {
+        return maritalStatus;
     }
 
-    public void setMaratialStatus(String maratialStatus) {
-        this.maratialStatus = maratialStatus;
+    public void setMaritalStatus(String maritalStatus) {
+        this.maritalStatus = maritalStatus;
     }
 
     public String getUsername() {
@@ -100,6 +91,14 @@ public abstract class BasicDetailForm {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
     
 }

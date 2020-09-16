@@ -6,11 +6,14 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import com.albumbazaar.albumbazar.dao.AssociationRepository;
+import com.albumbazaar.albumbazar.form.association.AssociationDetailForm;
 import com.albumbazaar.albumbazar.model.Association;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
+import javax.validation.ConstraintViolationException;
 
 @Service
 @Qualifier("associationService")
@@ -22,11 +25,20 @@ public class AssociationService {
         this.associationRepository = associationRepository;
     }
 
-    public boolean addAssociation(/* Take form */) {
-        final Association association = new Association();
+    public boolean addAssociation(final AssociationDetailForm associationDetail) {
+        try{
+            final Association association = new Association(associationDetail); // create new object
 
-        /** validate and save */
-        associationRepository.save(association);
+            /** validate and save */
+            associationRepository.save(association); // persist the data
+        } catch (ConstraintViolationException e) {
+            System.out.println("Exception: " + e.getMessage());
+            return false;
+        } catch (Exception e) {
+            System.out.println("Exception: " + e.getMessage());
+            return false;
+        }
+
         return true;
     }
     public Optional<List<Association>> getAllAssociation() {

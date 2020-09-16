@@ -46,7 +46,7 @@
         </li>
         <li><i class="fa fa-envelope fa-fw"></i><a href="#"> Employees</a>
           <ul class="side-nav-dropdown">
-            <li><a href="#">Add Employee</a></li>
+            <li><a href="/superuser/add-employee">Add Employee</a></li>
             <li><a href="#">Delete Employee</a></li>
             <li><a href="#">Update Employee</a></li>
             <li><a href="#">Employee Attendance</a></li>
@@ -55,7 +55,7 @@
         </li>
         <li><i class="fa fa-users fa-fw"></i><a href="#"> Our Association</a>
           <ul class="side-nav-dropdown">
-            <li><a href="#">Add Association</a></li>
+            <li><a href="superuser/add-association">Add Association</a></li>
             <li><a href="#">Update Association</a></li>
             <li><a href="#">Delete Association</a></li>
             <li><a href="#">Views Association List </a></li>
@@ -102,18 +102,14 @@
                 <ul class="dropdown-menu">
                   <li><a href="#"><i class="fa fa-user-o fw"></i> My account</a></li>
                   <li><a href="#"><i class="fa fa-envelope-o fw"></i> My inbox</a></li>
-                  <li><a href="#"><i class="fa fa-question-circle-o fw"></i> Help</a></li>
-                  <li role="separator" class="divider"></li>
+                  <li><a href="#"><i class="fa fa-question-circle-o fw"></i> Help</a></li>      
+                  <li role="separator" class="divider"></li>          
                   <li>
-                  
                     <form action="/superuser/logout-super" method="POST">
-                      <i class="fa fa-sign-out"></i> 
-                      <input type="submit" value="logout">
-                      <input
-                      type="hidden"
-                      name="${_csrf.parameterName}"
-                      value="${_csrf.token}"
-                    />
+                      <div style="left: 200px;">
+                        <i class="fa fa-sign-out"></i><button style="outline: 0mm;">Logout</button>
+                      </div>                    
+                      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                     </form>
                   </li>
                 </ul>

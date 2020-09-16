@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
+import com.albumbazaar.albumbazar.form.association.AssociationDetailForm;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -35,6 +36,18 @@ public class Association {
     private Address1 address;
     private String password;
     private Boolean active;
+
+    public Association() {
+    }
+
+    public Association(final AssociationDetailForm associationDetail) {
+        this.name = associationDetail.getName();
+        this.contact1 = associationDetail.getContact1();
+        this.contact2 = associationDetail.getContact2();
+        this.email = associationDetail.getEmail();
+        this.password = associationDetail.getPassword();
+        this.active = true;
+    }
 
     public Long getId() {
         return id;

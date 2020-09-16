@@ -12,8 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfTokenRepository;
 
 @EnableWebSecurity
 public class SecurityConfig {
@@ -36,7 +34,10 @@ public class SecurityConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.antMatcher("/superuser/**").authorizeRequests().anyRequest().hasRole("SUPERUSER").and().formLogin()
+            http.antMatcher("/superuser/**").authorizeRequests()
+                    .antMatchers("/superuser/js/*.js").permitAll() // remove it in production
+                    .antMatchers("/superuser/css/*.css").permitAll() // remove in production
+                    .anyRequest().hasRole("SUPERUSER").and().formLogin()
                     .loginPage("/login-super").loginProcessingUrl("/superuser/superlogin")
                     .failureUrl("/login-super?error=true").defaultSuccessUrl("/superuser", true).permitAll().and()
                     .logout().logoutUrl("/superuser/logout-super") // If csrf is enabled then logout must be post
@@ -81,6 +82,7 @@ public class SecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests().antMatchers("/foo").authenticated().anyRequest().permitAll();
+
         }
     }
 

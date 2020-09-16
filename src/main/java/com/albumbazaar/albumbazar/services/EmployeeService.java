@@ -1,15 +1,18 @@
 package com.albumbazaar.albumbazar.services;
 
-import java.lang.StackWalker.Option;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.albumbazaar.albumbazar.dao.Address1Repository;
+import com.albumbazaar.albumbazar.dao.Address2Repository;
 import com.albumbazaar.albumbazar.dao.EmployeeRepository;
 import com.albumbazaar.albumbazar.dao.principals.EmployeePrincipal;
+import com.albumbazaar.albumbazar.form.LocationForm;
+import com.albumbazaar.albumbazar.form.employee.BasicEmployeeDetailForm;
+import com.albumbazaar.albumbazar.model.Address1;
+import com.albumbazaar.albumbazar.model.Address2;
 import com.albumbazaar.albumbazar.model.Employee;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,10 +27,16 @@ import org.springframework.stereotype.Service;
 public class EmployeeService implements UserDetailsService {
 
     private final EmployeeRepository employeeRepository;
+    private final Address1Repository address1Repository;
+    private final Address2Repository address2Repository;
 
     @Autowired
-    public EmployeeService(final EmployeeRepository employeeRepository) {
+    public EmployeeService(final EmployeeRepository employeeRepository,
+                    final Address1Repository address1Repository,
+                    final Address2Repository address2Repository) {
         this.employeeRepository = employeeRepository;
+        this.address1Repository = address1Repository;
+        this.address2Repository = address2Repository;
     }
 
     @Override
@@ -41,15 +50,28 @@ public class EmployeeService implements UserDetailsService {
         return new EmployeePrincipal(user);
     }
 
-    public boolean addEmployee(/* Take in form attributes or model attributes */) {
+    public boolean addEmployee(final BasicEmployeeDetailForm employeeDetail, final LocationForm addressDetail) {
+        try {
+            // working on the address2 creation (pin address)
+            final Address2 address2 = new Address2(addressDetail); // creating the address2 model
+            address2Repository.save(address2); // saving the model
 
-        // Created employee model object
-        final Employee employee = new Employee(); // create a proper object
+            // Working on the address1 creation (street address)
+            final Address1 address1 = new Address1(addressDetail); // creating the address1 model
+            address1.setAddress2(address2); // mapping the address2 to address1 
+            address1Repository.save(address1); // saving address1
 
-        // valid it then save it
-        
-        // save a new employee
-        employeeRepository.save(employee);
+            // Created employee model object
+            final Employee employee = new Employee(employeeDetail); // create a proper object
+            employee.setAddress(address1);
+            
+            // save a new employee
+            employeeRepository.save(employee);
+            
+        } catch (Exception e) {
+            System.out.println("Exception: " + e.getMessage());
+            return false;
+        }
 
         return true;
     }

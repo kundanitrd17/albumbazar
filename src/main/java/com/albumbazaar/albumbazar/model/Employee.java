@@ -16,6 +16,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.albumbazaar.albumbazar.form.employee.BasicEmployeeDetailForm;
+
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -100,6 +102,18 @@ public class Employee {
 
     public Employee() {
     }
+
+    public Employee(final BasicEmployeeDetailForm employeeDetail) {
+        this.name = employeeDetail.getName();
+        this.email = employeeDetail.getEmail();
+        this.active = true;
+        this.date_of_birth = null; //employeeDetail.getDateOfBirth();
+        this.personal_contact = employeeDetail.getPhone();
+        this.salary = Float.parseFloat(employeeDetail.getSalary());
+        this.role = employeeDetail.getDesignation();
+        this.password = "password";
+    }
+
 
     @Override
     public String toString() {

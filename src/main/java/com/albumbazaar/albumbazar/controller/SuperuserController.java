@@ -3,7 +3,12 @@ package com.albumbazaar.albumbazar.controller;
 import com.albumbazaar.albumbazar.form.BasicBranchInfoForm;
 import com.albumbazaar.albumbazar.form.ForgotPasswordFormSuperuser;
 import com.albumbazaar.albumbazar.form.LocationForm;
+import com.albumbazaar.albumbazar.form.association.AssociationDetailForm;
+import com.albumbazaar.albumbazar.form.employee.BasicEmployeeDetailForm;
+import com.albumbazaar.albumbazar.model.Branch;
+import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.BranchService;
+import com.albumbazaar.albumbazar.services.EmployeeService;
 import com.albumbazaar.albumbazar.services.SuperuserDetailsService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +21,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/superuser")
@@ -23,12 +33,18 @@ public class SuperuserController {
 
     private final SuperuserDetailsService superuserDetailsService;
     private final BranchService branchService;
+    private final EmployeeService employeeService;
+    private final AssociationService associationService;
 
     @Autowired
     public SuperuserController(@Qualifier("superuserDetailsService") SuperuserDetailsService superuserDetailsService,
-                @Qualifier("branchService") BranchService branchService) {
+                @Qualifier("branchService") BranchService branchService,
+                @Qualifier("employeeService") EmployeeService employeeService,
+                @Qualifier("associationService") AssociationService associationService ) {
         this.superuserDetailsService = superuserDetailsService;
         this.branchService = branchService;
+        this.employeeService = employeeService;
+        this.associationService = associationService;
     }
 
     @RequestMapping(value = "/api/resetsuperuser", method = RequestMethod.POST)
@@ -66,10 +82,43 @@ public class SuperuserController {
     }
 
     @GetMapping(value = "list-branch")
-    public String getAllBranch() {
-        branchService.getAllBranch();
+    public ModelAndView getAllBranch() {
+        ModelAndView modelAndView = new ModelAndView("branch-list");
+        List<Branch> allBranch = branchService.getAllBranch().get();
+        System.out.println(allBranch);
+        modelAndView.addObject("branches", allBranch);
 
-        return "branch-list";
+        return modelAndView;
+    }
+
+    @GetMapping(value = "add-employee")
+    public String viewAddEmployee() {
+        return "add-emp";
+    }
+
+    @PostMapping(value = "add-employee")
+    @ResponseBody
+    public String addEmployee(@ModelAttribute BasicEmployeeDetailForm employeeDetail,
+                    @ModelAttribute LocationForm addressDetail) {
+
+        employeeService.addEmployee(employeeDetail, addressDetail);
+
+        return "Added Employee";
+    }
+
+    @GetMapping(value = "add-association")
+    public String viewAddAssociation() {
+
+        return "add-association";
+    }
+
+    @PostMapping(value = "add-association")
+    @ResponseBody
+    public String addAssociation(@ModelAttribute AssociationDetailForm associationDetail) {
+        System.out.println(associationDetail);
+        associationService.addAssociation(associationDetail);
+
+        return "added";
     }
 
 }

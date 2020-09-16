@@ -45,6 +45,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
           </tr>
         </thead>
         <tbody>
+
           <tr>
             <td>101</td>
             <td>Asansol Branch</td>
@@ -59,48 +60,11 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
            <button class="btn btn-warning e-icon">Edit</button></td>
             <td><a class="btn btn-danger d-icon">Delete</button></a></td>
           </tr>
-      
-            <tr>
-            <td>102</td>
-            <td>Asansol Branch</td>
-            <td>ASN-AB</td>
-            <td>100</td>
-            <td>Kundan Srivastava</td>
-            <td>1234567890</td>
-            <td>1</td>
-            <td>Branch Order LINK</td>
-          <td class="">  <a href="#" class="btn btn-success s-icon " style="display: none;">Save</a>
-           <button class="btn btn-warning e-icon">Edit</button></td>
-            <td><a class="btn btn-danger d-icon">Delete</button></a></td>
-          </tr>
-                   <tr>
-            <td>103</td>
-            <td>Asansol Branch</td>
-            <td>ASN-AB</td>
-            <td>100</td>
-            <td>Kundan Srivastava</td>
-            <td>1234567890</td>
-            <td>1</td>
-            <td>Branch Order LINK</td>
-          <td class="">   <a href="#" class="btn btn-success s-icon " style="display: none;">Save</a>
-           <button class="btn btn-warning e-icon">Edit</button></td>
-            <td><a class="btn btn-danger d-icon">Delete</button></a></td>
-          </tr>
-                   <tr>
-            <td>104</td>
-            <td>Asansol Branch</td>
-            <td>ASN-AB</td>
-            <td>100</td>
-            <td>Kundan Srivastava</td>
-            <td>1234567890</td>
-            <td>1</td>
-            <td>Branch Order LINK</td>
-          <td class="">   <a href="#" class="btn btn-success s-icon " style="display: none;">Save</a>
-           <button class="btn btn-warning e-icon">Edit</button></td>
-            <td><a class="btn btn-danger d-icon">Delete</button></a>
-          </tr>
+
         </tbody>
       </table>
+
+
     </div>
   </div>
 </div>

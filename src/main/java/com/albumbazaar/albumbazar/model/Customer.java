@@ -1,8 +1,11 @@
 package com.albumbazaar.albumbazar.model;
 
+import com.albumbazaar.albumbazar.form.customer.BasicCustomerDetailForm;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -15,7 +18,17 @@ public class Customer {
     private String contactNo;
     private String password;
     @OneToMany
-    private List<Address1> address;
+    private List<Address1> address = new ArrayList<>();
+
+    public Customer() {
+    }
+
+    public Customer(final BasicCustomerDetailForm customerDetail) {
+        this.name = customerDetail.getName();
+        this.email = customerDetail.getEmail();
+        this.contactNo = customerDetail.getPhone();
+        this.password = customerDetail.getPassword();
+    }
 
     public Long getId() {
         return id;
@@ -61,8 +74,8 @@ public class Customer {
         return address;
     }
 
-    public void setAddress(List<Address1> address) {
-        this.address = address;
+    public void setAddress(Address1 address) {
+        this.address.add(address);
     }
 
     @Override
