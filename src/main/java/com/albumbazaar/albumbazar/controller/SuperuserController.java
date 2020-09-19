@@ -38,9 +38,9 @@ public class SuperuserController {
 
     @Autowired
     public SuperuserController(@Qualifier("superuserDetailsService") SuperuserDetailsService superuserDetailsService,
-                @Qualifier("branchService") BranchService branchService,
-                @Qualifier("employeeService") EmployeeService employeeService,
-                @Qualifier("associationService") AssociationService associationService ) {
+            @Qualifier("branchService") BranchService branchService,
+            @Qualifier("employeeService") EmployeeService employeeService,
+            @Qualifier("associationService") AssociationService associationService) {
         this.superuserDetailsService = superuserDetailsService;
         this.branchService = branchService;
         this.employeeService = employeeService;
@@ -71,11 +71,12 @@ public class SuperuserController {
 
     @PostMapping(value = "add-branch")
     @ResponseBody
-    public String addBranch(@ModelAttribute BasicBranchInfoForm branchDetails, @ModelAttribute LocationForm locationForm) {
+    public String addBranch(@ModelAttribute BasicBranchInfoForm branchDetails,
+            @ModelAttribute LocationForm locationForm) {
 
         System.out.println(branchDetails);
         System.out.println(locationForm);
-        
+
         branchService.addBranch(branchDetails, locationForm); // call the add branch service
 
         return "Added branch";
@@ -85,7 +86,7 @@ public class SuperuserController {
     public ModelAndView getAllBranch() {
         ModelAndView modelAndView = new ModelAndView("branch-list");
         List<Branch> allBranch = branchService.getAllBranch().get();
-        System.out.println(allBranch);
+        // System.out.println(allBranch);
         modelAndView.addObject("branches", allBranch);
 
         return modelAndView;
@@ -99,7 +100,7 @@ public class SuperuserController {
     @PostMapping(value = "add-employee")
     @ResponseBody
     public String addEmployee(@ModelAttribute BasicEmployeeDetailForm employeeDetail,
-                    @ModelAttribute LocationForm addressDetail) {
+            @ModelAttribute LocationForm addressDetail) {
 
         employeeService.addEmployee(employeeDetail, addressDetail);
 

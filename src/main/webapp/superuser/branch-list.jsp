@@ -1,8 +1,13 @@
 <!DOCTYPE html>
+<%@ page import="java.util.List, com.albumbazaar.albumbazar.model.Branch" %>
 <html>
 <head>
 <title>Album Bazaar</title>
-	<meta charset="utf-8">
+  <meta charset="utf-8">
+  <meta name="_csrf" content="${_csrf.token}"/>
+  <!-- default header name is X-CSRF-TOKEN -->
+  <meta name="_csrf_header" content="${_csrf.headerName}"/>
+  <!-- ... -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -45,25 +50,40 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
           </tr>
         </thead>
         <tbody>
-
-          <tr>
-            <td>101</td>
-            <td>Asansol Branch</td>
-            <td>ASN-AB</td>
-            <td>100</td>
-            <td>Kundan Srivastava</td>
-            <td>1234567890</td>
-            <td>1</td>
-            <td>Branch Order LINK</td>
-
-          <td class="">  <a href="#" class="btn btn-success s-icon " style="display: none;">Save</a>
-           <button class="btn btn-warning e-icon">Edit</button></td>
-            <td><a class="btn btn-danger d-icon">Delete</button></a></td>
+    
+          
+          <% List<Branch> branches = (List<Branch>) request.getAttribute("branches");
+            int index = 0; 
+            for(Branch branch : branches) { 
+              
+          %>
+          <tr id="row<%= branch.getId() %>">
+            
+              <td id="branchId" ><%= branch.getId() %></td>
+              <td id="branchName" ><%= branch.getName() %></td>
+              <td><%= branch.getId() %></td>
+              <td> <a href="http://www.google.com">12</a> </td>
+              <td>1001</td>
+              <td><%= branch.getAdmin() %></td>
+              <td id="branchContact"><%= branch.getContactNo() %></td>
+              <!-- <td> <a href="http://www.google.com?=<%= branch.getAddress().getId() %>"><%= branch.getAddress().getId() %></a> </td> -->
+              <td><%= branch.getName() %></td>
+              
+              <td class="">  
+                <button id="save_row" class="btn btn-success s-icon " style="display: none;">Save</button>
+                <button class="btn btn-warning e-icon">Edit</button>
+              </td>
+             
+              <td ><button id="deleteBranch" class="btn btn-danger d-icon">Delete</button></td>
+            
+            
           </tr>
 
+          <%}%>
         </tbody>
       </table>
 
+      
 
     </div>
   </div>
@@ -72,6 +92,44 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 <script type="text/javascript" src="js/data-table.js"></script>
 
 <script type="text/javascript">
+
+
+  $('.table tbody tr td').on('click','#deleteBranch',function(){
+    console.log('hi');
+    event.preventDefault();
+    const content = $(this).parent().prevAll().toArray();
+    const data = {};
+    content.forEach(item => {
+      if(item.id === "branchId") {
+        data["id"] = item.innerText;
+      }
+      if(item.id === "branchName") {
+        data["name"] = item.innerText;
+      }
+      if(item.id === "branchContact") {
+        data["phone"] = item.innerText;
+      }
+    })
+    
+    console.log(JSON.stringify(data));
+    var token = $("meta[name='_csrf']").attr("content");
+    var header = $("meta[name='_csrf_header']").attr("content");
+    
+    var xhr = new XMLHttpRequest();
+    var url = 'http://localhost:8080/api/product/post';
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.setRequestHeader(header, token);
+    
+    xhr.onreadystatechange = function() { // Call a function when the state changes.
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            console.log(typeof(JSON.parse(this.response)));
+            console.log(JSON.parse(this.response)["name"]);
+        }
+    }
+    xhr.send(JSON.stringify(data))
+
+  })
   
 
   
@@ -93,11 +151,11 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
   });
 
- $('.table tbody tr td').on('click','.d-icon',function(){
+//  $('.table tbody tr td').on('click','.d-icon',function(){
 
-  $(this).closest('tr').remove();
+//   $(this).closest('tr').remove();
 
-});
+// });
 
 
 </script>

@@ -9,19 +9,27 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(
-        uniqueConstraints =
-                @UniqueConstraint(columnNames = {"paper_index", "order_id"})
-)
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "paper_index", "order_id" }))
 public class SheetDetail {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "paper_index")
-    private Long paperIndex;
+    private Integer paperIndex;
     private String paperQuality;
     private String paperPrice;
-    @Column(name = "order_id")
-    private Long orderId;
+
+    public SheetDetail(Integer paperIndex, String paperQuality, String paperPrice) {
+        System.out.println("sheet1");
+        this.paperIndex = paperIndex;
+        System.out.println("sheet1");
+        this.paperQuality = paperQuality;
+        System.out.println("sheet1");
+        this.paperPrice = paperPrice;
+    }
+
+    public SheetDetail() {
+    }
 
     public Long getId() {
         return id;
@@ -31,11 +39,11 @@ public class SheetDetail {
         this.id = id;
     }
 
-    public Long getPaperIndex() {
+    public Integer getPaperIndex() {
         return paperIndex;
     }
 
-    public void setPaperIndex(Long paperIndex) {
+    public void setPaperIndex(Integer paperIndex) {
         this.paperIndex = paperIndex;
     }
 
@@ -55,19 +63,10 @@ public class SheetDetail {
         this.paperPrice = paperPrice;
     }
 
-    public Long getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(Long orderId) {
-        this.orderId = orderId;
-    }
-
     @Override
     public String toString() {
-        return "SheetDetail [id=" + id + ", orderId=" + orderId + ", paperIndex=" + paperIndex + ", paperPrice="
-                + paperPrice + ", paperQuality=" + paperQuality + "]";
+        return "SheetDetail [id=" + id + ", paperIndex=" + paperIndex + ", paperPrice=" + paperPrice + ", paperQuality="
+                + paperQuality + "]";
     }
 
-    
 }

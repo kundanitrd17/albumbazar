@@ -170,7 +170,7 @@ font-size: 13px;
     <div class="middle" id="m"></div>
     <div class="bottom" id="b"></div>
   </div>
-</div>
+</div> 
     </div>
 
 
@@ -212,6 +212,7 @@ font-size: 13px;
         <div class="modal-body">
     
          <form class="" action="order" method="POST" >
+           <input type="text" name="company" id="">
           <h4>Select Album</h4>
             <input
             type="hidden"
@@ -221,13 +222,13 @@ font-size: 13px;
          <div class="container"> 
           <div class="row">
                
-                
-                  <select id="albumtype" class="form-control col-md-4 col-xl-4 col-lg-4">
-                    <option value="">Album Type</option>
+                  <select name="albumType" id="albumtype" class="form-control col-md-4 col-xl-4 col-lg-4">
+                    <option value="album1">album1</option>
+                    <option value="album2">album2</option>
                   </select>
                 
-                  <select id="albumsize" class="form-control col-md-4 col-xl-4 col-lg-4">
-                    <option value="">Album Size</option>
+                  <select id="albumsize" name="albumSize" class="form-control col-md-4 col-xl-4 col-lg-4">
+                    <option value="80">80</option>
                   </select>
           </div>
             <hr>
@@ -235,11 +236,11 @@ font-size: 13px;
           <div class="row">
                
                 
-                  <select id="albumtype" class="form-control col-md-4 col-xl-4 col-lg-4">
-                    <option value="">Page Quality</option>
+                  <select name="pageQuality" id="albumtype" class="form-control col-md-4 col-xl-4 col-lg-4">
+                    <option value="gold">gold</option>
                   </select>
                 
-                  <select id="albumsize" class="form-control col-4">
+                  <select name="pagePrice" id="albumsize" class="form-control col-4">
                     <option value="">Price</option>
                   </select>
           </div>  
@@ -249,7 +250,7 @@ font-size: 13px;
           <div class="row table-responsive">
                
                 <table>
-                       <tr>
+        <tr>
           <th><h6>Type</h6></th>
           <th><h6>photo per sheet</h6></th>
           <th><h6> sheet</h6></th>
@@ -259,23 +260,26 @@ font-size: 13px;
                    <tbody id="test-body">
                       <tr id="row0">
                         <td >
-                          <select class="form-control " style="width: 160px;">
-                            <option value="">Paper Type</option>
+                          <select name="sheetType" class="form-control " style="width: 160px;">
+                            <option value="paper type1">Paper Type</option>
                           </select>
                         </td>
                         <td >
-                          <input name="np[]" value="" type="number" class="form-control input-md"  placeholder="" max="7" style="width: 80px;"/>
+                          <input name="photoPerSheet" type="number" class="form-control input-md"  placeholder="" max="70" style="width: 80px;"/>
                         </td>
 
                         <td >
-                          <input name="pps[]" id="pr" value="" type="number" class="form-control input-md"  placeholder="" style="width: 80px;" />
+                          <input name="sheetRange" id="pr" type="number" class="form-control input-md"  placeholder="" style="width: 80px;" />
                         </td>
 
                          <td>
-                          <input name="pp[]" value="" type="number" class="form-control input-md"  placeholder=""style="width: 80px;" disabled />
+                          <input name="sheetPrice" type="number" class="form-control input-md"  placeholder=""style="width: 80px;" disabled />
                         </td>
                         <td><input id="add-row" class="btn btn-primary" type="button" value="+" /></td>
                       </tr>
+
+
+                      
                    </tbody>
                    <tfoot>
                      <tr>
@@ -292,9 +296,7 @@ font-size: 13px;
                    </tfoot>
                 </table>
           </div>  
-
     
-
         </div>
 
        
@@ -326,7 +328,7 @@ $(document).ready(function(){
   // Add row
   var row=1;
   $(document).on("click", "#add-row", function () {
-  var new_row = '<tr id="row' + row + '"><td> <select class="form-control" style="width: 160px;"><option value="">Paper Type</option></select></td><td><input name="np[]' + row + '" type="number" class="form-control" placeholder="" max="7"  style="width: 80px;"/></td><td><input name="pps[]" value="" type="number" class="form-control input-md"  placeholder=""  style="width: 80px;"  /></td><td><input name="pp[]' + row + '" id="pr" type="number" class="form-control" placeholder=""  style="width: 80px;" disabled/></td><td><input class="delete-row btn btn-danger" type="button" value="X" /></td></tr>';
+  var new_row = '<tr id="row' + row + '"><td> <select name="sheetType" class="form-control" style="width: 160px;"><option value="">Paper Type</option></select></td><td><input name="photoPerSheet"' + row + '" type="number" class="form-control" placeholder="" max="7"  style="width: 80px;"/></td><td><input name="sheetRange" value="" type="number" class="form-control input-md"  placeholder=""  style="width: 80px;"  /></td><td><input name="sheetPrice"' + row + '" id="pr" type="number" class="form-control" placeholder=""  style="width: 80px;" disabled/></td><td><input class="delete-row btn btn-danger" type="button" value="X" /></td></tr>';
     
   $('#test-body').append(new_row);
   row++;
@@ -342,6 +344,7 @@ $(document).ready(function(){
     }
   return false;
   });
+
 
 
 </script>

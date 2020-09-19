@@ -13,6 +13,7 @@ import com.albumbazaar.albumbazar.model.Superuser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,7 +23,6 @@ public class HomeController {
 
     @Autowired
     private SuperuserRepository repo;
-  
 
     @Autowired
     private EmployeeRepository erepo;
@@ -31,17 +31,16 @@ public class HomeController {
 
     @PostMapping("/emp")
     @ResponseBody
-    public String emp(){
+    public String emp() {
 
         return "Added";
     }
 
-    
     @GetMapping("/")
-    @ResponseBody
     public String home() {
-        return "home";
+        return "index";
     }
+
     @GetMapping("/user")
     public String user() {
         return "user";
@@ -49,7 +48,9 @@ public class HomeController {
 
     @GetMapping("/foo")
     @ResponseBody
-    public String foo() { return "foo"; }
+    public String foo() {
+        return "foo";
+    }
 
     @RequestMapping("/login-user")
     public String loginUser() {
@@ -61,8 +62,6 @@ public class HomeController {
         return "superuser/login-super";
     }
 
-   
-    
     @RequestMapping("/errorpage")
     @ResponseBody
     public String errorPage() {

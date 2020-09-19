@@ -4,26 +4,21 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+
+import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
+
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(
-        name = "order_detail"
-)
+@Table(name = "order_detail")
 public class OrderDetail {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Date orderTime;
     private Date deliveryDate;
-    @ManyToOne
-    @JoinColumn(name = "customer_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private Customer customer;
     private Boolean paymentStatus;
-    @OneToOne
-    @JoinColumn(name = "delivery_location_id")
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
-    private Address1 deliveryAddress;
     private Float amount;
     private String associationName;
     private String productName;
@@ -33,12 +28,45 @@ public class OrderDetail {
     private Integer noOfSheets;
     private String orderStatus;
     private String orientation;
+    @Column(columnDefinition = "TEXT")
+    private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Customer customer;
+
+    @OneToOne
+    @JoinColumn(name = "delivery_location_id")
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    private Address1 deliveryAddress;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private List<SheetDetail> sheets;
+
+    public OrderDetail() {
+    }
+
+    public OrderDetail(final OrderDetailForm orderDetails) {// throws Exception {
+        this.associationName = orderDetails.getCompanyName();
+        System.out.println(1);
+        this.coverName = orderDetails.getCoverQuality();
+        System.out.println(2);
+        this.productName = orderDetails.getAlbumType();
+        System.out.println(1);
+        this.productSize = orderDetails.getAlbumSize();
+        System.out.println(2);
+        this.description = orderDetails.getDescription();
+        System.out.println(1);
+        // this.coverPrice = Float.parseFloat(orderDetails.getCoverPrice());
+    }
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
     }
 
@@ -46,7 +74,7 @@ public class OrderDetail {
         return orderTime;
     }
 
-    public void setOrderTime(Date orderTime) {
+    public void setOrderTime(final Date orderTime) {
         this.orderTime = orderTime;
     }
 
@@ -54,7 +82,7 @@ public class OrderDetail {
         return deliveryDate;
     }
 
-    public void setDeliveryDate(Date deliveryDate) {
+    public void setDeliveryDate(final Date deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
 
@@ -62,7 +90,7 @@ public class OrderDetail {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public void setCustomer(final Customer customer) {
         this.customer = customer;
     }
 
@@ -70,7 +98,7 @@ public class OrderDetail {
         return paymentStatus;
     }
 
-    public void setPaymentStatus(Boolean paymentStatus) {
+    public void setPaymentStatus(final Boolean paymentStatus) {
         this.paymentStatus = paymentStatus;
     }
 
@@ -78,7 +106,7 @@ public class OrderDetail {
         return deliveryAddress;
     }
 
-    public void setDeliveryAddress(Address1 deliveryAddress) {
+    public void setDeliveryAddress(final Address1 deliveryAddress) {
         this.deliveryAddress = deliveryAddress;
     }
 
@@ -86,7 +114,7 @@ public class OrderDetail {
         return amount;
     }
 
-    public void setAmount(Float amount) {
+    public void setAmount(final Float amount) {
         this.amount = amount;
     }
 
@@ -94,7 +122,7 @@ public class OrderDetail {
         return associationName;
     }
 
-    public void setAssociationName(String associationName) {
+    public void setAssociationName(final String associationName) {
         this.associationName = associationName;
     }
 
@@ -102,7 +130,7 @@ public class OrderDetail {
         return productName;
     }
 
-    public void setProductName(String productName) {
+    public void setProductName(final String productName) {
         this.productName = productName;
     }
 
@@ -110,7 +138,7 @@ public class OrderDetail {
         return productSize;
     }
 
-    public void setProductSize(String productSize) {
+    public void setProductSize(final String productSize) {
         this.productSize = productSize;
     }
 
@@ -118,7 +146,7 @@ public class OrderDetail {
         return coverName;
     }
 
-    public void setCoverName(String coverName) {
+    public void setCoverName(final String coverName) {
         this.coverName = coverName;
     }
 
@@ -126,7 +154,7 @@ public class OrderDetail {
         return coverPrice;
     }
 
-    public void setCoverPrice(Float coverPrice) {
+    public void setCoverPrice(final Float coverPrice) {
         this.coverPrice = coverPrice;
     }
 
@@ -134,7 +162,7 @@ public class OrderDetail {
         return noOfSheets;
     }
 
-    public void setNoOfSheets(Integer noOfSheets) {
+    public void setNoOfSheets(final Integer noOfSheets) {
         this.noOfSheets = noOfSheets;
     }
 
@@ -142,7 +170,7 @@ public class OrderDetail {
         return orderStatus;
     }
 
-    public void setOrderStatus(String orderStatus) {
+    public void setOrderStatus(final String orderStatus) {
         this.orderStatus = orderStatus;
     }
 
@@ -150,7 +178,34 @@ public class OrderDetail {
         return orientation;
     }
 
-    public void setOrientation(String orientation) {
+    public void setOrientation(final String orientation) {
         this.orientation = orientation;
     }
+
+    @Override
+    public String toString() {
+        return "OrderDetail [amount=" + amount + ", associationName=" + associationName + ", coverName=" + coverName
+                + ", coverPrice=" + coverPrice + ", customer=" + customer + ", deliveryAddress=" + deliveryAddress
+                + ", deliveryDate=" + deliveryDate + ", description=" + description + ", id=" + id + ", noOfSheets="
+                + noOfSheets + ", orderStatus=" + orderStatus + ", orderTime=" + orderTime + ", orientation="
+                + orientation + ", paymentStatus=" + paymentStatus + ", productName=" + productName + ", productSize="
+                + productSize + ", sheets=" + sheets + "]";
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(final String description) {
+        this.description = description;
+    }
+
+    public List<SheetDetail> getSheets() {
+        return sheets;
+    }
+
+    public void setSheets(final List<SheetDetail> sheets) {
+        this.sheets = sheets;
+    }
+
 }
