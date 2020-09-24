@@ -20,13 +20,14 @@ import javax.validation.ConstraintViolationException;
 public class AssociationService {
 
     private final AssociationRepository associationRepository;
+
     @Autowired
     public AssociationService(final AssociationRepository associationRepository) {
         this.associationRepository = associationRepository;
     }
 
     public boolean addAssociation(final AssociationDetailForm associationDetail) {
-        try{
+        try {
             final Association association = new Association(associationDetail); // create new object
 
             /** validate and save */
@@ -41,10 +42,10 @@ public class AssociationService {
 
         return true;
     }
-    public Optional<List<Association>> getAllAssociation() {
-        final List<Association> associations = associationRepository.findAll().stream().collect(Collectors.toList());
 
-        return Optional.of(associations);
+    public List<Association> getAllAssociation() {
+        return associationRepository.findAll().stream().collect(Collectors.toList());
+
     }
 
     public Association getAssociation(final Long id) throws NoSuchElementException {
@@ -52,7 +53,7 @@ public class AssociationService {
 
         return association;
     }
-    
+
     public void deleteAssociation(final Long id) {
         associationRepository.deleteById(id);
     }
@@ -60,5 +61,5 @@ public class AssociationService {
     public void updateAssociation(final Association association) {
         associationRepository.save(association);
     }
-    
+
 }

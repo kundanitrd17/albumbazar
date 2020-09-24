@@ -1,10 +1,18 @@
 package com.albumbazaar.albumbazar.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.albumbazaar.albumbazar.services.AssociationService;
+import com.albumbazaar.albumbazar.services.ProductService;
+import com.albumbazaar.albumbazar.utilities.AllProducts;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,12 +23,47 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(value = "/api/product")
 public class ProductController {
 
-    @RequestMapping(value = "/company/{company}")
-    public ResponseEntity<Object> getAllProductsAssociated(@PathVariable("company") String company) {
-        System.out.println(company);
+    private AssociationService associationService;
+    private ProductService productService;
 
-        return ResponseEntity.ok(new A("10", company, "hi"));
+    @Autowired
+    public ProductController(@Qualifier("associationService") AssociationService associationService,
+            @Qualifier("productService") ProductService productService) {
+        this.productService = productService;
+        this.associationService = associationService;
     }
+
+    @GetMapping(value = "/company")
+    public ResponseEntity<Object> getCompanies() {
+        final List<HashMap<String, String>> associationNames = associationService.getAllAssociation().stream()
+                .map(association -> {
+                    HashMap<String, String> obj = new HashMap<>(5);
+                    obj.put("id", String.valueOf(association.getId()));
+                    obj.put("name", association.getName());
+                    return obj;
+                }).collect(Collectors.toList());
+
+        return ResponseEntity.ok(associationNames);
+    }
+
+    @GetMapping(value = "/company/{companyId}")
+    public ResponseEntity<Object> getAllProductsAssociated(@PathVariable("companyId") String companyId) {
+        System.out.println(companyId);
+
+        AllProducts products = productService.getAllProducts(companyId);
+        System.out.println(products);
+        System.out.println(companyId);
+
+        return ResponseEntity.ok(products);
+    }
+
+    // @RequestMapping(value = "/company/{company}")
+    // public ResponseEntity<Object>
+    // getAllProductsAssociated(@PathVariable("company") String company) {
+    // System.out.println(company);
+
+    // return ResponseEntity.ok(new A("10", company, "hi"));
+    // }
 
     @PostMapping(value = "/post")
     public ResponseEntity<Object> getData(@RequestBody A a) {
