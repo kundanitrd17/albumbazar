@@ -23,7 +23,7 @@ public class SecurityConfig {
         private UserDetailsService superuserDetailsService;
 
         @Autowired
-        protected SuperuserSecurityConfig(@Qualifier("superuserDetailsService") UserDetailsService userDetailsService) {
+        protected SuperuserSecurityConfig(@Qualifier("superuserService") UserDetailsService userDetailsService) {
             this.superuserDetailsService = userDetailsService;
         }
 
@@ -34,17 +34,14 @@ public class SecurityConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.antMatcher("/superuser/**").authorizeRequests()
-                    .antMatchers("/superuser/js/*.js").permitAll() // remove it in production
+            http.antMatcher("/superuser/**").authorizeRequests().antMatchers("/superuser/js/*.js").permitAll()
                     .antMatchers("/superuser/css/*.css").permitAll() // remove in production
-                    .anyRequest().hasRole("SUPERUSER").and().formLogin()
-                    .loginPage("/login-super").loginProcessingUrl("/superuser/superlogin")
-                    .failureUrl("/login-super?error=true").defaultSuccessUrl("/superuser", true).permitAll().and()
-                    .logout().logoutUrl("/superuser/logout-super") // If csrf is enabled then logout must be post
+                    .anyRequest().hasRole("SUPERUSER").and().formLogin().loginPage("/login-super")
+                    .loginProcessingUrl("/superuser/superlogin").failureUrl("/login-super?error=true")
+                    .defaultSuccessUrl("/superuser", true).permitAll().and().logout()
+                    .logoutUrl("/superuser/logout-super") // If csrf is enabled then logout must be post
                     .logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID", "XSRF-TOKEN");
-            // .and()
-            // .csrf()
-            // .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse());
+
         }
     }
 
@@ -66,8 +63,7 @@ public class SecurityConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http// .csrf().disable()
-                    .antMatcher("/user/**").authorizeRequests().anyRequest().hasRole("USER").and().formLogin()
+            http.antMatcher("/user/**").authorizeRequests().anyRequest().hasRole("USER").and().formLogin()
                     .loginPage("/login-user").loginProcessingUrl("/user/userlogin").failureUrl("/login-user?error=true")
                     .defaultSuccessUrl("/user", true).permitAll().and().logout().logoutUrl("/user/logout-user")
                     .logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID", "XSRF-TOKEN");

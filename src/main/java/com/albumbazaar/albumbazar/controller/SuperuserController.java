@@ -9,7 +9,7 @@ import com.albumbazaar.albumbazar.model.Branch;
 import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.BranchService;
 import com.albumbazaar.albumbazar.services.EmployeeService;
-import com.albumbazaar.albumbazar.services.SuperuserDetailsService;
+import com.albumbazaar.albumbazar.services.SuperuserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,20 +24,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/superuser")
 public class SuperuserController {
 
-    private final SuperuserDetailsService superuserDetailsService;
+    private final SuperuserService superuserDetailsService;
     private final BranchService branchService;
     private final EmployeeService employeeService;
     private final AssociationService associationService;
 
     @Autowired
-    public SuperuserController(@Qualifier("superuserDetailsService") SuperuserDetailsService superuserDetailsService,
+    public SuperuserController(@Qualifier("superuserService") SuperuserService superuserDetailsService,
             @Qualifier("branchService") BranchService branchService,
             @Qualifier("employeeService") EmployeeService employeeService,
             @Qualifier("associationService") AssociationService associationService) {

@@ -1,10 +1,10 @@
-package com.albumbazaar.albumbazar.services;
+package com.albumbazaar.albumbazar.services.impl;
 
 import com.albumbazaar.albumbazar.dao.SuperuserRepository;
 import com.albumbazaar.albumbazar.dao.principals.SuperuserPrincipal;
 import com.albumbazaar.albumbazar.form.api.ForgotPasswordFormAPI;
 import com.albumbazaar.albumbazar.model.Superuser;
-import com.albumbazaar.albumbazar.services.api.SuperuserService;
+import com.albumbazaar.albumbazar.services.SuperuserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -18,55 +18,47 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
 @Service
-@Qualifier("superuserDetailsService")
-public class SuperuserDetailsService implements UserDetailsService, SuperuserService{
-    
-    
+@Qualifier("superuserService")
+public class SuperuserServiceImpl implements UserDetailsService, SuperuserService {
+
     private final SuperuserRepository superuserRepo;
 
     @Autowired(required = true)
-    public SuperuserDetailsService(final SuperuserRepository superuserRepository){
+    public SuperuserServiceImpl(final SuperuserRepository superuserRepository) {
         this.superuserRepo = superuserRepository;
         System.out.println("Superuser details service");
     }
 
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        
+
         final Superuser superuser = superuserRepo.findByEmail(username);
-        if(superuser==null) {
+        if (superuser == null) {
             throw new UsernameNotFoundException("User 404");
         }
 
         return new SuperuserPrincipal(superuser);
     }
 
-
-
     @Override
     public ModelMap resetPassword(final ForgotPasswordFormAPI forgotPasswordForm) {
         System.out.println("Resetting password" + forgotPasswordForm);
         ModelMap modelMap = new ModelMap();
-        if(!forgotPasswordForm.isValid()) {
+        if (!forgotPasswordForm.isValid()) {
             modelMap.addAttribute("status", HttpStatus.NOT_ACCEPTABLE);
             modelMap.addAttribute("message", "failed");
             return modelMap;
         }
 
-        final var superuserPrincipal = (SuperuserPrincipal) SecurityContextHolder
-                                                                            .getContext()
-                                                                                .getAuthentication()
-                                                                                    .getPrincipal();
+        final var superuserPrincipal = (SuperuserPrincipal) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
         final var superuser = superuserPrincipal.getSuperuser();
-        
-        // superuser.setPassword(NoOpPasswordEncoder.getInstance().encode(superuser.getPassword()));
-        superuser
-            .setPassword(NoOpPasswordEncoder.getInstance()
-                .encode(forgotPasswordForm.getPassword1())
-            );
 
-        superuserRepo.save(superuser);   
-      
+        // superuser.setPassword(NoOpPasswordEncoder.getInstance().encode(superuser.getPassword()));
+        superuser.setPassword(NoOpPasswordEncoder.getInstance().encode(forgotPasswordForm.getPassword1()));
+
+        superuserRepo.save(superuser);
+
         modelMap.addAttribute("status", HttpStatus.OK);
         modelMap.addAttribute("message", "success");
         modelMap.addAttribute("data", superuser);

@@ -30,7 +30,7 @@ public class CustomerController {
     @PostMapping(value = "/register")
     @ResponseBody
     public String registerCustomer(@ModelAttribute BasicCustomerDetailForm customerDetail,
-                                   @ModelAttribute LocationForm addressDetail) {
+            @ModelAttribute LocationForm addressDetail) {
 
         System.out.println(customerDetail);
         System.out.println(addressDetail);
