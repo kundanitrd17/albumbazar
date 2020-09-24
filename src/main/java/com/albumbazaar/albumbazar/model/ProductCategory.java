@@ -5,17 +5,18 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
-@Table(
-        uniqueConstraints =
-                @UniqueConstraint(columnNames = {"product_name", "association_id"})
-)
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "product_name", "association_id" }))
+@JsonIgnoreProperties(value = { "association" })
 public class ProductCategory {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "product_name")
     private String productName;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "association_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Association association;
@@ -36,5 +37,9 @@ public class ProductCategory {
         this.association = association;
     }
 
+    @Override
+    public String toString() {
+        return "ProductCategory [id=" + id + ", productName=" + productName + "]";
+    }
 
 }

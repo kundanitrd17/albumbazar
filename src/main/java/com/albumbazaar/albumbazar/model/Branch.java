@@ -1,6 +1,5 @@
 package com.albumbazaar.albumbazar.model;
 
-import java.text.DateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -20,28 +19,21 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(
-        name = "branch",
-        uniqueConstraints = {
-                @UniqueConstraint(columnNames = "name"),
-                @UniqueConstraint(columnNames = "contact_no"),
-                @UniqueConstraint(columnNames = "address_id")
-        }
-)
+@Table(name = "branch", uniqueConstraints = { @UniqueConstraint(columnNames = "name"),
+        @UniqueConstraint(columnNames = "contact_no"), @UniqueConstraint(columnNames = "address_id") })
 public class Branch {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     @Column(name = "contact_no")
     private String contactNo;
     private Date date;
-    private boolean active=true;
+    private boolean active = true;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "address_id"
-    )
+    @JoinColumn(name = "address_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Address1 address;
 
@@ -50,16 +42,15 @@ public class Branch {
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Employee admin;
 
-
     public Branch(final BasicBranchInfoForm branchDetail) {
         this.name = branchDetail.getName();
-        this.contactNo = branchDetail.getPhone(); 
+        this.contactNo = branchDetail.getPhone();
         this.date = null;
         this.active = true;
     }
 
     public Branch() {
-    }    
+    }
 
     public Long getId() {
         return id;
@@ -103,8 +94,8 @@ public class Branch {
 
     @Override
     public String toString() {
-        return "Branch [active=" + active + ", contactNo=" + contactNo + ", date=" + date + ", id=" + id + ", location="
-                + address + ", name=" + name + "]";
+        return "Branch [active=" + active + ", contactNo=" + contactNo + ", date=" + date + ", id=" + id + ", name="
+                + name + "]";
     }
 
     public Address1 getAddress() {
@@ -122,6 +113,5 @@ public class Branch {
     public void setAdmin(Employee admin) {
         this.admin = admin;
     }
-
 
 }

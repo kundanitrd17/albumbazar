@@ -37,6 +37,7 @@ public class ProductController {
     public ResponseEntity<Object> getCompanies() {
         final List<HashMap<String, String>> associationNames = associationService.getAllAssociation().stream()
                 .map(association -> {
+                    // System.out.println(association);
                     HashMap<String, String> obj = new HashMap<>(5);
                     obj.put("id", String.valueOf(association.getId()));
                     obj.put("name", association.getName());
@@ -56,14 +57,6 @@ public class ProductController {
 
         return ResponseEntity.ok(products);
     }
-
-    // @RequestMapping(value = "/company/{company}")
-    // public ResponseEntity<Object>
-    // getAllProductsAssociated(@PathVariable("company") String company) {
-    // System.out.println(company);
-
-    // return ResponseEntity.ok(new A("10", company, "hi"));
-    // }
 
     @PostMapping(value = "/post")
     public ResponseEntity<Object> getData(@RequestBody A a) {

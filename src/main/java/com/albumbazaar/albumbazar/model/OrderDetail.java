@@ -31,12 +31,12 @@ public class OrderDetail {
     @Column(columnDefinition = "TEXT")
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Customer customer;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "delivery_location_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Address1 deliveryAddress;
@@ -182,16 +182,6 @@ public class OrderDetail {
         this.orientation = orientation;
     }
 
-    @Override
-    public String toString() {
-        return "OrderDetail [amount=" + amount + ", associationName=" + associationName + ", coverName=" + coverName
-                + ", coverPrice=" + coverPrice + ", customer=" + customer + ", deliveryAddress=" + deliveryAddress
-                + ", deliveryDate=" + deliveryDate + ", description=" + description + ", id=" + id + ", noOfSheets="
-                + noOfSheets + ", orderStatus=" + orderStatus + ", orderTime=" + orderTime + ", orientation="
-                + orientation + ", paymentStatus=" + paymentStatus + ", productName=" + productName + ", productSize="
-                + productSize + ", sheets=" + sheets + "]";
-    }
-
     public String getDescription() {
         return description;
     }
@@ -206,6 +196,15 @@ public class OrderDetail {
 
     public void setSheets(final List<SheetDetail> sheets) {
         this.sheets = sheets;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderDetail [amount=" + amount + ", associationName=" + associationName + ", coverName=" + coverName
+                + ", coverPrice=" + coverPrice + ", deliveryDate=" + deliveryDate + ", description=" + description
+                + ", id=" + id + ", noOfSheets=" + noOfSheets + ", orderStatus=" + orderStatus + ", orderTime="
+                + orderTime + ", orientation=" + orientation + ", paymentStatus=" + paymentStatus + ", productName="
+                + productName + ", productSize=" + productSize + "]";
     }
 
 }

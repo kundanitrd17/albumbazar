@@ -1,6 +1,7 @@
 package com.albumbazaar.albumbazar.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -11,15 +12,17 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
 import com.albumbazaar.albumbazar.form.association.AssociationDetailForm;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(
-    name = "association"
-)
+@Table(name = "association")
+@JsonIgnoreProperties(value = { "address" })
 public class Association {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     @Size(max = 15)
@@ -28,10 +31,8 @@ public class Association {
     private String contact2;
     @Email
     private String email;
-    @ManyToOne
-    @JoinColumn(
-        name = "address_id"
-    )
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "address_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Address1 address;
     private String password;
@@ -115,10 +116,8 @@ public class Association {
 
     @Override
     public String toString() {
-        return "Association [active=" + active + ", address=" + address + ", contact1=" + contact1 + ", contact2="
-                + contact2 + ", email=" + email + ", id=" + id + ", name=" + name + ", password=" + password + "]";
+        return "Association [active=" + active + ", contact1=" + contact1 + ", contact2=" + contact2 + ", email="
+                + email + ", id=" + id + ", name=" + name + ", password=" + password + "]";
     }
-
-    
 
 }

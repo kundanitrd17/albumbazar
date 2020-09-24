@@ -5,15 +5,14 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(
-        uniqueConstraints =
-                @UniqueConstraint(columnNames = {"paper_quality", "paper_quality", "association_id"})
-)
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "paper_quality", "paper_quality", "association_id" }))
+@JsonIgnoreProperties(value = { "association" })
 public class Paper {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "paper_quality")
     private String paperQuality;
@@ -21,10 +20,10 @@ public class Paper {
     private String paperSize;
     @Column(name = "paper_price")
     private Float paperPrice;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "association_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
-    private  Association association;
+    private Association association;
 
     public Long getId() {
         return id;
@@ -68,12 +67,7 @@ public class Paper {
 
     @Override
     public String toString() {
-        return "Paper{" +
-                "id=" + id +
-                ", paperQuality='" + paperQuality + '\'' +
-                ", paperSize='" + paperSize + '\'' +
-                ", paperPrice=" + paperPrice +
-                ", association=" + association +
-                '}';
+        return "Paper{" + "id=" + id + ", paperQuality='" + paperQuality + '\'' + ", paperSize='" + paperSize + '\''
+                + ", paperPrice=" + paperPrice + '}';
     }
 }

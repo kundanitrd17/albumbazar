@@ -5,14 +5,18 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
+@JsonIgnoreProperties(value = { "association" })
 public class Cover {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String coverName;
     private String coverSize;
     private Float coverPrice;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Association association;
 
@@ -58,12 +62,7 @@ public class Cover {
 
     @Override
     public String toString() {
-        return "Cover{" +
-                "id=" + id +
-                ", coverName='" + coverName + '\'' +
-                ", coverSize='" + coverSize + '\'' +
-                ", coverPrice=" + coverPrice +
-                ", association=" + association +
-                '}';
+        return "Cover{" + "id=" + id + ", coverName='" + coverName + '\'' + ", coverSize='" + coverSize + '\''
+                + ", coverPrice=" + coverPrice + '}';
     }
 }
