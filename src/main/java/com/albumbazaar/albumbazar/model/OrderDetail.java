@@ -6,12 +6,14 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 
 import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table(name = "order_detail")
+@JsonIgnoreProperties(value = { "customer", "deliveryAddress", "sheets" })
 public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

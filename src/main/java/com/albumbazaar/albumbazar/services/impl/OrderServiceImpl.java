@@ -29,6 +29,7 @@ public class OrderServiceImpl implements OrderService {
         this.sheetDetailRepository = sheetDetailRepository;
     }
 
+    @Override
     public boolean addOrder(final OrderDetailForm orderDetails) {
         // parse the form to get in proper input
 
@@ -57,12 +58,22 @@ public class OrderServiceImpl implements OrderService {
         return true;
     }
 
+    @Override
     public OrderDetail getOrder(final Long id) throws NoSuchElementException {
         return orderRepository.findById(id).get();
     }
 
+    @Override
     public List<OrderDetail> getAllOrder() {
         return orderRepository.findAll();
+    }
+
+    @Override
+    public List<OrderDetail> getOrderByPaymentStatus(final Boolean paymentStatus) {
+        if (paymentStatus == null) {
+            return new ArrayList<OrderDetail>();
+        }
+        return orderRepository.findByPaymentStatus(paymentStatus);
     }
 
 }

@@ -1,3 +1,4 @@
+
 package com.albumbazaar.albumbazar.model;
 
 import com.albumbazaar.albumbazar.form.customer.BasicCustomerDetailForm;
@@ -10,7 +11,8 @@ import java.util.List;
 
 @Entity
 public class Customer {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     @Email
@@ -80,13 +82,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", contactNo='" + contactNo + '\'' +
-                ", password='" + password + '\'' +
-                ", address=" + address +
-                '}';
+        return "Customer{" + "id=" + id + ", name='" + name + '\'' + ", email='" + email + '\'' + ", contactNo='"
+                + contactNo + '\'' + ", password='" + password + '\'' + ", address=" + address + '}';
     }
 }

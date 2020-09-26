@@ -7,10 +7,28 @@ import com.albumbazaar.albumbazar.model.OrderDetail;
 
 public interface OrderService {
 
+    /**
+     * @param OrderDetailForm which contains all the data regarding the order
+     * @return boolean value denoting whether the tast has been completed or not
+     */
     boolean addOrder(final OrderDetailForm orderDetails);
 
+    /**
+     * @param id of the order
+     * @return OrderDetail model form
+     */
     OrderDetail getOrder(final Long id);
 
+    /**
+     * 
+     * @return List of OrderDetail
+     */
     List<OrderDetail> getAllOrder();
+
+    /**
+     * 
+     * @return all order details based on payment status
+     */
+    List<OrderDetail> getOrderByPaymentStatus(Boolean paymentStatus);
 
 }
