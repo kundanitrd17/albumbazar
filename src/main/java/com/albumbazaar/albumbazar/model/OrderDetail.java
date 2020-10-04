@@ -47,20 +47,29 @@ public class OrderDetail {
     @JoinColumn(name = "order_id")
     private List<SheetDetail> sheets;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
+
+    private Long branchId;
+
     public OrderDetail() {
     }
 
     public OrderDetail(final OrderDetailForm orderDetails) {// throws Exception {
         this.associationName = orderDetails.getCompanyName();
-        System.out.println(1);
         this.coverName = orderDetails.getCoverQuality();
-        System.out.println(2);
         this.productName = orderDetails.getAlbumType();
-        System.out.println(1);
         this.productSize = orderDetails.getAlbumSize();
-        System.out.println(2);
         this.description = orderDetails.getDescription();
-        System.out.println(1);
+        if (orderDetails.getBranchId() != null) {
+            try {
+                this.branchId = Long.parseLong(orderDetails.getBranchId());
+            } catch (Exception e) {
+                System.out.println("branch Id is invalid");
+            }
+
+        }
         // this.coverPrice = Float.parseFloat(orderDetails.getCoverPrice());
     }
 
@@ -200,13 +209,29 @@ public class OrderDetail {
         this.sheets = sheets;
     }
 
+    public Long getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(Long branchId) {
+        this.branchId = branchId;
+    }
+
     @Override
     public String toString() {
-        return "OrderDetail [amount=" + amount + ", associationName=" + associationName + ", coverName=" + coverName
-                + ", coverPrice=" + coverPrice + ", deliveryDate=" + deliveryDate + ", description=" + description
-                + ", id=" + id + ", noOfSheets=" + noOfSheets + ", orderStatus=" + orderStatus + ", orderTime="
-                + orderTime + ", orientation=" + orientation + ", paymentStatus=" + paymentStatus + ", productName="
-                + productName + ", productSize=" + productSize + "]";
+        return "OrderDetail [amount=" + amount + ", associationName=" + associationName + ", branchId=" + branchId
+                + ", coverName=" + coverName + ", coverPrice=" + coverPrice + ", deliveryDate=" + deliveryDate
+                + ", description=" + description + ", id=" + id + ", noOfSheets=" + noOfSheets + ", orderStatus="
+                + orderStatus + ", orderTime=" + orderTime + ", orientation=" + orientation + ", paymentStatus="
+                + paymentStatus + ", productName=" + productName + ", productSize=" + productSize + "]";
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
     }
 
 }

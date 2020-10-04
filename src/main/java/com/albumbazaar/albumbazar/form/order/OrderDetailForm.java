@@ -16,6 +16,7 @@ public class OrderDetailForm {
     private String sheetRange[];
     private String sheetPrice[];
     private String description;
+    private String branchId;
 
     public String getCompanyName() {
         return companyName;
@@ -107,11 +108,19 @@ public class OrderDetailForm {
 
     @Override
     public String toString() {
-        return "OrderDetailForm [albumSize=" + albumSize + ", albumType=" + albumType + ", companyName=" + companyName
-                + ", coverPrice=" + coverPrice + ", coverQuality=" + coverQuality + ", coverType=" + coverType
-                + ", description=" + description + ", photoPerSheet=" + Arrays.toString(photoPerSheet) + ", sheetPrice="
-                + Arrays.toString(sheetPrice) + ", sheetRange=" + Arrays.toString(sheetRange) + ", sheetType="
-                + Arrays.toString(sheetType) + "]";
+        return "OrderDetailForm [albumSize=" + albumSize + ", albumType=" + albumType + ", branchId=" + branchId
+                + ", companyName=" + companyName + ", coverPrice=" + coverPrice + ", coverQuality=" + coverQuality
+                + ", coverType=" + coverType + ", description=" + description + ", photoPerSheet="
+                + Arrays.toString(photoPerSheet) + ", sheetPrice=" + Arrays.toString(sheetPrice) + ", sheetRange="
+                + Arrays.toString(sheetRange) + ", sheetType=" + Arrays.toString(sheetType) + "]";
+    }
+
+    public String getBranchId() {
+        return branchId;
+    }
+
+    public void setBranchId(String branchId) {
+        this.branchId = branchId;
     }
 
 }

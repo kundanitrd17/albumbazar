@@ -32,47 +32,35 @@
         <ul class="side-nav-dropdown">
           <li><a href="superuser/add-branch">Add Branch</a></li>
           <li><a href="superuser/list-branch">All Branch</a></li>
-          <li><a href="#">Branch Admin View</a></li>
-          <li><a href="#">Branch Transection</a></li>
-          <li><a href="#">Delete Branch</a></li>
-          <li><a href="#">Branch Order</a></li>
         </ul>
       </li>
-      <li><i class="fa fa-support fa-fw"></i><a href="#"> Branch Order</a>
+      <li><i class="fa fa-support fa-fw"></i><a href="#"> Order</a>
         <ul class="side-nav-dropdown">
+          <li><a href="#">Order Unpaid</a></li>
+          <li><a href="#">Order Pending</a></li>
           <li><a href="#">Order Under Process</a></li>
           <li><a href="#">Completed Order</a></li>
-          <li><a href="#">Today Accept Order</a></li>
-          <li><a href="#">Today Order</a></li>
-          <li><a href="#">Order Pending</a></li>
-          <li><a href="#">View Order List</a></li>
         </ul>
       </li>
       <li><i class="fa fa-envelope fa-fw"></i><a href="#"> Employees</a>
         <ul class="side-nav-dropdown">
           <li><a href="/superuser/add-employee">Add Employee</a></li>
-          <li><a href="#">Delete Employee</a></li>
-          <li><a href="#">Update Employee</a></li>
-          <li><a href="#">Employee Attendance</a></li>
-          <li><a href="#">ipsum dolor sit</a></li>
+          <li><a href="#">View Employees</a></li>
         </ul>
       </li>
       <li><i class="fa fa-users fa-fw"></i><a href="#"> Our Association</a>
         <ul class="side-nav-dropdown">
           <li><a href="superuser/add-association">Add Association</a></li>
-          <li><a href="#">Update Association</a></li>
-          <li><a href="#">Delete Association</a></li>
           <li><a href="#">Views Association List </a></li>
-          <li><a href="#">Association Order List</a></li>
+          <li><a href="#">Add Associated Products </a></li>
+          <li><a href="#">View Associated Products </a></li>
         </ul>
       </li>
       <li><i class="fa fa-bolt fa-fw"></i><a href="#"> Transaction</a>
         <ul class="side-nav-dropdown">
-          <li><a href="#">Lorem ipsum</a></li>
-          <li><a href="#">ipsum dolor</a></li>
-          <li><a href="#">dolor ipsum</a></li>
-          <li><a href="#">amet consectetur</a></li>
-          <li><a href="#">ipsum dolor sit</a></li>
+          <li><a href="#">All Income</a></li>
+          <li><a href="#">All Expense</a></li>
+          <li><a href="#">All Transaction</a></li>
         </ul>
       </li>
       <p>Example:</p>
