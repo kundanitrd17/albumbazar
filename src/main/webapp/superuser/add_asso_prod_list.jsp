@@ -155,7 +155,16 @@
 
     <div class="container col-md-8">
 
-
+      <div class="form-group">
+        <label for="Association">Association select</label>
+        <select class="form-control" id="Association">
+          <option value="1">Association 1</option>
+          <option value="2">Association 2</option>
+          <option value="3">Association 3</option>
+          <option value="4">Association 4</option>
+          <option value="5">Association 5</option>
+        </select>
+      </div>
       <div class="table-responsive">
         <table id="test-table" class="table table-condensed table-bordered">
           <thead>
@@ -168,21 +177,24 @@
               <th>Paper Type</th>
               <th>Paper Size</th>
               <th>Paper Price</th>
-              <th> <input id='add-row' class='btn btn-primary' type='button' value='Add' /></th>
+              <th> <input id='addPaper' class='btn btn-primary' type='button' value='Add' /></th>
             </tr>
           </thead>
           <form action="C:\Users\GFX-I\Desktop\springmvc_maven.txt">
-            <tbody id="test-body">
+            <tbody id="paperList">
+              <!-- Association Id -->
+              <input name="selectedAssociationId" type="text" class="selectedAssociationId" hidden>
               <tr id="row0">
                 <td>
-                  <input name='pt[]' value='' type='text' class='form-control' placeholder="Paper Type" />
+                  <input name='paperType' value='' type='text' class='form-control' placeholder="Paper Type" />
                 </td>
                 <td>
-                  <input name='ps[]' value='' type='text' class='form-control input-md' placeholder="Paper Size" />
+                  <input name='paperSize' value='' type='text' class='form-control input-md' placeholder="Paper Size" />
                 </td>
 
                 <td>
-                  <input name='pp[]' value='' type='number' class='form-control input-md' placeholder="Paper Price" />
+                  <input name='paperPrice' value='' type='number' class='form-control input-md'
+                    placeholder="Paper Price" />
                 </td>
 
                 <td>
@@ -193,7 +205,63 @@
             <tfoot>
               <tr>
                 <td colspan="4" align="center">
-                  <input class='btn btn-success' type='submit' value='Submit' />
+                  <button class='btn btn-success' id="paperListSubmit">Submit</button>
+                </td>
+              </tr>
+
+            </tfoot>
+          </form>
+        </table>
+
+      </div>
+
+
+    </div>
+
+    <div class="container col-md-8">
+
+
+      <div class="table-responsive">
+        <table id="test-table" class="table table-condensed table-bordered">
+          <thead>
+            <tr>
+              <th colspan="4" style="text-align: left;padding-left: 20px;">
+                Add Cover List
+              </th>
+            </tr>
+            <tr>
+              <th>Cover Type</th>
+              <th>Cover Size</th>
+              <th>Cover Price</th>
+              <th> <input id='addCover' class='btn btn-primary' type='button' value='Add' /></th>
+            </tr>
+          </thead>
+          <form action="C:\Users\GFX-I\Desktop\springmvc_maven.txt">
+            <!-- Association Id -->
+            <input name="selectedAssociationId" type="text" class="selectedAssociationId" hidden>
+            <tbody id="coverList">
+              <tr id="row0">
+                <td>
+                  <input name='coverType' value='' type='text' class='form-control' placeholder="Cover Type" />
+                </td>
+                <td>
+                  <input name='coverSize' value='' type='text' class='form-control input-md' placeholder="Cover Size" />
+                </td>
+
+                <td>
+                  <input name='coverPrice' value='' type='number' class='form-control input-md'
+                    placeholder="Cover Price" />
+                </td>
+
+                <td>
+                  <input class='delete-row btn btn-danger' type='button' value='X' />
+                </td>
+              </tr>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td colspan="4" align="center">
+                  <button class='btn btn-success' id="coverListSubmit" onclick="">Submit</button>
                 </td>
               </tr>
 
@@ -210,6 +278,10 @@
 
 
 
+
+
+
+
   </section>
   <script src='http://code.jquery.com/jquery-latest.js'></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
@@ -219,12 +291,35 @@
   <script src='./js/super-admin.js'></script>
 
   <script type="text/javascript">
-    // Add row
-    var row = 1;
-    $(document).on("click", "#add-row", function () {
-      var new_row = '<tr id="row' + row + '"><td><input name="pt[]' + row + '" type="text" placeholder="Paper Type" class="form-control" /></td><td><input name="ps[]' + row + '" type="text" class="form-control" placeholder="Paper Size" /></td><td><input name="pp[]' + row + '" type="number" class="form-control" placeholder="Paper Price" /></td><td><input class="delete-row btn btn-danger" type="button" value="X" /></td></tr>';
 
-      $('#test-body').append(new_row);
+    $('#Association').on('change', function () {
+      //var optionValue = $(this).val();
+      //var optionText = $('#dropdownList option[value="'+optionValue+'"]').text();
+      var optionText = $("#Association option:selected").text();
+      console.log("Selected Option Text: " + optionText);
+      $(".selectedAssociationId").val(optionText);
+    });
+
+
+    // Add paper row
+    var row = 1;
+    $(document).on("click", "#addPaper", function () {
+      var new_row = '<tr id="row' + row + '"><td><input name="paperType' + row + '" type="text" placeholder="Paper Type" class="form-control" /></td><td><input name="paperSize' + row + '" type="text" class="form-control" placeholder="Paper Size" /></td><td><input name="paperPrice' + row + '" type="number" class="form-control" placeholder="Paper Price" /></td><td><input class="delete-row btn btn-danger" type="button" value="X" /></td></tr>';
+
+      $('#paperList').append(new_row);
+      row++;
+      return false;
+    });
+
+  </script>
+
+  <script type="text/javascript">
+    // Add cover row
+    var row = 1;
+    $(document).on("click", "#addCover", function () {
+      var new_row = '<tr id="row' + row + '"><td><input name="coverType' + row + '" type="text" placeholder="Cover Type" class="form-control" /></td><td><input name="coverSize' + row + '" type="text" class="form-control" placeholder="Cover Size" /></td><td><input name="coverPrice' + row + '" type="number" class="form-control" placeholder="Cover Price" /></td><td><input class="delete-row btn btn-danger" type="button" value="X" /></td></tr>';
+
+      $('#coverList').append(new_row);
       row++;
       return false;
     });
@@ -240,6 +335,8 @@
     });
 
   </script>
+
+
 
 </body>
 

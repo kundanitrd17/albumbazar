@@ -82,7 +82,7 @@ public class SuperuserController {
 
     @GetMapping(value = "list-branch")
     public ModelAndView getAllBranch() {
-        ModelAndView modelAndView = new ModelAndView("branch-list");
+        ModelAndView modelAndView = new ModelAndView("branch_list");
         List<Branch> allBranch = branchService.getAllBranch().get();
         // System.out.println(allBranch);
         modelAndView.addObject("branches", allBranch);

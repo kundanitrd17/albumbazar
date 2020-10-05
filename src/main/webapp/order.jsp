@@ -83,7 +83,7 @@ h1{
   margin: 0px 0px 15px 0px;
   font-size: 1.4rem;
 }
-.fancy-card .caption .button{
+.fancy-card .caption .button,.fancy-card .caption .button1{
   display: inline-block;
   color: #333;
   text-decoration: none;
@@ -107,7 +107,7 @@ h1{
   box-shadow: 1px 1px 2px rgba(113, 113, 113, 0.35);
 }
 
-.fancy-card:hover .button{
+.fancy-card .button:hover,.fancy-card .button1:hover{
   background: rgba(0,0,0,0.8);
   color: #fff;
   border: 0px;
@@ -128,7 +128,28 @@ table tr th h6
 font-size: 13px; 
 }
 
- </style>
+#largeModal table tr:nth-child( odd )
+{
+ background: rgba(226,226,226,1);
+background: -moz-linear-gradient(left, rgba(226,226,226,1) 0%, rgba(209,209,209,1) 1%, rgba(133,128,133,1) 51%, rgba(254,254,254,1) 100%);
+background: -webkit-gradient(left top, right top, color-stop(0%, rgba(226,226,226,1)), color-stop(1%, rgba(209,209,209,1)), color-stop(51%, rgba(133,128,133,1)), color-stop(100%, rgba(254,254,254,1)));
+background: -webkit-linear-gradient(left, rgba(226,226,226,1) 0%, rgba(209,209,209,1) 1%, rgba(133,128,133,1) 51%, rgba(254,254,254,1) 100%);
+background: -o-linear-gradient(left, rgba(226,226,226,1) 0%, rgba(209,209,209,1) 1%, rgba(133,128,133,1) 51%, rgba(254,254,254,1) 100%);
+background: -ms-linear-gradient(left, rgba(226,226,226,1) 0%, rgba(209,209,209,1) 1%, rgba(133,128,133,1) 51%, rgba(254,254,254,1) 100%);
+background: linear-gradient(to right, rgba(226,226,226,1) 0%, rgba(209,209,209,1) 1%, rgba(133,128,133,1) 51%, rgba(254,254,254,1) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#fefefe', GradientType=1 );;
+color:white;
+text-align: center;
+ 
+}
+#largeModal table tr:nth-child( even )
+{
+background-color: #A09EA2  ;
+color:white;
+text-align: center;
+ 
+}
+</style>
 </head>
 
 <body>
@@ -147,7 +168,11 @@ font-size: 13px;
                 <input type="text" name="associationId" value="1" hidden>
                 <a type="button" id="" class="btn btn-primary button associationSelection" data-toggle="modal"
                   data-target="#myModal">
-                  Select Company
+                  Select
+                </a>
+                <a type="button" id="associationViewPrice" class="btn btn-primary button1 associationViewPrice"
+                  data-toggle="modal" data-target="#largeModal">
+                  View Price
                 </a>
               </div>
             </div>
@@ -169,7 +194,11 @@ font-size: 13px;
                 <input type="text" name="associationId" value="2" hidden>
                 <a type="button" id="" class="btn btn-primary button associationSelection" data-toggle="modal"
                   data-target="#myModal">
-                  Select Company
+                  Select
+                </a>
+                <a type="button" id="associationViewPrice" class="btn btn-primary button1 associationViewPrice"
+                  data-toggle="modal" data-target="#largeModal">
+                  View Price
                 </a>
               </div>
             </div>
@@ -191,7 +220,11 @@ font-size: 13px;
                 <input type="text" name="associationId" value="3" hidden>
                 <a type="button" id="associationSelection" class="btn btn-primary button associationSelection"
                   data-toggle="modal" data-target="#myModal">
-                  Select Company
+                  Select
+                </a>
+                <a type="button" id="associationViewPrice" class="btn btn-primary button1 associationViewPrice"
+                  data-toggle="modal" data-target="#largeModal">
+                  View Price
                 </a>
               </div>
             </div>
@@ -324,6 +357,66 @@ font-size: 13px;
 
   </div>
 
+  <!-- View Price List Of Association-->
+
+  <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel">Comapny Name</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th colspan="3">CoverPage Price List</th>
+              </tr>
+              <tr style="background-color: none;color:black;">
+                <th>Quality</th>
+                <th>Size</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>John</td>
+                <td>Doe</td>
+                <td>john@example.com</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-body table-responsive">
+          <table class="table table-bordered">
+            <thead>
+              <tr>
+                <th colspan="3">Paper Price List</th>
+              </tr>
+              <tr style="background-color: none;color:black;">
+                <th>Quality</th>
+                <th>Size</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>John</td>
+                <td>Doe</td>
+                <td>john@example.com</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+        </div>
+      </div>
+    </div>
+  </div>
   <script type="text/javascript">
 
     $(document).ready(function () {

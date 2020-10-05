@@ -63,6 +63,13 @@
           <li><a href="#">All Transaction</a></li>
         </ul>
       </li>
+      <li><i class="fa fa-user"></i><a href="#"> Customer</a>
+        <ul class="side-nav-dropdown">
+          <li><a href="#">All Customer</a></li>
+          <li><a href="#">Discounted Customer</a></li>
+          <li><a href="#">Blocked Customer</a></li>
+        </ul>
+      </li>
       <p>Example:</p>
       <li><i class="fa fa-envelope-open-o fa-fw"></i><a href="#"> Messages <span class="num dang">56</span></a></li>
       <li><i class="fa fa-wrench fa-fw"></i><a href="#"> Settings <span class="num prim">6</span></a>
