@@ -2,6 +2,9 @@
 package com.albumbazaar.albumbazar.model;
 
 import com.albumbazaar.albumbazar.form.customer.BasicCustomerDetailForm;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -10,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@JsonIgnoreProperties(value = { "address" })
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,8 +22,17 @@ public class Customer {
     @Email
     private String email;
     private String contactNo;
+
+    @Column(columnDefinition = "boolean default true")
+    private Boolean active;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
-    @OneToMany
+
+    @Column(columnDefinition = "float default 0.0")
+    private Float discount;
+
+    @OneToMany(fetch = FetchType.LAZY)
     private List<Address1> address = new ArrayList<>();
 
     public Customer() {
@@ -82,7 +95,24 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" + "id=" + id + ", name='" + name + '\'' + ", email='" + email + '\'' + ", contactNo='"
-                + contactNo + '\'' + ", password='" + password + '\'' + ", address=" + address + '}';
+        return "Customer [contactNo=" + contactNo + ", discount=" + discount + ", email=" + email + ", id=" + id
+                + ", name=" + name + ", active=" + active + ", password=" + password + "]";
     }
+
+    public Float getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Float discount) {
+        this.discount = discount;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
 }

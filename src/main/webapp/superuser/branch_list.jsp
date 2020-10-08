@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<%@ page import="java.util.List, com.albumbazaar.albumbazar.model.Branch" %>
+<html>
+
+<head>
+    <title>Album Bazaar</title>
+    <meta charset="utf-8">
+    <meta name="_csrf" content="${_csrf.token}" />
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" content="${_csrf.headerName}" />
+    <!-- ... -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+
+    <style type="text/css">
+
+    </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="panel panel-primary filterable table-responsive">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Users</h3>
+                    <div class="pull-right" style="position: relative;
+top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span>
+                            Filter</button></div>
+                </div>
+                <table class="table " style="font-size: 12px;">
+                    <thead>
+                        <tr class="filters">
+                            <th><input type="text" class="form-control" placeholder="Id" disabled></th>
+                            <th><input type="text" class="form-control" placeholder=" Name" disabled></th>
+                            <th><input type="text" class="form-control" placeholder="Code" disabled></th>
+                            <th><input type="text" class="form-control" placeholder=" Admin" disabled></th>
+                            <th><input type="text" class="form-control" placeholder="Contact" disabled></th>
+                            <th><input type="text" class="form-control" placeholder=" Address" disabled></th>
+                            <th><input type="text" class="form-control" placeholder="Inaugration Date" disabled></th>
+                            <th><input type="text" class="form-control" placeholder="Order" disabled></th>
+                            <th colspan="2" style="text-align: center;"><a class="btn btn-success"
+                                    href="add-branch.html">Add
+                                    Branch</a></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% List<Branch> branches = (List<Branch>) request.getAttribute("branches");
+                            int index = 0; 
+                            for(Branch branch : branches) { 
+                              
+                          %>
+                        <tr id="row<%= branch.getId() %>">
+                            <td id="branchId"><%= branch.getId() %></td>
+                            <td id="branchName"><%= branch.getName() %></td>
+                            <td id="branchCode">ASN-AB</td>
+                            <td id="adminId"><a href="" id="link_adminId" data-toggle="modal"
+                                    data-target="#adminDetails" onclick="adminLink(1)">adminId</a></td>
+                            <td id="contact">1234567890</td>
+                            <td id="address"><a href="" data-toggle="modal" data-target="#branchAddress"
+                                    id="link_address" onclick="addrLink(1)">Address Id</a></td>
+                            <td id="date">20/12/2004</td>
+                            <td> <a href="api/order?branchId=<%=branch.getId()%>">click</a> </td>
+                            <td class=""> <a href="#" class="btn btn-success s-icon " style="display: none;"
+                                    onclick="saveBranch(1)">Save</a>
+                                <button class="btn btn-warning e-icon">Edit</button></td>
+                            <td><a class="btn btn-danger d-icon">Delete</button></a></td>
+                        </tr>
+
+                        <%}%>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="modal" id="branchAddress">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Branch Address</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="container table-responsive col-12 col-md-12 col-xl-12 col-lg-12">
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr>
+                                    <th>LandMark: </th>
+                                    <td id="landmark"></td>
+                                </tr>
+                                <tr>
+                                    <th>Street 1: </th>
+                                    <td id="street1"></td>
+                                </tr>
+                                <tr>
+                                    <th>Street 2: </th>
+                                    <td id="street2"></td>
+                                </tr>
+                                <tr>
+                                    <th>Post Office: </th>
+                                    <td id="postoffice"></td>
+                                </tr>
+                                <tr>
+                                    <th>City: </th>
+                                    <td id="city"></td>
+                                </tr>
+                                <tr>
+                                    <th>Pin Code: </th>
+                                    <td id="pincode"></td>
+                                </tr>
+                                <tr>
+                                    <th>District: </th>
+                                    <td id="district"></td>
+                                </tr>
+
+                                <tr>
+                                    <th>State</th>
+                                    <td id="state"></td>
+                                </tr>
+                                <tr>
+                                    <td> <a href="#" class="btn btn-success save-icon" style="display: none;"
+                                            onclick="u_address('')">Save</a>
+                                        <button class="btn btn-warning u-icon">Update</button>
+                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <input type="hidden" name="" id="hidden_address_id" value="1">
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal" id="adminDetails">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Modal Heading</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr>
+                                <th>Name: </th>
+                                <td id="Name"></td>
+                            </tr>
+                            <tr>
+                                <th>Branch: </th>
+                                <td id="Branch"></td>
+                            </tr>
+                            <tr>
+                                <th>Contact: </th>
+                                <td id="contact"></td>
+                            </tr>
+                            <tr>
+                                <th>Email: </th>
+                                <td id="email"></td>
+                            </tr>
+                            <tr>
+                                <th>Salary: </th>
+                                <td id="salary"></td>
+                            </tr>
+                            <tr>
+                                <th>Joining Date: </th>
+                                <td id="jd"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    <script type="text/javascript" src="js/data-table.js"></script>
+
+    <script type="text/javascript">
+
+
+        // Delete Branch
+        $('.table tbody tr td').on('click', '.d-icon', function () {
+
+            event.preventDefault();
+            const content = $(this).parent().prevAll().toArray();
+            const data = {};
+            content.forEach(item => {
+                if (item.id === "branchId") {
+                    data["id"] = item.innerText;
+                }
+                if (item.id === "branchName") {
+                    data["name"] = item.innerText;
+                }
+                if (item.id === "branchContact") {
+                    data["phone"] = item.innerText;
+                }
+            })
+
+            console.log(JSON.stringify(data));
+            var token = $("meta[name='_csrf']").attr("content");
+            var header = $("meta[name='_csrf_header']").attr("content");
+
+            var xhr = new XMLHttpRequest();
+            var url = 'http://localhost:8080/api/product/post';
+            xhr.open("POST", url, true);
+            xhr.setRequestHeader('Content-type', 'application/json');
+            xhr.setRequestHeader(header, token);
+
+            xhr.onreadystatechange = function () { // Call a function when the state changes.
+                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                    // console.log(typeof (JSON.parse(this.response)));
+                    console.log(JSON.parse(this.response)["name"]);
+                }
+            }
+            xhr.send(JSON.stringify(data))
+
+        })
+
+
+
+        // Editable 
+        $('.table tbody tr td').on('click', '.e-icon', function () {
+
+            $(this).hide();
+            $(this).siblings().show();
+            $(this).parent().siblings("#brnachName").attr("contenteditable", "true").focus();
+            $(this).parent().siblings("#branchCode").attr("contenteditable", "true").focus();
+            $(this).parent().siblings("#adminId").attr("contenteditable", "true").focus();
+            $(this).parent().siblings("#contact").attr("contenteditable", "true").focus();
+
+        });
+
+
+
+
+        // Save Edits
+
+        $('.table tbody tr td').on('click', '.s-icon', function () {
+
+            $(this).hide();
+            $(this).siblings('.e-icon').show();
+            $(this).parent().siblings("").attr("contenteditable", "false");
+
+        });
+
+
+
+        // $('.table tbody tr td').on('click', '.d-icon', function () {
+
+        //     $(this).closest('tr').remove();
+
+        // });
+
+
+        $('.table tbody tr td').on('click', '.u-icon', function () {
+
+            $(this).hide();
+            $(this).siblings().show();
+            $(this).parent().parent().prevAll().children('td').attr("contenteditable", "true").focus().css({ "background-color": "#eeeeee", "width": "200px" });
+
+        });
+
+        //view Branch Address
+
+        function addrLink(id) {
+            $('#branchAddress #hidden_address_id').val(id);
+
+            console.log("Address");
+            // $.Post("url", { id: id }, function (data, status) {
+
+            //     var addr = JSON.parse(data);
+            //     $('#landmark').text("kundan").css("text-tranform", "capitalize");
+            //     $('#street1').text("upper Kulti").css("text-tranform", "capitalize");
+            //     $('#street2').text().css("text-tranform", "capitalize");
+            //     $('#postoffice').text().css("text-tranform", "capitalize");
+            //     $('#city').text().css("text-tranform", "capitalize");
+            //     $('#pincode').text().css("text-tranform", "capitalize");
+            //     $('#district').text().css("text-tranform", "capitalize");
+            //     $('#state').text().css("text-tranform", "capitalize");
+
+            // })
+        }
+
+        //update branch address
+        function u_address(id) {
+            var id = $('#branchAddress #hidden_address_id').val();
+
+            var lendmark = $('#branchAddress #landmark').text("kundan");
+            var street1 = $('#branchAddress #street1').text("upper Kulti");
+            var street2 = $('#branchAddress #street2').text();
+            var postoffice = $('#branchAddress #postoffice').text();
+            var city = $('#branchAddress #city').text();
+            var pincode = $('#branchAddress #pincode').text();
+            var district = $('#branchAddress #district').text();
+            var state = $('#branchAddress #state').text();
+
+            alert(id);
+        }
+        //show admin details
+        function adminLink(id) {
+            $('#adminDetails #hidden_admin_id').val(id);
+            console.log("Admin");
+            // var url = "";
+            // $.Post("url", { id: id }, function (data, status) {
+
+            //     $('#adminDetails #Name').text("kundan").css("text-tranform", "capitalize");
+            //     $('#adminDetails #Branch').text("upper Kulti").css("text-tranform", "capitalize");
+            //     $('#adminDetails #contact').text().css("text-tranform", "capitalize");
+            //     $('#adminDetails #email').text().css("text-tranform", "capitalize");
+            //     $('#adminDetails #salary').text().css("text-tranform", "capitalize");
+            //     $('#adminDetails #jd').text().css("text-tranform", "capitalize");
+
+            // });
+
+        }
+
+        //save Branch
+        function saveBranch(id) {
+            var branchId = id;
+            var branchName = $("table tbody tr td#branchName").text();
+            console.log(branchName);
+
+        }
+
+
+
+    </script>
+
+    </script>
+</body>
+
+</html>

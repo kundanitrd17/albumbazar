@@ -86,11 +86,11 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
         return true;
     }
 
-    public Optional<List<Employee>> getAllEmployee() {
+    public List<Employee> getAllEmployee() {
 
         final List<Employee> employees = employeeRepository.findAll().stream().collect(Collectors.toList());
 
-        return Optional.of(employees);
+        return employees;
     }
 
     public Employee getEmployee(Long id) throws NoSuchElementException {

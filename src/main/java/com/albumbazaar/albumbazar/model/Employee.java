@@ -2,6 +2,7 @@ package com.albumbazaar.albumbazar.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -17,26 +18,22 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.albumbazaar.albumbazar.form.employee.BasicEmployeeDetailForm;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(
-    name = "employee",
-    uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"email"}),
-        @UniqueConstraint(columnNames = {"pan"}),
-        @UniqueConstraint(columnNames = {"voter"}),
-        @UniqueConstraint(columnNames = {"aadhaar"}),
-        @UniqueConstraint(columnNames = {"personal_contact"})
-    }
-)
+@Table(name = "employee", uniqueConstraints = { @UniqueConstraint(columnNames = { "email" }),
+        @UniqueConstraint(columnNames = { "pan" }), @UniqueConstraint(columnNames = { "voter" }),
+        @UniqueConstraint(columnNames = { "aadhaar" }), @UniqueConstraint(columnNames = { "personal_contact" }) })
 public class Employee {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Size(max = 100) 
+    @Size(max = 100)
     private String name;
 
     @Size(max = 100)
@@ -57,6 +54,7 @@ public class Employee {
 
     private Date leaving_date;
 
+    @Column(columnDefinition = "boolean default true")
     private Boolean active = true;
 
     private String profile_pic;
@@ -82,21 +80,18 @@ public class Employee {
     @Size(max = 40)
     private String role;
 
-    @NotBlank @NotNull
+    @NotBlank
+    @NotNull
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "branch_id"
-    )
+    @JoinColumn(name = "branch_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Branch branch;
-    
+
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "address_id"
-    )
+    @JoinColumn(name = "address_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Address1 address;
 
@@ -107,23 +102,21 @@ public class Employee {
         this.name = employeeDetail.getName();
         this.email = employeeDetail.getEmail();
         this.active = true;
-        this.date_of_birth = null; //employeeDetail.getDateOfBirth();
+        this.date_of_birth = null; // employeeDetail.getDateOfBirth();
         this.personal_contact = employeeDetail.getPhone();
         this.salary = Float.parseFloat(employeeDetail.getSalary());
         this.role = employeeDetail.getDesignation();
         this.password = "password";
     }
 
-
     @Override
     public String toString() {
-        return "Employee [aadhaar=" + aadhaar + ", active=" + active + ", address=" + address + ", branch=" + branch
-                + ", date_of_birth=" + date_of_birth + ", email=" + email + ", experience=" + experience
-                + ", father_name=" + father_name + ", home_contact=" + home_contact + ", id=" + id + ", joining_date="
-                + joining_date + ", leaving_date=" + leaving_date + ", name=" + name + ", pan=" + pan + ", password="
-                + password + ", personal_contact=" + personal_contact + ", profile_pic=" + profile_pic
-                + ", qualification=" + qualification + ", religion=" + religion + ", role=" + role + ", salary="
-                + salary + ", voter=" + voter + "]";
+        return "Employee [aadhaar=" + aadhaar + ", active=" + active + ", date_of_birth=" + date_of_birth + ", email="
+                + email + ", experience=" + experience + ", father_name=" + father_name + ", home_contact="
+                + home_contact + ", id=" + id + ", joining_date=" + joining_date + ", leaving_date=" + leaving_date
+                + ", name=" + name + ", pan=" + pan + ", password=" + password + ", personal_contact="
+                + personal_contact + ", profile_pic=" + profile_pic + ", qualification=" + qualification + ", religion="
+                + religion + ", role=" + role + ", salary=" + salary + ", voter=" + voter + "]";
     }
 
     public Long getId() {
@@ -301,7 +294,5 @@ public class Employee {
     public void setAddress(Address1 address) {
         this.address = address;
     }
-
-   
 
 }

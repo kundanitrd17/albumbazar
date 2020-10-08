@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import com.albumbazaar.albumbazar.dao.BranchRepository;
 import com.albumbazaar.albumbazar.dao.EmployeeRepository;
 import com.albumbazaar.albumbazar.dao.SuperuserRepository;
+import com.albumbazaar.albumbazar.model.Employee;
 import com.albumbazaar.albumbazar.model.Superuser;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
+
         return "index";
     }
 
@@ -60,12 +62,6 @@ public class HomeController {
     @RequestMapping("/login-super")
     public String loginSuper() {
         return "superuser/login-super";
-    }
-
-    @RequestMapping("/errorpage")
-    @ResponseBody
-    public String errorPage() {
-        return "error happended";
     }
 
 }

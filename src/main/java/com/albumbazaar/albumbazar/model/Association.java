@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 
 import com.albumbazaar.albumbazar.form.association.AssociationDetailForm;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -35,6 +36,8 @@ public class Association {
     @JoinColumn(name = "address_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Address1 address;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private Boolean active;
 

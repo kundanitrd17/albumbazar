@@ -44,7 +44,7 @@ public class AssociationServiceImpl implements AssociationService {
     }
 
     public List<Association> getAllAssociation() {
-        return associationRepository.findAll().stream().collect(Collectors.toList());
+        return associationRepository.findAll();
 
     }
 

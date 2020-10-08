@@ -26,6 +26,12 @@ public interface OrderService {
     List<OrderDetail> getAllOrder();
 
     /**
+     * @param the order status that needs to be fetched
+     * @return a list of orders with the provided order detail
+     */
+    List<OrderDetail> getAllOrderWithStatus(String status);
+
+    /**
      * 
      * @return all order details based on payment status
      */

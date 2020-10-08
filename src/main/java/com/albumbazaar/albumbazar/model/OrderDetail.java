@@ -28,7 +28,8 @@ public class OrderDetail {
     private String coverName;
     private Float coverPrice;
     private Integer noOfSheets;
-    private String orderStatus;
+    @Column(columnDefinition = "varchar(50) default 'pending'")
+    private String orderStatus = "pending";
     private String orientation;
     @Column(columnDefinition = "TEXT")
     private String description;

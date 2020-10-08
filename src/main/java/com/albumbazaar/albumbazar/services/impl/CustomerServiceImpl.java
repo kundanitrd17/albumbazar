@@ -1,5 +1,8 @@
 package com.albumbazaar.albumbazar.services.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.albumbazaar.albumbazar.dao.CustomerRepository;
 import com.albumbazaar.albumbazar.form.LocationForm;
 import com.albumbazaar.albumbazar.form.customer.BasicCustomerDetailForm;
@@ -37,6 +40,23 @@ public class CustomerServiceImpl implements CustomerService {
         customerRepository.save(customer);
 
         return true;
+    }
+
+    public List<Customer> getAllCustomer() {
+        return customerRepository.findAll();
+    }
+
+    @Override
+    public List<Customer> getDiscountedCustomer() {
+
+        return customerRepository.findByDiscountGreaterThan(Float.parseFloat("0"));
+    }
+
+    @Override
+    public List<Customer> getBlockeList() {
+
+        // Find all deactivated customers
+        return customerRepository.findByActive(false);
     }
 
 }

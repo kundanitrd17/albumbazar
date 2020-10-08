@@ -2,6 +2,9 @@ package com.albumbazaar.albumbazar.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.constraints.Null;
+
 import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.services.OrderService;
@@ -45,23 +48,35 @@ public class OrderController {
     }
 
     @GetMapping(value = "/order-list")
-    public ModelAndView orderListView() {
+    public ModelAndView orderListView(@RequestParam(value = "payment", defaultValue = "") String paymentStatus,
+            @RequestParam(value = "status", defaultValue = "completed") String orderStatus) {
+
+        System.out.println(paymentStatus.isBlank());
+
         final ModelAndView modelAndView = new ModelAndView("all_order");
 
-        modelAndView.addObject("data", orderService.getAllOrder());
+        // If payment Option is specified than only send payment info related order
+        // detail
+        if (!paymentStatus.isBlank()) {
+            try {
+                modelAndView.addObject("data",
+                        orderService.getOrderByPaymentStatus(Boolean.parseBoolean(paymentStatus)));
+            } catch (Exception e) {
+                modelAndView.addObject("data", null);
+            }
+
+            return modelAndView;
+        }
+
+        // If payment status is not specified then send order details based on order
+        // status
+        try {
+            modelAndView.addObject("data", orderService.getAllOrderWithStatus(orderStatus));
+        } catch (Exception e) {
+            modelAndView.addObject("data", null);
+        }
 
         return modelAndView;
-    }
-
-    @GetMapping(value = "/order-list/payment")
-    @ResponseBody
-    public List<OrderDetail> unpaidOrderList(
-            @RequestParam(value = "status", defaultValue = "true") String paymentStatus) {
-
-        Boolean status = Boolean.parseBoolean(paymentStatus);
-        System.out.println(status);
-
-        return orderService.getOrderByPaymentStatus(status);
     }
 
 }

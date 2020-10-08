@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<%@ page import="java.util.*, com.albumbazaar.albumbazar.model.Employee" %>
 <html>
 
 <head>
@@ -24,6 +25,7 @@
 </head>
 
 <body>
+
   <div class="container">
     <div class="row">
       <div class="panel panel-primary filterable table-responsive">
@@ -51,6 +53,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
             </tr>
           </thead>
           <tbody>
+
             <tr>
               <td>101</td>
               <td>Asansol Branch</td>

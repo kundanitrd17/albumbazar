@@ -90,21 +90,6 @@ public class SuperuserController {
         return modelAndView;
     }
 
-    @GetMapping(value = "add-employee")
-    public String viewAddEmployee() {
-        return "add-emp";
-    }
-
-    @PostMapping(value = "add-employee")
-    @ResponseBody
-    public String addEmployee(@ModelAttribute BasicEmployeeDetailForm employeeDetail,
-            @ModelAttribute LocationForm addressDetail) {
-
-        employeeService.addEmployee(employeeDetail, addressDetail);
-
-        return "Added Employee";
-    }
-
     @GetMapping(value = "add-association")
     public String viewAddAssociation() {
 

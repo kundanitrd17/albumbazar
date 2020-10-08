@@ -1,7 +1,6 @@
 package com.albumbazaar.albumbazar.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.albumbazaar.albumbazar.form.LocationForm;
 import com.albumbazaar.albumbazar.form.employee.BasicEmployeeDetailForm;
@@ -13,7 +12,7 @@ public interface EmployeeService {
 
     boolean deleteEmployee(Long id);
 
-    Optional<List<Employee>> getAllEmployee();
+    List<Employee> getAllEmployee();
 
     Employee getEmployee(Long id);
 

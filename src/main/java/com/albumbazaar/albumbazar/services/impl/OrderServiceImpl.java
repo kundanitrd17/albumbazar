@@ -1,8 +1,12 @@
 package com.albumbazaar.albumbazar.services.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
 import com.albumbazaar.albumbazar.dao.OrderRepository;
 import com.albumbazaar.albumbazar.dao.SheetDetailRepository;
@@ -74,6 +78,22 @@ public class OrderServiceImpl implements OrderService {
             return new ArrayList<OrderDetail>();
         }
         return orderRepository.findByPaymentStatus(paymentStatus);
+    }
+
+    @Override
+    public List<OrderDetail> getAllOrderWithStatus(final String status) {
+
+        try {
+            if (status.equalsIgnoreCase("process")) {
+                Collection<String> orderStatus = Arrays.asList("pending", "completed").stream()
+                        .collect(Collectors.toList());
+                return orderRepository.findByOrderStatusNotIn(orderStatus);
+            }
+            return orderRepository.findByOrderStatus(status);
+        } catch (Exception e) {
+            System.out.println("order service" + e);
+        }
+        return null;
     }
 
 }
