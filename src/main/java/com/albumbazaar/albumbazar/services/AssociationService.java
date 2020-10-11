@@ -17,4 +17,6 @@ public interface AssociationService {
 
     void updateAssociation(final Association association);
 
+    List<Association> getAssociationWithStatus(boolean status);
+
 }

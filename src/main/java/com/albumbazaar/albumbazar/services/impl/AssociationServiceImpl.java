@@ -26,6 +26,7 @@ public class AssociationServiceImpl implements AssociationService {
         this.associationRepository = associationRepository;
     }
 
+    @Override
     public boolean addAssociation(final AssociationDetailForm associationDetail) {
         try {
             final Association association = new Association(associationDetail); // create new object
@@ -43,21 +44,31 @@ public class AssociationServiceImpl implements AssociationService {
         return true;
     }
 
+    @Override
+    public List<Association> getAssociationWithStatus(final boolean status) {
+
+        return associationRepository.findByActive(status);
+    }
+
+    @Override
     public List<Association> getAllAssociation() {
         return associationRepository.findAll();
 
     }
 
+    @Override
     public Association getAssociation(final Long id) throws NoSuchElementException {
         final Association association = associationRepository.findById(id).get();
 
         return association;
     }
 
+    @Override
     public void deleteAssociation(final Long id) {
         associationRepository.deleteById(id);
     }
 
+    @Override
     public void updateAssociation(final Association association) {
         associationRepository.save(association);
     }

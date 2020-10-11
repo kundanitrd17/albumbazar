@@ -5,6 +5,7 @@ import java.util.List;
 import com.albumbazaar.albumbazar.model.Expense;
 import com.albumbazaar.albumbazar.model.Income;
 import com.albumbazaar.albumbazar.services.TransactionService;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -41,40 +42,41 @@ public class TransactionController {
     @GetMapping("/expense")
     public ResponseEntity<Object> getByExpense(@RequestParam(value = "date", defaultValue = "") String date) {
 
-        List<Expense> expenses = null;
+        final AllTransactions transactions = new AllTransactions();
         try {
             if (date.isBlank()) {
-                expenses = transactionService.getAllExpense();
+                transactions.setExpenses(transactionService.getAllExpense());
             } else {
-                expenses = transactionService.getExpenseAfterDate(date);
+                transactions.setExpenses(transactionService.getExpenseAfterDate(date));
             }
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        return ResponseEntity.ok(expenses);
+        return ResponseEntity.ok(transactions);
     }
 
     @GetMapping("/income")
     public ResponseEntity<Object> getIncomeByDate(@RequestParam(value = "date", defaultValue = "") String date) {
 
-        List<Income> incomes = null;
+        final AllTransactions transactions = new AllTransactions();
         try {
             if (date.isBlank()) {
-                incomes = transactionService.getAllIncome();
+                transactions.setIncomes(transactionService.getAllIncome());
             } else {
-                incomes = transactionService.getIncomeAfterDate(date);
+                transactions.setIncomes(transactionService.getIncomeAfterDate(date));
             }
 
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
 
-        return ResponseEntity.ok(incomes);
+        return ResponseEntity.ok(transactions);
     }
 }
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 class AllTransactions {
     private List<Income> incomes;
     private List<Expense> expenses;

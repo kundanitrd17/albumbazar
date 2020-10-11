@@ -1,9 +1,11 @@
 package com.albumbazaar.albumbazar.controller;
 
+import java.util.AbstractMap;
 import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.albumbazaar.albumbazar.model.Association;
 import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.ProductService;
 import com.albumbazaar.albumbazar.utilities.AllProducts;
@@ -35,16 +37,15 @@ public class ProductControllerAPI {
 
     @GetMapping(value = "/company")
     public ResponseEntity<Object> getCompanies() {
-        final List<HashMap<String, String>> associationNames = associationService.getAllAssociation().stream()
+        final List<Association> associations = associationService.getAssociationWithStatus(true).stream()
                 .map(association -> {
-                    // System.out.println(association);
-                    HashMap<String, String> obj = new HashMap<>(5);
-                    obj.put("id", String.valueOf(association.getId()));
-                    obj.put("name", association.getName());
-                    return obj;
+                    Association eachAssociation = new Association();
+                    eachAssociation.setId(association.getId());
+                    eachAssociation.setName(association.getName());
+                    return eachAssociation;
                 }).collect(Collectors.toList());
 
-        return ResponseEntity.ok(associationNames);
+        return ResponseEntity.ok(new AbstractMap.SimpleImmutableEntry<>("data", associations));
     }
 
     @GetMapping(value = "/company/{companyId}")

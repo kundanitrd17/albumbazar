@@ -1,6 +1,5 @@
 package com.albumbazaar.albumbazar.services.impl;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import com.albumbazaar.albumbazar.dao.ExpenseRepository;
@@ -10,9 +9,6 @@ import com.albumbazaar.albumbazar.model.Income;
 import com.albumbazaar.albumbazar.services.TransactionService;
 
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service

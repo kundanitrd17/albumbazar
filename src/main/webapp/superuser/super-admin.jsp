@@ -53,14 +53,14 @@
           <li><a href="superuser/add-association">Add Association</a></li>
           <li><a href="association">Views Association List </a></li>
           <li><a href="product/add">Add Associated Products </a></li>
-          <li><a href="#">View Associated Products </a></li>
+          <li><a href="api/product/company">View Associated Products </a></li>
         </ul>
       </li>
       <li><i class="fa fa-bolt fa-fw"></i><a href="#"> Transaction</a>
         <ul class="side-nav-dropdown">
-          <li><a href="#">All Income</a></li>
-          <li><a href="#">All Expense</a></li>
-          <li><a href="#">All Transaction</a></li>
+          <li><a href="transaction/income">All Income</a></li>
+          <li><a href="transaction/expense">All Expense</a></li>
+          <li><a href="transaction">All Transaction</a></li>
         </ul>
       </li>
       <li><i class="fa fa-user"></i><a href="#"> Customer</a>
