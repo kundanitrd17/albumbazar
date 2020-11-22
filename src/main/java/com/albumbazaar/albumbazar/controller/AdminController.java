@@ -18,4 +18,9 @@ public class AdminController {
         return "admin_add_emp";
     }
 
+    @GetMapping("/page/xyz/opy")
+    public String pageView() {
+        return "abc";
+    }
+
 }

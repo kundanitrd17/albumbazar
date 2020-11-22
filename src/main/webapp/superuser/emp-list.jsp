@@ -22,9 +22,20 @@
 
   </style>
 
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+    integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet">
+
+  <link rel="stylesheet" href="/superuser/css/super-admin.css">
+
 </head>
 
 <body>
+
+  <%@include file="sidebar.jsp" %>
+
+
 
   <div class="container">
     <div class="row">
@@ -79,7 +90,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
     </div>
   </div>
 
-  <script type="text/javascript" src="js/data-table.js"></script>
+  <script type="text/javascript" src="superuser/js/data-table.js"></script>
 
   <script type="text/javascript">
 
@@ -138,6 +149,13 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
   </script>
 
 
+
+  <script src='http://code.jquery.com/jquery-latest.js'></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
+  <script src='./superuser/js/super-admin.js'></script>
 </body>
 
 </html>

@@ -64,7 +64,7 @@ public class SuperuserController {
 
     @RequestMapping(value = "add-branch", method = RequestMethod.GET)
     public String viewaddBranch() {
-        return "add-branch";
+        return "superuser/add-branch";
     }
 
     @PostMapping(value = "add-branch")
@@ -82,7 +82,7 @@ public class SuperuserController {
 
     @GetMapping(value = "list-branch")
     public ModelAndView getAllBranch() {
-        ModelAndView modelAndView = new ModelAndView("branch_list");
+        ModelAndView modelAndView = new ModelAndView("superuser/branch_list");
         List<Branch> allBranch = branchService.getAllBranch().get();
         // System.out.println(allBranch);
         modelAndView.addObject("branches", allBranch);
@@ -93,7 +93,7 @@ public class SuperuserController {
     @GetMapping(value = "add-association")
     public String viewAddAssociation() {
 
-        return "add-association";
+        return "superuser/add-association";
     }
 
     @PostMapping(value = "add-association")
