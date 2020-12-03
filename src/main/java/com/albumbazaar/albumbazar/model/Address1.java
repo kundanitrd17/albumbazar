@@ -9,17 +9,18 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.albumbazaar.albumbazar.form.LocationForm;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(
-    name = "address1"
-)
+@Table(name = "address1")
+@JsonIgnoreProperties(ignoreUnknown = true, value = { "address2" })
 public class Address1 {
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String landmark;
     private String street1;
@@ -30,15 +31,14 @@ public class Address1 {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Address2 address2;
 
-    public Address1() {}
+    public Address1() {
+    }
 
     public Address1(final LocationForm locationDetail) {
         this.landmark = locationDetail.getLandmark();
         this.street1 = locationDetail.getStreet();
         this.street2 = null;
     }
-
-    
 
     public Long getId() {
         return id;
@@ -85,8 +85,5 @@ public class Address1 {
         return "Address1 [address2=" + address2 + ", id=" + id + ", landmark=" + landmark + ", street1=" + street1
                 + ", street2=" + street2 + "]";
     }
-
-    
-    
 
 }

@@ -1,13 +1,13 @@
 package com.albumbazaar.albumbazar.dao.principals;
 
+import java.util.Collection;
+import java.util.Collections;
+
 import com.albumbazaar.albumbazar.model.Employee;
-import com.albumbazaar.albumbazar.model.Superuser;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import java.util.Collection;
-import java.util.Collections;
 
 public class EmployeePrincipal implements UserDetails {
 

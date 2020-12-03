@@ -18,6 +18,7 @@ public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private Date orderTime;
     private Date deliveryDate;
     private Boolean paymentStatus;

@@ -15,7 +15,7 @@ public class AlbumbazarApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(AlbumbazarApplication.class, args);
-		System.out.println("Application started");
+		System.out.println("Application started 💪💯✔");
 	}
 
 	@Bean

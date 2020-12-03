@@ -245,7 +245,7 @@ text-align: center;
                     </table>
                 </div>
                 <div class="modal-body table-responsive">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered" id="paperDetails">
                         <thead>
                             <tr>
                                 <th colspan="4">Paper Price List</th>
@@ -293,6 +293,8 @@ text-align: center;
 
         // Select a particular company
         $(".associationViewPrice").click(function () {
+            $("#paperDetails").empty()
+            $("#coverDetails").empty()
             // $('#largeModal').modal('show');
 
             var associationId = $(this).siblings("input").val();
@@ -314,6 +316,7 @@ text-align: center;
 
                     console.log(allCovers, allPapers, allProductCategories);
 
+                    // fill-in cover table 
                     var coverTable = document.getElementById("coverDetails");
                     allCovers.forEach(element => {
                         var row = document.createElement('tr');
@@ -344,43 +347,44 @@ text-align: center;
                         coverTable.appendChild(row);
 
                         // coverTable.append('<tr><td>' + element.coverName + '</td><td>' + element.coverSize + '</td><td>' + element.coverPrice + '</td> </tr>');
+
+
                     });
 
+                    // fill-in Paper Table
+                    var paperTable = document.getElementById("paperDetails");
+
+                    allPapers.forEach(element => {
+
+                        var row = document.createElement('tr');
+                        var paperQuality = document.createElement('td');
+                        paperQuality.innerHTML = element.paperQuality;
+
+                        var paperSize = document.createElement('td');
+                        paperSize.innerHTML = element.paperSize;
+
+                        var paperPrice = document.createElement('td');
+                        paperPrice.innerHTML = element.paperPrice;
+
+                        // <td><i style="color: rgb(236, 34, 34); font-size: 20px; cursor: pointer;" class="fa fa-trash"></i></td>
+                        var deletebutton = document.createElement('td');
+                        var deleteBtn = document.createElement('i');
+                        deleteBtn.style.color = 'rgb(236, 34, 34)';
+                        deleteBtn.style.fontSize = '20px';
+                        deleteBtn.style.cursor = 'pointer';
+                        deleteBtn.className = 'fa fa-trash';
+                        deletebutton.appendChild(deleteBtn);
 
 
+                        row.appendChild(paperQuality);
+                        row.appendChild(paperSize);
+                        row.appendChild(paperPrice);
+                        row.appendChild(deletebutton);
+
+                        paperTable.appendChild(row);
 
 
-                    // $("#myModal form #albumSize").empty()
-                    // allSizes.forEach(element => {
-                    //     var node = document.createElement('option');
-                    //     node.value = element;
-                    //     node.innerHTML = element;
-                    //     document.querySelector("#myModal form #albumSize").appendChild(node);
-                    // });
-
-                    // $("#myModal form #coverPageQuality").empty()
-                    // $("#myModal form #coverPrice").empty()
-                    // allCovers.forEach(element => {
-                    //     var node = document.createElement('option');
-                    //     var priceNode = document.createElement('option');
-
-                    //     node.value = element["coverName"];
-                    //     node.innerHTML = element["coverName"];
-
-                    //     priceNode.value = element["coverPrice"]
-                    //     priceNode.innerHTML = element["coverPrice"]
-
-                    //     document.querySelector("#myModal form #coverPageQuality").appendChild(node);
-                    //     document.querySelector("#myModal form #coverPrice").appendChild(priceNode);
-                    // });
-
-                    // $("#myModal form #sheetType").empty()
-                    // allPapers.forEach(element => {
-                    //     var node = document.createElement('option');
-                    //     node.value = element["paperQuality"];
-                    //     node.innerHTML = element["paperQuality"];
-                    //     document.querySelector("#myModal form #sheetType").appendChild(node);
-                    // })
+                    });
 
                 }
             });

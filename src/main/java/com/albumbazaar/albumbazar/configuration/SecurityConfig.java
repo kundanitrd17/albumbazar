@@ -1,5 +1,7 @@
 package com.albumbazaar.albumbazar.configuration;
 
+import com.albumbazaar.albumbazar.model.AvailableRoles;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -36,10 +38,10 @@ public class SecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http.antMatcher("/superuser/**").authorizeRequests().antMatchers("/superuser/js/*.js").permitAll()
                     .antMatchers("/superuser/css/*.css").permitAll() // remove in production
-                    .anyRequest().hasRole("SUPERUSER").and().formLogin().loginPage("/login-super")
-                    .loginProcessingUrl("/superuser/superlogin").failureUrl("/login-super?error=true")
-                    .defaultSuccessUrl("/superuser", true).permitAll().and().logout()
-                    .logoutUrl("/superuser/logout-super") // If csrf is enabled then logout must be post
+                    .anyRequest().hasAuthority(AvailableRoles.Code.SUPERUSER).and().formLogin()
+                    .loginPage("/login-super").loginProcessingUrl("/superuser/superlogin")
+                    .failureUrl("/login-super?error=true").defaultSuccessUrl("/superuser", true).permitAll().and()
+                    .logout().logoutUrl("/superuser/logout-super") // If csrf is enabled then logout must be post
                     .logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID", "XSRF-TOKEN");
 
         }
@@ -63,10 +65,11 @@ public class SecurityConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.antMatcher("/user/**").authorizeRequests().anyRequest().hasRole("USER").and().formLogin()
-                    .loginPage("/login-user").loginProcessingUrl("/user/userlogin").failureUrl("/login-user?error=true")
-                    .defaultSuccessUrl("/user", true).permitAll().and().logout().logoutUrl("/user/logout-user")
-                    .logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID", "XSRF-TOKEN");
+            http.antMatcher("/user/**").authorizeRequests().anyRequest().hasAuthority(AvailableRoles.Code.USER).and()
+                    .formLogin().loginPage("/login-user").loginProcessingUrl("/user/userlogin")
+                    .failureUrl("/login-user?error=true").defaultSuccessUrl("/user", true).permitAll().and().logout()
+                    .logoutUrl("/user/logout-user").logoutSuccessUrl("/").invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID", "XSRF-TOKEN");
 
         }
 
@@ -78,6 +81,10 @@ public class SecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests().antMatchers("/foo").authenticated().anyRequest().permitAll();
+
+            // .antMatchers("/orders/pool")
+            // .hasAnyAuthority(AvailableRoles.Code.CUSTOMER_CARE,
+            // AvailableRoles.Code.SUPERUSER)
 
         }
     }

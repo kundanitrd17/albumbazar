@@ -434,6 +434,10 @@ text-align: center;
 
     // Select a particular company
     $(".associationSelection").click(function () {
+      // Clean the table for re-use
+      $("#myModal form #albumType").empty()
+      $("#myModal form #albumSize").empty()
+
 
       var companyId = $(this).siblings("input").val();
       var companyName = $(this).siblings(".title").text();
@@ -451,7 +455,7 @@ text-align: center;
           allCovers = result["covers"];
           allPapers = result["papers"];
 
-          $("#myModal form #albumType").empty()
+
           allProductCategories.forEach(element => {
             var node = document.createElement('option');
             node.value = element;
@@ -459,7 +463,7 @@ text-align: center;
             document.querySelector("#myModal form #albumType").appendChild(node);
           });
 
-          $("#myModal form #albumSize").empty()
+
           allSizes.forEach(element => {
             var node = document.createElement('option');
             node.value = element;

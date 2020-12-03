@@ -1,13 +1,15 @@
 package com.albumbazaar.albumbazar.controller;
 
+import java.util.HashMap;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.constraints.Null;
 
 import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
 import com.albumbazaar.albumbazar.model.OrderDetail;
+import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 import com.albumbazaar.albumbazar.services.OrderService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class OrderController {
 
     private OrderService orderService;
+    private Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     @Autowired
     public OrderController(@Qualifier("orderService") OrderService orderService) {
@@ -38,11 +41,16 @@ public class OrderController {
 
     @PostMapping(value = "/order")
     @ResponseBody
-    public String addOrderView(@ModelAttribute OrderDetailForm orderDetail) {
-
+    public String addNewOrder(@ModelAttribute OrderDetailForm orderDetail) {
+        logger.info("A new Order was Made");
         System.out.println(orderDetail);
 
-        orderService.addOrder(orderDetail);
+        try {
+            orderService.addOrder(orderDetail);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return "Not Done";
+        }
 
         return "Done";
     }
@@ -77,6 +85,19 @@ public class OrderController {
         }
 
         return modelAndView;
+    }
+
+    @GetMapping(value = "orders/pool")
+    @ResponseBody
+    protected ResponseEntity<?> orderPoolArea() {
+
+        List<OrderDetail> pendingOrders = orderService.getOrdersWithStatus(OrderDetailStatus.PENDING);
+        HashMap<String, List<OrderDetail>> orders = new HashMap<>();
+        orders.put("order", pendingOrders);
+
+        System.out.println(pendingOrders.size());
+
+        return ResponseEntity.ok().body(orders);
     }
 
 }

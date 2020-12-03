@@ -4,8 +4,16 @@ import java.util.List;
 
 import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
 import com.albumbazaar.albumbazar.model.OrderDetail;
+import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 
 public interface OrderService {
+
+    /**
+     * 
+     * @param status of type OrderDetailStatus
+     * @return A list of order details
+     */
+    List<OrderDetail> getOrdersWithStatus(OrderDetailStatus status);
 
     /**
      * @param OrderDetailForm which contains all the data regarding the order

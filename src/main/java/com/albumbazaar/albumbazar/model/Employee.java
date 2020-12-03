@@ -18,7 +18,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import com.albumbazaar.albumbazar.form.employee.BasicEmployeeDetailForm;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.hibernate.annotations.OnDelete;
@@ -28,6 +28,7 @@ import org.hibernate.annotations.OnDeleteAction;
 @Table(name = "employee", uniqueConstraints = { @UniqueConstraint(columnNames = { "email" }),
         @UniqueConstraint(columnNames = { "pan" }), @UniqueConstraint(columnNames = { "voter" }),
         @UniqueConstraint(columnNames = { "aadhaar" }), @UniqueConstraint(columnNames = { "personal_contact" }) })
+@JsonIgnoreProperties(value = { "address" }, ignoreUnknown = true)
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

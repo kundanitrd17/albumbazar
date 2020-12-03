@@ -3,7 +3,6 @@ package com.albumbazaar.albumbazar.services.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -12,16 +11,22 @@ import com.albumbazaar.albumbazar.dao.OrderRepository;
 import com.albumbazaar.albumbazar.dao.SheetDetailRepository;
 import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
 import com.albumbazaar.albumbazar.model.OrderDetail;
+import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 import com.albumbazaar.albumbazar.model.SheetDetail;
 import com.albumbazaar.albumbazar.services.OrderService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Qualifier("orderService")
 public class OrderServiceImpl implements OrderService {
+
+    private Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     private OrderRepository orderRepository;
     private SheetDetailRepository sheetDetailRepository;
@@ -34,6 +39,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public boolean addOrder(final OrderDetailForm orderDetails) {
         // parse the form to get in proper input
 
@@ -43,6 +49,7 @@ public class OrderServiceImpl implements OrderService {
 
         final String[] paperQuality = orderDetails.getSheetType();
         final String[] paperPrice = orderDetails.getSheetPrice();
+
         for (int index = 0; index < orderDetails.getSheetType().length; index++) {
 
             SheetDetail sheet = new SheetDetail();
@@ -56,8 +63,6 @@ public class OrderServiceImpl implements OrderService {
         order.setSheets(sheets);
 
         orderRepository.save(order);
-
-        // System.out.println(order);
 
         return true;
     }
@@ -92,6 +97,16 @@ public class OrderServiceImpl implements OrderService {
             return orderRepository.findByOrderStatus(status);
         } catch (Exception e) {
             System.out.println("order service" + e);
+        }
+        return null;
+    }
+
+    @Override
+    public List<OrderDetail> getOrdersWithStatus(final OrderDetailStatus status) {
+        try {
+            return orderRepository.findByOrderStatus(status.toString());
+        } catch (Exception e) {
+            System.out.println("Unable to fetch orders from the pool");
         }
         return null;
     }

@@ -1,7 +1,5 @@
 package com.albumbazaar.albumbazar.form;
 
-import java.util.Date;
-
 public class BasicBranchInfoForm {
     private String code;
     private String name;
@@ -64,6 +62,4 @@ public class BasicBranchInfoForm {
                 + inaugrationDate + ", name=" + name + ", phone=" + phone + "]";
     }
 
-    
-   
 }

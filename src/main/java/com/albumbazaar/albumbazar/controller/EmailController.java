@@ -1,20 +1,12 @@
 package com.albumbazaar.albumbazar.controller;
 
-import java.io.File;
-
-import javax.mail.Message;
-import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.mail.internet.MimeUtility;
 
-import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,8 +20,8 @@ public class EmailController {
     @Autowired
     private JavaMailSender mailSender;
 
-    private String to = "princewillz2013@gmail.com";
     private String from = "princewillz2013@gmail.com";
+    private String to = "harshtiwariai@gmail.com";
 
     @GetMapping("/email")
     public String sendEmail() {
@@ -44,8 +36,8 @@ public class EmailController {
         String filename = StringUtils.cleanPath(file.getOriginalFilename());
         System.out.println(filename);
 
-        String toaddress = this.to;
-        String fromaddress = this.from;
+        // String toaddress = this.to;
+        // String fromaddress = this.from;
 
         MimeMessage message = mailSender.createMimeMessage();
         try {
@@ -53,8 +45,8 @@ public class EmailController {
             helper.setFrom(this.from);
             helper.setTo(this.to);
             helper.setSubject("subject");
-            FileSystemResource f = new FileSystemResource("");
-            helper.addAttachment(MimeUtility.encodeText(""), new ByteArrayResource(file.getBytes()));
+            // FileSystemResource f = new FileSystemResource("");
+            helper.addAttachment(filename, new ByteArrayResource(file.getBytes()));
         } catch (Exception e) {
             System.out.println("oops..., " + e);
         }
