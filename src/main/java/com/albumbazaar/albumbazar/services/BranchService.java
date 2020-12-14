@@ -11,12 +11,14 @@ public interface BranchService {
 
     boolean addBranch(final BasicBranchInfoForm branchInfo, final LocationForm locationDetails);
 
-    void deletebranch(final Long id);
+    Branch deletebranch(final Long id);
 
     Branch updateBranch(final Branch updatedBranchInfo);
 
     Optional<List<Branch>> getAllBranch();
 
     Branch getbranch(final Long id);
+
+    Branch restoreBranch(Long branchId);
 
 }

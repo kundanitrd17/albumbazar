@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/transaction")
-public class TransactionController {
+public final class TransactionController {
 
     private TransactionService transactionService;
 

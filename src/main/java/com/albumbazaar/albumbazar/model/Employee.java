@@ -32,6 +32,7 @@ import org.hibernate.annotations.OnDeleteAction;
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, updatable = false)
     private Long id;
 
     @Size(max = 100)

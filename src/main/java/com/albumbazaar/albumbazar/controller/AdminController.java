@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping(value = "/admin")
-public class AdminController {
+public final class AdminController {
 
     @GetMapping(value = "")
     public String adminView() {

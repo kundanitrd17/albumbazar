@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
+
 import com.albumbazaar.albumbazar.dao.Address1Repository;
 import com.albumbazaar.albumbazar.dao.Address2Repository;
 import com.albumbazaar.albumbazar.dao.EmployeeRepository;
@@ -15,6 +17,8 @@ import com.albumbazaar.albumbazar.model.Address2;
 import com.albumbazaar.albumbazar.model.Employee;
 import com.albumbazaar.albumbazar.services.EmployeeService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,6 +29,8 @@ import org.springframework.stereotype.Service;
 @Service
 @Qualifier("employeeService")
 public class EmployeeServiceImpl implements UserDetailsService, EmployeeService {
+
+    private Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
     private final EmployeeRepository employeeRepository;
     private final Address1Repository address1Repository;
@@ -49,6 +55,7 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
         return new EmployeePrincipal(user);
     }
 
+    @Override
     public boolean addEmployee(final BasicEmployeeDetailForm employeeDetail, final LocationForm addressDetail) {
         try {
             // working on the address2 creation (pin address)
@@ -75,16 +82,7 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
         return true;
     }
 
-    public boolean deleteEmployee(Long id) { // might throw employee not found
-
-        // find the employee
-        final Employee employee = employeeRepository.findById(id).get();
-        employee.setActive(false); // set active status to false
-        employeeRepository.save(employee);
-
-        return true;
-    }
-
+    @Override
     public List<Employee> getAllEmployee() {
 
         final List<Employee> employees = employeeRepository.findAll().stream().collect(Collectors.toList());
@@ -92,10 +90,12 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
         return employees;
     }
 
+    @Override
     public Employee getEmployee(Long id) throws NoSuchElementException {
         return employeeRepository.findById(id).get();
     }
 
+    @Override
     public Employee updateEmployee(final Employee updatedEmployeeDetails) {
         // get the employee
         final Employee employee = employeeRepository.findById(updatedEmployeeDetails.getId()).get();
@@ -105,6 +105,29 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
         // save back
         employeeRepository.save(employee);
         return employee;
+    }
+
+    @Override
+    public Employee deleteEmployee(final Long employeeId) {
+        return updateEmployeeStatus(employeeId, false);
+
+    }
+
+    @Override
+    public Employee restoreEmployee(final Long employeeId) {
+        return updateEmployeeStatus(employeeId, true);
+    }
+
+    private Employee updateEmployeeStatus(final Long employeeId, final Boolean status) {
+        try {
+            // find the employee
+            final Employee employee = employeeRepository.findById(employeeId).orElseThrow();
+            employee.setActive(status); // set active status to false
+            return employeeRepository.save(employee);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            throw new RuntimeException("Unable to make changes");
+        }
     }
 
 }

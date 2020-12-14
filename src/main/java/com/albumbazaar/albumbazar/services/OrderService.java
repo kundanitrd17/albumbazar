@@ -36,6 +36,8 @@ public interface OrderService {
     /**
      * @param the order status that needs to be fetched
      * @return a list of orders with the provided order detail
+     * @deprecated
+     * @see getOrdersWithStatus instead
      */
     List<OrderDetail> getAllOrderWithStatus(String status);
 

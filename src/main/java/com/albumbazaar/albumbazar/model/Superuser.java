@@ -1,5 +1,6 @@
 package com.albumbazaar.albumbazar.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,15 +9,12 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(
-        name = "superuser",
-        uniqueConstraints =
-                @UniqueConstraint(columnNames = {"email"})
-)
+@Table(name = "superuser", uniqueConstraints = @UniqueConstraint(columnNames = { "email" }))
 public class Superuser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, updatable = false)
     private Long id;
     private String password;
     private String name;
@@ -77,6 +75,5 @@ public class Superuser {
         return "Superuser [email=" + email + ", id=" + id + ", name=" + name + ", password=" + password
                 + ", profile_pic=" + profile_pic + "]";
     }
-
 
 }

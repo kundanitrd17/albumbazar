@@ -16,7 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping(value = "employee")
-public class EmployeeController {
+public final class EmployeeController {
 
     private EmployeeService employeeService;
 

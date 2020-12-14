@@ -2,6 +2,7 @@ package com.albumbazaar.albumbazar.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,20 +17,18 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(
-    name = "attendance"
-)
+@Table(name = "attendance")
 public class Attendance {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, updatable = false)
     private Long id;
     private Date date;
     @Size(max = 10)
     private String status = "AB";
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "employee_id"
-    )
+    @JoinColumn(name = "employee_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Employee employee;
 
@@ -69,8 +68,5 @@ public class Attendance {
     public String toString() {
         return "Attendance [date=" + date + ", employee=" + employee + ", id=" + id + ", status=" + status + "]";
     }
-
-    
-
 
 }

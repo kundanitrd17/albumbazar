@@ -1,7 +1,9 @@
 package com.albumbazaar.albumbazar.controller;
 
 import com.albumbazaar.albumbazar.dao.BranchRepository;
+import com.albumbazaar.albumbazar.dao.CustomerRepository;
 import com.albumbazaar.albumbazar.dao.EmployeeRepository;
+import com.albumbazaar.albumbazar.dao.OrderRepository;
 import com.albumbazaar.albumbazar.dao.SuperuserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
-public class HomeController {
+public final class HomeController {
 
     @Autowired
     private SuperuserRepository repo;
@@ -21,6 +23,11 @@ public class HomeController {
     private EmployeeRepository erepo;
     @Autowired
     private BranchRepository brepo;
+    @Autowired
+    private OrderRepository orderrepo;
+
+    @Autowired
+    private CustomerRepository custRepo;
 
     @PostMapping("/emp")
     @ResponseBody

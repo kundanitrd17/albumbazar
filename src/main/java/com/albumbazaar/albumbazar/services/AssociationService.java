@@ -13,7 +13,9 @@ public interface AssociationService {
 
     Association getAssociation(final Long id);
 
-    void deleteAssociation(final Long id);
+    Association deleteAssociation(final Long id);
+
+    Association restoreAssociation(final Long id);
 
     void updateAssociation(final Association association);
 

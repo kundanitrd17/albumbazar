@@ -14,6 +14,7 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 import com.albumbazaar.albumbazar.form.BasicBranchInfoForm;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -21,10 +22,12 @@ import org.hibernate.annotations.OnDeleteAction;
 @Entity
 @Table(name = "branch", uniqueConstraints = { @UniqueConstraint(columnNames = "name"),
         @UniqueConstraint(columnNames = "contact_no"), @UniqueConstraint(columnNames = "address_id") })
+@JsonIgnoreProperties(value = { "admin", "address" }, ignoreUnknown = true)
 public class Branch {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, updatable = false)
     private Long id;
     private String name;
     @Column(name = "contact_no")

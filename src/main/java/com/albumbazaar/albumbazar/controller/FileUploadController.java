@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 @Controller
-public class FileUploadController {
+public final class FileUploadController {
 
     private final StorageService storageService;
 

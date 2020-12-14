@@ -35,7 +35,7 @@
     }
   </style>
 
-  <link rel="stylesheet" href="./css/super-admin.css">
+  <link rel="stylesheet" href="http://localhost:8080/superuser/css/super-admin.css">
 </head>
 
 <body>

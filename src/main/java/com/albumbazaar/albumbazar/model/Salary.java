@@ -8,7 +8,9 @@ import java.util.Date;
 
 @Entity
 public class Salary {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, updatable = false)
     private Long id;
     @ManyToOne
     @OnDelete(action = OnDeleteAction.NO_ACTION)
@@ -111,5 +113,4 @@ public class Salary {
                 + toDate + ", totalWorkedDays=" + totalWorkedDays + ", totalWorkingDays=" + totalWorkingDays + "]";
     }
 
-    
 }

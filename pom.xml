@@ -17,9 +17,7 @@
 		<java.version>11</java.version>
 	</properties>
 
-	<dependencies>
-
-		
+	<dependencies>		
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -92,11 +90,7 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
-			<groupId>javax</groupId>
-			<artifactId>javaee-api</artifactId>
-			<version>8.0.1</version>
-		</dependency>
+		
 
 	</dependencies>
 

@@ -1,5 +1,6 @@
 package com.albumbazaar.albumbazar.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -26,6 +27,7 @@ import org.hibernate.annotations.OnDeleteAction;
 public class Association {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, updatable = false)
     private Long id;
     private String name;
     @Size(max = 15)

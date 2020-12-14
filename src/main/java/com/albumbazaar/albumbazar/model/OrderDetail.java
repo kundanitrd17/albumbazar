@@ -1,5 +1,6 @@
 package com.albumbazaar.albumbazar.model;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -17,27 +18,53 @@ import java.util.List;
 public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, updatable = false)
     private Long id;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
     private Date orderTime;
+
     private Date deliveryDate;
-    private Boolean paymentStatus;
-    private Float amount;
+
     private String associationName;
+
     private String productName;
+
     private String productSize;
+
     private String coverName;
+
+    // Finance
+    private Boolean paymentStatus;
+
+    private Float totalAmount;
+
+    private Float discount;
+
+    // Change it to just the ID of the cover and get the pricing of the album from
+    // the database
     private Float coverPrice;
+
     private Integer noOfSheets;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id")
+    private List<SheetDetail> sheets;
+    // end of finance
+
+    // Tracking the current position of the order
     @Column(columnDefinition = "varchar(50) default 'pending'")
     private String orderStatus = "pending";
+
     private String orientation;
+
     @Column(columnDefinition = "TEXT")
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "customer_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Customer customer;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -45,15 +72,21 @@ public class OrderDetail {
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Address1 deliveryAddress;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    private List<SheetDetail> sheets;
-
+    // The employee who handled this order
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Employee employee;
 
     private Long branchId;
+
+    // Photos regarding the project
+
+    private String photoFolderGoogleDriveId;
+
+    private String photoFolderGoogleDriveLink;
+
+    // End of photos columns
 
     public OrderDetail() {
     }
@@ -121,14 +154,6 @@ public class OrderDetail {
 
     public void setDeliveryAddress(final Address1 deliveryAddress) {
         this.deliveryAddress = deliveryAddress;
-    }
-
-    public Float getAmount() {
-        return amount;
-    }
-
-    public void setAmount(final Float amount) {
-        this.amount = amount;
     }
 
     public String getAssociationName() {
@@ -221,7 +246,7 @@ public class OrderDetail {
 
     @Override
     public String toString() {
-        return "OrderDetail [amount=" + amount + ", associationName=" + associationName + ", branchId=" + branchId
+        return "OrderDetail [amount=" + totalAmount + ", associationName=" + associationName + ", branchId=" + branchId
                 + ", coverName=" + coverName + ", coverPrice=" + coverPrice + ", deliveryDate=" + deliveryDate
                 + ", description=" + description + ", id=" + id + ", noOfSheets=" + noOfSheets + ", orderStatus="
                 + orderStatus + ", orderTime=" + orderTime + ", orientation=" + orientation + ", paymentStatus="
@@ -234,6 +259,38 @@ public class OrderDetail {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public String getPhotoFolderGoogleDriveId() {
+        return photoFolderGoogleDriveId;
+    }
+
+    public void setPhotoFolderGoogleDriveId(String photoFolderGoogleDriveId) {
+        this.photoFolderGoogleDriveId = photoFolderGoogleDriveId;
+    }
+
+    public String getPhotoFolderGoogleDriveLink() {
+        return photoFolderGoogleDriveLink;
+    }
+
+    public void setPhotoFolderGoogleDriveLink(String photoFolderGoogleDriveLink) {
+        this.photoFolderGoogleDriveLink = photoFolderGoogleDriveLink;
+    }
+
+    public Float getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(Float discount) {
+        this.discount = discount;
+    }
+
+    public Float getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(Float totalAmount) {
+        this.totalAmount = totalAmount;
     }
 
 }

@@ -6,12 +6,11 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 
 @Entity
-@Table(
-        uniqueConstraints =
-                @UniqueConstraint(columnNames = {"order_id", "customer_id"})
-)
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "order_id", "customer_id" }))
 public class CartItem {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, updatable = false)
     private Long id;
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
@@ -48,10 +47,6 @@ public class CartItem {
 
     @Override
     public String toString() {
-        return "CartItem{" +
-                "id=" + id +
-                ", orders=" + orders +
-                ", address=" + customer +
-                '}';
+        return "CartItem{" + "id=" + id + ", orders=" + orders + ", address=" + customer + '}';
     }
 }

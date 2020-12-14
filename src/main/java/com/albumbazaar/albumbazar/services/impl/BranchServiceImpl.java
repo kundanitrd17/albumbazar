@@ -5,6 +5,8 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.persistence.EntityNotFoundException;
+
 import com.albumbazaar.albumbazar.dao.Address1Repository;
 import com.albumbazaar.albumbazar.dao.Address2Repository;
 import com.albumbazaar.albumbazar.dao.BranchRepository;
@@ -17,12 +19,18 @@ import com.albumbazaar.albumbazar.model.Branch;
 import com.albumbazaar.albumbazar.model.Employee;
 import com.albumbazaar.albumbazar.services.BranchService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Qualifier("branchService")
 public class BranchServiceImpl implements BranchService {
+
+    private final Logger logger = LoggerFactory.getLogger(BranchServiceImpl.class);
+
     final BranchRepository branchRepository;
     final Address1Repository address1Repository;
     final Address2Repository address2Repository;
@@ -36,6 +44,7 @@ public class BranchServiceImpl implements BranchService {
         this.employeeRepository = employeeRepository;
     }
 
+    @Override
     public boolean addBranch(final BasicBranchInfoForm branchInfo, final LocationForm locationDetails) {
         try {
             // working on the address2 creation (pin address)
@@ -69,33 +78,53 @@ public class BranchServiceImpl implements BranchService {
         return true;
     }
 
-    public void deletebranch(final Long id) {
-
-        // check if the branch existes
-        branchRepository.deleteById(id);
-
-    }
-
+    @Override
     public Branch updateBranch(final Branch updatedBranchInfo) {
         // get the branch and validate new info
         final Branch branch = branchRepository.findById(updatedBranchInfo.getId()).get();
         /*
          * ... update info
          */
-        // save bach
+        // save back
         branchRepository.save(branch);
 
         return branch;
     }
 
+    @Override
     public Optional<List<Branch>> getAllBranch() {
         final List<Branch> allBranch = branchRepository.findAll().stream().collect(Collectors.toList());
 
         return Optional.of(allBranch);
     }
 
-    public Branch getbranch(final Long id) throws NoSuchElementException {
-        return branchRepository.findById(id).get();
+    @Override
+    public Branch getbranch(final Long branchId) throws NoSuchElementException {
+        return branchRepository.findById(branchId).get();
+    }
+
+    @Override
+    public Branch deletebranch(final Long branchId) {
+
+        return updateBranchStatus(branchId, false);
+    }
+
+    @Override
+    public Branch restoreBranch(Long branchId) {
+        return updateBranchStatus(branchId, true);
+    }
+
+    @Transactional
+    private final Branch updateBranchStatus(final Long branchId, final Boolean status) {
+        try {
+            final Branch branch = branchRepository.findById(branchId).orElseThrow();
+            branch.setActive(status);
+            return branchRepository.save(branch);
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            throw new RuntimeException("Unable to make change to the branch");
+        }
     }
 
 }

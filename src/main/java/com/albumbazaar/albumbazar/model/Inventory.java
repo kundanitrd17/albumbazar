@@ -6,14 +6,12 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import java.util.Date;
 
-
 @Entity
-@Table(
-        uniqueConstraints =
-                @UniqueConstraint(columnNames = {"employee_id", "added_time"})
-)
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "employee_id", "added_time" }))
 public class Inventory {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, updatable = false)
     private Long id;
     private String itemName;
     private Float price;
@@ -96,15 +94,8 @@ public class Inventory {
 
     @Override
     public String toString() {
-        return "Inventory{" +
-                "id=" + id +
-                ", itemName='" + itemName + '\'' +
-                ", price=" + price +
-                ", itemNo='" + itemNo + '\'' +
-                ", noOfItems=" + noOfItems +
-                ", addedTime=" + addedTime +
-                ", branch=" + branch +
-                ", employee=" + employee +
-                '}';
+        return "Inventory{" + "id=" + id + ", itemName='" + itemName + '\'' + ", price=" + price + ", itemNo='" + itemNo
+                + '\'' + ", noOfItems=" + noOfItems + ", addedTime=" + addedTime + ", branch=" + branch + ", employee="
+                + employee + '}';
     }
 }

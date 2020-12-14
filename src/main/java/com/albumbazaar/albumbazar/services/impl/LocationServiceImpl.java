@@ -10,6 +10,7 @@ import com.albumbazaar.albumbazar.services.LocationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Qualifier("locationService")
@@ -25,6 +26,7 @@ public class LocationServiceImpl implements LocationService {
         this.address2Repository = address2Repository;
     }
 
+    @Transactional
     public Address1 addNewAddress(final LocationForm addressDetail) {
 
         // working on the address2 creation (pin address)
@@ -32,6 +34,7 @@ public class LocationServiceImpl implements LocationService {
         address2Repository.save(address2); // saving the model
 
         // Working on the address1 creation (street address)
+
         final Address1 address1 = new Address1(addressDetail); // creating the address1 model
         address1.setAddress2(address2); // mapping the address2 to address1
         address1Repository.save(address1); // saving address1

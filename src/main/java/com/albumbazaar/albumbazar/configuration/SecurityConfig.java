@@ -82,6 +82,13 @@ public class SecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http.authorizeRequests().antMatchers("/foo").authenticated().anyRequest().permitAll();
 
+            /**
+             * We need to secure api enpoints as they are not secured by defaul;t include
+             * the below line before pushing it to production
+             */
+            // .antMatchers("/api/superuser/**")
+            // .hasAuthority(AvailableRoles.Code.SUPERUSER)
+
             // .antMatchers("/orders/pool")
             // .hasAnyAuthority(AvailableRoles.Code.CUSTOMER_CARE,
             // AvailableRoles.Code.SUPERUSER)

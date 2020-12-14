@@ -16,52 +16,73 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-
+    <link rel="stylesheet" type="text/css" href="http://localhost:8080/customercare/css/dashboard-superuser.css">
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
     <style type="text/css">
+        #associationProductViewDetails table tr th {
+            text-align: center;
+        }
 
-#associationProductViewDetails table tr th
-{
-  text-align: center;
-}
+        #associationProductViewDetails table tr th h6 {
 
-#associationProductViewDetails table tr th h6
-{
+            font-size: 13px;
+        }
 
-font-size: 13px; 
-}
+        #associationProductViewDetails table tr:nth-child(odd) {
+            background: rgba(226, 226, 226, 1);
+            background: -moz-linear-gradient(left, rgba(226, 226, 226, 1) 0%, rgba(209, 209, 209, 1) 1%, rgba(133, 128, 133, 1) 51%, rgba(254, 254, 254, 1) 100%);
+            background: -webkit-gradient(left top, right top, color-stop(0%, rgba(226, 226, 226, 1)), color-stop(1%, rgba(209, 209, 209, 1)), color-stop(51%, rgba(133, 128, 133, 1)), color-stop(100%, rgba(254, 254, 254, 1)));
+            background: -webkit-linear-gradient(left, rgba(226, 226, 226, 1) 0%, rgba(209, 209, 209, 1) 1%, rgba(133, 128, 133, 1) 51%, rgba(254, 254, 254, 1) 100%);
+            background: -o-linear-gradient(left, rgba(226, 226, 226, 1) 0%, rgba(209, 209, 209, 1) 1%, rgba(133, 128, 133, 1) 51%, rgba(254, 254, 254, 1) 100%);
+            background: -ms-linear-gradient(left, rgba(226, 226, 226, 1) 0%, rgba(209, 209, 209, 1) 1%, rgba(133, 128, 133, 1) 51%, rgba(254, 254, 254, 1) 100%);
+            background: linear-gradient(to right, rgba(226, 226, 226, 1) 0%, rgba(209, 209, 209, 1) 1%, rgba(133, 128, 133, 1) 51%, rgba(254, 254, 254, 1) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e2e2e2', endColorstr='#fefefe', GradientType=1);
+            ;
+            color: white;
+            text-align: center;
 
-#associationProductViewDetails table tr:nth-child( odd )
-{
- background: rgba(226,226,226,1);
-background: -moz-linear-gradient(left, rgba(226,226,226,1) 0%, rgba(209,209,209,1) 1%, rgba(133,128,133,1) 51%, rgba(254,254,254,1) 100%);
-background: -webkit-gradient(left top, right top, color-stop(0%, rgba(226,226,226,1)), color-stop(1%, rgba(209,209,209,1)), color-stop(51%, rgba(133,128,133,1)), color-stop(100%, rgba(254,254,254,1)));
-background: -webkit-linear-gradient(left, rgba(226,226,226,1) 0%, rgba(209,209,209,1) 1%, rgba(133,128,133,1) 51%, rgba(254,254,254,1) 100%);
-background: -o-linear-gradient(left, rgba(226,226,226,1) 0%, rgba(209,209,209,1) 1%, rgba(133,128,133,1) 51%, rgba(254,254,254,1) 100%);
-background: -ms-linear-gradient(left, rgba(226,226,226,1) 0%, rgba(209,209,209,1) 1%, rgba(133,128,133,1) 51%, rgba(254,254,254,1) 100%);
-background: linear-gradient(to right, rgba(226,226,226,1) 0%, rgba(209,209,209,1) 1%, rgba(133,128,133,1) 51%, rgba(254,254,254,1) 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e2e2e2', endColorstr='#fefefe', GradientType=1 );;
-color:white;
-text-align: center;
- 
-}
-#associationProductViewDetails table tr:nth-child( even )
-{
-background-color: #A09EA2  ;
-color:white;
-text-align: center;
- 
-}
+        }
 
+        #associationProductViewDetails table tr:nth-child(even) {
+            background-color: #A09EA2;
+            color: white;
+            text-align: center;
 
+        }
     </style>
 
 </head>
 
 <body>
+    <!-- SideBar insertion -->
+    <%@include file="sidebar.jsp" %>
+    <!-- End of sidebar -->
+    <section id="contents">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed show-side-btn" data-toggle="collapse"
+                        data-target="" aria-expanded="false">
+
+                    </button>
+                    <ul class="nav navbar-nav">
+                        <li id="bs-example-navbar-collapse-1"> <a href="#"><i data-show="show-side-navigation1"
+                                    class="fa fa-bars show-side-btn"></i></a></li>
+                    </ul>
+                </div>
+                <div class="collapse navbar-collapse navbar-right">
+
+                </div>
+            </div>
+        </nav>
+
+
+
+
+    </section>
     <div class="container">
         <div class="row">
             <div class="panel panel-primary filterable table-responsive">
@@ -76,33 +97,35 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                         <tr class="filters">
                             <th><input type="text" class="form-control" placeholder="Id" disabled></th>
                             <th><input type="text" class="form-control" placeholder=" Name" disabled></th>
-                          
+
                             <th><input type="text" class="form-control" placeholder="Contact 1" disabled></th>
                             <th><input type="text" class="form-control" placeholder="Contact 2" disabled></th>
                             <th><input type="text" class="form-control" placeholder=" Address" disabled></th>
                             <th><input type="text" class="form-control" placeholder="E-mail" disabled></th>
-                             <th><input type="text" class="form-control" placeholder="Product View" disabled></th>
+                            <th><input type="text" class="form-control" placeholder="Product View" disabled></th>
                             <th><input type="text" class="form-control" placeholder="Order" disabled></th>
                             <th colspan="2" style="text-align: center;"><a class="btn btn-success"
                                     href="add-branch.html">Order Pool</a></th>
                         </tr>
                     </thead>
                     <tbody>
-                      
+
                         <tr>
                             <td id="associationId">101</td>
                             <td id="associationName">canvera</td>
                             <td id="associationPhone1">7047261982</td>
                             <td id="associationPhone2">9832177025</td>
-                            <td><a href="" data-toggle="modal" data-target="#branchAddress"
-                                    id="link_address" onclick="addrLink(1)">Address Id</a></td>
+                            <td><a href="" data-toggle="modal" data-target="#branchAddress" id="link_address"
+                                    onclick="addrLink(1)">Address Id</a></td>
                             <td id="associationEmail">kundanitrd17@gmail.com</td>
-                            <td><a type="button" href="" id="link_adminId"  data-toggle="modal" data-target="#associationProductViewDetails" onclick="associationProductView(1)">View Product</a></td>
+                            <td><a type="button" href="" id="link_adminId" data-toggle="modal"
+                                    data-target="#associationProductViewDetails"
+                                    onclick="associationProductView(1)">View Product</a></td>
                             <td><a href="">Show Order</a></td>
                             <td class=""> <a href="#" class="btn btn-success s-icon " style="display: none;"
                                     onclick="saveBranch(1)">Save</a>
                                 <button class="btn btn-warning e-icon">Edit</button></td>
-                            <td><a class="btn btn-danger d-icon">Delete</a></td>
+                            <td><a class="btn btn-danger d-icon">Done</a></td>
                         </tr>
 
                         <tr>
@@ -110,18 +133,21 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                             <td id="associationName">canvera</td>
                             <td id="associationPhone1">7047261982</td>
                             <td id="associationPhone2">9832177025</td>
-                            <td><a href="" data-toggle="modal" data-target="#branchAddress"
-                                    id="link_address" onclick="addrLink(1)">Address Id</a></td>
+                            <td><a href="" data-toggle="modal" data-target="#branchAddress" id="link_address"
+                                    onclick="addrLink(1)">Address Id</a></td>
                             <td id="associationEmail">kundanitrd17@gmail.com</td>
-                            <td><a type="button" href="" id="link_adminId"  data-toggle="modal" data-target="#associationProductViewDetails" onclick="associationProductView(2)">View Product</a></td>
+                            <td><a type="button" href="" id="link_adminId" data-toggle="modal"
+                                    data-target="#associationProductViewDetails"
+                                    onclick="associationProductView(2)">View Product</a></td>
                             <td><a href="">Show Order</a></td>
                             <td class=""> <a href="#" class="btn btn-success s-icon " style="display: none;"
                                     onclick="saveBranch(1)">Save</a>
                                 <button class="btn btn-warning e-icon">Edit</button></td>
-                            <td><a class="btn btn-danger d-icon">Delete</a></td>
+                            <td><a class="btn btn-danger d-icon">Done</a></td>
+
                         </tr>
 
-                        
+
                     </tbody>
                 </table>
             </div>
@@ -201,81 +227,81 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
 
     <div class="modal" id="associationProductViewDetails">
-      <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" id="myModalLabel">Comapny Name</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body table-responsive">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th colspan="5">CoverPage Price List</th>
-              </tr>
-              <tr style="background-color: none;color:black;">
-                <th >Quality</th>
-                <th >Size</th>
-                <th >Price</th>
-                <th colspan="2"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td id="coverQuality">John</td>
-                <td id="coverSize">Doe</td>
-                <td id="coverPrice">john@example.com</td>
-                 <td class=""> <a href="#" class="btn btn-success saveCover " style="display: none;"
-                                    onclick="saveCoverFun(1)">Save</a>
-                                <button class="btn btn-warning editCover">Edit</button></td>
-                            <td><a class="btn btn-danger deleteCover">Delete</a></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="modal-body table-responsive">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th colspan="5">Paper Price List</th>
-              </tr>
-              <tr style="background-color: none;color:black;">
-                <th>Quality</th>
-                <th>Size</th>
-                <th>Price</th>
-                <th colspan="2"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td id="pageQuality">John</td>
-                <td id="pageSize">Doe</td>
-                <td id="pagePrice">john@example.com</td>
-                 <td class=""> <a href="#" class="btn btn-success savePage " style="display: none;"
-                                    onclick="savePageFun(1)">Save</a>
-                                <button class="btn btn-warning editPage">Edit</button></td>
-                            <td><a class="btn btn-danger deletePage">Delete</a></td>
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myModalLabel">Comapny Name</h4>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th colspan="5">CoverPage Price List</th>
+                            </tr>
+                            <tr style="background-color: none;color:black;">
+                                <th>Quality</th>
+                                <th>Size</th>
+                                <th>Price</th>
+                                <th colspan="2"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="coverQuality">John</td>
+                                <td id="coverSize">Doe</td>
+                                <td id="coverPrice">john@example.com</td>
+                                <td class=""> <a href="#" class="btn btn-success saveCover " style="display: none;"
+                                        onclick="saveCoverFun(1)">Save</a>
+                                    <button class="btn btn-warning editCover">Edit</button></td>
+                                <td><a class="btn btn-danger deleteCover">Delete</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-body table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th colspan="5">Paper Price List</th>
+                            </tr>
+                            <tr style="background-color: none;color:black;">
+                                <th>Quality</th>
+                                <th>Size</th>
+                                <th>Price</th>
+                                <th colspan="2"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="pageQuality">John</td>
+                                <td id="pageSize">Doe</td>
+                                <td id="pagePrice">john@example.com</td>
+                                <td class=""> <a href="#" class="btn btn-success savePage " style="display: none;"
+                                        onclick="savePageFun(1)">Save</a>
+                                    <button class="btn btn-warning editPage">Edit</button></td>
+                                <td><a class="btn btn-danger deletePage">Delete</a></td>
 
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 
+                </div>
+            </div>
         </div>
-      </div>
     </div>
+
+
+    <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+
     </div>
 
-
-  <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-    
-  </div>
-
-    <script type="text/javascript" src="js/data-table.js"></script>
+    <script type="text/javascript" src="http://localhost:8080/customercare/js/data-table.js"></script>
 
     <script type="text/javascript">
 
@@ -431,7 +457,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
     <!--Edit Cover-->
 
     <script type="text/javascript">
-          // Delete Association Product
+        // Delete Association Product
         $('.table tbody tr td').on('click', '.deleteCover', function () {
             $(this).parent().parent().remove();
             event.preventDefault();
@@ -469,7 +495,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
         })
 
-           // Edit Association Product 
+        // Edit Association Product 
         $('.table tbody tr td').on('click', '.editCover', function () {
 
             $(this).hide();
@@ -479,7 +505,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
             $(this).parent().siblings("#coverPrice").attr("contenteditable", "true").focus();
         });
         //save And Edit Display Button
-            $('.table tbody tr td').on('click', '.saveCover', function () {
+        $('.table tbody tr td').on('click', '.saveCover', function () {
 
             $(this).hide();
             $(this).siblings('.editCover').show();
@@ -489,10 +515,10 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
     </script>
     <!--End Edit Cover-->
 
-        <!--Edit Page-->
+    <!--Edit Page-->
 
-        <script type="text/javascript">
-          // Delete Association Product
+    <script type="text/javascript">
+        // Delete Association Product
         $('.table tbody tr td').on('click', '.deletePage', function () {
             $(this).parent().parent().remove();
             event.preventDefault();
@@ -530,7 +556,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
         })
 
-           // Edit Association Product 
+        // Edit Association Product 
         $('.table tbody tr td').on('click', '.editPage', function () {
 
             $(this).hide();
@@ -540,7 +566,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
             $(this).parent().siblings("#pagePrice").attr("contenteditable", "true").focus();
         });
         //save And Edit Display Button
-            $('.table tbody tr td').on('click', '.savePage', function () {
+        $('.table tbody tr td').on('click', '.savePage', function () {
 
             $(this).hide();
             $(this).siblings('.editPage').show();
@@ -549,6 +575,63 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
         });
     </script>
     <!--End Edit Page-->
+
+
+    <script type="text/javascript">
+        // Other important pens.
+        // Map: https://codepen.io/themustafaomar/pen/ZEGJeZq
+        // Navbar: https://codepen.io/themustafaomar/pen/VKbQyZ
+
+        $(function () {
+
+            'use strict';
+
+            var aside = $('.side-nav'),
+                showAsideBtn = $('.show-side-btn'),
+                contents = $('#contents'),
+                _window = $(window)
+
+            showAsideBtn.on("click", function () {
+                $("#" + $(this).data('show')).toggleClass('show-side-nav');
+                contents.toggleClass('margin');
+            });
+
+            if (_window.width() <= 767) {
+                aside.addClass('show-side-nav');
+            }
+
+            _window.on('resize', function () {
+                if ($(window).width() > 767) {
+                    aside.removeClass('show-side-nav');
+                }
+            });
+
+            // dropdown menu in the side nav
+            var slideNavDropdown = $('.side-nav-dropdown');
+
+            $('.side-nav .categories li').on('click', function () {
+
+                var $this = $(this)
+
+                $this.toggleClass('opend').siblings().removeClass('opend');
+
+                if ($this.hasClass('opend')) {
+                    $this.find('.side-nav-dropdown').slideToggle('fast');
+                    $this.siblings().find('.side-nav-dropdown').slideUp('fast');
+                } else {
+                    $this.find('.side-nav-dropdown').slideUp('fast');
+                }
+            });
+
+            $('.side-nav .close-aside').on('click', function () {
+                $('#' + $(this).data('close')).addClass('show-side-nav');
+                contents.removeClass('margin');
+            });
+
+
+
+        });
+    </script>
 
 </body>
 

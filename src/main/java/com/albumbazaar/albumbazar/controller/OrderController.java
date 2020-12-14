@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-public class OrderController {
+public final class OrderController {
 
     private OrderService orderService;
     private Logger logger = LoggerFactory.getLogger(OrderController.class);

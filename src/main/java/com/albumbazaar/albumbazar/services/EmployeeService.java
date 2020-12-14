@@ -10,7 +10,9 @@ public interface EmployeeService {
 
     boolean addEmployee(final BasicEmployeeDetailForm employeeDetail, final LocationForm addressDetail);
 
-    boolean deleteEmployee(Long id);
+    Employee deleteEmployee(Long id);
+
+    Employee restoreEmployee(Long id);
 
     List<Employee> getAllEmployee();
 

@@ -17,7 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping(value = "association")
-public class AssociationController {
+public final class AssociationController {
 
     private AssociationService associationService;
     private ProductService productService;

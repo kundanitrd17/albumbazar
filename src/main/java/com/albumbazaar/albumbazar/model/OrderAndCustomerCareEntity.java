@@ -30,6 +30,7 @@ public class OrderAndCustomerCareEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, updatable = false)
     private Long id;
 
     @NotNull(message = "There should be a customer care to accept a order")

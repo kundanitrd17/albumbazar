@@ -1,5 +1,4 @@
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
-
 <!DOCTYPE html>
 
 <html>
@@ -22,6 +21,7 @@
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://localhost:8080/customercare/css/dashboard-superuser.css">
 
     <style type="text/css">
         #associationProductViewDetails table tr th {
@@ -60,7 +60,33 @@
 
 <body>
 
+    <!-- SideBar insertion -->
+    <%@include file="sidebar.jsp" %>
+    <!-- End of sidebar -->
 
+    <section id="contents">
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed show-side-btn" data-toggle="collapse"
+                        data-target="" aria-expanded="false">
+
+                    </button>
+                    <ul class="nav navbar-nav">
+                        <li id="bs-example-navbar-collapse-1"> <a href="#"><i data-show="show-side-navigation1"
+                                    class="fa fa-bars show-side-btn"></i></a></li>
+                    </ul>
+                </div>
+                <div class="collapse navbar-collapse navbar-right">
+
+                </div>
+            </div>
+        </nav>
+
+
+
+
+    </section>
     <div class="container">
         <div class="row">
             <div class="panel panel-primary filterable table-responsive">
@@ -83,11 +109,13 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
 
                             <th colspan="2" style="text-align: center;"><a class="btn btn-success"
-                                    href="add-branch.html">View Accepted Order
+                                    href="/customer-care/accepted-order">View Accepted Order
                                 </a></th>
                         </tr>
                     </thead>
                     <tbody>
+
+
 
                         <c:forEach items="${recentlyReceivedOrders}" var="eachOrder">
                             <tr>
@@ -107,6 +135,10 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
                         </c:forEach>
 
+
+
+
+
                     </tbody>
                 </table>
             </div>
@@ -118,7 +150,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
 
 
-    <script type="text/javascript" src="js/data-table.js"></script>
+    <script type="text/javascript" src="http://localhost:8080/customercare/js/data-table.js"></script>
 
     <script type="text/javascript">
 
@@ -177,7 +209,61 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
     </script>
 
+    <script type="text/javascript">
+        // Other important pens.
+        // Map: https://codepen.io/themustafaomar/pen/ZEGJeZq
+        // Navbar: https://codepen.io/themustafaomar/pen/VKbQyZ
 
+        $(function () {
+
+            'use strict';
+
+            var aside = $('.side-nav'),
+                showAsideBtn = $('.show-side-btn'),
+                contents = $('#contents'),
+                _window = $(window)
+
+            showAsideBtn.on("click", function () {
+                $("#" + $(this).data('show')).toggleClass('show-side-nav');
+                contents.toggleClass('margin');
+            });
+
+            if (_window.width() <= 767) {
+                aside.addClass('show-side-nav');
+            }
+
+            _window.on('resize', function () {
+                if ($(window).width() > 767) {
+                    aside.removeClass('show-side-nav');
+                }
+            });
+
+            // dropdown menu in the side nav
+            var slideNavDropdown = $('.side-nav-dropdown');
+
+            $('.side-nav .categories li').on('click', function () {
+
+                var $this = $(this)
+
+                $this.toggleClass('opend').siblings().removeClass('opend');
+
+                if ($this.hasClass('opend')) {
+                    $this.find('.side-nav-dropdown').slideToggle('fast');
+                    $this.siblings().find('.side-nav-dropdown').slideUp('fast');
+                } else {
+                    $this.find('.side-nav-dropdown').slideUp('fast');
+                }
+            });
+
+            $('.side-nav .close-aside').on('click', function () {
+                $('#' + $(this).data('close')).addClass('show-side-nav');
+                contents.removeClass('margin');
+            });
+
+
+
+        });
+    </script>
 
 
 </body>

@@ -1,7 +1,6 @@
-package com.albumbazaar.albumbazar.controller;
+package com.albumbazaar.albumbazar.controller.APIController;
 
 import java.util.AbstractMap;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(value = "/api/product")
-public class ProductControllerAPI {
+public final class ProductControllerAPI {
 
     private AssociationService associationService;
     private ProductService productService;

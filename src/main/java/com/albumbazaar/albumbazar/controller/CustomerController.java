@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping(value = "customer")
-public class CustomerController {
+public final class CustomerController {
 
     private CustomerService customerService;
 
@@ -40,7 +40,11 @@ public class CustomerController {
         System.out.println(customerDetail);
         System.out.println(addressDetail);
 
-        customerService.registerCustomer(customerDetail, addressDetail);
+        try {
+            customerService.registerCustomer(customerDetail, addressDetail);
+        } catch (Exception e) {
+            return "Not added";
+        }
 
         return "added";
     }

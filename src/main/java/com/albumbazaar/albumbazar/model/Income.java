@@ -15,6 +15,7 @@ import java.util.Date;
 public class Income {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, updatable = false)
     private Long id;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")

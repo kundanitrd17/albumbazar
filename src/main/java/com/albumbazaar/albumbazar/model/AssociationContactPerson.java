@@ -9,7 +9,9 @@ import javax.validation.constraints.Size;
 
 @Entity
 public class AssociationContactPerson {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, updatable = false)
     private Long id;
     private String name;
     private String designation;
@@ -19,12 +21,10 @@ public class AssociationContactPerson {
     private String contact2;
     @Email
     private String email;
-    private Boolean active=true;
+    private Boolean active = true;
     private String password;
     @ManyToOne
-    @JoinColumn(
-            name = "association_id"
-    )
+    @JoinColumn(name = "association_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Association association;
 
@@ -99,18 +99,11 @@ public class AssociationContactPerson {
     public void setAssociation(Association association) {
         this.association = association;
     }
+
     @Override
     public String toString() {
-        return "AssociationContactPerson{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", designation='" + designation + '\'' +
-                ", contact1='" + contact1 + '\'' +
-                ", contact2='" + contact2 + '\'' +
-                ", email='" + email + '\'' +
-                ", active=" + active +
-                ", password='" + password + '\'' +
-                ", association=" + association +
-                '}';
+        return "AssociationContactPerson{" + "id=" + id + ", name='" + name + '\'' + ", designation='" + designation
+                + '\'' + ", contact1='" + contact1 + '\'' + ", contact2='" + contact2 + '\'' + ", email='" + email
+                + '\'' + ", active=" + active + ", password='" + password + '\'' + ", association=" + association + '}';
     }
 }

@@ -13,10 +13,14 @@ import javax.persistence.UniqueConstraint;
 public class SheetDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, updatable = false)
     private Long id;
+
     @Column(name = "paper_index")
     private Integer paperIndex;
+
     private String paperQuality;
+
     private String paperPrice;
 
     public SheetDetail(Integer paperIndex, String paperQuality, String paperPrice) {

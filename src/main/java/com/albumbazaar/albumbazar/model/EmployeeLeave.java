@@ -17,16 +17,12 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(
-    name = "employee_leave",
-    uniqueConstraints =
-        @UniqueConstraint(
-                name = "employee_from",
-                columnNames = {"employee_id", "from_date"}
-        )
-)
+@Table(name = "employee_leave", uniqueConstraints = @UniqueConstraint(name = "employee_from", columnNames = {
+        "employee_id", "from_date" }))
 public class EmployeeLeave {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, updatable = false)
     private Long id;
     private Date from_date;
     private Date to_date;
@@ -34,11 +30,9 @@ public class EmployeeLeave {
     private String reason;
     @Column(columnDefinition = "Text")
     private String description;
-    
+
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "employee_id"
-    )
+    @JoinColumn(name = "employee_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Employee employee;
 
@@ -96,5 +90,4 @@ public class EmployeeLeave {
                 + id + ", reason=" + reason + ", to_date=" + to_date + "]";
     }
 
-    
 }

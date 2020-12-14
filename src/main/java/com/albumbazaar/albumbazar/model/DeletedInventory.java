@@ -7,12 +7,11 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(
-        uniqueConstraints =
-                @UniqueConstraint(columnNames = {"added_time", "inventory_id"})
-)
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "added_time", "inventory_id" }))
 public class DeletedInventory {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, updatable = false)
     private Long id;
     @Column(name = "added_time")
     private Date addedTime;
@@ -57,11 +56,7 @@ public class DeletedInventory {
 
     @Override
     public String toString() {
-        return "DeletedInventory{" +
-                "id=" + id +
-                ", addedTime=" + addedTime +
-                ", reason='" + reason + '\'' +
-                ", inventory=" + inventory +
-                '}';
+        return "DeletedInventory{" + "id=" + id + ", addedTime=" + addedTime + ", reason='" + reason + '\''
+                + ", inventory=" + inventory + '}';
     }
 }

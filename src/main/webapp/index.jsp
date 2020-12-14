@@ -80,11 +80,11 @@
         setConnected(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe('/customer-care/subscribe/order-pool', function (greeting) {
-          console.log("received a message back", greeting.body, typeof (greeting.body));
+          // console.log("received a message back", greeting.body, typeof (greeting.body));
           let data = JSON.parse(greeting.body);
-          console.log(data.name);
+          console.log(data);
 
-          showGreeting(JSON.parse(greeting.body).name);
+          showGreeting(JSON.parse(greeting.body));
         });
       });
     }
