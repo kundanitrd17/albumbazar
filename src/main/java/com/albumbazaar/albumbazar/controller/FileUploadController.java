@@ -31,10 +31,12 @@ public final class FileUploadController {
 
     @PostMapping(value = "/upload")
     @ResponseBody
-    public String upload(@RequestParam("files") MultipartFile files) {
+    public String upload(@RequestParam("files") MultipartFile[] files) {
 
         try {
-            storageService.store(files);
+            for (MultipartFile file : files) {
+                storageService.store(file);
+            }
         } catch (Exception e) {
             return "Exception";
         }

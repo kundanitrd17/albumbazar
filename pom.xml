@@ -17,7 +17,21 @@
 		<java.version>11</java.version>
 	</properties>
 
-	<dependencies>		
+	<dependencies>	
+	<!-- Drive Dependencies -->
+		<dependency>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client</artifactId>
+			<version>1.30.10</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-drive</artifactId>
+			<version>v3-rev110-1.23.0</version>
+		</dependency>
+
+		<!-- End of Drive Dependencies -->
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

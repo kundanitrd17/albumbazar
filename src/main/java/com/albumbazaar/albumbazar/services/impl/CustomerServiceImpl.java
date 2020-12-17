@@ -1,8 +1,10 @@
 package com.albumbazaar.albumbazar.services.impl;
 
 import java.util.List;
+import java.util.Random;
 
 import com.albumbazaar.albumbazar.dao.CustomerRepository;
+import com.albumbazaar.albumbazar.dto.CustomerDTO;
 import com.albumbazaar.albumbazar.form.LocationForm;
 import com.albumbazaar.albumbazar.form.customer.BasicCustomerDetailForm;
 import com.albumbazaar.albumbazar.model.Customer;
@@ -32,49 +34,144 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Boolean registerCustomer(final BasicCustomerDetailForm customerDetail, final LocationForm addressDetail) {
-        final Customer customer = new Customer(customerDetail);
+    @Transactional
+    public Customer registerCustomer(final BasicCustomerDetailForm customerDetail, final LocationForm addressDetail) {
+        Customer customer = new Customer(customerDetail);
 
-        try {
+        if (customerDetail.getReferralCode() != null && !customerDetail.getReferralCode().isBlank()) {
+            final String id = customerDetail.getReferralCode().split("@")[0];
+            final Customer referredCustomer = customerRepository.findById(Long.parseLong(id)).orElseThrow();
+
+            if (referredCustomer.getReferralCode().equals(customerDetail.getReferralCode())) {
+                // If the referral code matches then some operation
+                customer.setWallet(100F);
+            } else {
+                throw new RuntimeException("Referral code did not match to the referred customer");
+            }
+
+        }
+
+        if (addressDetail != null) {
             // Save the address using location service and than link it to the customer
-            // entity
             customer.setAddress(locationService.addNewAddress(addressDetail));
-        } catch (Exception e) {
-            logger.info("Unable to save Customer's address." + e.getMessage());
         }
 
-        try {
+        // Save customer to get the id of customer
+        customer = customerRepository.save(customer);
 
-            customerRepository.save(customer);
+        // Get the generated Referral Code
+        final String referralCode = generateReferralCode(customer.getId());
 
-            System.out.println(customer.getId());
+        // Store the generated referral code
+        customer.setReferralCode(referralCode);
 
-        } catch (IllegalArgumentException e) {
-            logger.error(e.getMessage());
-            throw new RuntimeException(e.getMessage());
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            throw new RuntimeException("Unable to register new customer");
-        }
+        // If both the customer info and the referral code is saved successfully then it
+        // return customer entity or else rollback changes
+        return customer;
 
-        return true;
     }
 
+    private String generateReferralCode(final Long id) {
+        final StringBuffer referralCode = new StringBuffer();
+
+        // All characters that will be used to generate the referral code
+        final char[] allPossibleCharacters = new char[] { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'j', 'k', 'm', 'n',
+                'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '2', '3', '4', '5', '6', '7', '8', '9' };
+
+        final Random random = new Random();
+
+        referralCode.append(id);
+        referralCode.append("@");
+        // Generating referral code of length 6
+        for (int lengthOfReferralCode = 6; lengthOfReferralCode > 0; --lengthOfReferralCode) {
+            // Getting random index from 0 -> length of all possible characters
+            int index = random.nextInt(allPossibleCharacters.length);
+            // Appending new characters to referral code
+            referralCode.append(allPossibleCharacters[index]);
+        }
+
+        return referralCode.toString();
+    }
+
+    @Override
+    @Transactional
+    public Customer updateCustomerInfo(final CustomerDTO customerDTO) {
+
+        final Customer customer = customerRepository.findById(customerDTO.getId()).orElseThrow();
+
+        logger.info(customerDTO.getId() + ": About to update Customer Info");
+
+        if (customerDTO.getName() != null && !customerDTO.getName().isBlank()) {
+            customer.setName(customerDTO.getName().trim());
+        }
+
+        if (customerDTO.getEmail() != null && !customerDTO.getEmail().isBlank()) {
+            customer.setEmail(customerDTO.getEmail());
+        }
+
+        return customer;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<Customer> getAllCustomer() {
         return customerRepository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Customer> getDiscountedCustomer() {
 
-        return customerRepository.findByDiscountGreaterThan(Float.parseFloat("0"));
+        return customerRepository.findByDiscountGreaterThan(0f);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Customer> getBlockeList() {
 
         // Find all deactivated customers
         return customerRepository.findByActive(false);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Float getWalletAmount(final Long id) {
+
+        return customerRepository.getWalletAmount(id);
+    }
+
+    @Override
+    @Transactional
+    public Float updateWallet(final Long id, final float amount) {
+        final Customer customer = customerRepository.findById(id).orElseThrow();
+
+        if (customer.getWallet() + amount < 0) {
+            throw new RuntimeException("wallet cannot get updated to negative value");
+        }
+
+        customer.setWallet(amount + customer.getWallet());
+
+        return customer.getWallet();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Float getDiscount(final Long id) {
+        return customerRepository.getDiscount(id);
+    }
+
+    @Override
+    @Transactional
+    public Float setDiscount(final Long id, final float amount) {
+        if (amount < 0) {
+            throw new RuntimeException("Cannot be set to negative");
+        }
+
+        final Customer customer = customerRepository.findById(id).orElseThrow();
+
+        customer.setDiscount(amount);
+
+        return customer.getDiscount();
     }
 
 }

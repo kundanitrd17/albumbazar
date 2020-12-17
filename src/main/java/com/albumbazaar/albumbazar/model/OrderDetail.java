@@ -33,8 +33,6 @@ public class OrderDetail {
 
     private String productSize;
 
-    private String coverName;
-
     // Finance
     private Boolean paymentStatus;
 
@@ -42,8 +40,8 @@ public class OrderDetail {
 
     private Float discount;
 
-    // Change it to just the ID of the cover and get the pricing of the album from
-    // the database
+    private String coverName;
+
     private Float coverPrice;
 
     private Integer noOfSheets;
@@ -55,7 +53,7 @@ public class OrderDetail {
 
     // Tracking the current position of the order
     @Column(columnDefinition = "varchar(50) default 'pending'")
-    private String orderStatus = "pending";
+    private String orderStatus;
 
     private String orientation;
 
@@ -87,6 +85,12 @@ public class OrderDetail {
     private String photoFolderGoogleDriveLink;
 
     // End of photos columns
+
+    @PrePersist
+    public void prePersist() {
+        this.orderStatus = new String("pending");
+
+    }
 
     public OrderDetail() {
     }

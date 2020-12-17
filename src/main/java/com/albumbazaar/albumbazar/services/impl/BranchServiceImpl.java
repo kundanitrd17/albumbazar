@@ -11,6 +11,7 @@ import com.albumbazaar.albumbazar.dao.Address1Repository;
 import com.albumbazaar.albumbazar.dao.Address2Repository;
 import com.albumbazaar.albumbazar.dao.BranchRepository;
 import com.albumbazaar.albumbazar.dao.EmployeeRepository;
+import com.albumbazaar.albumbazar.dto.BranchDTO;
 import com.albumbazaar.albumbazar.form.BasicBranchInfoForm;
 import com.albumbazaar.albumbazar.form.LocationForm;
 import com.albumbazaar.albumbazar.model.Address1;
@@ -79,14 +80,18 @@ public class BranchServiceImpl implements BranchService {
     }
 
     @Override
-    public Branch updateBranch(final Branch updatedBranchInfo) {
-        // get the branch and validate new info
-        final Branch branch = branchRepository.findById(updatedBranchInfo.getId()).get();
-        /*
-         * ... update info
+    @Transactional
+    public Branch updateBranch(final BranchDTO updatedBranchInfo) {
+
+        final Branch branch = branchRepository.findById(updatedBranchInfo.getId()).orElseThrow();
+
+        if (updatedBranchInfo.getName() != null && !updatedBranchInfo.getName().isBlank()) {
+            branch.setName(updatedBranchInfo.getName());
+        }
+
+        /**
+         * Change other parameters for updates
          */
-        // save back
-        branchRepository.save(branch);
 
         return branch;
     }

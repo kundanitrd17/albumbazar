@@ -2,7 +2,15 @@
 <html>
 
 <head>
+
+  <meta name="_csrf" content="${_csrf.token}" />
+  <!-- default header name is X-CSRF-TOKEN -->
+  <meta name="_csrf_header" content="${_csrf.headerName}" />
+  <!-- ... -->
+
+
   <title>Hello WebSocket</title>
+
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
     integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
@@ -52,6 +60,10 @@
     </div>
   </div>
 
+
+  <div>
+    <button id="test-click">click</button>
+  </div>v
 
 
 
@@ -130,6 +142,27 @@
 
 
 
+  <script>
+    document.getElementById('test-click').addEventListener('click', function () {
+      var token = $("meta[name='_csrf']").attr("content");
+      var header = $("meta[name='_csrf_header']").attr("content");
+
+      var xhr = new XMLHttpRequest();
+      var url = 'http://localhost:8080/emp';
+      xhr.open("POST", url, true);
+      xhr.setRequestHeader('Content-type', 'application/json');
+      // xhr.setRequestHeader(header, token);
+
+      xhr.onreadystatechange = function () { // Call a function when the state changes.
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+          // console.log(typeof (JSON.parse(this.response)));
+          console.log(this.response);
+
+        }
+      }
+      xhr.send(JSON.stringify(892))
+    })
+  </script>
 
 
 

@@ -2,6 +2,7 @@ package com.albumbazaar.albumbazar.services;
 
 import java.util.List;
 
+import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
@@ -46,5 +47,13 @@ public interface OrderService {
      * @return all order details based on payment status
      */
     List<OrderDetail> getOrderByPaymentStatus(Boolean paymentStatus);
+
+    /**
+     * Update non null values of orderDetailDTO
+     * 
+     * @param orderDetailInfo
+     * @return orderDetail gets returned
+     */
+    OrderDetail updateOrderInfo(Long id, OrderDetailDTO orderDetailInfo);
 
 }

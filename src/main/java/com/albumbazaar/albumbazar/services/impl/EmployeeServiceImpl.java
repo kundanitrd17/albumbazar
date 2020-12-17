@@ -4,8 +4,6 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
-import javax.persistence.EntityNotFoundException;
-
 import com.albumbazaar.albumbazar.dao.Address1Repository;
 import com.albumbazaar.albumbazar.dao.Address2Repository;
 import com.albumbazaar.albumbazar.dao.EmployeeRepository;

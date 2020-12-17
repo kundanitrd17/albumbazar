@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import com.albumbazaar.albumbazar.dao.OrderRepository;
 import com.albumbazaar.albumbazar.dao.SheetDetailRepository;
+import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
@@ -109,6 +110,35 @@ public class OrderServiceImpl implements OrderService {
             System.out.println("Unable to fetch orders from the pool");
         }
         return null;
+    }
+
+    @Override
+    @Transactional
+    public OrderDetail updateOrderInfo(final Long id, final OrderDetailDTO orderDetailDTO) {
+
+        final OrderDetail orderDetailEntity = orderRepository.findById(id).orElseThrow();
+
+        if (orderDetailDTO.getAssociationName() != null && !orderDetailDTO.getAssociationName().isBlank()) {
+            orderDetailEntity.setAssociationName(orderDetailDTO.getAssociationName().trim());
+        }
+
+        if (orderDetailDTO.getDescription() != null && !orderDetailDTO.getDescription().isBlank()) {
+            orderDetailEntity.setDescription(orderDetailDTO.getDescription().trim());
+        }
+
+        if (orderDetailDTO.getNoOfSheets() != null) {
+            orderDetailEntity.setNoOfSheets(orderDetailDTO.getNoOfSheets());
+        }
+
+        if (orderDetailDTO.getOrientation() != null && !orderDetailDTO.getOrientation().isBlank()) {
+            orderDetailEntity.setOrientation(orderDetailDTO.getOrientation());
+        }
+
+        if (orderDetailDTO.getProductName() != null && !orderDetailDTO.getProductName().isBlank()) {
+            orderDetailEntity.setProductName(orderDetailDTO.getProductName());
+        }
+
+        return orderDetailEntity;
     }
 
 }
