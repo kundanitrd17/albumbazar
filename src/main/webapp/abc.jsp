@@ -71,7 +71,7 @@
                     // console.log(typeof (JSON.parse(this.response)));
                     console.log(this.response);
 
-                    alert("file was uploaded successfully")
+                    console.log("file was uploaded successfully")
 
                 }
             }

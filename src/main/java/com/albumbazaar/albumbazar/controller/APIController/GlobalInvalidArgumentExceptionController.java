@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 @RestControllerAdvice
 public class GlobalInvalidArgumentExceptionController {
@@ -20,7 +21,7 @@ public class GlobalInvalidArgumentExceptionController {
         return ResponseEntity.unprocessableEntity().body(errorDTO);
     }
 
-    @ExceptionHandler({ NumberFormatException.class })
+    @ExceptionHandler({ MethodArgumentTypeMismatchException.class, NumberFormatException.class })
     public ResponseEntity<?> ExceptionHandlerForInvalidNumberFormatType() {
 
         final ErrorDTO error = new ErrorDTO();

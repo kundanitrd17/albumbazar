@@ -87,7 +87,8 @@ public final class HomeController {
         // SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         // principal. get user id
 
-        // This user id has to taken from the session object after adding security
+        // This user id has to taken from the SecurityContextHolder object after adding
+        // spring security
         final String userId = "harsh";
         final String code = request.getParameter("code");
 
@@ -100,11 +101,13 @@ public final class HomeController {
     public void doGoogleDriveSignIn(HttpServletResponse response) throws Exception {
 
         if (googleDriveService.isAuthenticatedToGoogle("harsh")) {
-            // response.sendRedirect("/");
+
+            // response.sendRedirect("/"); later
             System.out.println("already signed-in");
         }
 
-        // Redirect to the url provided by google authorization code flow
+        // Redirect to the url provided by google authorization code flow for OAuth
+        // sign-in and wait at the callback to get the secret code
         response.sendRedirect(googleDriveService.getRedirectUrlForGoogleSignIn());
 
     }

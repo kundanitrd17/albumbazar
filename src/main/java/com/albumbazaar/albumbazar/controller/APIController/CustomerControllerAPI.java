@@ -43,12 +43,4 @@ public class CustomerControllerAPI {
 
     }
 
-    @GetMapping(value = { "/googlesignin" })
-    public void doGoogleDriveSignIn(HttpServletResponse response) throws Exception {
-
-        // Redirect to the url provided by google authorization code flow
-        response.sendRedirect(googleDriveService.getRedirectUrlForGoogleSignIn());
-
-    }
-
 }

@@ -10,6 +10,7 @@ import com.albumbazaar.albumbazar.dao.principals.EmployeePrincipal;
 import com.albumbazaar.albumbazar.dao.principals.SuperuserPrincipal;
 import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
+import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.services.GoogleDriveService;
 import com.albumbazaar.albumbazar.services.OrderService;
 import com.albumbazaar.albumbazar.services.storage.StorageService;
@@ -23,6 +24,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -74,46 +76,54 @@ public class OrderControllerAPI {
 
     }
 
+    @GetMapping(value = "secured/order/{order_id}/create-folder")
+    public ResponseEntity<?> createGoogleDriveFolderAndSaveId(
+            @PathVariable(name = "order_id") OrderDetail orderDetail) {
+
+        System.out.println(orderDetail);
+        try {
+            googleDriveService.createFolderAndMakePublic("folderName", "harsh", orderDetail);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+
+            // DELETE THE FOLDER ON ANY KIND OF ERROR
+
+            final ErrorDTO error = new ErrorDTO();
+            error.setMessage("unable to create folder... try again");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(orderDetail);
+        }
+
+        return ResponseEntity.ok().body("body");
+
+    }
+
     @PostMapping(value = "secured/order/{order_id}/photos", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public ResponseEntity<?> uploadPhotos(@PathVariable(name = "order_id") final Long orderId,
+    public ResponseEntity<?> uploadPhotos(@PathVariable(name = "order_id") final OrderDetail orderInfo,
             @RequestPart("files") List<MultipartFile> files) {
 
         // SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         // Authenticating user
         // If the user is not authenticated then
-        if (!googleDriveService.isAuthenticatedToGoogle("harsh")) {
-            final ErrorDTO error = new ErrorDTO();
-            error.setMessage("Authenticate Google drive");
-            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(error);
-        }
+        // if (!googleDriveService.isAuthenticatedToGoogle("harsh")) {
+        // final ErrorDTO error = new ErrorDTO();
+        // error.setMessage("Authorize access to Google drive");
+        // return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(error);
+        // }
+        // credentials are getting loading in upload case so we do not have to do this
+        // here
 
         try {
 
-            System.out.println("Order Id: " + orderId);
-            System.out.println(files);
-            for (MultipartFile multipart : files) {
-                System.out.println(multipart.getOriginalFilename());
-            }
+            System.out.println("Order Id: " + orderInfo.getId());
+            files.forEach(e -> System.out.println(e.getOriginalFilename()));
+            googleDriveService.uploadToGoogleDrive(files, orderInfo.getPhotoFolderGoogleDriveId(), "harsh");
         } catch (Exception e) {
             logger.error(e.getMessage());
             return ResponseEntity.badRequest().body("Not body");
         }
 
         return ResponseEntity.ok().body("body");
-    }
-
-}
-
-class Data {
-    Multipart files;
-
-    public Multipart getFiles() {
-        return files;
-    }
-
-    public void setFiles(Multipart files) {
-        this.files = files;
     }
 
 }
