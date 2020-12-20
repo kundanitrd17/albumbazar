@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping(value = "customer")
@@ -80,22 +81,29 @@ public final class CustomerController {
     }
 
     @GetMapping(value = "")
-    @ResponseBody
-    public List<Customer> getAllCustomer() {
+    public ModelAndView getAllCustomer() {
 
-        return customerService.getAllCustomer();
+        final ModelAndView modelAndView = new ModelAndView("superuser/customer");
+
+        modelAndView.addObject("customers", customerService.getAllCustomer());
+
+        return modelAndView;
     }
 
     @GetMapping(value = "discounted")
-    @ResponseBody
-    public List<Customer> getDiscountedCustomer() {
-        return customerService.getDiscountedCustomer();
+    public ModelAndView getDiscountedCustomer() {
+        final ModelAndView modelAndView = new ModelAndView("superuser/customer");
+        modelAndView.addObject("customers", customerService.getDiscountedCustomer());
+
+        return modelAndView;
     }
 
     @GetMapping(value = "blocked")
-    @ResponseBody
-    public List<Customer> getBlockedCustomer() {
-        return customerService.getBlockeList();
+    public ModelAndView getBlockedCustomer() {
+        final ModelAndView modelAndView = new ModelAndView("superuser/customer");
+        modelAndView.addObject("customers", customerService.getBlockeList());
+
+        return modelAndView;
     }
 
 }

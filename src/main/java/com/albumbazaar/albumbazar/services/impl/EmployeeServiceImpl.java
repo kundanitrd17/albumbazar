@@ -23,6 +23,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Qualifier("employeeService")
@@ -94,9 +95,10 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
     }
 
     @Override
+    @Transactional
     public Employee updateEmployee(final Employee updatedEmployeeDetails) {
         // get the employee
-        final Employee employee = employeeRepository.findById(updatedEmployeeDetails.getId()).get();
+        final Employee employee = employeeRepository.findById(updatedEmployeeDetails.getId()).orElseThrow();
         // update details
         /*
          */
@@ -107,12 +109,20 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
 
     @Override
     public Employee deleteEmployee(final Long employeeId) {
+
+        if (employeeId == null) {
+            throw new RuntimeException("Unable to find Employee");
+        }
+
         return updateEmployeeStatus(employeeId, false);
 
     }
 
     @Override
     public Employee restoreEmployee(final Long employeeId) {
+        if (employeeId == null) {
+            throw new RuntimeException("Unable to find Employee");
+        }
         return updateEmployeeStatus(employeeId, true);
     }
 

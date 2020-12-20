@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
+import com.albumbazaar.albumbazar.services.CustomerCareEmployeeService;
 import com.albumbazaar.albumbazar.services.OrderService;
 
 import org.slf4j.Logger;
@@ -19,13 +20,16 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping(value = "customer-care")
 public final class CustomerCareController {
-
-    private OrderService orderService;
     private Logger logger = LoggerFactory.getLogger(CustomerCareController.class);
 
+    private final CustomerCareEmployeeService customerCareEmployeeService;
+    private final OrderService orderService;
+
     @Autowired
-    protected CustomerCareController(@Qualifier("orderService") final OrderService orderService) {
+    protected CustomerCareController(@Qualifier("orderService") final OrderService orderService,
+            @Qualifier("customerCareEmployeeService") final CustomerCareEmployeeService customerCareEmployeeService) {
         this.orderService = orderService;
+        this.customerCareEmployeeService = customerCareEmployeeService;
     }
 
     @GetMapping(value = "")
@@ -59,7 +63,15 @@ public final class CustomerCareController {
         ModelAndView modelAndView = new ModelAndView("customercare/customercare_accepted_order");
 
         try {
-            // Process
+            /**
+             * Get the Principal object from SecurityContextHolder and populate
+             * orderAndCustomerCare.customerCareId
+             */
+            // Object principal = SecurityContextHolder.getContext().getAuthentication()
+            // .getPrincipal();
+
+            modelAndView.addObject("allOrders", customerCareEmployeeService.acceptedOrdersByCustomerCare(1l));
+
         } catch (Exception e) {
             logger.error(e.getMessage());
         }

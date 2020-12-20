@@ -119,7 +119,6 @@ public class BranchServiceImpl implements BranchService {
         return updateBranchStatus(branchId, true);
     }
 
-    @Transactional
     private final Branch updateBranchStatus(final Long branchId, final Boolean status) {
         try {
             final Branch branch = branchRepository.findById(branchId).orElseThrow();

@@ -1,7 +1,12 @@
 package com.albumbazaar.albumbazar.services.impl;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.albumbazaar.albumbazar.dao.OrderAndCustomerCareRepository;
+import com.albumbazaar.albumbazar.model.Employee;
 import com.albumbazaar.albumbazar.model.OrderAndCustomerCareEntity;
+import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.services.CustomerCareEmployeeService;
 import com.albumbazaar.albumbazar.services.EmployeeService;
 import com.albumbazaar.albumbazar.services.OrderService;
@@ -39,6 +44,7 @@ public class CustomerCareEmployeeServiceImpl implements CustomerCareEmployeeServ
 
         OrderAndCustomerCareEntity orderAndCustomerCareEntity = new OrderAndCustomerCareEntity();
         try {
+
             orderAndCustomerCareEntity.setOrder(orderService.getOrder(orderAndCustomerCare.getOrderId()));
             orderAndCustomerCareEntity
                     .setCustomerCareEmployee(employeeService.getEmployee(orderAndCustomerCare.getCustomerCareId()));
@@ -47,10 +53,23 @@ public class CustomerCareEmployeeServiceImpl implements CustomerCareEmployeeServ
 
         } catch (Exception e) {
             logger.error(e.getMessage());
-            orderAndCustomerCareEntity = null;
+            throw new RuntimeException("unable to save new orderAndCustomerCareEntity");
         }
 
         return orderAndCustomerCareEntity;
+    }
+
+    @Override
+    public List<OrderDetail> acceptedOrdersByCustomerCare(final Long customerCareId) {
+        if (customerCareId == null) {
+            throw new RuntimeException("No such customer care");
+        }
+
+        // final Employee customerCare = employeeService.getEmployee(customerCareId);
+
+        return orderAndCustomerCareRepository.findAllWithEmployeeId(customerCareId).stream()
+                .map(entity -> entity.getOrder()).collect(Collectors.toList());
+
     }
 
 }

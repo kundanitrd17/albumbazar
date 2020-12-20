@@ -74,4 +74,20 @@ public interface CustomerService {
 
     Float setDiscount(Long id, float amount);
 
+    /**
+     * set status to false for the customer
+     * 
+     * @param id id of the customer
+     * @return Customer entity with updated values
+     */
+    Customer deleteCustomer(Long id);
+
+    /**
+     * set status to true for the customer
+     * 
+     * @param id
+     * @return Customer entity with updated values
+     */
+    Customer restoreCustomer(Long id);
+
 }

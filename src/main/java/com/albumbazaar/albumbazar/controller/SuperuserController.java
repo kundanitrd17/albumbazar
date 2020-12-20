@@ -2,6 +2,7 @@ package com.albumbazaar.albumbazar.controller;
 
 import java.util.List;
 
+import com.albumbazaar.albumbazar.dao.principals.SuperuserPrincipal;
 import com.albumbazaar.albumbazar.form.BasicBranchInfoForm;
 import com.albumbazaar.albumbazar.form.ForgotPasswordFormSuperuser;
 import com.albumbazaar.albumbazar.form.LocationForm;
@@ -16,6 +17,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,9 +64,10 @@ public final class SuperuserController {
 
         logger.info("Superuser Logged in now");
 
-        // SuperuserPrincipal principal = (SuperuserPrincipal)
-        // SecurityContextHolder.getContext().getAuthentication()
-        // .getPrincipal();
+        SuperuserPrincipal principal = (SuperuserPrincipal) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+
+        System.out.println(principal);
 
         return "superuser/super-admin";
     }

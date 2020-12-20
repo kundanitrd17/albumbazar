@@ -35,7 +35,7 @@ public class OrderAndCustomerCareEntity {
 
     @NotNull(message = "There should be a customer care to accept a order")
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_care_employee")
+    @JoinColumn(name = "customer_care_employee_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Employee customerCareEmployee;
 

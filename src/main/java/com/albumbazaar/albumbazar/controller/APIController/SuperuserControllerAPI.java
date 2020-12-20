@@ -3,9 +3,11 @@ package com.albumbazaar.albumbazar.controller.APIController;
 import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.model.Association;
 import com.albumbazaar.albumbazar.model.Branch;
+import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.Employee;
 import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.BranchService;
+import com.albumbazaar.albumbazar.services.CustomerService;
 import com.albumbazaar.albumbazar.services.EmployeeService;
 
 import org.slf4j.Logger;
@@ -31,14 +33,17 @@ public class SuperuserControllerAPI {
     private final EmployeeService employeeService;
     private final BranchService branchService;
     private final AssociationService associationService;
+    private final CustomerService customerService;
 
-    @Autowired
+    @Autowired(required = true)
     protected SuperuserControllerAPI(@Qualifier("employeeService") final EmployeeService employeeService,
             @Qualifier("branchService") final BranchService branchService,
-            @Qualifier("associationService") final AssociationService associationService) {
+            @Qualifier("associationService") final AssociationService associationService,
+            @Qualifier("customerService") final CustomerService customerService) {
         this.employeeService = employeeService;
         this.branchService = branchService;
         this.associationService = associationService;
+        this.customerService = customerService;
     }
 
     /**
@@ -156,6 +161,37 @@ public class SuperuserControllerAPI {
 
             return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body("body");
         }
+    }
+
+    @DeleteMapping(value = "customer-delete")
+    public ResponseEntity<?> deactivateCustomer(@RequestBody Long customerId) {
+
+        try {
+            customerService.deleteCustomer(customerId);
+            return ResponseEntity.ok().body("done deleting");
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+
+            final ErrorDTO error = new ErrorDTO();
+            error.setMessage(e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+
+    }
+
+    @PutMapping(value = "customer-restore")
+    public ResponseEntity<?> activateCustomer(@RequestBody Long customerId) {
+        try {
+
+            customerService.restoreCustomer(customerId);
+            return ResponseEntity.ok().body("done restoring");
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            final ErrorDTO error = new ErrorDTO();
+            error.setMessage(e.getMessage());
+            return ResponseEntity.badRequest().body(error);
+        }
+
     }
 
 }

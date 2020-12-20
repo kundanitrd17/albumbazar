@@ -18,7 +18,7 @@ public class OrdersReceivedPoolWebSocketConfiguration implements WebSocketMessag
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/order-pool-websocket-connect").withSockJS();
+        registry.addEndpoint("/customer-care/order-pool-websocket-connect").withSockJS();
     }
 
 }

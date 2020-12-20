@@ -174,4 +174,33 @@ public class CustomerServiceImpl implements CustomerService {
         return customer.getDiscount();
     }
 
+    @Override
+    public Customer deleteCustomer(Long id) {
+        if (id == null) {
+            throw new RuntimeException("Unable to find customer");
+        }
+        return updateCustomerStatus(id, false);
+    }
+
+    @Override
+    public Customer restoreCustomer(Long id) {
+        if (id == null) {
+            throw new RuntimeException("Unable to find customer");
+        }
+        return updateCustomerStatus(id, true);
+    }
+
+    @Transactional
+    private final Customer updateCustomerStatus(final Long customerId, final Boolean status) {
+        try {
+            final Customer customer = customerRepository.findById(customerId).orElseThrow();
+            customer.setActive(status);
+            return customerRepository.save(customer);
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            throw new RuntimeException("Unable to make change to the Customer");
+        }
+    }
+
 }

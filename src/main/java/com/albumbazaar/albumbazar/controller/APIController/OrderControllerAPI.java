@@ -1,5 +1,6 @@
 package com.albumbazaar.albumbazar.controller.APIController;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -86,11 +87,9 @@ public class OrderControllerAPI {
         } catch (Exception e) {
             logger.error(e.getMessage());
 
-            // DELETE THE FOLDER ON ANY KIND OF ERROR
-
             final ErrorDTO error = new ErrorDTO();
             error.setMessage("unable to create folder... try again");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(orderDetail);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         }
 
         return ResponseEntity.ok().body("body");
@@ -101,26 +100,17 @@ public class OrderControllerAPI {
     public ResponseEntity<?> uploadPhotos(@PathVariable(name = "order_id") final OrderDetail orderInfo,
             @RequestPart("files") List<MultipartFile> files) {
 
-        // SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-
-        // Authenticating user
-        // If the user is not authenticated then
-        // if (!googleDriveService.isAuthenticatedToGoogle("harsh")) {
-        // final ErrorDTO error = new ErrorDTO();
-        // error.setMessage("Authorize access to Google drive");
-        // return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(error);
-        // }
-        // credentials are getting loading in upload case so we do not have to do this
-        // here
-
         try {
 
-            System.out.println("Order Id: " + orderInfo.getId());
-            files.forEach(e -> System.out.println(e.getOriginalFilename()));
+            files.forEach(e -> logger.info(e.getOriginalFilename()));
             googleDriveService.uploadToGoogleDrive(files, orderInfo.getPhotoFolderGoogleDriveId(), "harsh");
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().body("Unable to process request");
         } catch (Exception e) {
             logger.error(e.getMessage());
-            return ResponseEntity.badRequest().body("Not body");
+
+            return ResponseEntity.notFound().build();
         }
 
         return ResponseEntity.ok().body("body");

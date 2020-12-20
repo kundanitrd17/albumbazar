@@ -1,5 +1,6 @@
 package com.albumbazaar.albumbazar.controller;
 
+import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.model.OrderAndCustomerCareEntity;
 import com.albumbazaar.albumbazar.services.CustomerCareEmployeeService;
 import com.albumbazaar.albumbazar.utilities.OrderAndCustomerCarePool;
@@ -17,32 +18,42 @@ import org.springframework.web.bind.annotation.RequestBody;
 @Controller
 public final class AllOrdersReceivedPool {
 
-    private CustomerCareEmployeeService customerCareEmployeeService;
+    private final CustomerCareEmployeeService customerCareEmployeeService;
     private Logger logger = LoggerFactory.getLogger(AllOrdersReceivedPool.class);
 
-    @Autowired
+    @Autowired(required = true)
     protected AllOrdersReceivedPool(
-            @Qualifier("customerCareEmployeeService") CustomerCareEmployeeService customerCareEmployeeService) {
+            @Qualifier("customerCareEmployeeService") final CustomerCareEmployeeService customerCareEmployeeService) {
         this.customerCareEmployeeService = customerCareEmployeeService;
     }
 
     @MessageMapping(value = "/customer-care/publish/order-pool")
     @SendTo(value = "/customer-care/subscribe/order-pool")
-    public ResponseEntity<?> orderPoolAreaResource(@RequestBody final OrderAndCustomerCarePool orderAndCustomerCare) {
+    public OrderAndCustomerCarePool orderPoolAreaResource(
+            @RequestBody final OrderAndCustomerCarePool orderAndCustomerCare) {
 
         logger.info(orderAndCustomerCare.toString());
+        /**
+         * Get the Principal object from SecurityContextHolder and populate
+         * orderAndCustomerCare.customerCareId
+         */
+        // Object principal = SecurityContextHolder.getContext().getAuthentication()
+        // .getPrincipal();
+        orderAndCustomerCare.setCustomerCareId(1L);
 
         try {
+
             final OrderAndCustomerCareEntity orderAndCustomerCareEntity = customerCareEmployeeService
                     .addOrderOfCustomerCare(orderAndCustomerCare);
 
             logger.info(orderAndCustomerCareEntity.toString());
-            return ResponseEntity.ok().body(orderAndCustomerCareEntity);
+
+            return orderAndCustomerCare;
         } catch (Exception e) {
-            System.out.println("Something wrong: " + e.getMessage());
+            logger.error(e.getMessage());
         }
 
-        return ResponseEntity.badRequest().body("error");
+        return null;
     }
 
 }

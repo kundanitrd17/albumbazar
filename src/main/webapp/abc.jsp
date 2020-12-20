@@ -61,7 +61,8 @@
             var data = new FormData(form);
 
             var xhr = new XMLHttpRequest();
-            var url = 'http://localhost:8080/api/secured/order/1/photos';
+            var orderId = 1;
+            var url = 'http://localhost:8080/api/secured/order/' + orderId + '/photos';
             xhr.open("POST", url, true);
             // xhr.setRequestHeader('Content-type', 'application/json');
             // xhr.setRequestHeader(header, token);

@@ -49,7 +49,7 @@ public class Customer {
 
     @NotNull(message = "Password cannot be null")
     @NotBlank(message = "Password cannot be blank")
-    @Size(min = 8, message = "Password needs to be more stronger")
+    // @Size(min = 8, message = "Password needs to be more stronger")
     @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;

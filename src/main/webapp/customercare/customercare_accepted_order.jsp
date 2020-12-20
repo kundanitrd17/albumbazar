@@ -1,3 +1,5 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 
 <html>
@@ -110,7 +112,29 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                     </thead>
                     <tbody>
 
-                        <tr>
+                        <c:forEach items="${allOrders}" var="eachOrder">
+
+                            <tr>
+                                <td >${eachOrder.id}</td>
+                                <td >${eachOrder.associationName}</td>
+                                <td >7047261982</td>
+                                <td >9832177025</td>
+                                <td><a href="" data-toggle="modal" data-target="#branchAddress" id="link_address"
+                                        onclick="addrLink(1)">Address Id</a></td>
+                                <td id="associationEmail">kundanitrd17@gmail.com</td>
+                                <td><a type="button" href="" id="link_adminId" data-toggle="modal"
+                                        data-target="#associationProductViewDetails"
+                                        onclick="associationProductView(1)">View Product</a></td>
+                                <td><a href="">Show Order</a></td>
+                                <td class=""> <a href="#" class="btn btn-success s-icon " style="display: none;"
+                                        onclick="saveBranch(1)">Save</a>
+                                    <button class="btn btn-warning e-icon">Edit</button></td>
+                                <td><a class="btn btn-danger d-icon">Done</a></td>
+                            </tr>
+
+                        </c:forEach>
+
+                        <!-- <tr>
                             <td id="associationId">101</td>
                             <td id="associationName">canvera</td>
                             <td id="associationPhone1">7047261982</td>
@@ -126,26 +150,9 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                     onclick="saveBranch(1)">Save</a>
                                 <button class="btn btn-warning e-icon">Edit</button></td>
                             <td><a class="btn btn-danger d-icon">Done</a></td>
-                        </tr>
+                        </tr> -->
 
-                        <tr>
-                            <td id="associationId">101</td>
-                            <td id="associationName">canvera</td>
-                            <td id="associationPhone1">7047261982</td>
-                            <td id="associationPhone2">9832177025</td>
-                            <td><a href="" data-toggle="modal" data-target="#branchAddress" id="link_address"
-                                    onclick="addrLink(1)">Address Id</a></td>
-                            <td id="associationEmail">kundanitrd17@gmail.com</td>
-                            <td><a type="button" href="" id="link_adminId" data-toggle="modal"
-                                    data-target="#associationProductViewDetails"
-                                    onclick="associationProductView(2)">View Product</a></td>
-                            <td><a href="">Show Order</a></td>
-                            <td class=""> <a href="#" class="btn btn-success s-icon " style="display: none;"
-                                    onclick="saveBranch(1)">Save</a>
-                                <button class="btn btn-warning e-icon">Edit</button></td>
-                            <td><a class="btn btn-danger d-icon">Done</a></td>
-
-                        </tr>
+                        
 
 
                     </tbody>

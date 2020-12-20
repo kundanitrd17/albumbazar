@@ -1,14 +1,11 @@
 package com.albumbazaar.albumbazar.services.impl;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.annotation.PostConstruct;
 
@@ -23,7 +20,6 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeReque
 import com.google.api.client.googleapis.auth.oauth2.GoogleClientSecrets;
 import com.google.api.client.googleapis.auth.oauth2.GoogleTokenResponse;
 import com.google.api.client.http.ByteArrayContent;
-import com.google.api.client.http.FileContent;
 import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
@@ -40,7 +36,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -155,14 +150,20 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
      *                   rollback
      */
     @Override
-    public void createFolderAndMakePublic(String folderName, String userId, OrderDetail orderDetail) throws Exception {
+    public void createFolderAndMakePublic(final String folderName, final String userId, final OrderDetail orderDetail)
+            throws Exception {
+
+        // Check whether if the orderEntity is missing
+        if (orderDetail == null) {
+            throw new RuntimeException("unable to find order info");
+        }
 
         // If the folder name is not provided then terminate
         if (folderName == null) {
             throw new RuntimeException("provide a proper folder name");
         }
 
-        // load the credential from the database
+        // load the credential from the database and check if the user is authorized
         Credential credential = flow.loadCredential(userId);
         if (credential == null) {
             throw new RuntimeException("user unauthorized");
@@ -181,16 +182,24 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
 
         logger.info("file created with id: " + createdFolder.getId());
 
-        // Set fileid attribute in the order detail entity
-        orderDetail.setPhotoFolderGoogleDriveId(createdFolder.getId());
-        orderDetail.setPhotoFolderGoogleDriveLink(createdFolder.getWebViewLink());
+        try {
+            // Set fileid attribute in the order detail entity
+            orderDetail.setPhotoFolderGoogleDriveId(createdFolder.getId());
+            orderDetail.setPhotoFolderGoogleDriveLink(createdFolder.getWebViewLink());
 
-        /**
-         * make the created folder public (Accessable by anyone using the webViewLink)
-         */
-        makeFolderPublic(orderDetail.getPhotoFolderGoogleDriveId(), drive);
+            /**
+             * make the created folder public (Accessable by anyone using the webViewLink)
+             */
+            makeFolderPublic(orderDetail.getPhotoFolderGoogleDriveId(), drive);
 
-        orderRepository.save(orderDetail);
+            orderRepository.save(orderDetail);
+        } catch (Exception e) {
+            /**
+             * Delete the created folder in case of any errors while changing the permission
+             * of the file or setting updating fileId or webViewlink in the DB
+             */
+            deleteAnyFileOnGoogleDrive(drive, createdFolder.getId());
+        }
     }
 
     /**
@@ -224,13 +233,19 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
         final Drive drive = new Drive.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).setApplicationName("Quickstart")
                 .build();
 
+        final AtomicInteger totalExceptionsThrown = new AtomicInteger();
         filesToUpload.parallelStream().forEach(fileToUpload -> {
             try {
                 uploadToGoogleDrive(fileToUpload, FOLDER_TO_UPLOAD_ID, drive);
             } catch (Exception e) {
+                totalExceptionsThrown.incrementAndGet();
                 logger.error(e.getMessage());
             }
         });
+
+        if (totalExceptionsThrown.get() >= filesToUpload.size()) {
+            throw new RuntimeException("unable to upload files... please recreate folder");
+        }
 
         logger.info("uploaded files to Google Drive");
 
@@ -269,6 +284,10 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
 
         //////////////////////////////////////////////////////////////////////////////////////
 
+    }
+
+    private void deleteAnyFileOnGoogleDrive(final Drive drive, final String fileId) throws IOException {
+        drive.files().delete(fileId).execute();
     }
 
 }
