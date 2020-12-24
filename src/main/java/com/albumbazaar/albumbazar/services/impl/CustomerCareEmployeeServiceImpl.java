@@ -7,6 +7,7 @@ import com.albumbazaar.albumbazar.dao.OrderAndCustomerCareRepository;
 import com.albumbazaar.albumbazar.model.Employee;
 import com.albumbazaar.albumbazar.model.OrderAndCustomerCareEntity;
 import com.albumbazaar.albumbazar.model.OrderDetail;
+import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 import com.albumbazaar.albumbazar.services.CustomerCareEmployeeService;
 import com.albumbazaar.albumbazar.services.EmployeeService;
 import com.albumbazaar.albumbazar.services.OrderService;
@@ -45,9 +46,16 @@ public class CustomerCareEmployeeServiceImpl implements CustomerCareEmployeeServ
         OrderAndCustomerCareEntity orderAndCustomerCareEntity = new OrderAndCustomerCareEntity();
         try {
 
-            orderAndCustomerCareEntity.setOrder(orderService.getOrder(orderAndCustomerCare.getOrderId()));
-            orderAndCustomerCareEntity
-                    .setCustomerCareEmployee(employeeService.getEmployee(orderAndCustomerCare.getCustomerCareId()));
+            // Fetching order and Customer care employee
+            final OrderDetail orderInfo = orderService.getOrder(orderAndCustomerCare.getOrderId());
+            final Employee customerCareEmployee = employeeService.getEmployee(orderAndCustomerCare.getCustomerCareId());
+
+            // Populate the orderAndCustomerCare entity
+            orderAndCustomerCareEntity.setOrder(orderInfo);
+            orderAndCustomerCareEntity.setCustomerCareEmployee(customerCareEmployee);
+
+            orderInfo.setOrderStatus(OrderDetailStatus.PROCESSING.toString());
+            orderInfo.setEmployee(customerCareEmployee);
 
             orderAndCustomerCareRepository.save(orderAndCustomerCareEntity);
 
@@ -70,6 +78,16 @@ public class CustomerCareEmployeeServiceImpl implements CustomerCareEmployeeServ
         return orderAndCustomerCareRepository.findAllWithEmployeeId(customerCareId).stream()
                 .map(entity -> entity.getOrder()).collect(Collectors.toList());
 
+    }
+
+    @Override
+    public List<OrderDetail> getCompletedOrders(final Long customerCareId) {
+
+        if (customerCareId == null) {
+            throw new RuntimeException("invalid Customer care");
+        }
+
+        return orderService.getOrdersAssociatedWithEmployeeAndStatus(customerCareId, OrderDetailStatus.COMPLETED);
     }
 
 }

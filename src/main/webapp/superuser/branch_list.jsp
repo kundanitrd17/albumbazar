@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<%@ page import="java.util.List, com.albumbazaar.albumbazar.model.Branch" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
     <html>
 
     <head>
@@ -114,36 +114,45 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <% List<Branch> branches = (List<Branch>) request.getAttribute("branches");
-                                            int index = 0;
-                                            for(Branch branch : branches) {
+                                    <c:forEach items="${branches}" var="branch">
+                                        <c:if test="${branch.active}"> 
+                                            <tr id="row${branch.id}">
+                                        </c:if>
+                                        <c:if test="${!branch.active}"> 
+                                            <tr id="row${branch.id}" style="background-color: gray;">
+                                        </c:if>
 
-                                            %>
-                                            <tr id="row<%= branch.getId() %>">
-                                                <td id="branchId">
-                                                    <%= branch.getId() %>
+                                            
+                                                <td id="branchId${branch.id}" class="branchId" data-branch-id="${branch.id}">
+                                                    ${branch.id}
                                                 </td>
-                                                <td id="branchName">
-                                                    <%= branch.getName() %>
+                                                <td id="branchName${branch.id}">
+                                                    ${branch.name}
                                                 </td>
                                                 <td id="branchCode">ASN-AB</td>
                                                 <td id="adminId"><a href="" id="link_adminId" data-toggle="modal"
                                                         data-target="#adminDetails" onclick="adminLink(2)">adminId</a>
                                                 </td>
-                                                <td id="contact">1234567890</td>
+                                                <td id="contact${branch.id}">${branch.contactNo}</td>
                                                 <td id="address"><a href="" data-toggle="modal"
                                                         data-target="#branchAddress" id="link_address"
                                                         onclick="addrLink(1)">Address Id</a></td>
                                                 <td id="date">20/12/2004</td>
-                                                <td> <a href="api/order?branchId=<%=branch.getId()%>">click</a> </td>
-                                                <td class=""> <a href="#" class="btn btn-success s-icon "
-                                                        style="display: none;" onclick="saveBranch(1)">Save</a>
-                                                    <button class="btn btn-warning e-icon">Edit</button>
-                                                </td>
-                                                <td><a class="btn btn-danger d-icon">Delete</button></a></td>
+                                                <td> <a href="api/order?branchId=${branch.id}">click</a> </td>
+
+                                                <c:if test="${branch.active}">
+                                                    <td class=""> 
+                                                        <a href="#" class="btn btn-success s-icon "
+                                                            style="display: none;" onclick="saveBranch('${branch.id}')">Save</a>
+                                                        <button class="btn btn-warning e-icon">Edit</button>
+                                                    </td>
+                                                    <td><a class="btn btn-danger d-icon">Delete</button></a></td>
+                                                </c:if>
+                                                
+
                                             </tr>
 
-                                            <%}%>
+                                        </c:forEach>
                                 </tbody>
                             </table>
                         </div>
@@ -291,22 +300,24 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                 // Delete Branch
                 $('.table tbody tr td').on('click', '.d-icon', function () {
 
+                    if(!confirm("Confirm to delete this branch")) {
+                        return;
+                    }
+
+                    $(this).hide();
+                    $(this).parent().prev().hide();
+                    $(this).parent().prevAll().css("background-color", "gray").focus();
+                    
+
+
                     event.preventDefault();
                     const content = $(this).parent().prevAll().toArray();
                     const data = {};
-                    content.forEach(item => {
-                        if (item.id === "branchId") {
-                            data["id"] = item.innerText;
-                        }
-                        // if (item.id === "branchName") {
-                        //     data["name"] = item.innerText;
-                        // }
-                        // if (item.id === "branchContact") {
-                        //     data["phone"] = item.innerText;
-                        // }
-                    })
+                    var branchId = $(this).parent().siblings('.branchId').data();
+                    // console.log(branchId);
+                    data["id"] = branchId.branchId;
 
-                    console.log(JSON.stringify(data));
+                    // console.log(JSON.stringify(data));
 
                     var xhr = new XMLHttpRequest();
                     var url = 'http://localhost:8080/api/superuser/branch-delete';
@@ -319,6 +330,8 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                             // console.log(typeof (JSON.parse(this.response)));
                             console.log(this.response);
                             console.log(JSON.parse(this.response));
+
+                            
                         }
                     }
                     xhr.send(JSON.stringify(data["id"]))
@@ -330,12 +343,13 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                 // Editable 
                 $('.table tbody tr td').on('click', '.e-icon', function () {
 
+                    var d = $(this).parent().siblings('.branchId').data();
+                    var id = d.branchId;
                     $(this).hide();
                     $(this).siblings().show();
-                    $(this).parent().siblings("#brnachName").attr("contenteditable", "true").focus();
-                    $(this).parent().siblings("#branchCode").attr("contenteditable", "true").focus();
-                    $(this).parent().siblings("#adminId").attr("contenteditable", "true").focus();
-                    $(this).parent().siblings("#contact").attr("contenteditable", "true").focus();
+                    $(this).parent().siblings("#branchName" + id).attr("contenteditable", "true").focus();
+                    $(this).parent().siblings("#branchCode" + id).attr("contenteditable", "true").focus();
+                    $(this).parent().siblings("#contact" + id).attr("contenteditable", "true").focus();
 
                 });
 
@@ -433,13 +447,14 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                 //save Branch
                 function saveBranch(id) {
 
-                    console.log(branchName);
+                    var childs = $('#row'+id).children();
+                    console.log();
 
                     var data = {
                         "id": id,
-                        "name": 1231,
+                        "name": childs.siblings('#branchName'+id).text(),
                         "code": "code",
-                        "contactNo": "9890879"
+                        "contactNo": childs.siblings('#contact'+id).text()
                     }
                     console.log(data);
 

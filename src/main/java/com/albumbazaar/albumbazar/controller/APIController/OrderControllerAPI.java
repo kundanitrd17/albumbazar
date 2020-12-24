@@ -1,6 +1,7 @@
 package com.albumbazaar.albumbazar.controller.APIController;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -12,6 +13,7 @@ import com.albumbazaar.albumbazar.dao.principals.SuperuserPrincipal;
 import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.model.OrderDetail;
+import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 import com.albumbazaar.albumbazar.services.GoogleDriveService;
 import com.albumbazaar.albumbazar.services.OrderService;
 import com.albumbazaar.albumbazar.services.storage.StorageService;
@@ -54,9 +56,27 @@ public class OrderControllerAPI {
 
     }
 
-    @PostMapping(value = "secured/order/photos")
-    public ResponseEntity<?> uploadPhotoForAParticularOrder(@RequestBody String orderInfo) {
-        return ResponseEntity.ok().body("body");
+    /**
+     * Change the order status given order id, and new order status.
+     * 
+     * @return ResponseEntity
+     */
+    @PostMapping(value = "secured/order/status")
+    public ResponseEntity<?> changeStatusOfTheOrder(@RequestBody final OrderDetailDTO order) {
+
+        try {
+
+            // Get customer care's id from the security context object
+            final Long customerCareId = 1l;
+            orderService.changeOrderStatus(order.getId(), customerCareId, order.getStatus());
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+
+        }
+
+        return ResponseEntity.notFound().build();
+
     }
 
     @PutMapping(value = "secured/order/info")
@@ -102,7 +122,12 @@ public class OrderControllerAPI {
 
         try {
 
+            System.out.println("\n\n\n\n\n\n\n----------------------------------------");
+            System.out.println(orderInfo);
+
             files.forEach(e -> logger.info(e.getOriginalFilename()));
+            System.out.println("\n\n\n\n\n\n\n----------------------------------------");
+
             googleDriveService.uploadToGoogleDrive(files, orderInfo.getPhotoFolderGoogleDriveId(), "harsh");
         } catch (IOException e) {
             logger.error(e.getMessage());

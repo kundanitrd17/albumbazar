@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
+import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 
@@ -20,7 +21,7 @@ public interface OrderService {
      * @param OrderDetailForm which contains all the data regarding the order
      * @return boolean value denoting whether the tast has been completed or not
      */
-    boolean addOrder(final OrderDetailForm orderDetails);
+    OrderDetail addOrder(final OrderDetailForm orderDetails);
 
     /**
      * @param id of the order
@@ -55,5 +56,43 @@ public interface OrderService {
      * @return orderDetail gets returned
      */
     OrderDetail updateOrderInfo(Long id, OrderDetailDTO orderDetailInfo);
+
+    /**
+     * Change the order status
+     * 
+     * @param orderId        id of the order
+     * @param customerCareId customer care id who is changing the order status
+     * @param orderStatus    order status which will be set
+     */
+    void changeOrderStatus(Long orderId, Long customerCareId, OrderDetailStatus orderStatus);
+
+    /**
+     * All the orders details that are associated with a particular employee
+     * 
+     * @return
+     */
+    List<OrderDetail> getOrdersAssociatedWithEmployeeAndStatus(Long employeeId, OrderDetailStatus orderDetailStatus);
+
+    /**
+     * All available order status
+     * 
+     * @return A List of OrderDetailStatus enum
+     */
+    List<OrderDetailStatus> availableOrderStatus();
+
+    /**
+     * Return orderdetail of the order with razorpayorder id of something
+     * 
+     * @return
+     */
+    OrderDetail getOrderWithRazorpayOrderId(String razorpayOrderId);
+
+    /**
+     * Retreive a list of all the orders of a particular customer
+     * 
+     * @param customerId id of the customer
+     * @return list of ordeDetail entity
+     */
+    List<OrderDetail> getOrdersOfCustomer(Long customerId);
 
 }

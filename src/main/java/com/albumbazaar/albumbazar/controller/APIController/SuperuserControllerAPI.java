@@ -1,5 +1,6 @@
 package com.albumbazaar.albumbazar.controller.APIController;
 
+import com.albumbazaar.albumbazar.dto.BranchDTO;
 import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.model.Association;
 import com.albumbazaar.albumbazar.model.Branch;
@@ -139,13 +140,17 @@ public class SuperuserControllerAPI {
      * @return ResponseEntity with json data
      */
     @PutMapping(value = "branch-info")
-    public ResponseEntity<?> updateBranchInfo(@RequestBody Branch branchInfo) {
+    public ResponseEntity<?> updateBranchInfo(@RequestBody BranchDTO branchInfo) {
         System.out.println(branchInfo);
-        /**
-         * Ask what are the things to update and then do the tasks
-         */
 
-        return ResponseEntity.ok().body("body");
+        try {
+            final Branch branch = branchService.updateBranch(branchInfo);
+            return ResponseEntity.ok().body(branch);
+        } catch (Exception e) {
+
+            return ResponseEntity.badRequest().build();
+        }
+
     }
 
     @GetMapping(value = "admin-detail/{id}")

@@ -2,14 +2,20 @@ package com.albumbazaar.albumbazar.services.impl;
 
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 import com.albumbazaar.albumbazar.dao.CustomerRepository;
+import com.albumbazaar.albumbazar.dao.OrderRepository;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
+import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.form.LocationForm;
 import com.albumbazaar.albumbazar.form.customer.BasicCustomerDetailForm;
 import com.albumbazaar.albumbazar.model.Customer;
+import com.albumbazaar.albumbazar.model.OrderDetail;
+import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 import com.albumbazaar.albumbazar.services.CustomerService;
 import com.albumbazaar.albumbazar.services.LocationService;
+import com.albumbazaar.albumbazar.services.OrderService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,14 +29,24 @@ import org.springframework.transaction.annotation.Transactional;
 public class CustomerServiceImpl implements CustomerService {
     private final Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
 
-    private CustomerRepository customerRepository;
-    private LocationService locationService;
+    private final CustomerRepository customerRepository;
+    private final LocationService locationService;
+    private final OrderService orderService;
 
     @Autowired
-    public CustomerServiceImpl(final CustomerRepository customerRepository, final LocationService locationService) {
+    public CustomerServiceImpl(final CustomerRepository customerRepository, final LocationService locationService,
+            @Qualifier("orderService") final OrderService orderService) {
 
+        this.orderService = orderService;
         this.locationService = locationService;
         this.customerRepository = customerRepository;
+    }
+
+    @Transactional(readOnly = true)
+    public Customer getCustomer(final Long id) {
+
+        return customerRepository.findById(id).orElseThrow();
+
     }
 
     @Override
@@ -201,6 +217,45 @@ public class CustomerServiceImpl implements CustomerService {
             logger.error(e.getMessage());
             throw new RuntimeException("Unable to make change to the Customer");
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<OrderDetailDTO> getAllOrderDetails(Long customerId) {
+
+        if (customerId == null) {
+            throw new RuntimeException("Invalid Customer");
+        }
+
+        return orderService.getOrdersOfCustomer(customerId).stream().map(eachOrder -> {
+            try {
+                OrderDetailDTO eachOrderDTO = new OrderDetailDTO();
+
+                eachOrderDTO.setId(eachOrder.getId());
+
+                eachOrderDTO.setAssociationName(eachOrder.getAssociationName());
+                eachOrderDTO.setCoverName(eachOrder.getCoverName());
+                eachOrderDTO.setProductName(eachOrder.getProductName());
+                eachOrderDTO.setProductSize(eachOrder.getProductSize());
+                eachOrderDTO.setOrientation(eachOrder.getOrientation());
+
+                eachOrderDTO.setPaymentStatus(eachOrder.getPaymentStatus());
+
+                eachOrderDTO.setTotalAmount(eachOrder.getTotalAmount().toString());
+                eachOrderDTO.setDiscount(eachOrder.getDiscount().toString());
+
+                eachOrderDTO.setStatus(OrderDetailStatus.valueOf(eachOrder.getOrderStatus().toUpperCase()));
+
+                eachOrderDTO.setOrderCreationTime(eachOrder.getOrderTime().toString());
+                eachOrderDTO.setDeliveryDate(eachOrder.getDeliveryDate());
+
+                return eachOrderDTO;
+            } catch (Exception e) {
+                return null;
+            }
+        }).filter(eachOrderDTO -> eachOrderDTO != null).collect(Collectors.toList());
+
+        // return orderDetailDTOs;
     }
 
 }

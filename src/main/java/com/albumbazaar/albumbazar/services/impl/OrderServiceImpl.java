@@ -6,11 +6,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
+import com.albumbazaar.albumbazar.dao.OrderAndCustomerCareRepository;
 import com.albumbazaar.albumbazar.dao.OrderRepository;
 import com.albumbazaar.albumbazar.dao.SheetDetailRepository;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
+import com.albumbazaar.albumbazar.model.Customer;
+import com.albumbazaar.albumbazar.model.OrderAndCustomerCareEntity;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 import com.albumbazaar.albumbazar.model.SheetDetail;
@@ -29,19 +33,22 @@ public class OrderServiceImpl implements OrderService {
 
     private Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
-    private OrderRepository orderRepository;
-    private SheetDetailRepository sheetDetailRepository;
+    private final OrderRepository orderRepository;
+    private final SheetDetailRepository sheetDetailRepository;
+    private final OrderAndCustomerCareRepository orderAndCustomerCareRepository;
 
     @Autowired
-    public OrderServiceImpl(final OrderRepository orderRepository, final SheetDetailRepository sheetDetailRepository) {
+    public OrderServiceImpl(final OrderRepository orderRepository, final SheetDetailRepository sheetDetailRepository,
+            final OrderAndCustomerCareRepository orderAndCustomerCareRepository) {
 
+        this.orderAndCustomerCareRepository = orderAndCustomerCareRepository;
         this.orderRepository = orderRepository;
         this.sheetDetailRepository = sheetDetailRepository;
     }
 
     @Override
     @Transactional
-    public boolean addOrder(final OrderDetailForm orderDetails) {
+    public OrderDetail addOrder(final OrderDetailForm orderDetails) {
         // parse the form to get in proper input
 
         final OrderDetail order = new OrderDetail(orderDetails); // parse orderdetail to get a proper order
@@ -63,17 +70,18 @@ public class OrderServiceImpl implements OrderService {
 
         order.setSheets(sheets);
 
-        orderRepository.save(order);
+        return orderRepository.save(order);
 
-        return true;
     }
 
     @Override
+    @Transactional(readOnly = true)
     public OrderDetail getOrder(final Long id) throws NoSuchElementException {
         return orderRepository.findById(id).get();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<OrderDetail> getAllOrder() {
         return orderRepository.findAll();
     }
@@ -139,6 +147,53 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return orderDetailEntity;
+    }
+
+    /**
+     * Change order status to orderStatus
+     */
+    @Override
+    @Transactional
+    public void changeOrderStatus(Long orderId, Long customerCareId, OrderDetailStatus orderStatus) {
+
+        // Change the status of the order detail
+
+        final OrderAndCustomerCareEntity orderAndCustomerCareEntity = orderAndCustomerCareRepository
+                .findByCustomerAndOrder(orderId, customerCareId).orElseThrow();
+        orderAndCustomerCareEntity.getOrder().setOrderStatus(orderStatus.toString());
+
+        // If the order is completed
+        if (orderStatus.equals(OrderDetailStatus.COMPLETED) || orderStatus.equals(OrderDetailStatus.PENDING)) {
+            orderAndCustomerCareRepository.delete(orderAndCustomerCareEntity);
+
+        }
+
+    }
+
+    @Override
+    public List<OrderDetail> getOrdersAssociatedWithEmployeeAndStatus(final Long employeeId,
+            final OrderDetailStatus orderDetailStatus) {
+
+        return orderRepository.findAllByEmployeeId(employeeId, orderDetailStatus.toString());
+
+    }
+
+    @Override
+    public List<OrderDetailStatus> availableOrderStatus() {
+        return Stream.of(OrderDetailStatus.values()).collect(Collectors.toList());
+    }
+
+    @Override
+    public OrderDetail getOrderWithRazorpayOrderId(String razorpayOrderId) {
+
+        return orderRepository.findByRazorpayOrderId(razorpayOrderId).orElseThrow();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<OrderDetail> getOrdersOfCustomer(final Long customerId) {
+
+        return orderRepository.findAllByCustomerId(customerId).orElseThrow();
     }
 
 }

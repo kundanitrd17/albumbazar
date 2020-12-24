@@ -26,7 +26,7 @@
         </li>
 
         <li><i class="fa fa-envelope fa-fw">
-            </i><a href="/customer-care/order-pool">Completed Orders</a>
+            </i><a href="/customer-care/completed-order">Completed Orders</a>
         </li>
 
 

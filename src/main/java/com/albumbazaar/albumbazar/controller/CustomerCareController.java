@@ -1,6 +1,8 @@
 package com.albumbazaar.albumbazar.controller;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
@@ -72,11 +74,32 @@ public final class CustomerCareController {
 
             modelAndView.addObject("allOrders", customerCareEmployeeService.acceptedOrdersByCustomerCare(1l));
 
+            modelAndView.addObject("availableOrderStatus", orderService.availableOrderStatus());
+
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
 
         return modelAndView;
+    }
+
+    @GetMapping(value = "completed-order")
+    public ModelAndView completedOrderView() {
+        final ModelAndView modelAndView = new ModelAndView("customercare/customer_care_completed");
+
+        try {
+            // change this later
+            // Get customer care 's id from security context object i.e. principal object
+
+            final Long customerCareId = 1l;
+
+            modelAndView.addObject("allOrders", customerCareEmployeeService.getCompletedOrders(customerCareId));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return modelAndView;
+
     }
 
 }

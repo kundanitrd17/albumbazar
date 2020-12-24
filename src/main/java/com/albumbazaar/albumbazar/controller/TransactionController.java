@@ -1,23 +1,33 @@
 package com.albumbazaar.albumbazar.controller;
 
+import java.util.HashMap;
 import java.util.List;
 
 import com.albumbazaar.albumbazar.model.Expense;
 import com.albumbazaar.albumbazar.model.Income;
 import com.albumbazaar.albumbazar.services.TransactionService;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.razorpay.RazorpayException;
+import com.razorpay.Utils;
 
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 @RequestMapping("/transaction")
 public final class TransactionController {
+
+    private final Logger logger = LoggerFactory.getLogger(TransactionController.class);
 
     private TransactionService transactionService;
 
@@ -72,6 +82,7 @@ public final class TransactionController {
 
         return ResponseEntity.ok(transactions);
     }
+
 }
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

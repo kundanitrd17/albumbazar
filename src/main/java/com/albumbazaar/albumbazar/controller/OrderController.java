@@ -14,12 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public final class OrderController {
@@ -36,23 +39,51 @@ public final class OrderController {
     @GetMapping(value = "/order")
     public String orderView() {
 
+        // authorize google drive here
+
         return "order";
     }
 
     @PostMapping(value = "/order")
-    @ResponseBody
-    public String addNewOrder(@ModelAttribute OrderDetailForm orderDetail) {
+    public RedirectView addNewOrder(@ModelAttribute OrderDetailForm orderDetail,
+            final RedirectAttributes redirectAttributes) {
+
+        final RedirectView redirectView = new RedirectView("/order/upload-photo");
+
         logger.info("A new Order was Made");
         System.out.println(orderDetail);
 
         try {
-            orderService.addOrder(orderDetail);
+            // throw new RuntimeException("message");
+            final OrderDetail order = orderService.addOrder(orderDetail);
+            redirectAttributes.addFlashAttribute("order_id", order.getId());
+
         } catch (Exception e) {
             logger.error(e.getMessage());
-            return "Not Done";
+
+            redirectAttributes.addAttribute("error", true);
+            redirectView.setUrl("order");
+            return redirectView;
         }
 
-        return "Done";
+        return redirectView;
+    }
+
+    @GetMapping("/order/upload-photo")
+    public ModelAndView uploadPhotoView(Model model) {
+        final ModelAndView modelAndView = new ModelAndView("upload_photos");
+
+        if (model.getAttribute("order_id") == null) {
+            modelAndView.setViewName("redirect:/order");
+            return modelAndView;
+        }
+        modelAndView.addObject("order_id", model.getAttribute("order_id"));
+
+        System.out.println(modelAndView);
+        System.out.println(model);
+
+        return modelAndView;
+
     }
 
     @GetMapping(value = "/order-list")

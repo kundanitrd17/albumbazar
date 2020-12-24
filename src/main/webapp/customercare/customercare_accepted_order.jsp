@@ -62,7 +62,7 @@
     <!-- SideBar insertion -->
     <%@include file="sidebar.jsp" %>
     <!-- End of sidebar -->
-    <section id="contents">
+    <section id="contents"style="background-color: #A09EA2;">
         <nav class="navbar navbar-default">
             <div class="container-fluid">
                 <div class="navbar-header">
@@ -82,10 +82,7 @@
         </nav>
 
 
-
-
-    </section>
-    <div class="container">
+    <div class="container" >
         <div class="row">
             <div class="panel panel-primary filterable table-responsive">
                 <div class="panel-heading">
@@ -107,7 +104,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                             <th><input type="text" class="form-control" placeholder="Product View" disabled></th>
                             <th><input type="text" class="form-control" placeholder="Order" disabled></th>
                             <th colspan="2" style="text-align: center;"><a class="btn btn-success"
-                                    href="add-branch.html">Order Pool</a></th>
+                                    href="order-pool">Order Pool</a></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -115,7 +112,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                         <c:forEach items="${allOrders}" var="eachOrder">
 
                             <tr>
-                                <td >${eachOrder.id}</td>
+                                <td class="orderId" data-order-id="${eachOrder.id}" >${eachOrder.id}</td>
                                 <td >${eachOrder.associationName}</td>
                                 <td >7047261982</td>
                                 <td >9832177025</td>
@@ -126,33 +123,23 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                         data-target="#associationProductViewDetails"
                                         onclick="associationProductView(1)">View Product</a></td>
                                 <td><a href="">Show Order</a></td>
-                                <td class=""> <a href="#" class="btn btn-success s-icon " style="display: none;"
+                                <!-- <td class=""> <a href="#" class="btn btn-success s-icon " style="display: none;"
                                         onclick="saveBranch(1)">Save</a>
-                                    <button class="btn btn-warning e-icon">Edit</button></td>
-                                <td><a class="btn btn-danger d-icon">Done</a></td>
+                                    <button class="btn btn-warning e-icon">Edit</button></td> -->
+                                <td>
+                                    <!-- <a class="btn btn-danger change-status-icon">${eachOrder.orderStatus}</a> -->
+                                    <select name="orderStatus" id="orderStatus${eachOrder.id}" class="btn btn-danger change-status-icon orderStatusDropDown">                                
+                                    <option value="${eachOrder.orderStatus}" selected>${eachOrder.orderStatus}</option>
+
+                                    <c:forEach items="${availableOrderStatus}" var="status">
+                                        <option value="${status}" >${status}</option>
+                                    </c:forEach>
+
+                                    </select>
+                                </td>
                             </tr>
 
-                        </c:forEach>
-
-                        <!-- <tr>
-                            <td id="associationId">101</td>
-                            <td id="associationName">canvera</td>
-                            <td id="associationPhone1">7047261982</td>
-                            <td id="associationPhone2">9832177025</td>
-                            <td><a href="" data-toggle="modal" data-target="#branchAddress" id="link_address"
-                                    onclick="addrLink(1)">Address Id</a></td>
-                            <td id="associationEmail">kundanitrd17@gmail.com</td>
-                            <td><a type="button" href="" id="link_adminId" data-toggle="modal"
-                                    data-target="#associationProductViewDetails"
-                                    onclick="associationProductView(1)">View Product</a></td>
-                            <td><a href="">Show Order</a></td>
-                            <td class=""> <a href="#" class="btn btn-success s-icon " style="display: none;"
-                                    onclick="saveBranch(1)">Save</a>
-                                <button class="btn btn-warning e-icon">Edit</button></td>
-                            <td><a class="btn btn-danger d-icon">Done</a></td>
-                        </tr> -->
-
-                        
+                        </c:forEach>                                              
 
 
                     </tbody>
@@ -161,6 +148,9 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
         </div>
     </div>
 
+
+
+</section>
 
 
     <div class="modal" id="branchAddress">
@@ -309,47 +299,20 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
     </div>
 
     <script type="text/javascript" src="http://localhost:8080/customercare/js/data-table.js"></script>
+    <script type="text/javascript" src="http://localhost:8080/customercare/js/order_status.js"></script>
 
     <script type="text/javascript">
 
+        var token = $("meta[name='_csrf']").attr("content");
+        var header = $("meta[name='_csrf_header']").attr("content");
 
-        // Delete Branch
-        $('.table tbody tr td').on('click', '.d-icon', function () {
-            $(this).parent().parent().remove();
-            event.preventDefault();
-            const content = $(this).parent().prevAll().toArray();
-            const data = {};
-            content.forEach(item => {
-                if (item.id === "branchId") {
-                    data["id"] = item.innerText;
-                }
-                if (item.id === "branchName") {
-                    data["name"] = item.innerText;
-                }
-                if (item.id === "branchContact") {
-                    data["phone"] = item.innerText;
-                }
-            })
+        window.onload = function() {
 
-            console.log(JSON.stringify(data));
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
+            token = $("meta[name='_csrf']").attr("content");
+            header = $("meta[name='_csrf_header']").attr("content");
 
-            var xhr = new XMLHttpRequest();
-            var url = 'http://localhost:8080/api/product/post';
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader('Content-type', 'application/json');
-            xhr.setRequestHeader(header, token);
+        }
 
-            xhr.onreadystatechange = function () { // Call a function when the state changes.
-                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                    // console.log(typeof (JSON.parse(this.response)));
-                    console.log(JSON.parse(this.response)["name"]);
-                }
-            }
-            xhr.send(JSON.stringify(data))
-
-        })
 
 
 
@@ -460,67 +423,6 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
 
     </script>
-
-    <!--Edit Cover-->
-
-    <script type="text/javascript">
-        // Delete Association Product
-        $('.table tbody tr td').on('click', '.deleteCover', function () {
-            $(this).parent().parent().remove();
-            event.preventDefault();
-            const content = $(this).parent().prevAll().toArray();
-            const data = {};
-            content.forEach(item => {
-                if (item.id === "branchId") {
-                    data["id"] = item.innerText;
-                }
-                if (item.id === "branchName") {
-                    data["name"] = item.innerText;
-                }
-                if (item.id === "branchContact") {
-                    data["phone"] = item.innerText;
-                }
-            })
-
-            console.log(JSON.stringify(data));
-            var token = $("meta[name='_csrf']").attr("content");
-            var header = $("meta[name='_csrf_header']").attr("content");
-
-            var xhr = new XMLHttpRequest();
-            var url = 'http://localhost:8080/api/product/post';
-            xhr.open("POST", url, true);
-            xhr.setRequestHeader('Content-type', 'application/json');
-            xhr.setRequestHeader(header, token);
-
-            xhr.onreadystatechange = function () { // Call a function when the state changes.
-                if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                    // console.log(typeof (JSON.parse(this.response)));
-                    console.log(JSON.parse(this.response)["name"]);
-                }
-            }
-            xhr.send(JSON.stringify(data))
-
-        })
-
-        // Edit Association Product 
-        $('.table tbody tr td').on('click', '.editCover', function () {
-
-            $(this).hide();
-            $(this).siblings().show();
-            $(this).parent().siblings("#coverQuality").attr("contenteditable", "true").focus();
-            $(this).parent().siblings("#coverSize").attr("contenteditable", "true").focus();
-            $(this).parent().siblings("#coverPrice").attr("contenteditable", "true").focus();
-        });
-        //save And Edit Display Button
-        $('.table tbody tr td').on('click', '.saveCover', function () {
-
-            $(this).hide();
-            $(this).siblings('.editCover').show();
-            $(this).parent().siblings("").attr("contenteditable", "false");
-
-        });
-    </script>
-    <!--End Edit Cover-->
 
     <!--Edit Page-->
 

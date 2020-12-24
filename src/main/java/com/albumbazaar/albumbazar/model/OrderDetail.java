@@ -14,7 +14,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "order_detail")
-@JsonIgnoreProperties(value = { "customer", "deliveryAddress", "sheets" })
+@JsonIgnoreProperties(value = { "customer", "deliveryAddress", "sheets", "employee" })
 public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,6 +45,13 @@ public class OrderDetail {
     private Float coverPrice;
 
     private Integer noOfSheets;
+
+    @Column(unique = true)
+    private String razorpayOrderId;
+
+    private String razorpayPaymentId;
+
+    private String razorPaySignature;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
@@ -89,6 +96,8 @@ public class OrderDetail {
     @PrePersist
     public void prePersist() {
         this.orderStatus = new String("pending");
+        this.paymentStatus = false;
+        this.totalAmount = 1f;
 
     }
 
@@ -295,6 +304,30 @@ public class OrderDetail {
 
     public void setTotalAmount(Float totalAmount) {
         this.totalAmount = totalAmount;
+    }
+
+    public String getRazorpayOrderId() {
+        return razorpayOrderId;
+    }
+
+    public void setRazorpayOrderId(String razorpayOrderId) {
+        this.razorpayOrderId = razorpayOrderId;
+    }
+
+    public String getRazorpayPaymentId() {
+        return razorpayPaymentId;
+    }
+
+    public void setRazorpayPaymentId(String razorpayPaymentId) {
+        this.razorpayPaymentId = razorpayPaymentId;
+    }
+
+    public String getRazorPaySignature() {
+        return razorPaySignature;
+    }
+
+    public void setRazorPaySignature(String razorPaySignature) {
+        this.razorPaySignature = razorPaySignature;
     }
 
 }

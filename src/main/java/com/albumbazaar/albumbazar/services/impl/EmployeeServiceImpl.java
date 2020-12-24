@@ -2,7 +2,9 @@ package com.albumbazaar.albumbazar.services.impl;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import com.albumbazaar.albumbazar.dao.Address1Repository;
 import com.albumbazaar.albumbazar.dao.Address2Repository;
@@ -12,6 +14,7 @@ import com.albumbazaar.albumbazar.form.LocationForm;
 import com.albumbazaar.albumbazar.form.employee.BasicEmployeeDetailForm;
 import com.albumbazaar.albumbazar.model.Address1;
 import com.albumbazaar.albumbazar.model.Address2;
+import com.albumbazaar.albumbazar.model.AvailableRoles;
 import com.albumbazaar.albumbazar.model.Employee;
 import com.albumbazaar.albumbazar.services.EmployeeService;
 
@@ -136,6 +139,17 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
             logger.error(e.getMessage());
             throw new RuntimeException("Unable to make changes");
         }
+    }
+
+    @Override
+    public Set<AvailableRoles> getAllAvailableEmployeeRole() {
+
+        return Stream.of(AvailableRoles.values()).filter(role -> {
+            if (role == AvailableRoles.USER || role == AvailableRoles.BRANCH) {
+                return false;
+            }
+            return true;
+        }).collect(Collectors.toSet());
     }
 
 }

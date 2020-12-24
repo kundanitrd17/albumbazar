@@ -28,6 +28,10 @@ $('.table tbody tr td').on('click', '.accept-order-icon', function () {
 function subscribeDataFromServer(data) {
 
     console.log(data);
+    var parsedData = JSON.parse(data.body);
+    var row = document.getElementById("orderRow" + parsedData.orderId);
+    console.log(row);
+    row.remove();
 
 }
 

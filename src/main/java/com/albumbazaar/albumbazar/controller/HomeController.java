@@ -53,7 +53,7 @@ public final class HomeController {
     @GetMapping("/")
     public String home() {
 
-        return "index";
+        return "upload_photos";
     }
 
     @GetMapping("/user")
@@ -94,21 +94,21 @@ public final class HomeController {
 
         googleDriveService.saveGoogleAuthorizationCode(code, userId);
 
+        System.out.println("request object has---------------");
+        System.out.println(request.getRequestURL());
+        System.out.println(request.getRequestURI());
+
         return "redirect:/";
     }
 
     @GetMapping(value = { "/googlesignin" })
     public void doGoogleDriveSignIn(HttpServletResponse response) throws Exception {
 
-        if (googleDriveService.isAuthenticatedToGoogle("harsh")) {
-
-            // response.sendRedirect("/"); later
-            System.out.println("already signed-in");
-        }
-
         // Redirect to the url provided by google authorization code flow for OAuth
         // sign-in and wait at the callback to get the secret code
-        response.sendRedirect(googleDriveService.getRedirectUrlForGoogleSignIn());
+        String url = googleDriveService.getRedirectUrlForGoogleSignIn();
+        System.out.println(url);
+        response.sendRedirect(url);
 
     }
 

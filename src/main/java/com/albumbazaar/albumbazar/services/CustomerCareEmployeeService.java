@@ -12,4 +12,6 @@ public interface CustomerCareEmployeeService {
 
     public List<OrderDetail> acceptedOrdersByCustomerCare(Long customerCareId);
 
+    public List<OrderDetail> getCompletedOrders(Long customerCareId);
+
 }

@@ -109,43 +109,34 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                 <thead>
                                     <tr class="filters">
                                         <th><input type="text" class="form-control" placeholder="Id" disabled></th>
-                                        <th><input type="text" class="form-control" placeholder=" Name" disabled></th>
-
-                                        <th><input type="text" class="form-control" placeholder="Contact 1" disabled>
+                                        <th><input type="text" class="form-control" placeholder="Product" disabled>
                                         </th>
-                                        <th><input type="text" class="form-control" placeholder="Contact 2" disabled>
+                                        <th><input type="text" class="form-control" placeholder="Association" disabled></th>
+
+                                        <th><input type="text" class="form-control" placeholder="Delivery" disabled>
+                                        </th>
+                                        <th><input type="text" class="form-control" placeholder="Amount" disabled>
                                         </th>
 
-                                        <th><input type="text" class="form-control" placeholder="E-mail" disabled></th>
-
-
-                                        <th colspan="2" style="text-align: center;"><a class="btn btn-success"
+                                        <th colspan="3" style="text-align: center;"><a class="btn btn-success"
                                                 href="/customer-care/accepted-order">View Accepted Order
                                             </a></th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-
-
-                                    <c:forEach items="${recentlyReceivedOrders}" var="eachOrder">
+                                    <c:forEach items="${allOrders}" var="eachOrder">
                                         <tr id="orderRow${eachOrder.id}">
                                             <td class="orderId" id="orderId${eachOrder.id}"
                                                 data-orderId="${eachOrder.id}">${eachOrder.id}</td>
-                                            <td id="associationName">${eachOrder.associationName}</td>
-                                            <td id="associationPhone1">${eachOrder.orderStatus}</td>
-                                            <td id="associationPhone2">9832177025</td>
+                                            <td>${eachOrder.productName}</td>    
+                                            <td >${eachOrder.associationName}</td>
+                                            <td >${eachOrder.deliveryDate}</td>
+                                            <td >${eachOrder.totalAmount}</td>
 
-                                            <td id="associationEmail">kundanitrd17@gmail.com</td>
-
-                                            <td><a class="btn btn-danger accept-order-icon">Accept Order</a></td>
                                         </tr>
 
-
                                     </c:forEach>
-
-
-
 
 
                                 </tbody>
@@ -158,7 +149,6 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
 
 
-            <script type="text/javascript" src="/customercare/js/customer_care_order_pool.js"></script>
 
             <script type="text/javascript" src="http://localhost:8080/customercare/js/data-table.js"></script>
 

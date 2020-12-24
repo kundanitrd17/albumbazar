@@ -3,9 +3,11 @@ package com.albumbazaar.albumbazar.services;
 import java.util.List;
 
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
+import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.form.LocationForm;
 import com.albumbazaar.albumbazar.form.customer.BasicCustomerDetailForm;
 import com.albumbazaar.albumbazar.model.Customer;
+import com.albumbazaar.albumbazar.model.OrderDetail;
 
 public interface CustomerService {
 
@@ -89,5 +91,13 @@ public interface CustomerService {
      * @return Customer entity with updated values
      */
     Customer restoreCustomer(Long id);
+
+    /**
+     * Get a list of orderdetail DTO list
+     * 
+     * @param customerId id of the customer whose orders needs to be fetched
+     * @return List of OrderDetailDTO
+     */
+    List<OrderDetailDTO> getAllOrderDetails(Long customerId);
 
 }

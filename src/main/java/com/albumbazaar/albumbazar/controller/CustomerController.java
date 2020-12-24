@@ -6,6 +6,7 @@ import javax.validation.Valid;
 
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
 import com.albumbazaar.albumbazar.dto.ErrorDTO;
+import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.form.LocationForm;
 import com.albumbazaar.albumbazar.form.customer.BasicCustomerDetailForm;
 import com.albumbazaar.albumbazar.model.Customer;
@@ -22,8 +23,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @RequestMapping(value = "customer")
@@ -104,6 +108,42 @@ public final class CustomerController {
         modelAndView.addObject("customers", customerService.getBlockeList());
 
         return modelAndView;
+    }
+
+    @GetMapping(value = "my-order")
+    public ModelAndView viewAllMyOrders() {
+
+        final ModelAndView modelAndView = new ModelAndView("customer_orders");
+        // Get customer principal from the Security Context principal
+        final Long customerId = 1l;
+
+        try {
+            List<OrderDetailDTO> orders = customerService.getAllOrderDetails(customerId);
+            System.out.println(orders);
+            modelAndView.addObject("allOrdersForCustomer", orders);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return modelAndView;
+    }
+
+    @PostMapping("my-order/pay-or-upload")
+    public RedirectView getPaymentOrUploadForAnOrder(@RequestParam("orderId") String orderId,
+            final RedirectAttributes redirectAttributes) {
+        System.out.println("Order Id: " + orderId);
+
+        final RedirectView redirectView = new RedirectView("/order/upload-photo");
+
+        if (orderId == null || orderId.isBlank()) {
+            redirectView.setUrl("/customer/my-order");
+            return redirectView;
+        }
+
+        redirectAttributes.addFlashAttribute("order_id", orderId);
+
+        return redirectView;
+
     }
 
 }

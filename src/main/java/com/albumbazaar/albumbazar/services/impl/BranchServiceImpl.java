@@ -1,11 +1,10 @@
 package com.albumbazaar.albumbazar.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import javax.persistence.EntityNotFoundException;
 
 import com.albumbazaar.albumbazar.dao.Address1Repository;
 import com.albumbazaar.albumbazar.dao.Address2Repository;
@@ -86,7 +85,11 @@ public class BranchServiceImpl implements BranchService {
         final Branch branch = branchRepository.findById(updatedBranchInfo.getId()).orElseThrow();
 
         if (updatedBranchInfo.getName() != null && !updatedBranchInfo.getName().isBlank()) {
-            branch.setName(updatedBranchInfo.getName());
+            branch.setName(updatedBranchInfo.getName().trim());
+        }
+
+        if (updatedBranchInfo.getContactNo() != null && !updatedBranchInfo.getContactNo().isBlank()) {
+            branch.setContactNo(updatedBranchInfo.getContactNo().trim());
         }
 
         /**
@@ -129,6 +132,28 @@ public class BranchServiceImpl implements BranchService {
             logger.error(e.getMessage());
             throw new RuntimeException("Unable to make change to the branch");
         }
+    }
+
+    @Override
+    public List<BranchDTO> getAllActiveBranchName() {
+        final List<BranchDTO> listOfBranchDTO = new ArrayList<>();
+
+        branchRepository.getNameOfAllActiveBranches().ifPresentOrElse(branches -> branches.stream().forEach(branch -> {
+            try {
+                BranchDTO branchDTO = new BranchDTO();
+                branchDTO.setId(Long.parseLong(branch[0].toString()));
+                branchDTO.setName(branch[1].toString());
+
+                listOfBranchDTO.add(branchDTO);
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
+        }), () -> {
+            throw new NoSuchElementException("No value");
+        });
+
+        return listOfBranchDTO;
+
     }
 
 }

@@ -6,11 +6,17 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.albumbazaar.albumbazar.model.OrderDetailStatus;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderDetailDTO {
 
     @NotNull
     @NotBlank
     private Long id;
+
+    private OrderDetailStatus status;
 
     private Date deliveryDate;
 
@@ -22,6 +28,14 @@ public class OrderDetailDTO {
 
     private String coverName;
 
+    private String orderCreationTime;
+
+    private String totalAmount;
+    private String discount;
+    private String taxableAmount;
+    private String deliveryCharge;
+
+    private Boolean paymentStatus;
     // Change it to just the ID of the cover and get the pricing of the album from
     // the database
     private Float coverPrice;
@@ -135,6 +149,62 @@ public class OrderDetailDTO {
 
     public void setPhotoFolderGoogleDriveLink(String photoFolderGoogleDriveLink) {
         this.photoFolderGoogleDriveLink = photoFolderGoogleDriveLink;
+    }
+
+    public OrderDetailStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderDetailStatus status) {
+        this.status = status;
+    }
+
+    public String getTotalAmount() {
+        return totalAmount;
+    }
+
+    public void setTotalAmount(String totalAmount) {
+        this.totalAmount = totalAmount;
+    }
+
+    public String getDiscount() {
+        return discount;
+    }
+
+    public void setDiscount(String discount) {
+        this.discount = discount;
+    }
+
+    public String getTaxableAmount() {
+        return taxableAmount;
+    }
+
+    public void setTaxableAmount(String taxableAmount) {
+        this.taxableAmount = taxableAmount;
+    }
+
+    public String getDeliveryCharge() {
+        return deliveryCharge;
+    }
+
+    public void setDeliveryCharge(String deliveryCharge) {
+        this.deliveryCharge = deliveryCharge;
+    }
+
+    public String getOrderCreationTime() {
+        return orderCreationTime;
+    }
+
+    public void setOrderCreationTime(String orderCreationTime) {
+        this.orderCreationTime = orderCreationTime;
+    }
+
+    public Boolean getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public void setPaymentStatus(Boolean paymentStatus) {
+        this.paymentStatus = paymentStatus;
     }
 
     // End of photos columns

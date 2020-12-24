@@ -22,4 +22,6 @@ public interface BranchService {
 
     Branch restoreBranch(Long branchId);
 
+    List<BranchDTO> getAllActiveBranchName();
+
 }
