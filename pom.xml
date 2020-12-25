@@ -17,7 +17,16 @@
 		<java.version>11</java.version>
 	</properties>
 
-	<dependencies>	
+	<dependencies>
+		
+		<!-- Lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.16</version>
+			<scope>provided</scope>
+		</dependency>
+		
 
 		<!-- Razropay -->
 		<dependency>

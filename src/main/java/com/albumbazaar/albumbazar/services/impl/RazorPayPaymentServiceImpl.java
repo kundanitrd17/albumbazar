@@ -58,7 +58,7 @@ public class RazorPayPaymentServiceImpl implements RazorPayPaymentService {
         final OrderDetail order = orderService.getOrder(orderId);
 
         // If payment already done
-        if (order.getPaymentStatus()) {
+        if (order.getPaymentStatus() != null && order.getPaymentStatus()) {
             return order;
         }
 

@@ -1,6 +1,7 @@
 package com.albumbazaar.albumbazar.dao;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.albumbazaar.albumbazar.model.Customer;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -24,4 +25,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     @Modifying(clearAutomatically = true)
     @Query(value = "UPDATE customer SET active = ?2 WHERE id = ?1", nativeQuery = true)
     void setActiveStatusForCustomer(Long id, boolean status);
+
+    Optional<Customer> findByEmail(String email);
 }

@@ -85,7 +85,7 @@ public class OrderAndCustomerCareEntity {
     public String toString() {
         return "OrderAndCustomerCareEntity [acceptedAt=" + acceptedAt + ", customerCareEmployee="
                 + customerCareEmployee.getName() + "customer-care: " + customerCareEmployee.getEmail() + ", id=" + id
-                + ", order=" + order.getId() + "]";
+                + "]";
     }
 
 }

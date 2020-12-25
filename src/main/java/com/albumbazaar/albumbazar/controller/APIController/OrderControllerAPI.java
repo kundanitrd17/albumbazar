@@ -121,12 +121,7 @@ public class OrderControllerAPI {
             @RequestPart("files") List<MultipartFile> files) {
 
         try {
-
-            System.out.println("\n\n\n\n\n\n\n----------------------------------------");
-            System.out.println(orderInfo);
-
             files.forEach(e -> logger.info(e.getOriginalFilename()));
-            System.out.println("\n\n\n\n\n\n\n----------------------------------------");
 
             googleDriveService.uploadToGoogleDrive(files, orderInfo.getPhotoFolderGoogleDriveId(), "harsh");
         } catch (IOException e) {

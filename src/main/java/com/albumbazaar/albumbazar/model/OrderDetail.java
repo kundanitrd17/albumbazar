@@ -4,7 +4,12 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -12,6 +17,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.Date;
 import java.util.List;
 
+@Getter
+@Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "order_detail")
 @JsonIgnoreProperties(value = { "customer", "deliveryAddress", "sheets", "employee" })
@@ -34,6 +42,8 @@ public class OrderDetail {
     private String productSize;
 
     // Finance
+    @NotNull
+    @Column(nullable = false, columnDefinition = "boolean default false")
     private Boolean paymentStatus;
 
     private Float totalAmount;
@@ -101,9 +111,6 @@ public class OrderDetail {
 
     }
 
-    public OrderDetail() {
-    }
-
     public OrderDetail(final OrderDetailForm orderDetails) {// throws Exception {
         this.associationName = orderDetails.getCompanyName();
         this.coverName = orderDetails.getCoverQuality();
@@ -119,215 +126,6 @@ public class OrderDetail {
 
         }
         // this.coverPrice = Float.parseFloat(orderDetails.getCoverPrice());
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-    public Date getOrderTime() {
-        return orderTime;
-    }
-
-    public void setOrderTime(final Date orderTime) {
-        this.orderTime = orderTime;
-    }
-
-    public Date getDeliveryDate() {
-        return deliveryDate;
-    }
-
-    public void setDeliveryDate(final Date deliveryDate) {
-        this.deliveryDate = deliveryDate;
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public void setCustomer(final Customer customer) {
-        this.customer = customer;
-    }
-
-    public Boolean getPaymentStatus() {
-        return paymentStatus;
-    }
-
-    public void setPaymentStatus(final Boolean paymentStatus) {
-        this.paymentStatus = paymentStatus;
-    }
-
-    public Address1 getDeliveryAddress() {
-        return deliveryAddress;
-    }
-
-    public void setDeliveryAddress(final Address1 deliveryAddress) {
-        this.deliveryAddress = deliveryAddress;
-    }
-
-    public String getAssociationName() {
-        return associationName;
-    }
-
-    public void setAssociationName(final String associationName) {
-        this.associationName = associationName;
-    }
-
-    public String getProductName() {
-        return productName;
-    }
-
-    public void setProductName(final String productName) {
-        this.productName = productName;
-    }
-
-    public String getProductSize() {
-        return productSize;
-    }
-
-    public void setProductSize(final String productSize) {
-        this.productSize = productSize;
-    }
-
-    public String getCoverName() {
-        return coverName;
-    }
-
-    public void setCoverName(final String coverName) {
-        this.coverName = coverName;
-    }
-
-    public Float getCoverPrice() {
-        return coverPrice;
-    }
-
-    public void setCoverPrice(final Float coverPrice) {
-        this.coverPrice = coverPrice;
-    }
-
-    public Integer getNoOfSheets() {
-        return noOfSheets;
-    }
-
-    public void setNoOfSheets(final Integer noOfSheets) {
-        this.noOfSheets = noOfSheets;
-    }
-
-    public String getOrderStatus() {
-        return orderStatus;
-    }
-
-    public void setOrderStatus(final String orderStatus) {
-        this.orderStatus = orderStatus;
-    }
-
-    public String getOrientation() {
-        return orientation;
-    }
-
-    public void setOrientation(final String orientation) {
-        this.orientation = orientation;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(final String description) {
-        this.description = description;
-    }
-
-    public List<SheetDetail> getSheets() {
-        return sheets;
-    }
-
-    public void setSheets(final List<SheetDetail> sheets) {
-        this.sheets = sheets;
-    }
-
-    public Long getBranchId() {
-        return branchId;
-    }
-
-    public void setBranchId(Long branchId) {
-        this.branchId = branchId;
-    }
-
-    @Override
-    public String toString() {
-        return "OrderDetail [amount=" + totalAmount + ", associationName=" + associationName + ", branchId=" + branchId
-                + ", coverName=" + coverName + ", coverPrice=" + coverPrice + ", deliveryDate=" + deliveryDate
-                + ", description=" + description + ", id=" + id + ", noOfSheets=" + noOfSheets + ", orderStatus="
-                + orderStatus + ", orderTime=" + orderTime + ", orientation=" + orientation + ", paymentStatus="
-                + paymentStatus + ", productName=" + productName + ", productSize=" + productSize + "]";
-    }
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-
-    public String getPhotoFolderGoogleDriveId() {
-        return photoFolderGoogleDriveId;
-    }
-
-    public void setPhotoFolderGoogleDriveId(String photoFolderGoogleDriveId) {
-        this.photoFolderGoogleDriveId = photoFolderGoogleDriveId;
-    }
-
-    public String getPhotoFolderGoogleDriveLink() {
-        return photoFolderGoogleDriveLink;
-    }
-
-    public void setPhotoFolderGoogleDriveLink(String photoFolderGoogleDriveLink) {
-        this.photoFolderGoogleDriveLink = photoFolderGoogleDriveLink;
-    }
-
-    public Float getDiscount() {
-        return discount;
-    }
-
-    public void setDiscount(Float discount) {
-        this.discount = discount;
-    }
-
-    public Float getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(Float totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public String getRazorpayOrderId() {
-        return razorpayOrderId;
-    }
-
-    public void setRazorpayOrderId(String razorpayOrderId) {
-        this.razorpayOrderId = razorpayOrderId;
-    }
-
-    public String getRazorpayPaymentId() {
-        return razorpayPaymentId;
-    }
-
-    public void setRazorpayPaymentId(String razorpayPaymentId) {
-        this.razorpayPaymentId = razorpayPaymentId;
-    }
-
-    public String getRazorPaySignature() {
-        return razorPaySignature;
-    }
-
-    public void setRazorPaySignature(String razorPaySignature) {
-        this.razorPaySignature = razorPaySignature;
     }
 
 }

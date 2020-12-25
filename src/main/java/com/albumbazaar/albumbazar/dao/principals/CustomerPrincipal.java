@@ -3,54 +3,58 @@ package com.albumbazaar.albumbazar.dao.principals;
 import java.util.Collection;
 import java.util.Collections;
 
-import com.albumbazaar.albumbazar.model.Employee;
+import com.albumbazaar.albumbazar.model.Customer;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class EmployeePrincipal implements UserDetails {
+public class CustomerPrincipal implements UserDetails {
 
     private static final long serialVersionUID = 1L;
-    private Employee employee;
 
-    public EmployeePrincipal(Employee employee) {
-        this.employee = employee;
+    private final Customer customer;
+    private final String CUSTOMER_ROLE = "ROLE_CUSTOMER";
+
+    public CustomerPrincipal(final Customer customer) {
+        this.customer = customer;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        System.out.println(employee.getRole());
-        return Collections.singleton(new SimpleGrantedAuthority(employee.getRole()));
+
+        return Collections.singleton(new SimpleGrantedAuthority(CUSTOMER_ROLE));
     }
 
     @Override
     public String getPassword() {
-        return employee.getPassword();
+        return customer.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return employee.getEmail();
+        return customer.getEmail();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return employee.getActive();
+
+        return customer.getActive();
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return employee.getActive();
+        return customer.getActive();
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return employee.getActive();
+        return customer.getActive();
     }
 
     @Override
     public boolean isEnabled() {
-        return employee.getActive();
+        return customer.getActive();
     }
+
 }

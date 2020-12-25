@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import com.albumbazaar.albumbazar.dao.CustomerRepository;
 import com.albumbazaar.albumbazar.dao.OrderRepository;
+import com.albumbazaar.albumbazar.dao.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.form.LocationForm;
@@ -21,12 +22,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Qualifier("customerService")
-public class CustomerServiceImpl implements CustomerService {
+public class CustomerServiceImpl implements CustomerService, UserDetailsService {
     private final Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
 
     private final CustomerRepository customerRepository;
@@ -256,6 +260,14 @@ public class CustomerServiceImpl implements CustomerService {
         }).filter(eachOrderDTO -> eachOrderDTO != null).collect(Collectors.toList());
 
         // return orderDetailDTOs;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        final Customer customer = customerRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Invalid Credentials"));
+
+        return new CustomerPrincipal(customer);
     }
 
 }

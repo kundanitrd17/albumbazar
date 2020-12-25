@@ -67,14 +67,14 @@ public final class HomeController {
         return "foo";
     }
 
-    @RequestMapping("/login-user")
-    public String loginUser() {
-        return "loginUser";
-    }
-
     @RequestMapping("/login-super")
     public String loginSuper() {
         return "superuser/login-super";
+    }
+
+    @RequestMapping("/login-delivery")
+    public String loginDelivery() {
+        return "login-customer";
     }
 
     // Need to change this callback url later when I create a separate account for

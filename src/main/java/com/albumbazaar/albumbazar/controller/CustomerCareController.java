@@ -34,8 +34,12 @@ public final class CustomerCareController {
         this.customerCareEmployeeService = customerCareEmployeeService;
     }
 
-    @GetMapping(value = "")
+    @RequestMapping("/login")
+    public String loginUser() {
+        return "customercare/login_customer_care";
+    }
 
+    @GetMapping(value = "")
     public ModelAndView customerCareHomeView(Model model) {
         final ModelAndView modelAndView = new ModelAndView("customercare/dashboard_customer_care");
 
