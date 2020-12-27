@@ -1,0 +1,13 @@
+
+
+@media only screen and (min-width: 600px) {
+    #navbarSupportedContent{
+        margin-right: 2rem;
+    }
+    
+    nav .navbar-brand {
+        height: 3rem;
+        margin-left: 2rem;
+    }
+}
+  

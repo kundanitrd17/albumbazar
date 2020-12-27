@@ -1,0 +1,26 @@
+#sidebar_navigation{
+  height: 90vh;
+  padding-top: 2rem;
+}
+
+.sidebar-sticky .nav .nav-item {
+    margin-top: 1rem;    
+}
+
+
+.sidebar-sticky .nav .nav-item .nav-link {
+    color: black;
+}
+
+.card .address-card-info {
+    margin: 20px;
+    padding: 20px;
+}
+
+.card{
+    box-shadow: 0 6px 10px -6px black;
+}
+
+.card:hover{
+    box-shadow: 0 10px 10px -6px black;
+}
