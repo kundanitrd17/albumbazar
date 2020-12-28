@@ -26,6 +26,10 @@ public class CustomerPrincipal implements UserDetails {
         return Collections.singleton(new SimpleGrantedAuthority(CUSTOMER_ROLE));
     }
 
+    public Long getId() {
+        return customer.getId();
+    }
+
     @Override
     public String getPassword() {
         return customer.getPassword();

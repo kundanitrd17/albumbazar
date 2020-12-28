@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public final class HomeController {
@@ -51,7 +52,15 @@ public final class HomeController {
     private CoverRepository coverRepo;
 
     @GetMapping("/")
-    public String home() {
+    public ModelAndView index() {
+        final ModelAndView modelAndView = new ModelAndView("index");
+        modelAndView.addObject("customer", custRepo.getOne(1l));
+
+        return modelAndView;
+    }
+
+    @GetMapping("/upload-photo")
+    public String uploadPhotoTest() {
 
         return "upload_photos";
     }
@@ -69,7 +78,7 @@ public final class HomeController {
 
     @RequestMapping("/login-super")
     public String loginSuper() {
-        return "superuser/login-super";
+        return "superuser/login_super";
     }
 
     @RequestMapping("/login-delivery")

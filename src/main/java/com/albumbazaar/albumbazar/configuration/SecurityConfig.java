@@ -63,39 +63,37 @@ public class SecurityConfig {
     // /**
     // * Security configuration for authenticating Customer care endpoints
     // */
-    // @Configuration
-    // @Order(2)
-    // public static class CustomerCareSecurityConfig extends
-    // WebSecurityConfigurerAdapter {
+    @Configuration
+    @Order(2)
+    public static class CustomerCareSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    // // Even the customer care in an employee, thus we can access it using
-    // // customer-care service
-    // private final UserDetailsService employeeService;
+        // Even the customer care in an employee, thus we can access it using
+        // customer-care service
+        private final UserDetailsService employeeService;
 
-    // @Autowired
-    // protected CustomerCareSecurityConfig(
-    // @Qualifier("employeeService") final UserDetailsService userDetailsService) {
-    // this.employeeService = userDetailsService;
-    // }
+        @Autowired
+        protected CustomerCareSecurityConfig(
+                @Qualifier("employeeService") final UserDetailsService userDetailsService) {
+            this.employeeService = userDetailsService;
+        }
 
-    // @Override
-    // protected void configure(final AuthenticationManagerBuilder auth) throws
-    // Exception {
-    // auth.userDetailsService(employeeService);
-    // }
+        @Override
+        protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+            auth.userDetailsService(employeeService);
+        }
 
-    // @Override
-    // protected void configure(final HttpSecurity http) throws Exception {
-    // http.antMatcher("/customer-care/**").authorizeRequests().anyRequest()
-    // .hasAuthority(AvailableRoles.Code.CUSTOMER_CARE).and().formLogin().loginPage("/customer-care/login")
-    // .loginProcessingUrl("/customer-care/login").failureUrl("/customer-care/login?error=true")
-    // .defaultSuccessUrl("/customer-care", true).permitAll().and().logout()
-    // .logoutUrl("/customer-care/logout").logoutSuccessUrl("/").invalidateHttpSession(true)
-    // .deleteCookies("JSESSIONID", "XSRF-TOKEN");
+        @Override
+        protected void configure(final HttpSecurity http) throws Exception {
+            http.antMatcher("/customer-care/**").authorizeRequests().anyRequest()
+                    .hasAuthority(AvailableRoles.Code.CUSTOMER_CARE).and().formLogin().loginPage("/customer-care/login")
+                    .loginProcessingUrl("/customer-care/login").failureUrl("/customer-care/login?error=true")
+                    .defaultSuccessUrl("/customer-care", true).permitAll().and().logout()
+                    .logoutUrl("/customer-care/logout").logoutSuccessUrl("/").invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID", "XSRF-TOKEN");
 
-    // }
+        }
 
-    // }
+    }
 
     // /**
     // * Securing endpoints for the Delivery EndPoint

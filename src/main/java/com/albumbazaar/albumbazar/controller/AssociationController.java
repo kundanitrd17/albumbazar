@@ -29,40 +29,4 @@ public final class AssociationController {
         this.productService = productService;
     }
 
-    @GetMapping(value = "")
-    @ResponseBody
-    public ModelAndView home() {
-        final ModelAndView modelAndView = new ModelAndView("superuser/association_list");
-        List<Association> associations;
-        try {
-            associations = associationService.getAllAssociation();
-        } catch (Exception e) {
-            associations = null;
-        }
-        modelAndView.addObject("associations", associations);
-        return modelAndView;
-    }
-
-    @GetMapping(value = "all_association_product_view")
-    public ModelAndView allAssociationProductView() {
-        final ModelAndView modelAndView = new ModelAndView("superuser/association_product_view");
-
-        try {
-            final List<Association> associations = associationService.getAssociationWithStatus(true).stream()
-                    .map(association -> {
-                        Association eachAssociation = new Association();
-                        eachAssociation.setId(association.getId());
-                        eachAssociation.setName(association.getName());
-                        return eachAssociation;
-                    }).collect(Collectors.toList());
-
-            modelAndView.addObject("associations", associations);
-        } catch (Exception e) {
-            // Send some error msg
-        }
-
-        return modelAndView;
-
-    }
-
 }

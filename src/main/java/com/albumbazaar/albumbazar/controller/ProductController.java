@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(value = "product")
+@RequestMapping(value = "/superuser/product/")
 public final class ProductController {
 
     private AssociationService associationService;
@@ -23,7 +23,7 @@ public final class ProductController {
         this.associationService = associationService;
     }
 
-    @GetMapping(value = "add")
+    @GetMapping(value = "/add")
     public String addProductsView() {
         return "/superuser/add_asso_prod_list";
     }

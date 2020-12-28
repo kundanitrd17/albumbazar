@@ -1,14 +1,20 @@
 package com.albumbazaar.albumbazar.controller;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import com.albumbazaar.albumbazar.Mapper.AddressMapper;
+import com.albumbazaar.albumbazar.dao.principals.CustomerPrincipal;
+import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
 import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.form.LocationForm;
 import com.albumbazaar.albumbazar.form.customer.BasicCustomerDetailForm;
+import com.albumbazaar.albumbazar.model.AddressEntity;
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.services.CustomerService;
 
@@ -16,7 +22,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,7 +38,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
-@RequestMapping(value = "customer")
 public final class CustomerController {
 
     private final Logger logger = LoggerFactory.getLogger(CustomerController.class);
@@ -43,30 +50,51 @@ public final class CustomerController {
         this.customerService = customerService;
     }
 
-    @PutMapping("/info")
-    @ResponseBody
-    public ResponseEntity<?> emp(@RequestBody @Valid CustomerDTO customerInfo) {
+    @Autowired
+    AddressMapper addressMapper;
+
+    @GetMapping(value = "/my-account")
+    public ModelAndView myAccountProfileInfo() {
+        final ModelAndView modeAndView = new ModelAndView("my_account");
 
         try {
-            final Customer customer = customerService.updateCustomerInfo(customerInfo);
-
-            return ResponseEntity.ok().body(customer);
+            // Get Customer id from the pricipal objects
+            modeAndView.addObject("customer", customerService.getCustomer(1l));
         } catch (Exception e) {
             logger.error(e.getMessage());
-            final ErrorDTO error = new ErrorDTO();
-            error.setMessage("Unable to update info");
-            return ResponseEntity.badRequest().body(error);
+            modeAndView.addObject("error", "Unable to Authenticate you");
+            modeAndView.setViewName("redirect:/");
         }
 
+        return modeAndView;
     }
 
-    @GetMapping(value = "/register")
+    @GetMapping(value = "/customer/my-address")
+    public ModelAndView myAccountManageAddress() {
+        final ModelAndView modelAndView = new ModelAndView("manage_address");
+
+        try {
+
+            final Customer customer = customerService.getCustomer(1l);
+            final Set<AddressDTO> addresses = customer.getAddress().stream().map(addressMapper::addressToAddressDto)
+                    .collect(Collectors.toSet());
+            modelAndView.addObject("addresses", addresses);
+            modelAndView.addObject("customer", customer);
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return modelAndView;
+    }
+
+    @GetMapping(value = "customer/register")
     public String viewRegisterCustomer() {
 
         return "/add-customer";
     }
 
-    @PostMapping(value = "/register")
+    @PostMapping(value = "customer/register")
     @ResponseBody
     public String registerCustomer(@ModelAttribute BasicCustomerDetailForm customerDetail,
             @ModelAttribute LocationForm addressDetail) {
@@ -84,33 +112,7 @@ public final class CustomerController {
         return "added";
     }
 
-    @GetMapping(value = "")
-    public ModelAndView getAllCustomer() {
-
-        final ModelAndView modelAndView = new ModelAndView("superuser/customer");
-
-        modelAndView.addObject("customers", customerService.getAllCustomer());
-
-        return modelAndView;
-    }
-
-    @GetMapping(value = "discounted")
-    public ModelAndView getDiscountedCustomer() {
-        final ModelAndView modelAndView = new ModelAndView("superuser/customer");
-        modelAndView.addObject("customers", customerService.getDiscountedCustomer());
-
-        return modelAndView;
-    }
-
-    @GetMapping(value = "blocked")
-    public ModelAndView getBlockedCustomer() {
-        final ModelAndView modelAndView = new ModelAndView("superuser/customer");
-        modelAndView.addObject("customers", customerService.getBlockeList());
-
-        return modelAndView;
-    }
-
-    @GetMapping(value = "my-order")
+    @GetMapping(value = "customer/my-order")
     public ModelAndView viewAllMyOrders() {
 
         final ModelAndView modelAndView = new ModelAndView("customer_orders");
@@ -128,7 +130,7 @@ public final class CustomerController {
         return modelAndView;
     }
 
-    @PostMapping("my-order/pay-or-upload")
+    @PostMapping("customer/my-order/pay-or-upload")
     public RedirectView getPaymentOrUploadForAnOrder(@RequestParam("orderId") String orderId,
             final RedirectAttributes redirectAttributes) {
         System.out.println("Order Id: " + orderId);
@@ -144,6 +146,30 @@ public final class CustomerController {
 
         return redirectView;
 
+    }
+
+    @PostMapping(value = "customer/address/info")
+    public RedirectView updateAddressOfCustomer(@Valid @ModelAttribute final AddressDTO addressDTO,
+            final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
+        final RedirectView redirectView = new RedirectView("/customer/my-address");
+        if (bindingResult.hasErrors()) {
+            logger.error("Invalid Address information");
+            redirectAttributes.addAttribute("error", "Invalid Data");
+            return redirectView;
+        }
+
+        try {
+            // final CustomerPrincipal customerPrincipal = (CustomerPrincipal)
+            // SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            System.out.println("******************************************");
+            System.out.println(addressDTO);
+            System.out.println("******************************************");
+            customerService.updateOrAddAddress(addressDTO, 1l);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return redirectView;
     }
 
 }

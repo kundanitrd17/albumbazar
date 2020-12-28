@@ -24,6 +24,10 @@ public class EmployeePrincipal implements UserDetails {
         return Collections.singleton(new SimpleGrantedAuthority(employee.getRole()));
     }
 
+    public Long getId() {
+        return employee.getId();
+    }
+
     @Override
     public String getPassword() {
         return employee.getPassword();

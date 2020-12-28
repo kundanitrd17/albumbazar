@@ -8,7 +8,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Page Title - SB Admin</title>
-    <link href="http://localhost:8080/customercare/css/login_logout.css" rel="stylesheet" />
+    <link href="css/login_logout.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"
         crossorigin="anonymous"></script>
 </head>
@@ -25,7 +25,7 @@
                                     <h3 class="text-center font-weight-light my-4">Login</h3>
                                 </div>
                                 <div class="card-body">
-                                    <form action="/customer-care/login" method="POST">
+                                    <form action="superuser/superlogin" method="POST">
                                         <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                         <div class="form-group">
                                             <label class="small mb-1" for="inputEmailAddress">Email</label>

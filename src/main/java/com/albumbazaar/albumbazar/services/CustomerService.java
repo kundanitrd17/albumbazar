@@ -2,6 +2,7 @@ package com.albumbazaar.albumbazar.services;
 
 import java.util.List;
 
+import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.form.LocationForm;
@@ -20,6 +21,13 @@ public interface CustomerService {
      *         or not
      */
     Customer registerCustomer(final BasicCustomerDetailForm customerDetail, final LocationForm addressDetail);
+
+    /**
+     * Return Customer as output
+     * 
+     * @return Customer
+     */
+    Customer getCustomer(Long id);
 
     /**
      * 
@@ -99,5 +107,22 @@ public interface CustomerService {
      * @return List of OrderDetailDTO
      */
     List<OrderDetailDTO> getAllOrderDetails(Long customerId);
+
+    /**
+     * Delete an address for a customer
+     * 
+     * @param customerId id of the customer whose address needs to get delete
+     * @param addressId  id of the address which needs to be deleted
+     */
+    void deleteAddress(long customerId, long addressId);
+
+    /**
+     * Updates existing address if address id is provide or else persist a new
+     * address entity in the database if id is null
+     * 
+     * @param addressDTO DTO object of the address entity
+     * @param customerId id the customer with whom the address is associated to
+     */
+    void updateOrAddAddress(AddressDTO addressDTO, Long customerId);
 
 }

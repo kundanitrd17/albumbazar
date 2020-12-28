@@ -24,3 +24,28 @@
 .card:hover{
     box-shadow: 0 10px 10px -6px black;
 }
+
+.sidebar-sticky ul li .nav-link {
+    transition: all .2s ease-in-out;
+}
+
+.sidebar-sticky ul li .nav-link:hover{
+    overflow: hidden;
+    background-color: lightblue;
+    transform: scale(1.1);
+    
+}
+
+@keyframes hid {
+    from {opacity: 1;}
+    to {opacity: 0;}
+}
+
+.address-card-info {
+    
+    animation-name: hid;
+    animation-duration: 2s;
+    animation-fill-mode: forwards;
+    animation-play-state: paused;
+}
+

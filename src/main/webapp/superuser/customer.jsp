@@ -85,8 +85,9 @@
                         <div class="panel panel-primary filterable table-responsive">
                             <div class="panel-heading">
                                 <h3 class="panel-title">Customers</h3>
-                                <div class="pull-right" style="position: relative;
-top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span>
+                                <div class="pull-right" style="position: relative;top: -20px;"><button
+                                        class="btn btn-default btn-xs btn-filter"><span
+                                            class="glyphicon glyphicon-filter"></span>
                                         Filter</button></div>
                             </div>
                             <table class="table " style="font-size: 12px;">

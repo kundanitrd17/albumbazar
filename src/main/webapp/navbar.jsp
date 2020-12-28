@@ -1,7 +1,8 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<!-- Navbar Section -->
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
 
     <!-- Image and text -->
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" href="/">
         <img src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30"
             class="d-inline-block align-top" alt="">
         AlbumBazaar
@@ -22,35 +23,67 @@
         </ul>
         <ul class="navbar-nav">
             <li class="nav-item mx-2">
-                <a class="nav-link" href="#">Hi User!</a>
+                <a class="nav-link" href="#"><strong>Hi User!</strong></a>
             </li>
             <li class="nav-item mx-2">
-                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link" href="/" style="color: aliceblue;">Home</a>
             </li>
             <li class="nav-item mx-2">
-                <a class="nav-link" href="#">Contact Us</a>
+                <a class="nav-link" href="#" style="color: aliceblue;">Contact Us</a>
             </li>
 
             <li class="nav-item dropdown mx-2">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                    aria-haspopup="true" aria-expanded="false">
+                    aria-haspopup="true" aria-expanded="false" style="color: aliceblue;">
                     Account
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Profile</a>
-                    <a class="dropdown-item" href="#">Orders</a>
+                    <a class="dropdown-item" href="/my-account">Profile</a>
+                    <a class="dropdown-item" href="/customer/my-order">Orders</a>
                     <a class="dropdown-item" href="#">wallet</a>
-                    <a class="dropdown-item" href="#">Your Referral Code</a>
+                    <a class="dropdown-item" href="#" data-toggle="modal" data-target="#exampleModalCenter">Your
+                        Referral Code</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Something Else Here</a>
                 </div>
             </li>
 
             <li class="nav-item mr-3 px-2">
-                <a class="btn btn-primary" href="#">Log-Out</a>
+                <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#LoginCustomerModal">Log-In</a>
             </li>
 
         </ul>
 
     </div>
 </nav>
+
+
+
+<!-- End of Navbar section -->
+
+<!-- Referall code -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <input type="text" value="${customer.referralCode}" id="customer_referral_code" hidden>
+                ${customer.referralCode}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" id="ButtonToCopyReferralCode">Click To
+                    Copy</button>
+            </div>
+        </div>
+    </div>
+</div>

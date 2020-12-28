@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.albumbazaar.albumbazar.dao.principals.EmployeePrincipal;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 import com.albumbazaar.albumbazar.services.CustomerCareEmployeeService;
@@ -13,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -73,10 +75,11 @@ public final class CustomerCareController {
              * Get the Principal object from SecurityContextHolder and populate
              * orderAndCustomerCare.customerCareId
              */
-            // Object principal = SecurityContextHolder.getContext().getAuthentication()
-            // .getPrincipal();
+            final EmployeePrincipal employeePrincipal = (EmployeePrincipal) SecurityContextHolder.getContext()
+                    .getAuthentication().getPrincipal();
 
-            modelAndView.addObject("allOrders", customerCareEmployeeService.acceptedOrdersByCustomerCare(1l));
+            modelAndView.addObject("allOrders",
+                    customerCareEmployeeService.acceptedOrdersByCustomerCare(employeePrincipal.getId()));
 
             modelAndView.addObject("availableOrderStatus", orderService.availableOrderStatus());
 
@@ -92,12 +95,12 @@ public final class CustomerCareController {
         final ModelAndView modelAndView = new ModelAndView("customercare/customer_care_completed");
 
         try {
-            // change this later
-            // Get customer care 's id from security context object i.e. principal object
+            final EmployeePrincipal employeePrincipal = (EmployeePrincipal) SecurityContextHolder.getContext()
+                    .getAuthentication().getPrincipal();
 
-            final Long customerCareId = 1l;
+            modelAndView.addObject("allOrders",
+                    customerCareEmployeeService.getCompletedOrders(employeePrincipal.getId()));
 
-            modelAndView.addObject("allOrders", customerCareEmployeeService.getCompletedOrders(customerCareId));
         } catch (Exception e) {
             logger.error(e.getMessage());
         }

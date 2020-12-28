@@ -20,24 +20,24 @@
         </li>
         <li><i class="fa fa-support fa-fw"></i><a href="#"> Order</a>
             <ul class="side-nav-dropdown">
-                <li><a href="/order-list?payment=false">Order Unpaid</a></li>
-                <li><a href="/order-list?status=pending">Order Pending</a></li>
-                <li><a href="/order-list?status=process">Order Under Process</a></li>
-                <li><a href="/order-list">Completed Order</a></li>
+                <li><a href="/superuser/order-list?payment=false">Order Unpaid</a></li>
+                <li><a href="/superuser/order-list?status=pending">Order Pending</a></li>
+                <li><a href="/superuser/order-list?status=process">Order Under Process</a></li>
+                <li><a href="/superuser/order-list">Completed Order</a></li>
             </ul>
         </li>
         <li><i class="fa fa-envelope fa-fw"></i><a href="#"> Employees</a>
             <ul class="side-nav-dropdown">
-                <li><a href="/employee/add">Add Employee</a></li>
-                <li><a href="/employee">View Employees</a></li>
+                <li><a href="/superuser/employee-add">Add Employee</a></li>
+                <li><a href="/superuser/employee-list">View Employees</a></li>
             </ul>
         </li>
         <li><i class="fa fa-users fa-fw"></i><a href="#"> Our Association</a>
             <ul class="side-nav-dropdown">
                 <li><a href="/superuser/add-association">Add Association</a></li>
-                <li><a href="/association">Views Association List </a></li>
-                <li><a href="/product/add">Add Associated Products </a></li>
-                <li><a href="/association/all_association_product_view">View Associated Products </a></li>
+                <li><a href="/superuser/association">Views Association List </a></li>
+                <li><a href="/superuser/product/add">Add Associated Products </a></li>
+                <li><a href="/superuser/association/all_association_product_view">View Associated Products </a></li>
             </ul>
         </li>
         <li><i class="fa fa-bolt fa-fw"></i><a href="#"> Transaction</a>
@@ -49,9 +49,9 @@
         </li>
         <li><i class="fa fa-user"></i><a href="#"> Customer</a>
             <ul class="side-nav-dropdown">
-                <li><a href="/customer">All Customer</a></li>
-                <li><a href="/customer/discounted">Discounted Customer</a></li>
-                <li><a href="/customer/blocked">Blocked Customer</a></li>
+                <li><a href="/superuser/customer">All Customer</a></li>
+                <li><a href="/superuser/customer/discounted">Discounted Customer</a></li>
+                <li><a href="/superuser/customer/blocked">Blocked Customer</a></li>
             </ul>
         </li>
         <p>Example:</p>

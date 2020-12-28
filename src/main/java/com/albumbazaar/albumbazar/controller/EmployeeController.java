@@ -38,47 +38,4 @@ public final class EmployeeController {
         this.branchService = branchService;
     }
 
-    @GetMapping(value = "")
-    public ModelAndView allEmployeeView() {
-        ModelAndView modelAndView = new ModelAndView("/superuser/emp-list");
-
-        try {
-            modelAndView.addObject("employees", employeeService.getAllEmployee());
-        } catch (Exception e) {
-            modelAndView.addObject("employees", null);
-        }
-
-        return modelAndView;
-    }
-
-    @GetMapping(value = "add")
-    public ModelAndView viewAddEmployee() {
-        final ModelAndView modelAndView = new ModelAndView("/superuser/add-emp");
-
-        try {
-            modelAndView.addObject("active_branches", branchService.getAllActiveBranchName());
-        } catch (NoSuchElementException e) {
-            logger.error(e.getMessage());
-
-            final ErrorDTO error = new ErrorDTO();
-            error.setMessage("No Branch Available");
-            modelAndView.addObject("error", error);
-
-        }
-
-        modelAndView.addObject("employee_roles", employeeService.getAllAvailableEmployeeRole());
-
-        return modelAndView;
-    }
-
-    @PostMapping(value = "add")
-    @ResponseBody
-    public String addEmployee(@ModelAttribute BasicEmployeeDetailForm employeeDetail,
-            @ModelAttribute LocationForm addressDetail) {
-
-        employeeService.addEmployee(employeeDetail, addressDetail);
-
-        return "Added Employee";
-    }
-
 }

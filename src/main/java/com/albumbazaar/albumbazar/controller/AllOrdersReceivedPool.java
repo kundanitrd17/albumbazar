@@ -1,5 +1,6 @@
 package com.albumbazaar.albumbazar.controller;
 
+import com.albumbazaar.albumbazar.dao.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.model.OrderAndCustomerCareEntity;
 import com.albumbazaar.albumbazar.services.CustomerCareEmployeeService;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -37,11 +39,14 @@ public final class AllOrdersReceivedPool {
          * Get the Principal object from SecurityContextHolder and populate
          * orderAndCustomerCare.customerCareId
          */
-        // Object principal = SecurityContextHolder.getContext().getAuthentication()
-        // .getPrincipal();
-        orderAndCustomerCare.setCustomerCareId(1L);
+        // System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
 
         try {
+            // final CustomerPrincipal principal = (CustomerPrincipal)
+            // SecurityContextHolder.getContext()
+            // .getAuthentication().getPrincipal();
+
+            orderAndCustomerCare.setCustomerCareId(1L);
 
             final OrderAndCustomerCareEntity orderAndCustomerCareEntity = customerCareEmployeeService
                     .addOrderOfCustomerCare(orderAndCustomerCare);

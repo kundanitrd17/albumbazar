@@ -1,16 +1,22 @@
 package com.albumbazaar.albumbazar.services.impl;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Collectors;
 
+import com.albumbazaar.albumbazar.Mapper.AddressMapper;
+import com.albumbazaar.albumbazar.dao.AddressRepository;
 import com.albumbazaar.albumbazar.dao.CustomerRepository;
 import com.albumbazaar.albumbazar.dao.OrderRepository;
 import com.albumbazaar.albumbazar.dao.principals.CustomerPrincipal;
+import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.form.LocationForm;
 import com.albumbazaar.albumbazar.form.customer.BasicCustomerDetailForm;
+import com.albumbazaar.albumbazar.model.AddressEntity;
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
@@ -36,16 +42,21 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
     private final CustomerRepository customerRepository;
     private final LocationService locationService;
     private final OrderService orderService;
+    private final AddressRepository addressRepository;
+    private final AddressMapper addressMapper;
 
     @Autowired
     public CustomerServiceImpl(final CustomerRepository customerRepository, final LocationService locationService,
-            @Qualifier("orderService") final OrderService orderService) {
-
+            @Qualifier("orderService") final OrderService orderService, final AddressRepository addressRepository,
+            final AddressMapper addressMapper) {
+        this.addressRepository = addressRepository;
         this.orderService = orderService;
         this.locationService = locationService;
         this.customerRepository = customerRepository;
+        this.addressMapper = addressMapper;
     }
 
+    @Override
     @Transactional(readOnly = true)
     public Customer getCustomer(final Long id) {
 
@@ -73,7 +84,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 
         if (addressDetail != null) {
             // Save the address using location service and than link it to the customer
-            customer.setAddress(locationService.addNewAddress(addressDetail));
+            // customer.setAddress(locationService.addNewAddress(addressDetail));
         }
 
         // Save customer to get the id of customer
@@ -268,6 +279,47 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
                 .orElseThrow(() -> new UsernameNotFoundException("Invalid Credentials"));
 
         return new CustomerPrincipal(customer);
+    }
+
+    @Override
+    public void deleteAddress(long customerId, long addressId) {
+
+        customerRepository.deleteByAddressId(customerId, addressId);
+        addressRepository.deleteById(addressId);
+
+    }
+
+    @Override
+    public void updateOrAddAddress(AddressDTO addressDTO, Long customerId) {
+
+        if (addressDTO.getId() == null) {
+            this.addNewAddressOfCustomer(addressDTO, customerId);
+        } else {
+            this.updateAddressInfo(addressDTO, customerId);
+        }
+
+    }
+
+    @Transactional
+    private void updateAddressInfo(AddressDTO addressDTO, Long customerId) {
+        addressRepository.save(addressMapper.addressDTOToAddressEntity(addressDTO));
+    }
+
+    @Transactional
+    void addNewAddressOfCustomer(final AddressDTO addressDTO, final Long customerId) {
+        final Customer customer = this.getCustomer(customerId);
+        Set<AddressEntity> addresses = customer.getAddress();
+
+        if (addresses == null) {
+            addresses = new HashSet<>(5);
+        }
+        final AddressEntity address = addressRepository.save(addressMapper.addressDTOToAddressEntity(addressDTO));
+        addresses.add(address);
+
+        customer.setAddress(addresses);
+
+        customerRepository.save(customer);
+
     }
 
 }
