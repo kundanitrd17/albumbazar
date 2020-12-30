@@ -1,7 +1,7 @@
 package com.albumbazaar.albumbazar.services.impl;
 
 import com.albumbazaar.albumbazar.dao.SuperuserRepository;
-import com.albumbazaar.albumbazar.dao.principals.SuperuserPrincipal;
+import com.albumbazaar.albumbazar.principals.SuperuserPrincipal;
 import com.albumbazaar.albumbazar.form.api.ForgotPasswordFormAPI;
 import com.albumbazaar.albumbazar.model.Superuser;
 import com.albumbazaar.albumbazar.services.SuperuserService;

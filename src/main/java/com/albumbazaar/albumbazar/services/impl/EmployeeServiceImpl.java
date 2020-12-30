@@ -9,7 +9,7 @@ import java.util.stream.Stream;
 import com.albumbazaar.albumbazar.dao.Address1Repository;
 import com.albumbazaar.albumbazar.dao.Address2Repository;
 import com.albumbazaar.albumbazar.dao.EmployeeRepository;
-import com.albumbazaar.albumbazar.dao.principals.EmployeePrincipal;
+import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
 import com.albumbazaar.albumbazar.form.LocationForm;
 import com.albumbazaar.albumbazar.form.employee.BasicEmployeeDetailForm;
 import com.albumbazaar.albumbazar.model.Address1;

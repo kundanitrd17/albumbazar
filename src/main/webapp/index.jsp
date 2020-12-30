@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-  <html>
+  <html lang="en">
 
   <head>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" content="${_csrf.token}" />
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" content="${_csrf.headerName}" />
+    <!-- ... -->
 
     <title>index</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -317,9 +322,6 @@
         </div>
 
 
-        <!-- Navbar Section -->
-        <%@include file="login-customer.jsp" %>
-          <!-- End of Navbar section -->
 
       </section>
 
@@ -337,11 +339,17 @@
 
 
 
+
       <script src="./js/index.js"></script>
 
       <script type="text/javascript">
 
+
+
         $(document).ready(function () {
+          var custjs = '${customer}';
+          console.log(custjs);
+
           $(".fancy-card #t").css("background-image", "url('https://static-1.gumroad.com/res/gumroad/assets/collections/food_and_cooking_thumb-34fb9ef316a7b01177529839891c3a03.jpg')");
         });
 

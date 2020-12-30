@@ -3,7 +3,6 @@ package com.albumbazaar.albumbazar.services.impl;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import javax.persistence.EntityNotFoundException;
 import javax.validation.ConstraintViolationException;
 
 import com.albumbazaar.albumbazar.dao.AssociationRepository;
@@ -16,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Qualifier("associationService")
@@ -30,6 +30,7 @@ public class AssociationServiceImpl implements AssociationService {
     }
 
     @Override
+    @Transactional
     public boolean addAssociation(final AssociationDetailForm associationDetail) {
         try {
             final Association association = new Association(associationDetail); // create new object
@@ -54,12 +55,14 @@ public class AssociationServiceImpl implements AssociationService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Association> getAllAssociation() {
         return associationRepository.findAll();
 
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Association getAssociation(final Long id) throws NoSuchElementException {
         final Association association = associationRepository.findById(id).get();
 

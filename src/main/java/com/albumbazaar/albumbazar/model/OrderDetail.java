@@ -19,7 +19,6 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 @Table(name = "order_detail")
 @JsonIgnoreProperties(value = { "customer", "deliveryAddress", "sheets", "employee" })
@@ -109,6 +108,9 @@ public class OrderDetail {
         this.paymentStatus = false;
         this.totalAmount = 1f;
 
+    }
+
+    public OrderDetail() {
     }
 
     public OrderDetail(final OrderDetailForm orderDetails) {// throws Exception {

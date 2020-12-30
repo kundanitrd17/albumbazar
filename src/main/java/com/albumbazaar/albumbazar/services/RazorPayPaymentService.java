@@ -3,7 +3,6 @@ package com.albumbazaar.albumbazar.services;
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.RazorPayEntity;
-import com.razorpay.Order;
 import com.razorpay.RazorpayException;
 
 public interface RazorPayPaymentService {

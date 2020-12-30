@@ -3,7 +3,6 @@ package com.albumbazaar.albumbazar.dao;
 import java.util.List;
 import java.util.Optional;
 
-import com.albumbazaar.albumbazar.model.Employee;
 import com.albumbazaar.albumbazar.model.OrderAndCustomerCareEntity;
 
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,4 @@
-package com.albumbazaar.albumbazar.dao.principals;
+package com.albumbazaar.albumbazar.principals;
 
 import java.util.Collection;
 import java.util.Collections;

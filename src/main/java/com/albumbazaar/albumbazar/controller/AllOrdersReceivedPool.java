@@ -1,7 +1,5 @@
 package com.albumbazaar.albumbazar.controller;
 
-import com.albumbazaar.albumbazar.dao.principals.CustomerPrincipal;
-import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.model.OrderAndCustomerCareEntity;
 import com.albumbazaar.albumbazar.services.CustomerCareEmployeeService;
 import com.albumbazaar.albumbazar.utilities.OrderAndCustomerCarePool;
@@ -10,10 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 

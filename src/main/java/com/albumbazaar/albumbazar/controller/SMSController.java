@@ -1,13 +1,5 @@
 package com.albumbazaar.albumbazar.controller;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-
 import com.albumbazaar.albumbazar.services.SMSService;
 
 import org.springframework.beans.factory.annotation.Autowired;

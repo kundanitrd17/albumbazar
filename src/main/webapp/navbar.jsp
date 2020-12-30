@@ -49,7 +49,7 @@
             </li>
 
             <li class="nav-item mr-3 px-2">
-                <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#LoginCustomerModal">Log-In</a>
+                <a class="btn btn-primary" href="#" data-toggle="modal" data-target="#LoginCustomerModal">Sign In</a>
             </li>
 
         </ul>
@@ -87,3 +87,11 @@
         </div>
     </div>
 </div>
+
+
+<!-- login modal Section -->
+<%@include file="login-customer.jsp" %>
+    <!-- End of login modal  section -->
+    <!-- Register modal Section -->
+    <%@include file="register-customer.jsp" %>
+        <!-- End of Register modal  section -->

@@ -1,7 +1,5 @@
 package com.albumbazaar.albumbazar.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -44,7 +42,6 @@ public class Customer {
     @Size(min = 6, max = 20, message = "Contact number is Invalid")
     private String contactNo;
 
-    @Size(min = 8)
     private String referralCode;
 
     private Float wallet;

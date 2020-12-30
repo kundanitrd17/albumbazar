@@ -3,6 +3,9 @@ package com.albumbazaar.albumbazar.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.albumbazaar.albumbazar.Mapper.CustomerMapper;
+import com.albumbazaar.albumbazar.dao.AddressRepository;
+import com.albumbazaar.albumbazar.dao.AssociationRepository;
 import com.albumbazaar.albumbazar.dao.BranchRepository;
 import com.albumbazaar.albumbazar.dao.CoverRepository;
 import com.albumbazaar.albumbazar.dao.CustomerRepository;
@@ -10,20 +13,18 @@ import com.albumbazaar.albumbazar.dao.EmployeeRepository;
 import com.albumbazaar.albumbazar.dao.OrderRepository;
 import com.albumbazaar.albumbazar.dao.SuperuserRepository;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
-import com.albumbazaar.albumbazar.model.OrderDetailStatus;
+import com.albumbazaar.albumbazar.model.Association;
+import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.services.GoogleDriveService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -31,6 +32,12 @@ import org.springframework.web.servlet.ModelAndView;
 public final class HomeController {
 
     private Logger logger = LoggerFactory.getLogger(HomeController.class);
+
+    @Autowired
+    private CustomerMapper customermapper;
+
+    @Autowired
+    private AddressRepository addressRepo;
 
     @Autowired
     private GoogleDriveService googleDriveService;
@@ -46,6 +53,9 @@ public final class HomeController {
     private OrderRepository orderrepo;
 
     @Autowired
+    private AssociationRepository assRepo;
+
+    @Autowired
     private CustomerRepository custRepo;
 
     @Autowired
@@ -54,7 +64,18 @@ public final class HomeController {
     @GetMapping("/")
     public ModelAndView index() {
         final ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("customer", custRepo.getOne(1l));
+
+        try {
+            // CustomerDTO customer =
+            // customermapper.customerEntityToCustomerDTO(custRepo.getOne(1l));
+            Customer customer = custRepo.findById(1l).orElseThrow();
+            CustomerDTO customerDTO = customermapper.customerEntityToCustomerDTO(customer);
+
+            modelAndView.addObject("customer", customerDTO);
+
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+        }
 
         return modelAndView;
     }
@@ -66,8 +87,20 @@ public final class HomeController {
     }
 
     @GetMapping("/user")
-    public String user() {
-        return "user";
+    @ResponseBody
+    public ResponseEntity<?> user() {
+        System.out.println("\n\n\n\n\n\n...................................................");
+
+        Customer customer = custRepo.getOne(1l);
+
+        CustomerDTO cdto = customermapper.customerEntityToCustomerDTO(customer);
+        System.out.println(cdto);
+        System.out.println(customer);
+        System.out
+                .println(customermapper.customerEntityToCustomerDTO(customermapper.customerDTOToCustomerEntity(cdto)));
+        System.out.println("\n\n\n\n\n\n...................................................");
+
+        return ResponseEntity.ok(cdto);
     }
 
     @GetMapping("/foo")

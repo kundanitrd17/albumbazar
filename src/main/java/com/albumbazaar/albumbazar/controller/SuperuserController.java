@@ -2,9 +2,8 @@ package com.albumbazaar.albumbazar.controller;
 
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
 
-import com.albumbazaar.albumbazar.dao.principals.SuperuserPrincipal;
+import com.albumbazaar.albumbazar.principals.SuperuserPrincipal;
 import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.form.BasicBranchInfoForm;
 import com.albumbazaar.albumbazar.form.ForgotPasswordFormSuperuser;
@@ -117,28 +116,6 @@ public final class SuperuserController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/association/all_association_product_view")
-    public ModelAndView allAssociationProductView() {
-        final ModelAndView modelAndView = new ModelAndView("superuser/association_product_view");
-
-        try {
-            final List<Association> associations = associationService.getAssociationWithStatus(true).stream()
-                    .map(association -> {
-                        Association eachAssociation = new Association();
-                        eachAssociation.setId(association.getId());
-                        eachAssociation.setName(association.getName());
-                        return eachAssociation;
-                    }).collect(Collectors.toList());
-
-            modelAndView.addObject("associations", associations);
-        } catch (Exception e) {
-            // Send some error msg
-        }
-
-        return modelAndView;
-
-    }
-
     // Superuser Branch Endpoints
 
     @RequestMapping(value = "add-branch", method = RequestMethod.GET)
@@ -205,7 +182,7 @@ public final class SuperuserController {
         try {
             modelAndView.addObject("employees", employeeService.getAllEmployee());
         } catch (Exception e) {
-            modelAndView.addObject("employees", null);
+            logger.error(e.getMessage());
         }
 
         return modelAndView;

@@ -132,7 +132,7 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
     private void saveToken(String code, String USER_IDENTIFIER_KEY) throws Exception {
 
         GoogleTokenResponse response = flow.newTokenRequest(code).setRedirectUri(CALLBACK_URI).execute();
-        Credential cred = flow.createAndStoreCredential(response, USER_IDENTIFIER_KEY);
+        flow.createAndStoreCredential(response, USER_IDENTIFIER_KEY);
 
         // System.out.println(flow.getCredentialDataStore().get(USER_IDENTIFIER_KEY));
         // System.out.println(code);

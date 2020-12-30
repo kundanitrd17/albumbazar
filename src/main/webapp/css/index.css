@@ -111,16 +111,16 @@ color: #fff;
 border: 0px;
 }
 
-input
+.fancy-card input
 {
 max-width: 200px;
 }
-table tr th
+.fancy-card table tr th
 {
 text-align: center;
 }
 
-table tr th h6
+.fancy-card table tr th h6
 {
 
 font-size: 13px; 

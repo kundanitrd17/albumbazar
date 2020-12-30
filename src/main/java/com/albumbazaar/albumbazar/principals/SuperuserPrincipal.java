@@ -1,4 +1,4 @@
-package com.albumbazaar.albumbazar.dao.principals;
+package com.albumbazaar.albumbazar.principals;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -18,32 +18,37 @@ public class SuperuserPrincipal implements UserDetails {
         this.superuser = superuser;
     }
 
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         System.out.println(superuser.getRole());
         return Collections.singleton(new SimpleGrantedAuthority(superuser.getRole()));
     }
+
     @Override
     public String getUsername() {
         return superuser.getEmail();
     }
+
     @Override
     public String getPassword() {
         return superuser.getPassword();
     }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
+
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
+
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
+
     @Override
     public boolean isEnabled() {
         return true;
@@ -61,5 +66,5 @@ public class SuperuserPrincipal implements UserDetails {
     public void setSuperuser(Superuser superuser) {
         this.superuser = superuser;
     }
-    
+
 }

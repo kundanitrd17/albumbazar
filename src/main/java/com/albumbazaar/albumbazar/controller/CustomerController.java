@@ -7,32 +7,21 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import com.albumbazaar.albumbazar.Mapper.AddressMapper;
-import com.albumbazaar.albumbazar.dao.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
-import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
-import com.albumbazaar.albumbazar.form.LocationForm;
-import com.albumbazaar.albumbazar.form.customer.BasicCustomerDetailForm;
-import com.albumbazaar.albumbazar.model.AddressEntity;
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.services.CustomerService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
@@ -88,28 +77,24 @@ public final class CustomerController {
         return modelAndView;
     }
 
-    @GetMapping(value = "customer/register")
-    public String viewRegisterCustomer() {
-
-        return "/add-customer";
-    }
-
-    @PostMapping(value = "customer/register")
-    @ResponseBody
-    public String registerCustomer(@ModelAttribute BasicCustomerDetailForm customerDetail,
-            @ModelAttribute LocationForm addressDetail) {
-
-        System.out.println(customerDetail);
-        System.out.println(addressDetail);
-
-        try {
-            customerService.registerCustomer(customerDetail, addressDetail);
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            return "Not added";
+    @PostMapping(value = "/register")
+    public String registerCustomer(@ModelAttribute @Valid final CustomerDTO customerDTO,
+            final BindingResult bindingResult) {
+        // final ModelAndView modelAndView = new ModelAndView("");
+        if (bindingResult.hasErrors()) {
+            logger.info("Invalid Details");
+            return "redirect:/";
         }
 
-        return "added";
+        try {
+            System.out.println(customerDTO);
+            System.out.println(customerDTO.getReferralCode());
+            customerService.registerCustomer(customerDTO);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return "redirect:/";
     }
 
     @GetMapping(value = "customer/my-order")
@@ -161,9 +146,6 @@ public final class CustomerController {
         try {
             // final CustomerPrincipal customerPrincipal = (CustomerPrincipal)
             // SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            System.out.println("******************************************");
-            System.out.println(addressDTO);
-            System.out.println("******************************************");
             customerService.updateOrAddAddress(addressDTO, 1l);
         } catch (Exception e) {
             logger.error(e.getMessage());

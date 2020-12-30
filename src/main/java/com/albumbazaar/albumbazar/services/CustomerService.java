@@ -5,22 +5,18 @@ import java.util.List;
 import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
-import com.albumbazaar.albumbazar.form.LocationForm;
-import com.albumbazaar.albumbazar.form.customer.BasicCustomerDetailForm;
 import com.albumbazaar.albumbazar.model.Customer;
-import com.albumbazaar.albumbazar.model.OrderDetail;
 
 public interface CustomerService {
 
     /**
      * Register a new customer
      * 
-     * @param customerDetail form containing all the customer details
-     * @param addressDetail  form containing all the location details
+     * @param customerDTO form containing all the customer details
      * @return a boolean value indicating whether the transaction has been completed
      *         or not
      */
-    Customer registerCustomer(final BasicCustomerDetailForm customerDetail, final LocationForm addressDetail);
+    CustomerDTO registerCustomer(CustomerDTO customerDTO);
 
     /**
      * Return Customer as output

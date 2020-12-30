@@ -1,7 +1,5 @@
 package com.albumbazaar.albumbazar.controller;
 
-import java.util.Properties;
-
 import javax.mail.internet.MimeMessage;
 
 import com.albumbazaar.albumbazar.services.MailService;
@@ -9,7 +7,6 @@ import com.albumbazaar.albumbazar.services.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.ByteArrayResource;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
@@ -19,8 +16,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
-import lombok.RequiredArgsConstructor;
 
 @Controller
 public class EmailController {

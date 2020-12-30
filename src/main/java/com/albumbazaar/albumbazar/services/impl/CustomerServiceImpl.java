@@ -7,21 +7,17 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import com.albumbazaar.albumbazar.Mapper.AddressMapper;
+import com.albumbazaar.albumbazar.Mapper.CustomerMapper;
 import com.albumbazaar.albumbazar.dao.AddressRepository;
 import com.albumbazaar.albumbazar.dao.CustomerRepository;
-import com.albumbazaar.albumbazar.dao.OrderRepository;
-import com.albumbazaar.albumbazar.dao.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
-import com.albumbazaar.albumbazar.form.LocationForm;
-import com.albumbazaar.albumbazar.form.customer.BasicCustomerDetailForm;
 import com.albumbazaar.albumbazar.model.AddressEntity;
 import com.albumbazaar.albumbazar.model.Customer;
-import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
+import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.services.CustomerService;
-import com.albumbazaar.albumbazar.services.LocationService;
 import com.albumbazaar.albumbazar.services.OrderService;
 
 import org.slf4j.Logger;
@@ -40,20 +36,20 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
     private final Logger logger = LoggerFactory.getLogger(CustomerServiceImpl.class);
 
     private final CustomerRepository customerRepository;
-    private final LocationService locationService;
     private final OrderService orderService;
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
+    private final CustomerMapper customerMapper;
 
     @Autowired
-    public CustomerServiceImpl(final CustomerRepository customerRepository, final LocationService locationService,
+    public CustomerServiceImpl(final CustomerRepository customerRepository,
             @Qualifier("orderService") final OrderService orderService, final AddressRepository addressRepository,
-            final AddressMapper addressMapper) {
+            final AddressMapper addressMapper, final CustomerMapper customerMapper) {
         this.addressRepository = addressRepository;
         this.orderService = orderService;
-        this.locationService = locationService;
         this.customerRepository = customerRepository;
         this.addressMapper = addressMapper;
+        this.customerMapper = customerMapper;
     }
 
     @Override
@@ -66,39 +62,51 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 
     @Override
     @Transactional
-    public Customer registerCustomer(final BasicCustomerDetailForm customerDetail, final LocationForm addressDetail) {
-        Customer customer = new Customer(customerDetail);
+    public CustomerDTO registerCustomer(final CustomerDTO customerDTO) {
 
-        if (customerDetail.getReferralCode() != null && !customerDetail.getReferralCode().isBlank()) {
-            final String id = customerDetail.getReferralCode().split("@")[0];
-            final Customer referredCustomer = customerRepository.findById(Long.parseLong(id)).orElseThrow();
+        if (!this.isPasswordValid(customerDTO)) {
+            throw new RuntimeException("Invalid Password");
+        }
 
-            if (referredCustomer.getReferralCode().equals(customerDetail.getReferralCode())) {
-                // If the referral code matches then some operation
-                customer.setWallet(100F);
-            } else {
-                throw new RuntimeException("Referral code did not match to the referred customer");
+        final Customer newCustomerEntity = customerMapper.customerDTOToCustomerEntity(customerDTO);
+
+        if (newCustomerEntity.getId() != null) {
+            throw new RuntimeException("Action not allowed");
+        }
+
+        try {
+            final String referredByCode = customerDTO.getReferralCode();
+            // If the referral code is available then do the rewarding and all that stuff
+            if (referredByCode != null && !referredByCode.isBlank()) {
+                final Long referredById = Long.parseLong(referredByCode.split("@")[0]);
+                final Customer referredByCustomer = this.getCustomer(referredById);
+                referredByCustomer.setWallet(referredByCustomer.getWallet() + 100f);
+                newCustomerEntity.setWallet(100f);
             }
 
+        } catch (Exception e) {
+            throw new RuntimeException("Invalid Referral code");
         }
 
-        if (addressDetail != null) {
-            // Save the address using location service and than link it to the customer
-            // customer.setAddress(locationService.addNewAddress(addressDetail));
+        final Customer savedCustomerEntity = customerRepository.save(newCustomerEntity);
+
+        savedCustomerEntity.setReferralCode(this.generateReferralCode(savedCustomerEntity.getId()));
+
+        return customerMapper.customerEntityToCustomerDTO(savedCustomerEntity);
+
+    }
+
+    private boolean isPasswordValid(final CustomerDTO customerDTO) {
+
+        if (customerDTO.getPassword() == null || customerDTO.getRePassword() == null) {
+            return false;
+        }
+        if (!customerDTO.getPassword().equals(customerDTO.getRePassword())) {
+            return false;
         }
 
-        // Save customer to get the id of customer
-        customer = customerRepository.save(customer);
-
-        // Get the generated Referral Code
-        final String referralCode = generateReferralCode(customer.getId());
-
-        // Store the generated referral code
-        customer.setReferralCode(referralCode);
-
-        // If both the customer info and the referral code is saved successfully then it
-        // return customer entity or else rollback changes
-        return customer;
+        return true;
+        // return customerDTO.getPassword().length() > 7;
 
     }
 

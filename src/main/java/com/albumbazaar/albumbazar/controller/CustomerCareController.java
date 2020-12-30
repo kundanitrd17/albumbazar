@@ -1,10 +1,8 @@
 package com.albumbazaar.albumbazar.controller;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-import com.albumbazaar.albumbazar.dao.principals.EmployeePrincipal;
+import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 import com.albumbazaar.albumbazar.services.CustomerCareEmployeeService;

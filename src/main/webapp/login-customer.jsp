@@ -1,81 +1,66 @@
-<div class="modal" id="LoginCustomerModal" tabindex="-1" role="dialog">
-    <form action="/customer/address/info" method="POST">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <!-- Modal Header -->
+<!-- Login Page Modal -->
 
-                <div class="modal-header">
-                    <h5 class="modal-title">Address</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <!-- End of Modal Header -->
-                <div class="modal-body">
+<style>
+    .modal-header {
+        padding: 0.75rem 1.25rem;
+        margin-bottom: 0;
+        background-color: rgba(0, 0, 0, 0.03);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+    }
+
+    .modal-header:first-child {
+        border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+    }
+
+
+    .modal-footer,
+    .modal-header {
+        padding: 0.75rem 1.25rem;
+        background-color: rgba(0, 0, 0, 0.03);
+        border-top: 1px solid rgba(0, 0, 0, 0.125);
+    }
+</style>
+
+<div class="modal fade" id="LoginCustomerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
+    aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content ">
+            <!-- Header -->
+            <div class="modal-header">
+                <h3 class="mx-auto text-center font-weight-light my-4">Login</h3>
+            </div>
+
+            <!-- Body -->
+            <div class="modal-body">
+                <form action="">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                    <!-- <input type="text" value="${address.id}" name="id" hidden> -->
                     <div class="form-group">
-                        <label for="exampleInputName${address.id}">Name</label>
-                        <input name="name" type="name" class="form-control" id="exampleInputName${address.id}"
-                            value="${address.name}" placeholder="name">
+                        <label class="small mb-1" for="inputEmailAddress">Email</label>
+                        <input name="username" class="form-control py-4" id="inputEmailAddress" type="email"
+                            aria-describedby="emailHelp" placeholder="Enter email address" />
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputMobile${address.id}">Mobile</label>
-                        <input name="contactNo" type="text" class="form-control" id="exampleInputMobile${address.id}"
-                            value="${address.contactNo}" placeholder="mobile">
+                        <label class="small mb-1" for="inputPassword">Password</label>
+                        <input name="password" class="form-control py-4" id="inputPassword" type="password"
+                            aria-describedby="passwordHelp" placeholder="Enter password" />
                     </div>
-                    <hr>
-                    <div class="form-group">
-                        <label for="exampleInputLandmark${address.id}">Landmark</label>
-                        <input name="landmark" type="text" class="form-control" id="exampleInputLandmark${address.id}"
-                            value="${address.landmark}" placeholder="Landmark">
+                    <div class="form-group mt-4 mb-0"><button class="btn btn-primary btn-block" type="submit"">Login</button>
                     </div>
+                </form>
+            </div>
 
-                    <div class="form-group">
-                        <label for="exampleInputAddress1${address.id}">Address</label>
-                        <input name="line1" type="text" class="form-control" id="exampleInputAddress1${address.id}"
-                            value="${address.line1}" placeholder="Address line1">
+            <!-- Footer -->
+            <div class=" modal-footer">
+                            <div class="mx-auto small"><a data-dismiss="modal" href="#" data-toggle="modal"
+                                    data-target="#RegisterCustomerModal">Don't have an account? Register here</a>
+                            </div>
                     </div>
-
-                    <div class="form-group">
-                        <label for="exampleInputAddress2${address.id}">Address</label>
-                        <input name="line2" type="text" class="form-control" id="exampleInputAddress2${address.id}"
-                            value="${address.line2}" placeholder="Address line2">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="exampleInputCity${address.id}">City</label>
-                        <input name="city" type="text" class="form-control" id="exampleInputCity${address.id}"
-                            value="${address.city}" placeholder="City">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="exampleInputDistrict${address.id}">District</label>
-                        <input name="district" type="text" class="form-control" id="exampleInputDistrict${address.id}"
-                            value="${address.district}" placeholder="District">
-                    </div>
-
-                    <div class="row">
-                        <div class="col">
-                            <label for="exampleInputState${address.id}">State</label>
-                            <input name="state" type="text" class="form-control" value="${address.state}"
-                                placeholder="State">
-                        </div>
-                        <div class="col">
-                            <label for="exampleInputPIN${address.id}">Pin-Code</label>
-                            <input name="pincode" type="text" class="form-control" value="${address.pincode}"
-                                placeholder="PIN">
-                        </div>
-                    </div>
-
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary">Save
-                        changes</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                </div>
 
             </div>
         </div>
-    </form>
-</div>
+
+
+    </div>
+
+    <!-- End of Login Page Modal -->
