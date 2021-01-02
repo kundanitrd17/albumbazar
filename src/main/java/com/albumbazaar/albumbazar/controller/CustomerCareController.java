@@ -2,6 +2,8 @@ package com.albumbazaar.albumbazar.controller;
 
 import java.util.List;
 
+import javax.security.sasl.AuthenticationException;
+
 import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
@@ -54,7 +56,22 @@ public final class CustomerCareController {
             final List<OrderDetail> recentlyReceivedOrders = orderService
                     .getOrdersWithStatus(OrderDetailStatus.PENDING);
 
+            final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (principal instanceof EmployeePrincipal) {
+                final EmployeePrincipal employeePrincipal = (EmployeePrincipal) principal;
+                modelAndView.addObject("employee_id", employeePrincipal.getId());
+            } else {
+                throw new AuthenticationException("un-verified user");
+
+            }
+
             modelAndView.addObject("recentlyReceivedOrders", recentlyReceivedOrders);
+        } catch (AuthenticationException e) {
+            logger.error(e.getMessage());
+
+            modelAndView.setViewName("redirect:/customer-care/login");
+            SecurityContextHolder.getContext().setAuthentication(null);
+
         } catch (Exception e) {
             logger.error(e.getMessage());
         }

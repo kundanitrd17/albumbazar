@@ -63,6 +63,7 @@
               <div class="col-md-12">
                 <div class="content">
                   <h2>All Orders</h2>
+                  ${data}
                   <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.</p>
                 </div>
               </div>

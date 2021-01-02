@@ -6,10 +6,12 @@ import com.albumbazaar.albumbazar.dao.ExpenseRepository;
 import com.albumbazaar.albumbazar.dao.IncomeRepository;
 import com.albumbazaar.albumbazar.model.Expense;
 import com.albumbazaar.albumbazar.model.Income;
+import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.services.TransactionService;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Qualifier("transactionService")
@@ -44,6 +46,17 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public List<Income> getIncomeAfterDate(String date) {
         return incomeRepository.findAllWhereDateTimeGreaterThan(date);
+    }
+
+    @Override
+    @Transactional
+    public void addNewIncome(final OrderDetail orderDetail) {
+        final Income income = new Income();
+        income.setAmount(orderDetail.getTotalAmount());
+        income.setOrder(orderDetail);
+
+        incomeRepository.save(income);
+
     }
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.albumbazaar.albumbazar.model.Expense;
 import com.albumbazaar.albumbazar.model.Income;
+import com.albumbazaar.albumbazar.model.OrderDetail;
 
 public interface TransactionService {
 
@@ -18,5 +19,7 @@ public interface TransactionService {
 
     // @return all income statement for a month
     List<Income> getIncomeAfterDate(String month);
+
+    void addNewIncome(OrderDetail orderDetail);
 
 }

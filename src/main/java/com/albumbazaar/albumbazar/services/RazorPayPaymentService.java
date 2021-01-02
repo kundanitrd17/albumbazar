@@ -1,8 +1,11 @@
 package com.albumbazaar.albumbazar.services;
 
+import java.util.List;
+
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.RazorPayEntity;
+import com.razorpay.Payment;
 import com.razorpay.RazorpayException;
 
 public interface RazorPayPaymentService {
@@ -13,5 +16,7 @@ public interface RazorPayPaymentService {
 
     OrderDetail saveCredentialOnPaymentSuccess(String razorpayOrderId, String razorpayPaymentId,
             String razorpaySignature);
+
+    List<Payment> getAllPayments() throws RazorpayException;
 
 }

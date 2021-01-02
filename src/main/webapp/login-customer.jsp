@@ -33,7 +33,7 @@
 
             <!-- Body -->
             <div class="modal-body">
-                <form action="">
+                <form action="/customer/login" method="POST">
                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                     <div class="form-group">
                         <label class="small mb-1" for="inputEmailAddress">Email</label>

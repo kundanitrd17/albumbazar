@@ -18,6 +18,10 @@ public class SuperuserPrincipal implements UserDetails {
         this.superuser = superuser;
     }
 
+    public Long getId() {
+        return superuser.getId();
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         System.out.println(superuser.getRole());
@@ -57,14 +61,6 @@ public class SuperuserPrincipal implements UserDetails {
     @Override
     public String toString() {
         return "SuperuserPrincipal [superuser=" + superuser + "]";
-    }
-
-    public Superuser getSuperuser() {
-        return superuser;
-    }
-
-    public void setSuperuser(Superuser superuser) {
-        this.superuser = superuser;
     }
 
 }

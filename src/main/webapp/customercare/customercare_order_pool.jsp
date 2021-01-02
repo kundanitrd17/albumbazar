@@ -97,6 +97,7 @@
 
 
                 <div class="container">
+                    <input type="text" id="employee_id_hidden" value="${employee_id}" hidden>
                     <div class="row">
                         <div class="panel panel-primary filterable table-responsive">
                             <div class="panel-heading">

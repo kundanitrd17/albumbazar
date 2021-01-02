@@ -50,20 +50,24 @@ public class SuperuserServiceImpl implements UserDetailsService, SuperuserServic
             return modelMap;
         }
 
-        final var superuserPrincipal = (SuperuserPrincipal) SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal();
-        final var superuser = superuserPrincipal.getSuperuser();
+        final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal instanceof SuperuserPrincipal) {
+            final SuperuserPrincipal superuserPrincipal = (SuperuserPrincipal) principal;
+            final Superuser superuser = superuserRepo.findById(superuserPrincipal.getId()).orElseThrow();
 
-        // superuser.setPassword(NoOpPasswordEncoder.getInstance().encode(superuser.getPassword()));
-        superuser.setPassword(NoOpPasswordEncoder.getInstance().encode(forgotPasswordForm.getPassword1()));
+            // superuser.setPassword(NoOpPasswordEncoder.getInstance().encode(superuser.getPassword()));
+            superuser.setPassword(NoOpPasswordEncoder.getInstance().encode(forgotPasswordForm.getPassword1()));
 
-        superuserRepo.save(superuser);
+            superuserRepo.save(superuser);
 
-        modelMap.addAttribute("status", HttpStatus.OK);
-        modelMap.addAttribute("message", "success");
-        modelMap.addAttribute("data", superuser);
+            modelMap.addAttribute("status", HttpStatus.OK);
+            modelMap.addAttribute("message", "success");
+            modelMap.addAttribute("data", superuser);
 
-        return modelMap;
+            return modelMap;
+        } else {
+            throw new RuntimeException("Unable to authenticate");
+        }
     }
 
 }

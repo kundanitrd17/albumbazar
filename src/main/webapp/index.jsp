@@ -63,7 +63,6 @@
       <!-- End of Slides -->
 
 
-
       <section style=" margin-bottom: 5rem; padding-top: 50px; padding-bottom: 50px;">
 
         <div class="container">
@@ -144,17 +143,17 @@
               <!-- Modal body -->
               <div class="modal-body">
 
-                <form class="" action="order" method="POST">
+                <form class="" action="customer/order" method="POST">
                   <input type="text" name="selectedAssociation" id="selectedAssociationId">
                   <h4>Select Album</h4>
                   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                   <div class="container">
                     <div class="row">
 
-                      <select name="albumType" id="albumType" class="form-control col-md-4 col-xl-4 col-lg-4">
+                      <select name="productCategory" id="albumType" class="form-control col-md-4 col-xl-4 col-lg-4">
                       </select>
 
-                      <select id="albumSize" name="albumSize" class="form-control col-md-4 col-xl-4 col-lg-4">
+                      <select id="albumSize" name="productSize" class="form-control col-md-4 col-xl-4 col-lg-4">
 
                       </select>
                     </div>
@@ -163,11 +162,11 @@
                     <div class="row">
 
 
-                      <select name="pageQuality" id="coverPageQuality" class="form-control col-md-4 col-xl-4 col-lg-4">
+                      <select name="coverId" id="coverPageQuality" class="form-control col-md-4 col-xl-4 col-lg-4">
                         <option value="gold">gold</option>
                       </select>
 
-                      <select name="pagePrice" id="coverPrice" class="form-control col-4">
+                      <select name="coverPrice" id="coverPrice" class="form-control col-4">
                         <option value="">Price</option>
                       </select>
                     </div>
@@ -193,13 +192,13 @@
                         <tbody id="test-body">
                           <tr id="row0">
                             <td>
-                              <select id="sheetType" name="sheetType" class="form-control " style="width: 160px;">
+                              <select id="sheetType" name="paperId" class="form-control " style="width: 160px;">
                                 <option value="paper type1">Paper Type</option>
                               </select>
                             </td>
 
                             <td>
-                              <input name="sheetRange" id="pr" type="number" class="form-control input-md"
+                              <input name="numberOfSheet" id="pr" type="number" class="form-control input-md"
                                 placeholder="" style="width: 80px;" />
                             </td>
 
@@ -214,11 +213,6 @@
 
                         </tbody>
                         <tfoot>
-                          <tr>
-                            <td colspan="2">
-                              <input type="file" name="" value="" class="btn btn-warning" style="margin-top:20px; ">
-                            </td>
-                          </tr>
 
                           <tr>
                             <td colspan="4">

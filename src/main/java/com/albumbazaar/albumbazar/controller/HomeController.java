@@ -12,16 +12,19 @@ import com.albumbazaar.albumbazar.dao.CustomerRepository;
 import com.albumbazaar.albumbazar.dao.EmployeeRepository;
 import com.albumbazaar.albumbazar.dao.OrderRepository;
 import com.albumbazaar.albumbazar.dao.SuperuserRepository;
+import com.albumbazaar.albumbazar.dao.TestingRepository;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
-import com.albumbazaar.albumbazar.model.Association;
 import com.albumbazaar.albumbazar.model.Customer;
+import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
+import com.albumbazaar.albumbazar.services.CustomerService;
 import com.albumbazaar.albumbazar.services.GoogleDriveService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +37,10 @@ public final class HomeController {
     private Logger logger = LoggerFactory.getLogger(HomeController.class);
 
     @Autowired
-    private CustomerMapper customermapper;
+    private CustomerMapper customerMapper;
+    @Autowired
+    @Qualifier("customerService")
+    private CustomerService customerService;
 
     @Autowired
     private AddressRepository addressRepo;
@@ -61,17 +67,28 @@ public final class HomeController {
     @Autowired
     private CoverRepository coverRepo;
 
+    @Autowired
+    private TestingRepository testRepo;
+
     @GetMapping("/")
     public ModelAndView index() {
+
         final ModelAndView modelAndView = new ModelAndView("index");
 
         try {
-            // CustomerDTO customer =
-            // customermapper.customerEntityToCustomerDTO(custRepo.getOne(1l));
-            Customer customer = custRepo.findById(1l).orElseThrow();
-            CustomerDTO customerDTO = customermapper.customerEntityToCustomerDTO(customer);
 
-            modelAndView.addObject("customer", customerDTO);
+            if (SecurityContextHolder.getContext().getAuthentication() != null) {
+                // Get Customer id from the pricipal objects
+                final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+                if (principal instanceof CustomerPrincipal) {
+                    final CustomerPrincipal customerPrincipal = (CustomerPrincipal) principal;
+                    Customer customer = customerService.getCustomer(customerPrincipal.getId());
+                    CustomerDTO customerDTO = customerMapper.customerEntityToCustomerDTO(customer);
+
+                    modelAndView.addObject("customer", customerDTO);
+                }
+            }
 
         } catch (Exception e) {
             logger.info(e.getMessage());
@@ -93,11 +110,11 @@ public final class HomeController {
 
         Customer customer = custRepo.getOne(1l);
 
-        CustomerDTO cdto = customermapper.customerEntityToCustomerDTO(customer);
+        CustomerDTO cdto = customerMapper.customerEntityToCustomerDTO(customer);
         System.out.println(cdto);
         System.out.println(customer);
         System.out
-                .println(customermapper.customerEntityToCustomerDTO(customermapper.customerDTOToCustomerEntity(cdto)));
+                .println(customerMapper.customerEntityToCustomerDTO(customerMapper.customerDTOToCustomerEntity(cdto)));
         System.out.println("\n\n\n\n\n\n...................................................");
 
         return ResponseEntity.ok(cdto);
@@ -131,7 +148,11 @@ public final class HomeController {
 
         // This user id has to taken from the SecurityContextHolder object after adding
         // spring security
-        final String userId = "harsh";
+        // Get Customer id from the pricipal objects
+        final CustomerPrincipal principal = (CustomerPrincipal) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+
+        final String userId = principal.getUsername();
         final String code = request.getParameter("code");
 
         googleDriveService.saveGoogleAuthorizationCode(code, userId);

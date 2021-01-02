@@ -10,20 +10,29 @@ import java.util.stream.Stream;
 
 import com.albumbazaar.albumbazar.dao.OrderAndCustomerCareRepository;
 import com.albumbazaar.albumbazar.dao.OrderRepository;
+import com.albumbazaar.albumbazar.dao.PaperRepository;
 import com.albumbazaar.albumbazar.dao.SheetDetailRepository;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
+import com.albumbazaar.albumbazar.form.order.OrderDetailFormDTO;
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.OrderAndCustomerCareEntity;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
+import com.albumbazaar.albumbazar.model.Paper;
 import com.albumbazaar.albumbazar.model.SheetDetail;
+import com.albumbazaar.albumbazar.services.CustomerService;
 import com.albumbazaar.albumbazar.services.OrderService;
+import com.albumbazaar.albumbazar.services.ProductService;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,16 +45,67 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
     private final SheetDetailRepository sheetDetailRepository;
     private final OrderAndCustomerCareRepository orderAndCustomerCareRepository;
+    private final ProductService productService;
+    private final ApplicationContext context;
 
     @Autowired
     public OrderServiceImpl(final OrderRepository orderRepository, final SheetDetailRepository sheetDetailRepository,
-            final OrderAndCustomerCareRepository orderAndCustomerCareRepository) {
+            final OrderAndCustomerCareRepository orderAndCustomerCareRepository,
+            @Qualifier("productService") final ProductService productService, final ApplicationContext context) {
 
+        this.context = context;
         this.orderAndCustomerCareRepository = orderAndCustomerCareRepository;
         this.orderRepository = orderRepository;
         this.sheetDetailRepository = sheetDetailRepository;
+        this.productService = productService;
+
     }
 
+    @Override
+    @Transactional
+    public OrderDetail createNewOrder(final OrderDetailFormDTO orderDetailFormDTO, final Long customerId) {
+
+        final OrderDetail orderDetail = new OrderDetail();
+        orderDetail.setAssociationName(orderDetailFormDTO.getAssociationName());
+
+        // orderDetail.setCover(productService.getCoverEntity(orderDetailFormDTO.getCoverId()));
+
+        final CustomerService customerService = context.getBean(CustomerService.class);
+        // orderDetail.setCustomer(customerService.getCustomer(customerId));
+        System.out.println("All customers:- " + customerService.getAllCustomer());
+
+        orderDetail.setDescription(orderDetailFormDTO.getDescription());
+        orderDetail.setOrientation(orderDetailFormDTO.getOrientation());
+        orderDetail.setProductName(orderDetailFormDTO.getProductCategory());
+        orderDetail.setProductSize(orderDetailFormDTO.getProductSize());
+
+        final JSONArray paperAndNumberOfPaperDetailList = new JSONArray();
+        int length = orderDetailFormDTO.getPaperId().length;
+        for (int index = 0; index < length; index++) {
+            try {
+                final JSONObject paperIdAndNumberOfSheet = new JSONObject();
+
+                final Long paperId = orderDetailFormDTO.getPaperId()[index];
+
+                final Paper paper = productService.getPaperEntity(paperId);
+
+                paperIdAndNumberOfSheet.put("paper_id", paper.getId());
+                paperIdAndNumberOfSheet.put("sheets", orderDetailFormDTO.getNumberOfSheet()[index]);
+
+                paperAndNumberOfPaperDetailList.put(paperIdAndNumberOfSheet);
+
+            } catch (Exception e) {
+                logger.info(e.getMessage());
+            }
+        }
+
+        orderDetail.setPaperDetailsWithNumberOfSheetsList(paperAndNumberOfPaperDetailList.toString());
+
+        return orderRepository.save(orderDetail);
+
+    }
+
+    @Deprecated
     @Override
     @Transactional
     public OrderDetail addOrder(final OrderDetailForm orderDetails) {
@@ -105,9 +165,10 @@ public class OrderServiceImpl implements OrderService {
             }
             return orderRepository.findByOrderStatus(status);
         } catch (Exception e) {
-            System.out.println("order service" + e);
+            logger.error(e.getMessage());
+            throw new RuntimeException("unable to load order details");
         }
-        return null;
+
     }
 
     @Override
@@ -115,9 +176,10 @@ public class OrderServiceImpl implements OrderService {
         try {
             return orderRepository.findByOrderStatus(status.toString());
         } catch (Exception e) {
-            System.out.println("Unable to fetch orders from the pool");
+            logger.error(e.getMessage());
+            throw new RuntimeException("Unable to get Orders");
         }
-        return null;
+
     }
 
     @Override
@@ -132,10 +194,6 @@ public class OrderServiceImpl implements OrderService {
 
         if (orderDetailDTO.getDescription() != null && !orderDetailDTO.getDescription().isBlank()) {
             orderDetailEntity.setDescription(orderDetailDTO.getDescription().trim());
-        }
-
-        if (orderDetailDTO.getNoOfSheets() != null) {
-            orderDetailEntity.setNoOfSheets(orderDetailDTO.getNoOfSheets());
         }
 
         if (orderDetailDTO.getOrientation() != null && !orderDetailDTO.getOrientation().isBlank()) {

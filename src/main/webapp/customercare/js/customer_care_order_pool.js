@@ -1,5 +1,6 @@
 var stompClient = null;
 var connectedStatus = false;
+var employee_id = null;
 
 var token = $("meta[name='_csrf']").attr("content");
 var header = $("meta[name='_csrf_header']").attr("content");
@@ -18,7 +19,7 @@ $('.table tbody tr td').on('click', '.accept-order-icon', function () {
     $(this).parent().next().hide();
 
 
-    var data = { "orderId": orderId.orderid };
+    var data = { "customerCareId": employee_id, "orderId": orderId.orderid };
 
     publishDataToServer(data);
 
@@ -54,6 +55,7 @@ function connect() {
     var socket = new SockJS('/customer-care/order-pool-websocket-connect');
     stompClient = Stomp.over(socket);
     stompClient.connect({}, function (frame) {
+        employee_id = document.getElementById('employee_id_hidden').value;
         console.log("check 2");
         setConnected(true);
         console.log('Connected: ' + frame);

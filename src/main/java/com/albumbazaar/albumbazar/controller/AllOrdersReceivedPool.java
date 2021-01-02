@@ -1,6 +1,7 @@
 package com.albumbazaar.albumbazar.controller;
 
 import com.albumbazaar.albumbazar.model.OrderAndCustomerCareEntity;
+import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.services.CustomerCareEmployeeService;
 import com.albumbazaar.albumbazar.utilities.OrderAndCustomerCarePool;
 
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -42,7 +44,7 @@ public final class AllOrdersReceivedPool {
             // SecurityContextHolder.getContext()
             // .getAuthentication().getPrincipal();
 
-            orderAndCustomerCare.setCustomerCareId(1L);
+            // orderAndCustomerCare.setCustomerCareId(principal.getId());
 
             final OrderAndCustomerCareEntity orderAndCustomerCareEntity = customerCareEmployeeService
                     .addOrderOfCustomerCare(orderAndCustomerCare);

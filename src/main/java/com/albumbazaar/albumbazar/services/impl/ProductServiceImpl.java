@@ -139,4 +139,14 @@ public class ProductServiceImpl implements ProductService {
         coverRepository.save(cover);
     }
 
+    @Override
+    public Paper getPaperEntity(final Long id) {
+        return paperRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public Cover getCoverEntity(Long id) {
+        return coverRepository.findById(id).orElseThrow();
+    }
+
 }

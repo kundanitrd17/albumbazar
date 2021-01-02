@@ -9,7 +9,7 @@
             </li>
 
             <li class="nav-item sidebar-my-account-options">
-                <a class="nav-link" href="/my-account">
+                <a class="nav-link" href="/customer/my-account">
                     <i class="fa fa-info fa-fw" aria-hidden="true"></i>
                     Profile Information
                 </a>

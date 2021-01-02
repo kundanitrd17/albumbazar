@@ -32,28 +32,10 @@ public class OrderDetail {
     @CreationTimestamp
     private Date orderTime;
 
-    private Date deliveryDate;
-
-    private String associationName;
-
-    private String productName;
-
-    private String productSize;
-
     // Finance
     @NotNull
     @Column(nullable = false, columnDefinition = "boolean default false")
     private Boolean paymentStatus;
-
-    private Float totalAmount;
-
-    private Float discount;
-
-    private String coverName;
-
-    private Float coverPrice;
-
-    private Integer noOfSheets;
 
     @Column(unique = true)
     private String razorpayOrderId;
@@ -61,6 +43,30 @@ public class OrderDetail {
     private String razorpayPaymentId;
 
     private String razorPaySignature;
+
+    private Float totalAmount;
+
+    private Float discount;
+
+    // Product details
+
+    private String associationName;
+
+    private String productName;
+
+    private String productSize;
+
+    private String coverName;
+
+    private Float coverPrice;
+
+    @Column(columnDefinition = "json")
+    private String paperDetailsWithNumberOfSheetsList;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Cover cover;
+
+    // End of product details
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
@@ -81,11 +87,6 @@ public class OrderDetail {
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Customer customer;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "delivery_location_id")
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
-    private Address1 deliveryAddress;
-
     // The employee who handled this order
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
@@ -101,6 +102,13 @@ public class OrderDetail {
     private String photoFolderGoogleDriveLink;
 
     // End of photos columns
+
+    private Date deliveryDate;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "delivery_location_id")
+    @OnDelete(action = OnDeleteAction.NO_ACTION)
+    private Address1 deliveryAddress;
 
     @PrePersist
     public void prePersist() {

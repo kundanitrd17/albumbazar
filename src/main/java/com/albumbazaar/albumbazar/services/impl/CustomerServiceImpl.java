@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import com.albumbazaar.albumbazar.Mapper.AddressMapper;
 import com.albumbazaar.albumbazar.Mapper.CustomerMapper;
+import com.albumbazaar.albumbazar.Mapper.OrderDetailMapper;
 import com.albumbazaar.albumbazar.dao.AddressRepository;
 import com.albumbazaar.albumbazar.dao.CustomerRepository;
 import com.albumbazaar.albumbazar.dto.AddressDTO;
@@ -40,16 +41,19 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
     private final CustomerMapper customerMapper;
+    private final OrderDetailMapper orderDetailMapper;
 
     @Autowired
     public CustomerServiceImpl(final CustomerRepository customerRepository,
             @Qualifier("orderService") final OrderService orderService, final AddressRepository addressRepository,
-            final AddressMapper addressMapper, final CustomerMapper customerMapper) {
+            final AddressMapper addressMapper, final CustomerMapper customerMapper,
+            final OrderDetailMapper orderDetailMapper) {
         this.addressRepository = addressRepository;
         this.orderService = orderService;
         this.customerRepository = customerRepository;
         this.addressMapper = addressMapper;
         this.customerMapper = customerMapper;
+        this.orderDetailMapper = orderDetailMapper;
     }
 
     @Override
@@ -252,28 +256,13 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 
         return orderService.getOrdersOfCustomer(customerId).stream().map(eachOrder -> {
             try {
-                OrderDetailDTO eachOrderDTO = new OrderDetailDTO();
 
-                eachOrderDTO.setId(eachOrder.getId());
-
-                eachOrderDTO.setAssociationName(eachOrder.getAssociationName());
-                eachOrderDTO.setCoverName(eachOrder.getCoverName());
-                eachOrderDTO.setProductName(eachOrder.getProductName());
-                eachOrderDTO.setProductSize(eachOrder.getProductSize());
-                eachOrderDTO.setOrientation(eachOrder.getOrientation());
-
-                eachOrderDTO.setPaymentStatus(eachOrder.getPaymentStatus());
-
-                eachOrderDTO.setTotalAmount(eachOrder.getTotalAmount().toString());
-                eachOrderDTO.setDiscount(eachOrder.getDiscount().toString());
-
-                eachOrderDTO.setStatus(OrderDetailStatus.valueOf(eachOrder.getOrderStatus().toUpperCase()));
-
-                eachOrderDTO.setOrderCreationTime(eachOrder.getOrderTime().toString());
-                eachOrderDTO.setDeliveryDate(eachOrder.getDeliveryDate());
+                OrderDetailDTO eachOrderDTO = orderDetailMapper.orderDetailToOrderDetailDTO(eachOrder);
+                System.out.println("DTO: " + eachOrderDTO);
 
                 return eachOrderDTO;
             } catch (Exception e) {
+                logger.info(e.getMessage());
                 return null;
             }
         }).filter(eachOrderDTO -> eachOrderDTO != null).collect(Collectors.toList());

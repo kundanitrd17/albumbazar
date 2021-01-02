@@ -69,7 +69,7 @@ $(".associationSelection").click(function () {
             $("#myModal form #sheetType").empty()
             allPapers.forEach(element => {
                 var node = document.createElement('option');
-                node.value = element["paperQuality"];
+                node.value = element["id"];
                 node.innerHTML = element["paperQuality"];
                 document.querySelector("#myModal form #sheetType").appendChild(node);
             })
@@ -86,9 +86,10 @@ $(document).on("click", "#add-row", function () {
     if (row > 4) {
         return false;
     }
-    var new_row = '<tr id="row' + row + '"><td> <select name="sheetType" class="form-control" style="width: 160px;"><option value="">Paper Type</option></select></td><td><input name="sheetRange" value="" type="number" class="form-control input-md"  placeholder=""  style="width: 80px;"  /></td><td><input name="sheetPrice"' + row + '" type="number" class="form-control" placeholder=""  style="width: 80px;" disabled/></td><td><input class="delete-row btn btn-danger" type="button" value="X" /></td></tr>';
+    var new_row = '<tr id="row' + row + '"><td> <select name="sheetType" class="form-control" style="width: 160px;"><option value="">Paper Type</option></select></td><td><input name="numberOfSheet" value="" type="number" class="form-control input-md"  placeholder=""  style="width: 80px;"  /></td><td><input name="sheetPrice"' + row + '" type="number" class="form-control" placeholder=""  style="width: 80px;" disabled/></td><td><input class="delete-row btn btn-danger" type="button" value="X" /></td></tr>';
 
     $('#test-body').append(new_row);
+
     row++;
     return false;
 });

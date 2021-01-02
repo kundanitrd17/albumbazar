@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
+import com.albumbazaar.albumbazar.form.order.OrderDetailFormDTO;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 
@@ -15,6 +16,15 @@ public interface OrderService {
      * @return A list of order details
      */
     List<OrderDetail> getOrdersWithStatus(OrderDetailStatus status);
+
+    /**
+     * Create a new order
+     * 
+     * @param orderDetailFormDTO containing information about the order
+     * @return an object of OrderDetail if everything goes fine orElse thrown
+     *         Runtime exception
+     */
+    public OrderDetail createNewOrder(final OrderDetailFormDTO orderDetailFormDTO, final Long customerId);
 
     /**
      * @param OrderDetailForm which contains all the data regarding the order

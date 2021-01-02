@@ -84,7 +84,7 @@ function submitPaperForm() {
     var xhr = new XMLHttpRequest();
 
     // Replace 1 with current order id
-    var url = 'http://localhost:8080/product/paper/add';
+    var url = 'http://localhost:8080/superuser/product/paper/add';
     xhr.open("POST", url, true);
     xhr.setRequestHeader('Content-type', 'application/json');
     xhr.setRequestHeader(header, token);
@@ -170,7 +170,7 @@ function submitCoverForm() {
     var xhr = new XMLHttpRequest();
 
     // Replace 1 with current order id
-    var url = 'http://localhost:8080/product/cover/add';
+    var url = 'http://localhost:8080/superuser/product/cover/add';
     xhr.open("POST", url, true);
     xhr.setRequestHeader('Content-type', 'application/json');
     xhr.setRequestHeader(header, token);

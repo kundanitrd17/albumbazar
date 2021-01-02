@@ -4,8 +4,11 @@ import java.util.List;
 
 import com.albumbazaar.albumbazar.model.Expense;
 import com.albumbazaar.albumbazar.model.Income;
+import com.albumbazaar.albumbazar.services.RazorPayPaymentService;
 import com.albumbazaar.albumbazar.services.TransactionService;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.razorpay.Payment;
+import com.razorpay.RazorpayException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,21 +27,28 @@ public final class TransactionController {
     private final Logger logger = LoggerFactory.getLogger(TransactionController.class);
 
     private TransactionService transactionService;
+    private RazorPayPaymentService razorPayPaymentService;
 
     @Autowired
-    public TransactionController(@Qualifier("transactionService") TransactionService transactionService) {
+    public TransactionController(@Qualifier("transactionService") TransactionService transactionService,
+            @Qualifier("razorPayPaymentService") final RazorPayPaymentService razorPayPaymentService) {
         this.transactionService = transactionService;
+        this.razorPayPaymentService = razorPayPaymentService;
     }
 
     @GetMapping("")
-    public ResponseEntity<Object> getAll() {
+    public ResponseEntity<Object> getAll() throws RazorpayException {
 
-        AllTransactions transacts = new AllTransactions();
+        // AllTransactions transacts = new AllTransactions();
 
-        transacts.setIncomes(transactionService.getAllIncome());
-        transacts.setExpenses(transactionService.getAllExpense());
+        // transacts.setIncomes(transactionService.getAllIncome());
+        // transacts.setExpenses(transactionService.getAllExpense());
 
-        return ResponseEntity.ok(transacts);
+        // return ResponseEntity.ok(transacts);
+
+        List<Payment> payments = razorPayPaymentService.getAllPayments();
+        payments.forEach(System.out::println);
+        return ResponseEntity.ok().body("payments");
     }
 
     @GetMapping("/expense")

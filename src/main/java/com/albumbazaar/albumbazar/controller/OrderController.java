@@ -3,11 +3,14 @@ package com.albumbazaar.albumbazar.controller;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.security.sasl.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 
 import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
+import com.albumbazaar.albumbazar.form.order.OrderDetailFormDTO;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
+import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.services.OrderService;
 
 import org.slf4j.Logger;
@@ -15,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -46,37 +50,46 @@ public final class OrderController {
         return "redirect:/";
     }
 
-    @PostMapping(value = "/order")
-    public RedirectView addNewOrder(@ModelAttribute OrderDetailForm orderDetail,
+    @PostMapping(value = "/customer/order")
+    public RedirectView addNewOrder(@ModelAttribute OrderDetailFormDTO orderDetailFormDTO,
             final RedirectAttributes redirectAttributes) {
 
-        final RedirectView redirectView = new RedirectView("/order/upload-photo");
+        final RedirectView redirectView = new RedirectView("/customer/order/upload-photo");
 
         logger.info("A new Order was Made");
-        System.out.println(orderDetail);
+        System.out.println(orderDetailFormDTO);
 
         try {
             // throw new RuntimeException("message");
-            final OrderDetail order = orderService.addOrder(orderDetail);
-            redirectAttributes.addFlashAttribute("order_id", order.getId());
+            final Object customerObj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (customerObj instanceof CustomerPrincipal) {
+                final CustomerPrincipal customerPrincipal = (CustomerPrincipal) customerObj;
+                final OrderDetail order = orderService.createNewOrder(orderDetailFormDTO, customerPrincipal.getId());
+                redirectAttributes.addFlashAttribute("order_id", order.getId());
+            } else {
+                throw new AuthenticationException();
+            }
 
+        } catch (AuthenticationException e) {
+            redirectAttributes.addAttribute("error", "Unauthorized User");
+            redirectView.setUrl("/");
         } catch (Exception e) {
             logger.error(e.getMessage());
 
-            redirectAttributes.addAttribute("error", true);
-            redirectView.setUrl("order");
+            redirectAttributes.addAttribute("error", "Unable to make order");
+            redirectView.setUrl("/");
             return redirectView;
         }
 
         return redirectView;
     }
 
-    @GetMapping("/order/upload-photo")
+    @GetMapping("/customer/order/upload-photo")
     public ModelAndView uploadPhotoView(Model model) {
         final ModelAndView modelAndView = new ModelAndView("upload_photos");
 
         if (model.getAttribute("order_id") == null) {
-            modelAndView.setViewName("redirect:/order");
+            modelAndView.setViewName("redirect:/");
             return modelAndView;
         }
         modelAndView.addObject("order_id", model.getAttribute("order_id"));

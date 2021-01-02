@@ -232,10 +232,11 @@ public final class SuperuserController {
         // detail
         if (!paymentStatus.isBlank()) {
             try {
-                modelAndView.addObject("data",
+                modelAndView.addObject("order_details",
                         orderService.getOrderByPaymentStatus(Boolean.parseBoolean(paymentStatus)));
             } catch (Exception e) {
-                modelAndView.addObject("data", null);
+                logger.error(e.getMessage());
+                modelAndView.addObject("order_details", null);
             }
 
             return modelAndView;
@@ -246,6 +247,7 @@ public final class SuperuserController {
         try {
             modelAndView.addObject("order_details", orderService.getAllOrderWithStatus(orderStatus));
         } catch (Exception e) {
+            logger.error(e.getMessage());
             modelAndView.addObject("order_details", null);
         }
 

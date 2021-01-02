@@ -1,5 +1,7 @@
 package com.albumbazaar.albumbazar.services.impl;
 
+import java.util.List;
+
 import javax.annotation.PostConstruct;
 
 import com.albumbazaar.albumbazar.model.Customer;
@@ -7,7 +9,9 @@ import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.RazorPayEntity;
 import com.albumbazaar.albumbazar.services.OrderService;
 import com.albumbazaar.albumbazar.services.RazorPayPaymentService;
+import com.albumbazaar.albumbazar.services.TransactionService;
 import com.razorpay.Order;
+import com.razorpay.Payment;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
 
@@ -32,10 +36,13 @@ public class RazorPayPaymentServiceImpl implements RazorPayPaymentService {
     // Other services required by this service
 
     private final OrderService orderService;
+    private final TransactionService transactionService;
 
     @Autowired(required = true)
-    protected RazorPayPaymentServiceImpl(@Qualifier("orderService") final OrderService orderService) {
+    protected RazorPayPaymentServiceImpl(@Qualifier("orderService") final OrderService orderService,
+            @Qualifier("transactionService") final TransactionService transactionService) {
         this.orderService = orderService;
+        this.transactionService = transactionService;
     }
 
     @PostConstruct
@@ -108,6 +115,11 @@ public class RazorPayPaymentServiceImpl implements RazorPayPaymentService {
         orderDetail.setPaymentStatus(true);
 
         return orderDetail;
+    }
+
+    @Override
+    public List<Payment> getAllPayments() throws RazorpayException {
+        return razorpayClient.Payments.fetchAll();
     }
 
 }

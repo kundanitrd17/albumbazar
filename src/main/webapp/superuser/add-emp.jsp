@@ -23,7 +23,7 @@
 
           <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 form-wizard">
             <!-- Form Wizard -->
-            <form role="form" action="add" method="POST">
+            <form role="form" action="add-employee" method="POST">
               <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
               <h3>Sign Up Office Employee Account</h3>

@@ -134,36 +134,34 @@ public class SecurityConfig {
     // * Securing endpoints for customer
     // */
 
-    // @Configuration
-    // @Order(4)
-    // public static class CustomerSecurityConfig extends
-    // WebSecurityConfigurerAdapter {
+    @Configuration
+    @Order(4)
+    public static class CustomerSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    // private final UserDetailsService customService;
+        private final UserDetailsService customService;
 
-    // @Autowired(required = true)
-    // protected CustomerSecurityConfig(@Qualifier("customerService") final
-    // UserDetailsService customerService) {
-    // this.customService = customerService;
-    // }
+        @Autowired(required = true)
+        protected CustomerSecurityConfig(@Qualifier("customerService") final UserDetailsService customerService) {
+            this.customService = customerService;
+        }
 
-    // @Override
-    // protected void configure(final AuthenticationManagerBuilder auth) throws
-    // Exception {
-    // auth.userDetailsService(customService);
-    // }
+        @Override
+        protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+            auth.userDetailsService(customService);
+        }
 
-    // @Override
-    // protected void configure(HttpSecurity http) throws Exception {
-    // http.antMatcher("/customer/**").authorizeRequests().anyRequest().hasAuthority(AvailableRoles.Code.USER)
-    // .and().formLogin().loginPage("/customer/login").loginProcessingUrl("/customer/login")
-    // .failureUrl("/customer/login-user?error=true").defaultSuccessUrl("/customer",
-    // true).permitAll()
-    // .and().logout().logoutUrl("/customer/logout").logoutSuccessUrl("/").invalidateHttpSession(true)
-    // .deleteCookies("JSESSIONID", "XSRF-TOKEN");
-    // }
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
 
-    // }
+            http.authorizeRequests().antMatchers("/customer/**").hasAuthority(AvailableRoles.Code.USER).and()
+                    .authorizeRequests().antMatchers("/api/secured/customer/**").hasAuthority(AvailableRoles.Code.USER)
+                    .and().formLogin().loginPage("/").loginProcessingUrl("/customer/login").failureUrl("/")
+                    .defaultSuccessUrl("/").permitAll().and().logout().logoutUrl("/customer/logout")
+                    .logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID", "XSRF-TOKEN");
+
+        }
+
+    }
 
     // /**
     // * Securing Rest Endpoints
@@ -192,7 +190,7 @@ public class SecurityConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests().antMatchers("/foo").authenticated().anyRequest().permitAll();
+            http.authorizeRequests().antMatchers("**/js/**", "**/css/**").authenticated().anyRequest().permitAll();
 
             /**
              * We need to secure api enpoints as they are not secured by defaul;t include

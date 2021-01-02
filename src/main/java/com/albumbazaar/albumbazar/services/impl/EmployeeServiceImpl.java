@@ -60,18 +60,9 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
     @Override
     public boolean addEmployee(final BasicEmployeeDetailForm employeeDetail, final LocationForm addressDetail) {
         try {
-            // working on the address2 creation (pin address)
-            final Address2 address2 = new Address2(addressDetail); // creating the address2 model
-            address2Repository.save(address2); // saving the model
-
-            // Working on the address1 creation (street address)
-            final Address1 address1 = new Address1(addressDetail); // creating the address1 model
-            address1.setAddress2(address2); // mapping the address2 to address1
-            address1Repository.save(address1); // saving address1
 
             // Created employee model object
             final Employee employee = new Employee(employeeDetail); // create a proper object
-            employee.setAddress(address1);
 
             // save a new employee
             employeeRepository.save(employee);

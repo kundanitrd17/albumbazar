@@ -14,7 +14,7 @@ public class CustomerPrincipal implements UserDetails {
     private static final long serialVersionUID = 1L;
 
     private final Customer customer;
-    private final String CUSTOMER_ROLE = "ROLE_CUSTOMER";
+    private final String CUSTOMER_ROLE = "ROLE_USER";
 
     public CustomerPrincipal(final Customer customer) {
         this.customer = customer;

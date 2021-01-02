@@ -1,13 +1,25 @@
 package com.albumbazaar.albumbazar.model;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.UniqueConstraint;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.util.Date;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = { "order_id", "received_time" }))
@@ -21,8 +33,12 @@ public class Income {
     @JoinColumn(name = "order_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private OrderDetail order;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
     @Column(name = "received_time")
     private Date receivedTime;
+
     private Float amount;
 
     public Long getId() {
