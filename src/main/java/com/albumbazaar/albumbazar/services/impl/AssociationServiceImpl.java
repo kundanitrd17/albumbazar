@@ -115,6 +115,8 @@ public class AssociationServiceImpl implements AssociationService {
 
         final String saved_file_name = imageStorageService.store(photoFile, fileName);
 
+        System.out.println(saved_file_name);
+
         association.setProfilePhoto(saved_file_name);
 
     }

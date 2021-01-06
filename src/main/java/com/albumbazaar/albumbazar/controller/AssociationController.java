@@ -2,6 +2,8 @@ package com.albumbazaar.albumbazar.controller;
 
 import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.ProductService;
+import com.albumbazaar.albumbazar.services.storage.ImageStorageService;
+import com.albumbazaar.albumbazar.services.storage.StorageService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,12 +31,15 @@ public final class AssociationController {
 
     private AssociationService associationService;
     private ProductService productService;
+    private final StorageService imageStorageService;
 
     @Autowired
     public AssociationController(@Qualifier("associationService") final AssociationService associationService,
-            @Qualifier("productService") final ProductService productService) {
+            @Qualifier("productService") final ProductService productService,
+            @Qualifier("imageStorageService") final StorageService imageStorageService) {
         this.associationService = associationService;
         this.productService = productService;
+        this.imageStorageService = imageStorageService;
     }
 
     @PostMapping("/dp/change")

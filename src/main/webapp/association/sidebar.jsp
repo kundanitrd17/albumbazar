@@ -41,7 +41,25 @@
 </style>
 
 <script>
+
+    function loadProfilePhoto() {
+        const xhr = new XMLHttpRequest();
+
+        xhr.open('GET', 'http://localhost:8080/api/secured/association/dp', true);
+
+        xhr.onreadystatechange = function () {
+            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                document.getElementById('associationProfilePhoto').src = this.response;
+            }
+        }
+
+        xhr.send(null);
+    }
+
     window.onload = function () {
+
+        loadProfilePhoto();
+
         document.getElementById('ChangeProfilePhotoInput').addEventListener('change', () => {
 
             var form = document.getElementById("ChangeProfilePhotoForm");
@@ -54,13 +72,16 @@
             document.getElementById('ChangeProfilePhotoInput').style.display = "none";
 
         })
+
+
     };
 </script>
 
 <aside class="side-nav" id="show-side-navigation1">
     <i class="fa fa-bars close-aside hidden-sm hidden-md hidden-lg" data-close="show-side-navigation1"></i>
     <div class="heading">
-        <img src="https://uniim1.shutterfly.com/ng/services/mediarender/THISLIFE/021036514417/media/23148907008/medium/1501685726/enhance"
+        <img id="associationProfilePhoto"
+            src="https://uniim1.shutterfly.com/ng/services/mediarender/THISLIFE/021036514417/media/23148907008/medium/1501685726/enhance"
             alt="">
 
         <div class="info">
