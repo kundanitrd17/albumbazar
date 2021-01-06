@@ -5,6 +5,8 @@ import java.util.List;
 import com.albumbazaar.albumbazar.form.association.AssociationDetailForm;
 import com.albumbazaar.albumbazar.model.Association;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public interface AssociationService {
 
     boolean addAssociation(final AssociationDetailForm associationDetail);
@@ -20,5 +22,7 @@ public interface AssociationService {
     void updateAssociation(final Association association);
 
     List<Association> getAssociationWithStatus(boolean status);
+
+    void changeProfilePhoto(MultipartFile photoFile, Long associationId);
 
 }

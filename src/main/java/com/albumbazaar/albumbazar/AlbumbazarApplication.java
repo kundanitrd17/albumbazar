@@ -18,12 +18,12 @@ public class AlbumbazarApplication {
 		System.out.println("Application started 💪💯✔");
 	}
 
-	@Bean
-	CommandLineRunner init(StorageService storageService) {
-		return (args) -> {
-			storageService.deleteAll();
-			storageService.init();
-		};
-	}
+	// @Bean
+	// CommandLineRunner init(StorageService storageService) {
+	// return (args) -> {
+	// storageService.deleteAll();
+	// storageService.init();
+	// };
+	// }
 
 }

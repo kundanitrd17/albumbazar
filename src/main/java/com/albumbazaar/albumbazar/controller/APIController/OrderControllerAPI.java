@@ -93,7 +93,7 @@ public class OrderControllerAPI {
 
         System.out.println(orderDetail);
         try {
-            googleDriveService.createFolderAndMakePublic("folderName", "harsh", orderDetail);
+            googleDriveService.createFolderAndMakePublic("folderName", "chuhiyadotcom@gmail.com", orderDetail);
         } catch (Exception e) {
             logger.error(e.getMessage());
 
@@ -113,7 +113,8 @@ public class OrderControllerAPI {
         try {
             files.forEach(e -> logger.info(e.getOriginalFilename()));
 
-            googleDriveService.uploadToGoogleDrive(files, orderInfo.getPhotoFolderGoogleDriveId(), "harsh");
+            googleDriveService.uploadToGoogleDrive(files, orderInfo.getPhotoFolderGoogleDriveId(),
+                    "chuhiyadotcom@gmail.com");
         } catch (IOException e) {
             logger.error(e.getMessage());
             return ResponseEntity.badRequest().body("Unable to process request");

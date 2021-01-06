@@ -9,6 +9,7 @@ import com.albumbazaar.albumbazar.dao.AssociationRepository;
 import com.albumbazaar.albumbazar.form.association.AssociationDetailForm;
 import com.albumbazaar.albumbazar.model.Association;
 import com.albumbazaar.albumbazar.services.AssociationService;
+import com.albumbazaar.albumbazar.services.storage.StorageService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Qualifier("associationService")
@@ -24,8 +26,13 @@ public class AssociationServiceImpl implements AssociationService {
 
     private final AssociationRepository associationRepository;
 
+    // Dependent services
+    private final StorageService imageStorageService;
+
     @Autowired
-    public AssociationServiceImpl(final AssociationRepository associationRepository) {
+    public AssociationServiceImpl(final AssociationRepository associationRepository,
+            @Qualifier("imageStorageService") final StorageService imageStorageService) {
+        this.imageStorageService = imageStorageService;
         this.associationRepository = associationRepository;
     }
 
@@ -95,6 +102,20 @@ public class AssociationServiceImpl implements AssociationService {
             logger.error(e.getMessage());
             throw new RuntimeException("Unable to make changes");
         }
+
+    }
+
+    @Override
+    @Transactional
+    public void changeProfilePhoto(final MultipartFile photoFile, final Long associationId) {
+
+        final Association association = this.getAssociation(associationId);
+
+        final String fileName = "ASSO" + association.getId() + photoFile.getOriginalFilename();
+
+        final String saved_file_name = imageStorageService.store(photoFile, fileName);
+
+        association.setProfilePhoto(saved_file_name);
 
     }
 
