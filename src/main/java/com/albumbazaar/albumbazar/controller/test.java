@@ -58,7 +58,7 @@ public class test {
     @PostMapping("/test")
     public String posttestUpload(@RequestPart("photo") MultipartFile file) {
 
-        imageStoreService.store(file);
+        imageStoreService.store(file, file.getOriginalFilename());
 
         return "redirect:/test";
     }
