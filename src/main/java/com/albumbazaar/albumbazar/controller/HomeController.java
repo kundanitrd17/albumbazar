@@ -1,5 +1,9 @@
 package com.albumbazaar.albumbazar.controller;
 
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -18,18 +22,35 @@ import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.services.CustomerService;
 import com.albumbazaar.albumbazar.services.GoogleDriveService;
+import com.albumbazaar.albumbazar.services.RazorPayPaymentService;
+import com.albumbazaar.albumbazar.utilities.PaymentDTORazorpay;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.razorpay.Payment;
+import com.razorpay.RazorpayException;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import lombok.Data;
 
 @Controller
 public final class HomeController {
@@ -41,6 +62,8 @@ public final class HomeController {
     @Autowired
     @Qualifier("customerService")
     private CustomerService customerService;
+    @Autowired
+    private RazorPayPaymentService razorPayPaymentService;
 
     @Autowired
     private AddressRepository addressRepo;
@@ -106,24 +129,27 @@ public final class HomeController {
     @GetMapping("/user")
     @ResponseBody
     public ResponseEntity<?> user() {
-        System.out.println("\n\n\n\n\n\n...................................................");
 
-        Customer customer = custRepo.getOne(1l);
-
-        CustomerDTO cdto = customerMapper.customerEntityToCustomerDTO(customer);
-        System.out.println(cdto);
-        System.out.println(customer);
-        System.out
-                .println(customerMapper.customerEntityToCustomerDTO(customerMapper.customerDTOToCustomerEntity(cdto)));
-        System.out.println("\n\n\n\n\n\n...................................................");
-
-        return ResponseEntity.ok(cdto);
+        return ResponseEntity.ok("cdto");
     }
 
     @GetMapping("/foo")
     @ResponseBody
-    public String foo() {
-        return "foo";
+    public ResponseEntity<?> foo() throws RazorpayException {
+        List<PaymentDTORazorpay> payments = razorPayPaymentService.getAllPaidPayments();
+
+        System.out.println(payments.size() + " " + razorPayPaymentService.getAllPayments().size());
+
+        return ResponseEntity.ok().body(payments);
+    }
+
+    @PostMapping("foo/reward")
+    public String foo2(@RequestParam("amount") Double a, @RequestParam("customerId") Long id) {
+
+        System.out.println(a);
+        System.out.println(id);
+
+        return "redirect:/foo";
     }
 
     @RequestMapping("/login-super")
@@ -149,10 +175,16 @@ public final class HomeController {
         // This user id has to taken from the SecurityContextHolder object after adding
         // spring security
         // Get Customer id from the pricipal objects
-        final CustomerPrincipal principal = (CustomerPrincipal) SecurityContextHolder.getContext().getAuthentication()
-                .getPrincipal();
+        final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        final String userId = principal.getUsername();
+        if (!(principal instanceof CustomerPrincipal)) {
+            logger.info("No Principal found");
+            return "redirect:/";
+        }
+
+        final CustomerPrincipal customerPrincipal = (CustomerPrincipal) principal;
+
+        String userId = customerPrincipal.getUsername();
         final String code = request.getParameter("code");
 
         googleDriveService.saveGoogleAuthorizationCode(code, userId);
@@ -173,6 +205,25 @@ public final class HomeController {
         System.out.println(url);
         response.sendRedirect(url);
 
+    }
+
+    @GetMapping(value = { "/api/secured/customer/is-google-auth-allowed" })
+    @ResponseBody
+    public ResponseEntity<?> isSignedInToGoogleAccount() {
+        System.out.println("here");
+        if (SecurityContextHolder.getContext().getAuthentication() != null) {
+            System.out.println("here1");
+            final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (principal instanceof CustomerPrincipal) {
+                System.out.println("impossinle");
+                final CustomerPrincipal customerPrincipal = (CustomerPrincipal) principal;
+                Boolean isLogged = googleDriveService.isAuthenticatedToGoogle(customerPrincipal.getUsername());
+                if (isLogged == true) {
+                    return ResponseEntity.ok().build();
+                }
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
 }

@@ -71,7 +71,7 @@ public class OrderServiceImpl implements OrderService {
         // orderDetail.setCover(productService.getCoverEntity(orderDetailFormDTO.getCoverId()));
 
         final CustomerService customerService = context.getBean(CustomerService.class);
-        // orderDetail.setCustomer(customerService.getCustomer(customerId));
+        orderDetail.setCustomer(customerService.getCustomer(customerId));
         System.out.println("All customers:- " + customerService.getAllCustomer());
 
         orderDetail.setDescription(orderDetailFormDTO.getDescription());

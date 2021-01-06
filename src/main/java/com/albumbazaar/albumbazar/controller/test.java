@@ -1,92 +1,76 @@
 package com.albumbazaar.albumbazar.controller;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Path;
+import java.util.stream.Collectors;
 
-import com.albumbazaar.albumbazar.dto.CustomerDTO;
-import com.albumbazaar.albumbazar.model.Customer;
-import com.fasterxml.jackson.annotation.JsonTypeInfo.Id;
+import com.albumbazaar.albumbazar.services.storage.StorageService;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 @Controller
 public class test {
 
-    @DeleteMapping("/test/delete")
-    public ResponseEntity<?> deleteUser(@RequestBody String id) {
-        System.out.println("delete" + id);
-        // please delete customer with id id
-        return ResponseEntity.ok().build();
-    }
+    @Autowired
+    StorageService imageStoreService;
 
     @GetMapping("/test")
-    public ModelAndView testUpload() {
+    public ModelAndView testUpload(Model model) {
+
+        Path p = imageStoreService.load("harsh.png");
+        System.out.println(p);
+        System.out.println(imageStoreService.load("harsh.png"));
 
         ModelAndView mv = new ModelAndView("test");
+        Resource ff = imageStoreService.loadAsResource("harsh.png");
 
-        List<CustomerDTO> users = new ArrayList<>();
+        model.addAttribute("files",
+                imageStoreService.loadAll()
+                        .map(path -> MvcUriComponentsBuilder
+                                .fromMethodName(test.class, "serveFile", path.getFileName().toString()).build().toUri()
+                                .toString())
+                        .collect(Collectors.toList()));
 
-        CustomerDTO c = new CustomerDTO();
-        c.setId(1l);
-        c.setName("harsh");
+        System.out.println(model);
 
-        CustomerDTO c1 = new CustomerDTO();
-        c1.setId(2l);
-        c1.setName("Pratiksha");
+        String s = MvcUriComponentsBuilder
+                .fromMethodName(test.class, "serveFile", imageStoreService.load("harh.png").getFileName().toString())
+                .build().toUri().toString();
 
-        users.add(c1);
-        users.add(c);
-
-        // users.add(new Users(3, "data"));
-
-        mv.addObject("users", users);
+        System.out.println(s);
+        mv.addObject("photo", s);
 
         return mv;
     }
 
-}
+    @PostMapping("/test")
+    public String posttestUpload(@RequestPart("photo") MultipartFile file) {
 
-class emp {
-    private int id;
-    private String name;
+        imageStoreService.store(file);
 
-    public emp() {
+        return "redirect:/test";
     }
 
-    public emp(int id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    @GetMapping("/files/{filename:.+}")
+    @ResponseBody
+    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return "Users [id=" + id + ", name=" + name + "]";
+        Resource file = imageStoreService.loadAsResource(filename);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+                .body(file);
     }
 
 }

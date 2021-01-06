@@ -2,12 +2,15 @@ package com.albumbazaar.albumbazar.form.order;
 
 import java.util.HashMap;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.Data;
 
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderDetailFormDTO {
 
-    private Long associationId;
+    private Long selectedAssociationId;
     private String associationName;
 
     private String orientation;

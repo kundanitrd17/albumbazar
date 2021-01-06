@@ -1,6 +1,7 @@
 package com.albumbazaar.albumbazar.services.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
@@ -10,6 +11,8 @@ import com.albumbazaar.albumbazar.model.RazorPayEntity;
 import com.albumbazaar.albumbazar.services.OrderService;
 import com.albumbazaar.albumbazar.services.RazorPayPaymentService;
 import com.albumbazaar.albumbazar.services.TransactionService;
+import com.albumbazaar.albumbazar.utilities.PaymentDTORazorpay;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.razorpay.Order;
 import com.razorpay.Payment;
 import com.razorpay.RazorpayClient;
@@ -36,13 +39,10 @@ public class RazorPayPaymentServiceImpl implements RazorPayPaymentService {
     // Other services required by this service
 
     private final OrderService orderService;
-    private final TransactionService transactionService;
 
     @Autowired(required = true)
-    protected RazorPayPaymentServiceImpl(@Qualifier("orderService") final OrderService orderService,
-            @Qualifier("transactionService") final TransactionService transactionService) {
+    protected RazorPayPaymentServiceImpl(@Qualifier("orderService") final OrderService orderService) {
         this.orderService = orderService;
-        this.transactionService = transactionService;
     }
 
     @PostConstruct
@@ -118,8 +118,35 @@ public class RazorPayPaymentServiceImpl implements RazorPayPaymentService {
     }
 
     @Override
-    public List<Payment> getAllPayments() throws RazorpayException {
-        return razorpayClient.Payments.fetchAll();
+    public List<PaymentDTORazorpay> getAllPayments() throws RazorpayException {
+        List<Payment> payments = razorpayClient.Payments.fetchAll();
+        if (payments == null) {
+            throw new RuntimeException("No Payments found");
+        }
+        final ObjectMapper objectMapper = new ObjectMapper();
+        return payments.parallelStream().map(eachPayment -> {
+            try {
+                PaymentDTORazorpay payment = objectMapper.readValue(eachPayment.toString(), PaymentDTORazorpay.class);
+                return payment;
+            } catch (Exception e) {
+                return null;
+            }
+        }).filter(item -> item != null).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PaymentDTORazorpay> getAllPaidPayments() throws RazorpayException {
+        List<Payment> payments = razorpayClient.Payments.fetchAll();
+
+        final ObjectMapper objectMapper = new ObjectMapper();
+        return payments.parallelStream().map(eachPayment -> {
+            try {
+                PaymentDTORazorpay payment = objectMapper.readValue(eachPayment.toString(), PaymentDTORazorpay.class);
+                return payment;
+            } catch (Exception e) {
+                return null;
+            }
+        }).filter(payment -> payment != null && payment.getCaptured()).collect(Collectors.toList());
     }
 
 }

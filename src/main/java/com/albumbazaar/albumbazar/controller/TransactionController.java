@@ -6,6 +6,7 @@ import com.albumbazaar.albumbazar.model.Expense;
 import com.albumbazaar.albumbazar.model.Income;
 import com.albumbazaar.albumbazar.services.RazorPayPaymentService;
 import com.albumbazaar.albumbazar.services.TransactionService;
+import com.albumbazaar.albumbazar.utilities.PaymentDTORazorpay;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.razorpay.Payment;
 import com.razorpay.RazorpayException;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import okhttp3.Response;
 
 @Controller
 @RequestMapping("/transaction")
@@ -36,7 +39,7 @@ public final class TransactionController {
         this.razorPayPaymentService = razorPayPaymentService;
     }
 
-    @GetMapping("")
+    @GetMapping("/paid")
     public ResponseEntity<Object> getAll() throws RazorpayException {
 
         // AllTransactions transacts = new AllTransactions();
@@ -46,7 +49,7 @@ public final class TransactionController {
 
         // return ResponseEntity.ok(transacts);
 
-        List<Payment> payments = razorPayPaymentService.getAllPayments();
+        List<PaymentDTORazorpay> payments = razorPayPaymentService.getAllPayments();
         payments.forEach(System.out::println);
         return ResponseEntity.ok().body("payments");
     }
@@ -72,19 +75,27 @@ public final class TransactionController {
     @GetMapping("/income")
     public ResponseEntity<Object> getIncomeByDate(@RequestParam(value = "date", defaultValue = "") String date) {
 
-        final AllTransactions transactions = new AllTransactions();
+        // final AllTransactions transactions = new AllTransactions();
+        // try {
+        // if (date.isBlank()) {
+        // transactions.setIncomes(transactionService.getAllIncome());
+        // } else {
+        // transactions.setIncomes(transactionService.getIncomeAfterDate(date));
+        // }
+
+        // } catch (Exception e) {
+        // System.out.println(e.getMessage());
+        // }
+
         try {
-            if (date.isBlank()) {
-                transactions.setIncomes(transactionService.getAllIncome());
-            } else {
-                transactions.setIncomes(transactionService.getIncomeAfterDate(date));
-            }
+            final List<PaymentDTORazorpay> payments = transactionService.getIncomeAfterDate(null);
+            return ResponseEntity.ok().body(payments);
 
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            // TODO: handle exception
         }
 
-        return ResponseEntity.ok(transactions);
+        return ResponseEntity.notFound().build();
     }
 
 }

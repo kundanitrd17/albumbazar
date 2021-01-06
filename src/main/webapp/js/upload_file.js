@@ -1,3 +1,34 @@
+
+document.addEventListener('DOMContentLoaded', () => {
+    checkGoogleAuth();
+});
+
+// Check auth to google
+function checkGoogleAuth() {
+
+    const xhr = new XMLHttpRequest();
+    const url = "http://localhost:8080/api/secured/customer/is-google-auth-allowed";
+    xhr.open('GET', url, true);
+
+    xhr.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            document.getElementById('AuthenticateGoogle').hidden = true;
+            document.getElementById('FileUpload').hidden = false;
+        } else if (this.readyState === 4 && this.status === 404) {
+            console.log("Not fine");
+            document.getElementById('AuthenticateGoogle').hidden = false;
+            document.getElementById('FileUpload').hidden = true;
+        }
+    }
+
+    xhr.send(null);
+
+}
+
+
+
+// Upload 
+
 document.querySelector(".upload__button").addEventListener('click', openFileDialog);
 
 var header = $("meta[name='_csrf_header']").attr("content");

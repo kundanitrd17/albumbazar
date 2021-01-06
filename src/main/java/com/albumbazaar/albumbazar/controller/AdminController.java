@@ -1,26 +1,210 @@
 package com.albumbazaar.albumbazar.controller;
 
+import java.util.List;
+
+import com.albumbazaar.albumbazar.model.OrderDetail;
+import com.albumbazaar.albumbazar.model.OrderDetailStatus;
+import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
+import com.albumbazaar.albumbazar.services.CustomerCareEmployeeService;
+import com.albumbazaar.albumbazar.services.CustomerService;
+import com.albumbazaar.albumbazar.services.EmployeeService;
+import com.albumbazaar.albumbazar.services.OrderService;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import javax.security.sasl.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping(value = "/admin")
 public final class AdminController {
 
+    private final Logger logger = LoggerFactory.getLogger(AdminController.class);
+
+    private final OrderService orderService;
+    private final EmployeeService employeeService;
+    private final CustomerService customerService;
+
+    @Autowired
+    public AdminController(@Qualifier("employeeService") EmployeeService employeeService,
+            @Qualifier("customerService") final CustomerService customerService,
+            @Qualifier("orderService") final OrderService orderService) {
+        this.employeeService = employeeService;
+        this.customerService = customerService;
+        this.orderService = orderService;
+    }
+
+    @Autowired
+    CustomerCareEmployeeService customerCareEmployeeService;
+
     @GetMapping(value = "")
     public String adminView() {
-        return "admin/admin_dashboard";
+        return "admin/admin_home";
     }
 
-    @GetMapping(value = "add-employee")
-    public String viewAddEmployee() {
-        return "admin_add_emp";
+    // Orders endpoints for superuser
+
+    @GetMapping(value = "/order-list")
+    public ModelAndView adminOrderListView(@RequestParam(value = "payment", defaultValue = "") String paymentStatus,
+            @RequestParam(value = "status", defaultValue = "completed") String orderStatus) {
+
+        System.out.println(paymentStatus.isBlank());
+
+        final ModelAndView modelAndView = new ModelAndView("/admin/order-list");
+
+        // If payment Option is specified than only send payment info related order
+        // detail
+        if (!paymentStatus.isBlank()) {
+            try {
+                modelAndView.addObject("order_details",
+                        orderService.getOrderByPaymentStatus(Boolean.parseBoolean(paymentStatus)));
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                modelAndView.addObject("order_details", null);
+            }
+
+            return modelAndView;
+        } else {
+            // If payment status is not specified then send order details based on order
+            // status
+            try {
+                modelAndView.addObject("order_details", orderService.getAllOrderWithStatus(orderStatus));
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                modelAndView.addObject("order_details", null);
+            }
+
+            return modelAndView;
+        }
+
     }
 
-    @GetMapping("/page/xyz/opy")
-    public String pageView() {
-        return "abc";
+    // EndPoints for customer controller
+
+    @GetMapping(value = "/customer")
+    public ModelAndView getAllCustomer() {
+
+        final ModelAndView modelAndView = new ModelAndView("admin/customer_list");
+
+        modelAndView.addObject("customers", customerService.getAllCustomer());
+
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/customer/discounted")
+    public ModelAndView getDiscountedCustomer() {
+        final ModelAndView modelAndView = new ModelAndView("admin/customer_list");
+        modelAndView.addObject("customers", customerService.getDiscountedCustomer());
+
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/customer/blocked")
+    public ModelAndView getBlockedCustomer() {
+        final ModelAndView modelAndView = new ModelAndView("admin/customer_list");
+        modelAndView.addObject("customers", customerService.getBlockeList());
+
+        return modelAndView;
+    }
+
+    // Employee related endpoints
+    @GetMapping(value = "/employee-list")
+    public ModelAndView allEmployeeView() {
+        ModelAndView modelAndView = new ModelAndView("/admin/employee_list");
+
+        try {
+            modelAndView.addObject("employees", employeeService.getAllEmployee());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/order/order-pool")
+    public ModelAndView customerCareOrderPool(Model model) {
+        final ModelAndView modelAndView = new ModelAndView("admin/order_pool_area");
+
+        try {
+            final List<OrderDetail> recentlyReceivedOrders = orderService
+                    .getOrdersWithStatus(OrderDetailStatus.PENDING);
+
+            modelAndView.addObject("employee_id", 1);
+            // final Object principal =
+            // SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            // if (principal instanceof EmployeePrincipal) {
+            // final EmployeePrincipal employeePrincipal = (EmployeePrincipal) principal;
+            // modelAndView.addObject("employee_id", employeePrincipal.getId());
+            // } else {
+            // throw new AuthenticationException("Unable to authenticate");
+
+            // }
+
+            modelAndView.addObject("recentlyReceivedOrders", recentlyReceivedOrders);
+            // } catch (AuthenticationException e) {
+            // logger.error(e.getMessage());
+
+            // modelAndView.setViewName("redirect:/customer-care/login");
+            // SecurityContextHolder.getContext().setAuthentication(null);
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return modelAndView;
+
+    }
+
+    @GetMapping(value = "/order/accepted")
+    public ModelAndView acceptedOrdersforCustomerCare() {
+
+        ModelAndView modelAndView = new ModelAndView("admin/accepted_order");
+
+        try {
+            /**
+             * Get the Principal object from SecurityContextHolder and populate
+             * orderAndCustomerCare.customerCareId
+             */
+            // final EmployeePrincipal employeePrincipal = (EmployeePrincipal)
+            // SecurityContextHolder.getContext()
+            // .getAuthentication().getPrincipal();
+
+            modelAndView.addObject("allOrders", customerCareEmployeeService.acceptedOrdersByCustomerCare(1l));
+
+            modelAndView.addObject("availableOrderStatus", orderService.availableOrderStatus());
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/order/completed")
+    public ModelAndView completedOrderView() {
+        final ModelAndView modelAndView = new ModelAndView("admin/completed_order");
+
+        try {
+            // final EmployeePrincipal employeePrincipal = (EmployeePrincipal)
+            // SecurityContextHolder.getContext()
+            // .getAuthentication().getPrincipal();
+
+            modelAndView.addObject("allOrders", customerCareEmployeeService.getCompletedOrders(1l));
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return modelAndView;
+
     }
 
 }

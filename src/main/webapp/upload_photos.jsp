@@ -27,23 +27,26 @@
         <%@include file="navbar.jsp" %>
             <!-- End of Navbar section -->
 
-
-            <div>
-                <header style="width: 100%; padding: 50px; background-color: blanchedalmond; ">Navbar needs to be here
-                </header>
-            </div>
-
-
-
             <!-- Hero contains all the code -->
-            <div class="hero">
+            <div class="hero py-3" style="min-height: 80vh;">
+
+                <div id="AuthenticateGoogle" class=" my-3 py-3"
+                    style="display: flex; justify-content: center; margin-top: 100px; ">
+                    <div id="signInToGoogle" class="my-3 py-3 wrapper" style="text-align: center;">
+                        <a href="#" class="btn btn-danger">Sign-In to Google</a>
+                    </div>
+                </div>
+
+
                 <!-- === File Upload ===
 Design a file upload element. Is it the loading screen and icon? A progress element? Are folders being uploaded by flying across the screen like Ghostbusters? ;)  
 -->
 
                 <!-- file upload model -->
-                <div id="FileUpload" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);">
+                <div id="FileUpload" ondrop="dropHandler(event);" ondragover="dragOverHandler(event);" hidden>
+
                     <div class="wrapper">
+
                         <div class="upload">
                             <p>Drag files here or <span class="upload__button">Browse</span></p>
                         </div>
@@ -112,9 +115,6 @@ Design a file upload element. Is it the loading screen and icon? A progress elem
 
                 <div class="" style="display: flex; justify-content: center;" id="PaymentSectionDiv">
 
-
-
-
                     <div class="wrapper">
 
                         <div class="payment">
@@ -149,15 +149,20 @@ Design a file upload element. Is it the loading screen and icon? A progress elem
 
             </div>
 
-            <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
-            <script src="http://localhost:8080/js/upload_file.js"></script>
+            <!-- Footer section -->
+            <%@include file="footer.jsp" %>
 
+
+                <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+                <script src="http://localhost:8080/js/upload_file.js"></script>
 
 
 

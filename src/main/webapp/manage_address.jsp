@@ -199,6 +199,7 @@
                                 <!-- Address Modal -->
                                 <div class="modal" id="addressModal" tabindex="-1" role="dialog">
                                     <form action="/customer/address/info" method="POST">
+                                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                         <div class="modal-dialog" role="document">
                                             <div class="modal-content">
                                                 <!-- Modal Header -->
@@ -212,67 +213,59 @@
                                                 </div>
                                                 <!-- End of Modal Header -->
                                                 <div class="modal-body">
-                                                    <input type="hidden" name="${_csrf.parameterName}"
-                                                        value="${_csrf.token}" />
-                                                    <!-- <input type="text" value="${address.id}" name="id" hidden> -->
                                                     <div class="form-group">
-                                                        <label for="exampleInputName${address.id}">Name</label>
+                                                        <label for="exampleInputName">Name</label>
                                                         <input name="name" type="name" class="form-control"
-                                                            id="exampleInputName${address.id}" value="${address.name}"
-                                                            placeholder="name">
+                                                            id="exampleInputName" value="" placeholder="name">
                                                     </div>
                                                     <div class="form-group">
-                                                        <label for="exampleInputMobile${address.id}">Mobile</label>
+                                                        <label for="exampleInputMobile">Mobile</label>
                                                         <input name="contactNo" type="text" class="form-control"
-                                                            id="exampleInputMobile${address.id}"
-                                                            value="${address.contactNo}" placeholder="mobile">
+                                                            id="exampleInputMobile" value="" placeholder="mobile">
                                                     </div>
                                                     <hr>
                                                     <div class="form-group">
-                                                        <label for="exampleInputLandmark${address.id}">Landmark</label>
+                                                        <label for="exampleInputLandmark">Landmark</label>
                                                         <input name="landmark" type="text" class="form-control"
-                                                            id="exampleInputLandmark${address.id}"
-                                                            value="${address.landmark}" placeholder="Landmark">
+                                                            id="exampleInputLandmark" value="" placeholder="Landmark">
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="exampleInputAddress1${address.id}">Address</label>
+                                                        <label for="exampleInputAddress1">Address</label>
                                                         <input name="line1" type="text" class="form-control"
-                                                            id="exampleInputAddress1${address.id}"
-                                                            value="${address.line1}" placeholder="Address line1">
+                                                            id="exampleInputAddress1" value=""
+                                                            placeholder="Address line1">
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="exampleInputAddress2${address.id}">Address</label>
+                                                        <label for="exampleInputAddress2">Address</label>
                                                         <input name="line2" type="text" class="form-control"
-                                                            id="exampleInputAddress2${address.id}"
-                                                            value="${address.line2}" placeholder="Address line2">
+                                                            id="exampleInputAddress2" value=""
+                                                            placeholder="Address line2">
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="exampleInputCity${address.id}">City</label>
+                                                        <label for="exampleInputCity">City</label>
                                                         <input name="city" type="text" class="form-control"
-                                                            id="exampleInputCity${address.id}" value="${address.city}"
-                                                            placeholder="City">
+                                                            id="exampleInputCity" value="" placeholder="City">
                                                     </div>
 
                                                     <div class="form-group">
-                                                        <label for="exampleInputDistrict${address.id}">District</label>
+                                                        <label for="exampleInputDistrict">District</label>
                                                         <input name="district" type="text" class="form-control"
-                                                            id="exampleInputDistrict${address.id}"
-                                                            value="${address.district}" placeholder="District">
+                                                            id="exampleInputDistrict" value="" placeholder="District">
                                                     </div>
 
                                                     <div class="row">
                                                         <div class="col">
-                                                            <label for="exampleInputState${address.id}">State</label>
+                                                            <label for="exampleInputState">State</label>
                                                             <input name="state" type="text" class="form-control"
-                                                                value="${address.state}" placeholder="State">
+                                                                value="" placeholder="State">
                                                         </div>
                                                         <div class="col">
-                                                            <label for="exampleInputPIN${address.id}">Pin-Code</label>
+                                                            <label for="exampleInputPIN">Pin-Code</label>
                                                             <input name="pincode" type="text" class="form-control"
-                                                                value="${address.pincode}" placeholder="PIN">
+                                                                value="" placeholder="PIN">
                                                         </div>
                                                     </div>
 

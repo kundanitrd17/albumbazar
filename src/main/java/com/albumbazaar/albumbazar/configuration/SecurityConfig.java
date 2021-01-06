@@ -50,48 +50,50 @@ public class SecurityConfig {
                     .antMatchers("/superuser/css/*.css").permitAll() // remove in production
                     .anyRequest().hasAuthority(AvailableRoles.Code.SUPERUSER).and().formLogin()
                     .loginPage("/login-super").loginProcessingUrl("/superuser/superlogin")
-                    .failureUrl("/login-super?error=true").defaultSuccessUrl("/superuser", true).permitAll().and()
-                    .logout().logoutUrl("/superuser/logout-super") // If csrf is enabled then logout must be post
+                    .failureUrl("/login-super?error=true").defaultSuccessUrl("/superuser").permitAll().and().logout()
+                    .logoutUrl("/superuser/logout-super") // If csrf is enabled then logout must be post
                     .logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID", "XSRF-TOKEN");
 
         }
 
     }
 
-    // /**
-    // * Security configuration for authenticating Customer care endpoints
-    // */
-    @Configuration
-    @Order(2)
-    public static class CustomerCareSecurityConfig extends WebSecurityConfigurerAdapter {
+    // // /**
+    // // * Security configuration for authenticating Customer care endpoints
+    // // */
+    // @Configuration
+    // @Order(2)
+    // public static class CustomerCareSecurityConfig extends
+    // WebSecurityConfigurerAdapter {
 
-        // Even the customer care in an employee, thus we can access it using
-        // customer-care service
-        private final UserDetailsService employeeService;
+    // // Even the customer care in an employee, thus we can access it using
+    // // customer-care service
+    // private final UserDetailsService employeeService;
 
-        @Autowired
-        protected CustomerCareSecurityConfig(
-                @Qualifier("employeeService") final UserDetailsService userDetailsService) {
-            this.employeeService = userDetailsService;
-        }
+    // @Autowired
+    // protected CustomerCareSecurityConfig(
+    // @Qualifier("employeeService") final UserDetailsService userDetailsService) {
+    // this.employeeService = userDetailsService;
+    // }
 
-        @Override
-        protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-            auth.userDetailsService(employeeService);
-        }
+    // @Override
+    // protected void configure(final AuthenticationManagerBuilder auth) throws
+    // Exception {
+    // auth.userDetailsService(employeeService);
+    // }
 
-        @Override
-        protected void configure(final HttpSecurity http) throws Exception {
-            http.antMatcher("/customer-care/**").authorizeRequests().anyRequest()
-                    .hasAuthority(AvailableRoles.Code.CUSTOMER_CARE).and().formLogin().loginPage("/customer-care/login")
-                    .loginProcessingUrl("/customer-care/login").failureUrl("/customer-care/login?error=true")
-                    .defaultSuccessUrl("/customer-care", true).permitAll().and().logout()
-                    .logoutUrl("/customer-care/logout").logoutSuccessUrl("/").invalidateHttpSession(true)
-                    .deleteCookies("JSESSIONID", "XSRF-TOKEN");
+    // @Override
+    // protected void configure(final HttpSecurity http) throws Exception {
+    // http.antMatcher("/customer-care/**").authorizeRequests().anyRequest()
+    // .hasAuthority(AvailableRoles.Code.CUSTOMER_CARE).and().formLogin().loginPage("/customer-care/login")
+    // .loginProcessingUrl("/customer-care/login").failureUrl("/customer-care/login?error=true")
+    // .defaultSuccessUrl("/customer-care").permitAll().and().logout().logoutUrl("/customer-care/logout")
+    // .logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID",
+    // "XSRF-TOKEN");
 
-        }
+    // }
 
-    }
+    // }
 
     // /**
     // * Securing endpoints for the Delivery EndPoint
@@ -153,10 +155,9 @@ public class SecurityConfig {
         @Override
         protected void configure(HttpSecurity http) throws Exception {
 
-            http.authorizeRequests().antMatchers("/customer/**").hasAuthority(AvailableRoles.Code.USER).and()
-                    .authorizeRequests().antMatchers("/api/secured/customer/**").hasAuthority(AvailableRoles.Code.USER)
+            http.antMatcher("/customer/**").authorizeRequests().anyRequest().hasAuthority(AvailableRoles.Code.USER)
                     .and().formLogin().loginPage("/").loginProcessingUrl("/customer/login").failureUrl("/")
-                    .defaultSuccessUrl("/").permitAll().and().logout().logoutUrl("/customer/logout")
+                    .defaultSuccessUrl("/", true).permitAll().and().logout().logoutUrl("/customer/logout")
                     .logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID", "XSRF-TOKEN");
 
         }
@@ -166,21 +167,19 @@ public class SecurityConfig {
     // /**
     // * Securing Rest Endpoints
     // */
-    // @Configuration
-    // @Order(5)
-    // public static class RestEndpointsSecurityConfig extends
-    // WebSecurityConfigurerAdapter {
+    @Configuration
+    @Order(5)
+    public static class RestEndpointsSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    // @Override
-    // protected void configure(HttpSecurity http) throws Exception {
-    // http.antMatcher("/api/secured/**").authorizeRequests().antMatchers("/api/secured/superuser/**")
-    // .hasAuthority(AvailableRoles.Code.SUPERUSER).antMatchers("/api/secured/customer-care/**")
-    // .hasAuthority(AvailableRoles.Code.CUSTOMER_CARE).antMatchers("/api/secured/delivery/**")
-    // .hasAuthority(AvailableRoles.Code.DELIVERY).antMatchers("/api/secured/customer/**")
-    // .hasAuthority(AvailableRoles.Code.USER).anyRequest().authenticated();
-    // }
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http.antMatcher("/api/secured/**").authorizeRequests().antMatchers("/api/secured/customer/**")
+                    .hasAuthority(AvailableRoles.Code.USER).antMatchers("/api/secured/customer-care/**")
+                    .hasAuthority(AvailableRoles.Code.CUSTOMER_CARE);
 
-    // }
+        }
+
+    }
 
     /**
      * Securing Remaining endpoints

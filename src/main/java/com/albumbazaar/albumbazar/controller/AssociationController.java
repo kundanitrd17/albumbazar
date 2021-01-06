@@ -6,7 +6,9 @@ import com.albumbazaar.albumbazar.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping(value = "association")
@@ -20,6 +22,13 @@ public final class AssociationController {
             @Qualifier("productService") final ProductService productService) {
         this.associationService = associationService;
         this.productService = productService;
+    }
+
+    @GetMapping("")
+    public ModelAndView associationDashboardView() {
+        final ModelAndView modelAndView = new ModelAndView("association/association_home");
+
+        return modelAndView;
     }
 
 }

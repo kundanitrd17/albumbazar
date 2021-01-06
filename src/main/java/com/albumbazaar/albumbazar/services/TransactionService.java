@@ -5,6 +5,8 @@ import java.util.List;
 import com.albumbazaar.albumbazar.model.Expense;
 import com.albumbazaar.albumbazar.model.Income;
 import com.albumbazaar.albumbazar.model.OrderDetail;
+import com.albumbazaar.albumbazar.utilities.PaymentDTORazorpay;
+import com.razorpay.RazorpayException;
 
 public interface TransactionService {
 
@@ -18,7 +20,7 @@ public interface TransactionService {
     List<Expense> getExpenseAfterDate(String month);
 
     // @return all income statement for a month
-    List<Income> getIncomeAfterDate(String month);
+    List<PaymentDTORazorpay> getIncomeAfterDate(String month) throws RazorpayException;
 
     void addNewIncome(OrderDetail orderDetail);
 

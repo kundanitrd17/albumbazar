@@ -65,15 +65,17 @@
                     <div class="form-group mt-4 mb-0"><button class="btn btn-primary btn-block"
                             type="submit">Register</button></div>
                 </form>
-            </div>
 
-            <!-- Footer -->
-            <div class="modal-footer">
-                <div class="mx-auto small"><a data-dismiss="modal" href="#" data-toggle="modal"
-                        data-target="#LoginCustomerModal">Have an account? Go to login</a>
+                <!-- Footer -->
+                <div class="modal-footer">
+                    <div class="mx-auto small"><a data-dismiss="modal" href="#" data-toggle="modal"
+                            data-target="#LoginCustomerModal">Have an account? Go to login</a>
 
+                    </div>
                 </div>
             </div>
+
+
 
         </div>
     </div>
