@@ -39,8 +39,8 @@ public class ImageStorageService implements StorageService {
     }
 
     @Override
-    public void store(MultipartFile file) {
-        String filename = StringUtils.cleanPath(file.getOriginalFilename());
+    public String store(MultipartFile file, String FILENAME_TO_BE_SAVED_WITH) {
+        String filename = StringUtils.cleanPath(FILENAME_TO_BE_SAVED_WITH);
         try {
             if (file.isEmpty()) {
                 throw new StorageException("Failed to store empty file " + filename);
@@ -56,6 +56,8 @@ public class ImageStorageService implements StorageService {
         } catch (IOException e) {
             throw new StorageException("Failed to store file: " + filename + e);
         }
+
+        return filename;
 
     }
 

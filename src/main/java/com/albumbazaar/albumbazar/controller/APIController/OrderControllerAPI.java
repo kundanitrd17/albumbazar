@@ -95,6 +95,9 @@ public class OrderControllerAPI {
 
         System.out.println(orderDetail);
         try {
+<<<<<<< HEAD
+            googleDriveService.createFolderAndMakePublic("folderName", "chuhiyadotcom@gmail.com", orderDetail);
+=======
             final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (principal instanceof CustomerPrincipal) {
                 final CustomerPrincipal customerPrincipal = (CustomerPrincipal) principal;
@@ -102,6 +105,7 @@ public class OrderControllerAPI {
                 googleDriveService.createFolderAndMakePublic("folderName", customerPrincipal.getUsername(),
                         orderDetail);
             }
+>>>>>>> a0a9064336cbd9da7dc0ee50efc702226a27fcb8
         } catch (Exception e) {
             logger.error(e.getMessage());
 
@@ -121,6 +125,10 @@ public class OrderControllerAPI {
         try {
             files.forEach(e -> logger.info(e.getOriginalFilename()));
 
+<<<<<<< HEAD
+            googleDriveService.uploadToGoogleDrive(files, orderInfo.getPhotoFolderGoogleDriveId(),
+                    "chuhiyadotcom@gmail.com");
+=======
             final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (principal instanceof CustomerPrincipal) {
                 final CustomerPrincipal customerPrincipal = (CustomerPrincipal) principal;
@@ -128,6 +136,7 @@ public class OrderControllerAPI {
                         customerPrincipal.getUsername());
             }
 
+>>>>>>> a0a9064336cbd9da7dc0ee50efc702226a27fcb8
         } catch (IOException e) {
             logger.error(e.getMessage());
             return ResponseEntity.badRequest().body("Unable to process request");

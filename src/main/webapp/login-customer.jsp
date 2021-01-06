@@ -52,7 +52,7 @@
 
             <!-- Footer -->
             <div class=" modal-footer">
-                            <div class="mx-auto small"><a data-dismiss="modal" href="#" data-toggle="modal"
+                            <div class="mx-auto small"><a data-dismiss="" href="#" data-toggle="modal"
                                     data-target="#RegisterCustomerModal">Don't have an account? Register here</a>
                             </div>
                     </div>

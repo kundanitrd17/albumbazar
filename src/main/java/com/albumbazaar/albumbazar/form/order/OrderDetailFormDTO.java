@@ -17,7 +17,7 @@ public class OrderDetailFormDTO {
     private String productCategory;
     private String productSize;
 
-    private Long coverId;
+    // private Long coverId;
 
     private Long paperId[];
     private Long numberOfSheet[];

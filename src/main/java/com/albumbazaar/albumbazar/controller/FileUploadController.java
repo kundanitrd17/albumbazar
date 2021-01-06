@@ -35,7 +35,7 @@ public final class FileUploadController {
 
         try {
             for (MultipartFile file : files) {
-                storageService.store(file);
+                storageService.store(file, file.getOriginalFilename());
             }
         } catch (Exception e) {
             return "Exception";

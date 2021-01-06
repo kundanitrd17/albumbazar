@@ -53,6 +53,8 @@ public class Association {
     private String password;
     private Boolean active;
 
+    private String profilePhoto;
+
     @PrePersist
     void prePersist() {
         if (this.active == null) {
