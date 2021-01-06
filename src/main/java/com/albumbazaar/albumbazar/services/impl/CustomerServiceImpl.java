@@ -16,6 +16,7 @@ import com.albumbazaar.albumbazar.dto.CustomerDTO;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.model.AddressEntity;
 import com.albumbazaar.albumbazar.model.Customer;
+import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.services.CustomerService;
@@ -66,7 +67,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 
     @Override
     @Transactional
-    public CustomerDTO registerCustomer(final CustomerDTO customerDTO) {
+    public Customer registerCustomer(final CustomerDTO customerDTO) {
 
         if (!this.isPasswordValid(customerDTO)) {
             throw new RuntimeException("Invalid Password");
@@ -79,6 +80,9 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
         }
 
         try {
+
+            newCustomerEntity.setName(customerDTO.getFirstName().trim() + " " + customerDTO.getLastName().trim());
+
             final String referredByCode = customerDTO.getReferralCode();
             // If the referral code is available then do the rewarding and all that stuff
             if (referredByCode != null && !referredByCode.isBlank()) {
@@ -96,7 +100,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 
         savedCustomerEntity.setReferralCode(this.generateReferralCode(savedCustomerEntity.getId()));
 
-        return customerMapper.customerEntityToCustomerDTO(savedCustomerEntity);
+        return savedCustomerEntity;
 
     }
 
@@ -248,26 +252,15 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 
     @Override
     @Transactional(readOnly = true)
-    public List<OrderDetailDTO> getAllOrderDetails(Long customerId) {
+    public List<OrderDetail> getAllOrderDetails(Long customerId) {
 
         if (customerId == null) {
             throw new RuntimeException("Invalid Customer");
         }
 
-        return orderService.getOrdersOfCustomer(customerId).stream().map(eachOrder -> {
-            try {
+        return orderService.getOrdersOfCustomer(customerId).stream().filter(eachOrder -> eachOrder != null)
+                .collect(Collectors.toList());
 
-                OrderDetailDTO eachOrderDTO = orderDetailMapper.orderDetailToOrderDetailDTO(eachOrder);
-                System.out.println("DTO: " + eachOrderDTO);
-
-                return eachOrderDTO;
-            } catch (Exception e) {
-                logger.info(e.getMessage());
-                return null;
-            }
-        }).filter(eachOrderDTO -> eachOrderDTO != null).collect(Collectors.toList());
-
-        // return orderDetailDTOs;
     }
 
     @Override
@@ -299,6 +292,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 
     @Transactional
     private void updateAddressInfo(AddressDTO addressDTO, Long customerId) {
+        logger.info("Updating address");
         addressRepository.save(addressMapper.addressDTOToAddressEntity(addressDTO));
     }
 
@@ -306,6 +300,9 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
     void addNewAddressOfCustomer(final AddressDTO addressDTO, final Long customerId) {
         final Customer customer = this.getCustomer(customerId);
         Set<AddressEntity> addresses = customer.getAddress();
+
+        System.out.println(addressDTO);
+        System.out.println(addressMapper.addressDTOToAddressEntity(addressDTO));
 
         if (addresses == null) {
             addresses = new HashSet<>(5);
@@ -316,6 +313,14 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
         customer.setAddress(addresses);
 
         customerRepository.save(customer);
+
+    }
+
+    @Override
+    @Transactional
+    public void setRewardForCustomer(Long customerId, Float discount) {
+        final Customer customer = customerRepository.findById(customerId).orElseThrow();
+        customer.setDiscount(discount);
 
     }
 

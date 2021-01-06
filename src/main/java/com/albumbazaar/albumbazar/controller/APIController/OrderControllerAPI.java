@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.model.OrderDetail;
+import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.services.GoogleDriveService;
 import com.albumbazaar.albumbazar.services.OrderService;
 
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -93,7 +95,17 @@ public class OrderControllerAPI {
 
         System.out.println(orderDetail);
         try {
+<<<<<<< HEAD
             googleDriveService.createFolderAndMakePublic("folderName", "chuhiyadotcom@gmail.com", orderDetail);
+=======
+            final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (principal instanceof CustomerPrincipal) {
+                final CustomerPrincipal customerPrincipal = (CustomerPrincipal) principal;
+
+                googleDriveService.createFolderAndMakePublic("folderName", customerPrincipal.getUsername(),
+                        orderDetail);
+            }
+>>>>>>> a0a9064336cbd9da7dc0ee50efc702226a27fcb8
         } catch (Exception e) {
             logger.error(e.getMessage());
 
@@ -113,8 +125,18 @@ public class OrderControllerAPI {
         try {
             files.forEach(e -> logger.info(e.getOriginalFilename()));
 
+<<<<<<< HEAD
             googleDriveService.uploadToGoogleDrive(files, orderInfo.getPhotoFolderGoogleDriveId(),
                     "chuhiyadotcom@gmail.com");
+=======
+            final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (principal instanceof CustomerPrincipal) {
+                final CustomerPrincipal customerPrincipal = (CustomerPrincipal) principal;
+                googleDriveService.uploadToGoogleDrive(files, orderInfo.getPhotoFolderGoogleDriveId(),
+                        customerPrincipal.getUsername());
+            }
+
+>>>>>>> a0a9064336cbd9da7dc0ee50efc702226a27fcb8
         } catch (IOException e) {
             logger.error(e.getMessage());
             return ResponseEntity.badRequest().body("Unable to process request");

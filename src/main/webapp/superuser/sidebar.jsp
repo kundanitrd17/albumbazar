@@ -4,7 +4,7 @@
         <img src="https://uniim1.shutterfly.com/ng/services/mediarender/THISLIFE/021036514417/media/23148907008/medium/1501685726/enhance"
             alt="">
         <div class="info">
-            <h3><a href="#">Album Bazar</a></h3>
+            <h3><a href="/superuser">Album Bazar</a></h3>
             <p>Lorem ipsum dolor sit amet consectetur.</p>
         </div>
     </div>
@@ -53,6 +53,10 @@
                 <li><a href="/superuser/customer/discounted">Discounted Customer</a></li>
                 <li><a href="/superuser/customer/blocked">Blocked Customer</a></li>
             </ul>
+        </li>
+
+        <li class="nav-item">
+            <i class="fa fa-money"></i><a href="/superuser/reward"> Reward</a>
         </li>
         <p>Example:</p>
         <li><i class="fa fa-envelope-open-o fa-fw"></i><a href="#"> Messages <span class="num dang">56</span></a></li>

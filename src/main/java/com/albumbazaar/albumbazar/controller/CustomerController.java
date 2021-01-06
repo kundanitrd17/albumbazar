@@ -1,5 +1,6 @@
 package com.albumbazaar.albumbazar.controller;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -11,13 +12,19 @@ import com.albumbazaar.albumbazar.Mapper.CustomerMapper;
 import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
+import com.albumbazaar.albumbazar.model.AvailableRoles;
 import com.albumbazaar.albumbazar.model.Customer;
+import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.services.CustomerService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -106,7 +113,13 @@ public final class CustomerController {
         try {
             System.out.println(customerDTO);
             System.out.println(customerDTO.getReferralCode());
-            customerService.registerCustomer(customerDTO);
+            final Customer savedCustomer = customerService.registerCustomer(customerDTO);
+
+            List<GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority(AvailableRoles.Code.USER));
+            CustomerPrincipal principal = new CustomerPrincipal(savedCustomer);
+            Authentication authentication = new UsernamePasswordAuthenticationToken(principal, null, authorities);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            System.out.println(savedCustomer);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -124,12 +137,13 @@ public final class CustomerController {
             final CustomerPrincipal principal = (CustomerPrincipal) SecurityContextHolder.getContext()
                     .getAuthentication().getPrincipal();
 
-            List<OrderDetailDTO> orders = customerService.getAllOrderDetails(principal.getId());
+            List<OrderDetail> orders = customerService.getAllOrderDetails(principal.getId());
+            System.out.println(orders);
 
             modelAndView.addObject("allOrdersForCustomer", orders);
         } catch (Exception e) {
             logger.error(e.getMessage());
-            modelAndView.setViewName("redirect:/");
+            modelAndView.addObject("error", "No Orders yet!");
         }
 
         return modelAndView;
@@ -144,6 +158,7 @@ public final class CustomerController {
 
         if (orderId == null || orderId.isBlank()) {
             redirectView.setUrl("/customer/my-order");
+            redirectAttributes.addAttribute("error", "Order Not found");
             return redirectView;
         }
 
@@ -165,6 +180,7 @@ public final class CustomerController {
         }
 
         try {
+            System.out.println(addressDTO);
             // Get Customer id from the pricipal objects
             final CustomerPrincipal principal = (CustomerPrincipal) SecurityContextHolder.getContext()
                     .getAuthentication().getPrincipal();

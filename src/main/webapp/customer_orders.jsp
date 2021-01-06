@@ -48,6 +48,11 @@
                                 </div>
                             </div>
                             <!-- End of Header band -->
+                            <c:if test="${allOrdersForCustomer == null && error != null}">
+                                <div class="alert alert-danger" role="alert">
+                                    ${error}
+                                </div>
+                            </c:if>
                             <c:forEach items="${allOrdersForCustomer}" var="eachOrder">
 
                                 <div class="card" style="max-width: 97%; margin: 1rem; padding: 5px;">
@@ -93,11 +98,11 @@
 
                                         <div class="flex-sm-column" style="padding: 20px; margin: auto;">
                                             <li class="nav-item">
-                                                <strong>${eachOrder.status}</strong>
+                                                <strong>${eachOrder.orderStatus}</strong>
                                             </li>
                                             <p></p>
                                             <li class="nav-item">
-                                                OrderTime: ${eachOrder.orderCreationTime}
+                                                OrderTime: ${eachOrder.orderTime}
                                             </li>
                                             <li>
                                                 Excepted: ${eachOrder.deliveryDate}

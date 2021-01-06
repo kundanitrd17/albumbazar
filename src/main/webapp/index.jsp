@@ -77,6 +77,7 @@
                     <div class="caption">
                       <h3 class="title">Company Name</h3>
                       <input type="text" name="associationId" value="1" hidden>
+
                       <a type="button" id="" class="btn btn-primary button associationSelection" data-toggle="modal"
                         data-target="#myModal">
                         Select
@@ -144,7 +145,7 @@
               <div class="modal-body">
 
                 <form class="" action="customer/order" method="POST">
-                  <input type="text" name="selectedAssociation" id="selectedAssociationId">
+                  <input type="text" name="selectedAssociationId" id="selectedAssociationId">
                   <h4>Select Album</h4>
                   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                   <div class="container">
@@ -166,9 +167,10 @@
                         <option value="gold">gold</option>
                       </select>
 
-                      <select name="coverPrice" id="coverPrice" class="form-control col-4">
+                      <input class="form-control col-4" type="text" id="coverPrice" name="coverPrice" value="" disabled>
+                      <!-- <select name="coverPrice" id="coverPrice" class="form-control col-4">
                         <option value="">Price</option>
-                      </select>
+                      </select> -->
                     </div>
 
                     <hr>
@@ -189,8 +191,10 @@
                           </th>
 
                         </tr>
+
                         <tbody id="test-body">
-                          <tr id="row0">
+
+                          <!-- <tr id="row0">
                             <td>
                               <select id="sheetType" name="paperId" class="form-control " style="width: 160px;">
                                 <option value="paper type1">Paper Type</option>
@@ -207,7 +211,7 @@
                                 style="width: 80px;" disabled />
                             </td>
                             <td><input id="add-row" class="btn btn-primary" type="button" value="+" /></td>
-                          </tr>
+                          </tr> -->
 
 
 
@@ -239,22 +243,22 @@
           </div>
         </div>
         <!-- View Price List Of Association-->
-
         <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal"
           aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel">Comapny Name</h4>
+                <h4 class="modal-title" id="myModalLabel"></h4>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <div class="modal-body table-responsive">
-                <table class="table table-bordered">
+                <input type="text" name="association_id" id="selected_association_id" hidden>
+                <table class="table table-bordered" id="coverDetails">
                   <thead>
                     <tr>
-                      <th colspan="3">CoverPage Price List</th>
+                      <th colspan="4" class="bg-dark">Cover Price List</th>
                     </tr>
                     <tr style="background-color: none;color:black;">
                       <th>Quality</th>
@@ -267,15 +271,17 @@
                       <td>John</td>
                       <td>Doe</td>
                       <td>john@example.com</td>
+                      <td><i style="color: rgb(236, 34, 34); font-size: 20px; cursor: pointer;" class="fa fa-trash"></i>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
               <div class="modal-body table-responsive">
-                <table class="table table-bordered">
+                <table class="table table-bordered" id="paperDetails">
                   <thead>
                     <tr>
-                      <th colspan="3">Paper Price List</th>
+                      <th class="bg-dark" colspan="4">Paper Price List</th>
                     </tr>
                     <tr style="background-color: none;color:black;">
                       <th>Quality</th>
@@ -288,6 +294,8 @@
                       <td>John</td>
                       <td>Doe</td>
                       <td>john@example.com</td>
+                      <td><i style="color: rgb(236, 34, 34); font-size: 20px; cursor: pointer;" class="fa fa-trash"></i>
+                      </td>
                     </tr>
                   </tbody>
                 </table>

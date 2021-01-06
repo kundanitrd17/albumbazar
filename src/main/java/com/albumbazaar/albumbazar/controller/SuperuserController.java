@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import com.albumbazaar.albumbazar.principals.SuperuserPrincipal;
+import com.albumbazaar.albumbazar.dto.CustomerDTO;
 import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.form.BasicBranchInfoForm;
 import com.albumbazaar.albumbazar.form.ForgotPasswordFormSuperuser;
@@ -12,6 +13,7 @@ import com.albumbazaar.albumbazar.form.association.AssociationDetailForm;
 import com.albumbazaar.albumbazar.form.employee.BasicEmployeeDetailForm;
 import com.albumbazaar.albumbazar.model.Association;
 import com.albumbazaar.albumbazar.model.Branch;
+import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.BranchService;
 import com.albumbazaar.albumbazar.services.CustomerService;
@@ -29,11 +31,14 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @RequestMapping("/superuser")
@@ -253,4 +258,62 @@ public final class SuperuserController {
 
         return modelAndView;
     }
+
+    // Reward
+    @GetMapping(value = "/reward")
+    public ModelAndView rewardView() {
+        final ModelAndView modelAndView = new ModelAndView("/superuser/rewards_and_discount");
+
+        try {
+            final List<Customer> customers = customerService.getAllCustomer();
+            modelAndView.addObject("customers", customers);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            modelAndView.addObject("error", "No customers Found");
+        }
+
+        return modelAndView;
+    }
+
+    // Set Referral amount
+    @PostMapping(value = "/reward/referral")
+    public RedirectView setReferralReward(@RequestParam("amount") String amount) {
+        final RedirectView redirectView = new RedirectView("/superuser/reward");
+
+        System.out.println(amount);
+
+        return redirectView;
+
+    }
+
+    // Set special discount for a customer
+    @PostMapping(value = "/reward/discount/customer")
+    public RedirectView setDiscountForCustomer(@RequestParam("customerId") final String customerId,
+            @RequestParam("amount") final String amount, final RedirectAttributes redirectAttributes) {
+        final RedirectView redirectView = new RedirectView("/superuser/reward");
+
+        logger.info(customerId + " " + amount);
+        try {
+            customerService.setRewardForCustomer(Long.parseLong(customerId), Float.parseFloat(amount));
+        } catch (NumberFormatException e) {
+            redirectAttributes.addAttribute("error", "Invalid Inputs");
+        } catch (Exception e) {
+            redirectAttributes.addAttribute("error", "Unable to update rewards");
+        }
+
+        return redirectView;
+
+    }
+
+    // Set discount for all the customer
+    @PostMapping(value = "/reward/discount/global")
+    public RedirectView setDiscountForAll(@RequestParam("amount") String amount) {
+        final RedirectView redirectView = new RedirectView("/superuser/reward");
+
+        System.out.println(amount);
+
+        return redirectView;
+
+    }
+
 }

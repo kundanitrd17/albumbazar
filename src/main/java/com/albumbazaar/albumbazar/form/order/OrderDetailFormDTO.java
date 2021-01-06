@@ -10,7 +10,7 @@ import lombok.Data;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderDetailFormDTO {
 
-    private Long associationId;
+    private Long selectedAssociationId;
     private String associationName;
 
     private String orientation;

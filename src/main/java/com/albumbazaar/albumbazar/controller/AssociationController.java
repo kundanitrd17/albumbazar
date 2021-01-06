@@ -14,9 +14,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping(value = "association")
+
 public final class AssociationController {
 
     private Logger logger = LoggerFactory.getLogger(AssociationController.class);
@@ -48,6 +52,11 @@ public final class AssociationController {
 
         return redirectView;
 
+    @GetMapping("")
+    public ModelAndView associationDashboardView() {
+        final ModelAndView modelAndView = new ModelAndView("association/association_home");
+
+        return modelAndView;
     }
 
 }

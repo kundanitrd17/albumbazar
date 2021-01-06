@@ -6,17 +6,18 @@ import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.model.Customer;
+import com.albumbazaar.albumbazar.model.OrderDetail;
 
 public interface CustomerService {
 
     /**
      * Register a new customer
      * 
-     * @param customerDTO form containing all the customer details
+     * @param Customer form containing all the customer details
      * @return a boolean value indicating whether the transaction has been completed
      *         or not
      */
-    CustomerDTO registerCustomer(CustomerDTO customerDTO);
+    Customer registerCustomer(CustomerDTO customerDTO);
 
     /**
      * Return Customer as output
@@ -102,7 +103,7 @@ public interface CustomerService {
      * @param customerId id of the customer whose orders needs to be fetched
      * @return List of OrderDetailDTO
      */
-    List<OrderDetailDTO> getAllOrderDetails(Long customerId);
+    List<OrderDetail> getAllOrderDetails(Long customerId);
 
     /**
      * Delete an address for a customer
@@ -120,5 +121,13 @@ public interface CustomerService {
      * @param customerId id the customer with whom the address is associated to
      */
     void updateOrAddAddress(AddressDTO addressDTO, Long customerId);
+
+    /**
+     * Update discount for a customer
+     * 
+     * @param customerId
+     * @param discount
+     */
+    void setRewardForCustomer(Long customerId, Float discount);
 
 }

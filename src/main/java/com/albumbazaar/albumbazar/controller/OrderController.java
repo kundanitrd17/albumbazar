@@ -11,6 +11,7 @@ import com.albumbazaar.albumbazar.form.order.OrderDetailFormDTO;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
+import com.albumbazaar.albumbazar.services.GoogleDriveService;
 import com.albumbazaar.albumbazar.services.OrderService;
 
 import org.slf4j.Logger;
@@ -32,12 +33,16 @@ import org.springframework.web.servlet.view.RedirectView;
 @Controller
 public final class OrderController {
 
-    private OrderService orderService;
     private Logger logger = LoggerFactory.getLogger(OrderController.class);
 
-    @Autowired
-    public OrderController(@Qualifier("orderService") OrderService orderService) {
+    private OrderService orderService;
+    private GoogleDriveService googleDriveService;
 
+    @Autowired
+    public OrderController(@Qualifier("orderService") OrderService orderService,
+            @Qualifier("googleDriveService") final GoogleDriveService googleDriveService) {
+
+        this.googleDriveService = googleDriveService;
         this.orderService = orderService;
     }
 
@@ -64,6 +69,7 @@ public final class OrderController {
             final Object customerObj = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (customerObj instanceof CustomerPrincipal) {
                 final CustomerPrincipal customerPrincipal = (CustomerPrincipal) customerObj;
+
                 final OrderDetail order = orderService.createNewOrder(orderDetailFormDTO, customerPrincipal.getId());
                 redirectAttributes.addFlashAttribute("order_id", order.getId());
             } else {
@@ -93,12 +99,7 @@ public final class OrderController {
             return modelAndView;
         }
         modelAndView.addObject("order_id", model.getAttribute("order_id"));
-
-        System.out.println(modelAndView);
-        System.out.println(model);
-
         return modelAndView;
-
     }
 
     @GetMapping(value = "orders/pool")

@@ -67,15 +67,24 @@
                 </form>
 
                 <!-- Footer -->
+<<<<<<< HEAD
             <div class="modal-footer">
                 <div class="mx-auto small"><a data-dismiss="modal" href="#" data-toggle="modal"
                         data-target="#LoginCustomerModal">Have an account? Go to login</a>
+=======
+                <div class="modal-footer">
+                    <div class="mx-auto small"><a data-dismiss="modal" href="#" data-toggle="modal"
+                            data-target="#LoginCustomerModal">Have an account? Go to login</a>
+>>>>>>> a0a9064336cbd9da7dc0ee50efc702226a27fcb8
 
+                    </div>
                 </div>
             </div>
             </div>
 
             
+
+
 
         </div>
     </div>

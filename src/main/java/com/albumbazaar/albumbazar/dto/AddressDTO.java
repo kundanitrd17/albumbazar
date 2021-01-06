@@ -21,7 +21,7 @@ public class AddressDTO {
 
     @NotNull
     @NotBlank
-    @Size(min = 10, max = 10)
+    @Size(min = 10, max = 15)
     private String contactNo;
 
     private String landmark;
