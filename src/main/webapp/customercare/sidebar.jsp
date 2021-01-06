@@ -1,8 +1,10 @@
 <aside class="side-nav" id="show-side-navigation1">
     <!-- <i class="fa fa-bars close-aside hidden-sm hidden-md hidden-lg" data-close="show-side-navigation1"></i> -->
     <div class="heading">
+
         <img src="https://uniim1.shutterfly.com/ng/services/mediarender/THISLIFE/021036514417/media/23148907008/medium/1501685726/enhance"
             alt="">
+
         <div class="info">
             <h3><a href="#">Album Bazaar</a></h3>
             <p>Lorem ipsum dolor sit amet consectetur.</p>

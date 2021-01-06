@@ -1,12 +1,77 @@
+<style>
+    .custom-file-input {
+        color: transparent;
+        width: 45px;
+        margin-left: 10px;
+    }
+
+    .custom-file-input::-webkit-file-upload-button {
+        visibility: hidden;
+    }
+
+    .custom-file-input::before {
+        content: 'Edit';
+        color: black;
+        display: inline-block;
+        background: -webkit-linear-gradient(top, #f9f9f9, #e3e3e3);
+        border: 1px solid #999;
+        border-radius: 3px;
+        padding: 0px 10px;
+
+        outline: none;
+        white-space: nowrap;
+        -webkit-user-select: none;
+        cursor: pointer;
+        text-shadow: 1px 1px #fff;
+        font-weight: 700;
+        font-size: 10pt;
+    }
+
+    .custom-file-input:hover::before {
+        border-color: black;
+    }
+
+    .custom-file-input:active {
+        outline: 0;
+    }
+
+    .custom-file-input:active::before {
+        background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+    }
+</style>
+
+<script>
+    window.onload = function () {
+        document.getElementById('ChangeProfilePhotoInput').addEventListener('change', () => {
+
+            var form = document.getElementById("ChangeProfilePhotoForm");
+
+            var submitBtn = document.createElement("button");
+            submitBtn.innerHTML = "Change";
+            submitBtn.type = "submit";
+            submitBtn.className = "btn btn-success";
+            form.appendChild(submitBtn);
+            document.getElementById('ChangeProfilePhotoInput').style.display = "none";
+
+        })
+    };
+</script>
+
 <aside class="side-nav" id="show-side-navigation1">
     <i class="fa fa-bars close-aside hidden-sm hidden-md hidden-lg" data-close="show-side-navigation1"></i>
     <div class="heading">
         <img src="https://uniim1.shutterfly.com/ng/services/mediarender/THISLIFE/021036514417/media/23148907008/medium/1501685726/enhance"
             alt="">
+
         <div class="info">
             <h3><a href="/association">Album Bazar</a></h3>
             <p>Lorem ipsum dolor sit amet consectetur.</p>
         </div>
+
+        <form id="ChangeProfilePhotoForm" action="/association/dp/change" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+            <input name="photo" id="ChangeProfilePhotoInput" type="file" class="custom-file-input">
+        </form>
     </div>
     <div class="search">
         <input type="text" placeholder="Type here"><i class="fa fa-search"></i>
