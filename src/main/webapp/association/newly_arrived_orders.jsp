@@ -20,50 +20,9 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
 
-        <!--    libs for stomp and sockjs-->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-        <!--    end libs for stomp and sockjs-->
-
-        <!--  -->
-
-
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
         <link rel="stylesheet" type="text/css" href="http://localhost:8080/customercare/css/dashboard-superuser.css">
-
-        <style type="text/css">
-            #associationProductViewDetails table tr th {
-                text-align: center;
-            }
-
-            #associationProductViewDetails table tr th h6 {
-
-                font-size: 13px;
-            }
-
-            #associationProductViewDetails table tr:nth-child(odd) {
-                background: rgba(226, 226, 226, 1);
-                background: -moz-linear-gradient(left, rgba(226, 226, 226, 1) 0%, rgba(209, 209, 209, 1) 1%, rgba(133, 128, 133, 1) 51%, rgba(254, 254, 254, 1) 100%);
-                background: -webkit-gradient(left top, right top, color-stop(0%, rgba(226, 226, 226, 1)), color-stop(1%, rgba(209, 209, 209, 1)), color-stop(51%, rgba(133, 128, 133, 1)), color-stop(100%, rgba(254, 254, 254, 1)));
-                background: -webkit-linear-gradient(left, rgba(226, 226, 226, 1) 0%, rgba(209, 209, 209, 1) 1%, rgba(133, 128, 133, 1) 51%, rgba(254, 254, 254, 1) 100%);
-                background: -o-linear-gradient(left, rgba(226, 226, 226, 1) 0%, rgba(209, 209, 209, 1) 1%, rgba(133, 128, 133, 1) 51%, rgba(254, 254, 254, 1) 100%);
-                background: -ms-linear-gradient(left, rgba(226, 226, 226, 1) 0%, rgba(209, 209, 209, 1) 1%, rgba(133, 128, 133, 1) 51%, rgba(254, 254, 254, 1) 100%);
-                background: linear-gradient(to right, rgba(226, 226, 226, 1) 0%, rgba(209, 209, 209, 1) 1%, rgba(133, 128, 133, 1) 51%, rgba(254, 254, 254, 1) 100%);
-                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#e2e2e2', endColorstr='#fefefe', GradientType=1);
-                ;
-                color: white;
-                text-align: center;
-
-            }
-
-            #associationProductViewDetails table tr:nth-child(even) {
-                background-color: #A09EA2;
-                color: white;
-                text-align: center;
-
-            }
-        </style>
 
     </head>
 
@@ -94,6 +53,7 @@
 
 
                 <div class="container">
+                    <input type="text" id="employee_id_hidden" value="${employee_id}" hidden>
                     <div class="row">
                         <div class="panel panel-primary filterable table-responsive">
                             <div class="panel-heading">
@@ -106,35 +66,43 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                 <thead>
                                     <tr class="filters">
                                         <th><input type="text" class="form-control" placeholder="Id" disabled></th>
-                                        <th><input type="text" class="form-control" placeholder="Product" disabled>
+                                        <th><input type="text" class="form-control" placeholder=" Name" disabled></th>
+
+                                        <th><input type="text" class="form-control" placeholder="Contact 1" disabled>
                                         </th>
-                                        <th><input type="text" class="form-control" placeholder="Association" disabled>
+                                        <th><input type="text" class="form-control" placeholder="Contact 2" disabled>
                                         </th>
 
-                                        <th><input type="text" class="form-control" placeholder="Delivery" disabled>
-                                        </th>
-                                        <th><input type="text" class="form-control" placeholder="Amount" disabled>
-                                        </th>
+                                        <th><input type="text" class="form-control" placeholder="E-mail" disabled></th>
 
-                                        <th colspan="3" style="text-align: center;"><a class="btn btn-success"
-                                                href="/customer-care/accepted-order">View Accepted Order
+
+                                        <th colspan="2" style="text-align: center;"><a class="btn btn-success"
+                                                href="/association/order-list/processing">View Accepted Order
                                             </a></th>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                    <c:forEach items="${allOrders}" var="eachOrder">
+
+
+                                    <c:forEach items="${recentlyReceivedOrders}" var="eachOrder">
                                         <tr id="orderRow${eachOrder.id}">
                                             <td class="orderId" id="orderId${eachOrder.id}"
                                                 data-orderId="${eachOrder.id}">${eachOrder.id}</td>
-                                            <td>${eachOrder.productName}</td>
-                                            <td>${eachOrder.associationName}</td>
-                                            <td>${eachOrder.deliveryDate}</td>
-                                            <td>${eachOrder.totalAmount}</td>
+                                            <td id="associationName">${eachOrder.associationName}</td>
+                                            <td id="associationPhone1">${eachOrder.orderStatus}</td>
+                                            <td id="associationPhone2">9832177025</td>
 
+                                            <td id="associationEmail">kundanitrd17@gmail.com</td>
+
+                                            <td><a class="btn btn-danger accept-order-icon">Accept Order</a></td>
                                         </tr>
 
+
                                     </c:forEach>
+
+
+
 
 
                                 </tbody>
@@ -144,9 +112,6 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                 </div>
 
             </section>
-
-
-
 
             <script type="text/javascript" src="http://localhost:8080/customercare/js/data-table.js"></script>
 

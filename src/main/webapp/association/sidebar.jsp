@@ -76,24 +76,26 @@
 
     };
 </script>
-
 <aside class="side-nav" id="show-side-navigation1">
     <i class="fa fa-bars close-aside hidden-sm hidden-md hidden-lg" data-close="show-side-navigation1"></i>
-    <div class="heading">
+    <div class="heading row">
         <img id="associationProfilePhoto"
             src="https://uniim1.shutterfly.com/ng/services/mediarender/THISLIFE/021036514417/media/23148907008/medium/1501685726/enhance"
-            alt="">
+            alt="" style="height: 100px; width: 100px; object-fit: fill;">
 
-        <div class="info">
+        <div class="info col">
             <h3><a href="/association">Album Bazar</a></h3>
             <p>Lorem ipsum dolor sit amet consectetur.</p>
         </div>
 
-        <form id="ChangeProfilePhotoForm" action="/association/dp/change" method="POST" enctype="multipart/form-data">
+        <form class="col" id="ChangeProfilePhotoForm" action="/association/dp/change" method="POST"
+            enctype="multipart/form-data">
             <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
             <input name="photo" id="ChangeProfilePhotoInput" type="file" class="custom-file-input">
         </form>
     </div>
+
+
     <div class="search">
         <input type="text" placeholder="Type here"><i class="fa fa-search"></i>
     </div>
@@ -102,7 +104,7 @@
 
         <li><i class="fa fa-support fa-fw"></i><a href="#"> Order</a>
             <ul class="side-nav-dropdown">
-                <li><a href="/association/new-arrived-order">Newly Arrived Orders</a></li>
+                <li><a href="/association/order-list/new-arrived-order">Newly Arrived Orders</a></li>
                 <li><a href="/association/order-list/processing">Order Under Process</a></li>
                 <li><a href="/association/order-list/completed">Completed Order</a></li>
             </ul>

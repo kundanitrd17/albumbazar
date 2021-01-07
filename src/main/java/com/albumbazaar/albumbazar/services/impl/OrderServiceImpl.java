@@ -15,12 +15,14 @@ import com.albumbazaar.albumbazar.dao.SheetDetailRepository;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
 import com.albumbazaar.albumbazar.form.order.OrderDetailFormDTO;
+import com.albumbazaar.albumbazar.model.Association;
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.OrderAndCustomerCareEntity;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 import com.albumbazaar.albumbazar.model.Paper;
 import com.albumbazaar.albumbazar.model.SheetDetail;
+import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.CustomerService;
 import com.albumbazaar.albumbazar.services.OrderService;
 import com.albumbazaar.albumbazar.services.ProductService;
@@ -66,13 +68,16 @@ public class OrderServiceImpl implements OrderService {
     public OrderDetail createNewOrder(final OrderDetailFormDTO orderDetailFormDTO, final Long customerId) {
 
         final OrderDetail orderDetail = new OrderDetail();
-        orderDetail.setAssociationName(orderDetailFormDTO.getAssociationName());
+        final Association association = context.getBean(AssociationService.class)
+                .getAssociation(orderDetailFormDTO.getSelectedAssociationId());
 
-        // orderDetail.setCover(productService.getCoverEntity(orderDetailFormDTO.getCoverId()));
+        orderDetail.setAssociationName(orderDetailFormDTO.getAssociationName());
+        orderDetail.setAssociation(association);
+
+        orderDetail.setCover(productService.getCoverEntity(orderDetailFormDTO.getCoverId()));
 
         final CustomerService customerService = context.getBean(CustomerService.class);
         orderDetail.setCustomer(customerService.getCustomer(customerId));
-        System.out.println("All customers:- " + customerService.getAllCustomer());
 
         orderDetail.setDescription(orderDetailFormDTO.getDescription());
         orderDetail.setOrientation(orderDetailFormDTO.getOrientation());
@@ -252,6 +257,25 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderDetail> getOrdersOfCustomer(final Long customerId) {
 
         return orderRepository.findAllByCustomerId(customerId).orElseThrow();
+    }
+
+    @Override
+    public List<OrderDetail> getOrderWithAssociationIdAndAssociationStatus(final Long associationId, boolean status) {
+
+        return orderRepository.findAllByAssociationIdAndHasAssociationAccepted(associationId, status);
+    }
+
+    @Override
+    public List<OrderDetail> getCompletedOrdersWithAssociationId(final Long associationId) {
+
+        return orderRepository.findAllByAssociationIdAndOrderStatus(associationId,
+                OrderDetailStatus.COMPLETED.toString());
+    }
+
+    @Override
+    public List<OrderDetail> getUnderProcessOrdersWithAssociationId(final Long associationId) {
+
+        return orderRepository.findAllUnderProcessByAssociationId(associationId);
     }
 
 }

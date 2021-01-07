@@ -26,4 +26,11 @@ public interface OrderRepository extends JpaRepository<OrderDetail, Long> {
     Optional<OrderDetail> findByRazorpayOrderId(String razorpayOrderId);
 
     Optional<OrderDetail> findByRazorpayPaymentId(String razorpayPaymentId);
+
+    List<OrderDetail> findAllByAssociationIdAndHasAssociationAccepted(Long associationId, boolean status);
+
+    List<OrderDetail> findAllByAssociationIdAndOrderStatus(Long associationId, String orderStatus);
+
+    @Query(value = "SELECT * FROM order_detail WHERE association_id = ?1 AND has_association_accepted = true AND order_status not in ('pending', 'completed')", nativeQuery = true)
+    List<OrderDetail> findAllUnderProcessByAssociationId(Long associationId);
 }

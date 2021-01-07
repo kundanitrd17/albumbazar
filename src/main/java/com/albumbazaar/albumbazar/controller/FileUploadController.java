@@ -20,11 +20,11 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 public final class FileUploadController {
 
-    private final StorageService storageService;
+    private final StorageService imageStorageService;
 
     @Autowired
-    public FileUploadController(@Qualifier("imageStorageService") StorageService storageService) {
-        this.storageService = storageService;
+    public FileUploadController(@Qualifier("imageStorageService") StorageService imageStorageService) {
+        this.imageStorageService = imageStorageService;
     }
 
     @GetMapping("/upload")
@@ -38,7 +38,7 @@ public final class FileUploadController {
 
         try {
             for (MultipartFile file : files) {
-                storageService.store(file, file.getOriginalFilename());
+                imageStorageService.store(file, file.getOriginalFilename());
             }
         } catch (Exception e) {
             return "Exception";
@@ -50,7 +50,7 @@ public final class FileUploadController {
     @ResponseBody
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
 
-        Resource file = storageService.loadAsResource(filename);
+        Resource file = imageStorageService.loadAsResource(filename);
         return ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
                 .body(file);

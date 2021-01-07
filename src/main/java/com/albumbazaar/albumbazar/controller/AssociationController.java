@@ -1,3 +1,4 @@
+
 package com.albumbazaar.albumbazar.controller;
 
 import com.albumbazaar.albumbazar.services.AssociationService;
@@ -67,23 +68,29 @@ public final class AssociationController {
         return modelAndView;
     }
 
-    @GetMapping("/new-arrived-order")
+    @GetMapping("/order-list/new-arrived-order")
     public ModelAndView newlyArrivedOrderView() {
-        final ModelAndView modelAndView = new ModelAndView("association/new_order");
+        final ModelAndView modelAndView = new ModelAndView("association/newly_arrived_orders");
+
+        modelAndView.addObject("recentlyReceivedOrders", associationService.getAllNewlyArrivedOrders(1l));
 
         return modelAndView;
     }
 
     @GetMapping("/order-list/processing")
     public ModelAndView processingOrderListView() {
-        final ModelAndView modelAndView = new ModelAndView("association/under_process_order");
+        final ModelAndView modelAndView = new ModelAndView("association/under_process_orders");
+
+        modelAndView.addObject("allOrders", associationService.getUnderProcessOrders(1l));
 
         return modelAndView;
     }
 
     @GetMapping("/order-list/completed")
     public ModelAndView completedOrderListView() {
-        final ModelAndView modelAndView = new ModelAndView("association/completed_order");
+        final ModelAndView modelAndView = new ModelAndView("association/completed_orders");
+
+        modelAndView.addObject("allOrders", associationService.getCompletedOrder(1l));
 
         return modelAndView;
     }

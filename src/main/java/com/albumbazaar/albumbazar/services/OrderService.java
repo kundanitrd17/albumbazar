@@ -104,4 +104,10 @@ public interface OrderService {
      */
     List<OrderDetail> getOrdersOfCustomer(Long customerId);
 
+    List<OrderDetail> getOrderWithAssociationIdAndAssociationStatus(Long associationId, boolean status);
+
+    List<OrderDetail> getCompletedOrdersWithAssociationId(Long associationId);
+
+    List<OrderDetail> getUnderProcessOrdersWithAssociationId(final Long associationId);
+
 }

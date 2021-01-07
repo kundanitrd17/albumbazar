@@ -50,6 +50,12 @@ public class OrderDetail {
 
     // Product details
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "association_id", nullable = false)
+    private Association association;
+
+    private Boolean hasAssociationAccepted;
+
     private String associationName;
 
     private String productName;
@@ -112,9 +118,10 @@ public class OrderDetail {
 
     @PrePersist
     public void prePersist() {
-        this.orderStatus = new String("pending");
+        this.orderStatus = OrderDetailStatus.PENDING.toString();
         this.paymentStatus = false;
         this.totalAmount = 1f;
+        this.hasAssociationAccepted = false;
 
     }
 

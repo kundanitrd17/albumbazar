@@ -53,8 +53,6 @@ public final class CustomerCareController {
         final ModelAndView modelAndView = new ModelAndView("customercare/customercare_order_pool");
 
         try {
-            final List<OrderDetail> recentlyReceivedOrders = orderService
-                    .getOrdersWithStatus(OrderDetailStatus.PENDING);
 
             final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (principal instanceof EmployeePrincipal) {
@@ -64,6 +62,9 @@ public final class CustomerCareController {
                 throw new AuthenticationException("un-verified user");
 
             }
+
+            final List<OrderDetail> recentlyReceivedOrders = orderService
+                    .getOrdersWithStatus(OrderDetailStatus.PENDING);
 
             modelAndView.addObject("recentlyReceivedOrders", recentlyReceivedOrders);
         } catch (AuthenticationException e) {

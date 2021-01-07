@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.albumbazaar.albumbazar.form.association.AssociationDetailForm;
 import com.albumbazaar.albumbazar.model.Association;
+import com.albumbazaar.albumbazar.model.OrderDetail;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +24,12 @@ public interface AssociationService {
 
     List<Association> getAssociationWithStatus(boolean status);
 
-    void changeProfilePhoto(MultipartFile photoFile, Long associationId);
+    public void changeProfilePhoto(final MultipartFile photoFile, final Long associationId);
+
+    List<OrderDetail> getAllNewlyArrivedOrders(Long associationId);
+
+    List<OrderDetail> getUnderProcessOrders(Long associationId);
+
+    List<OrderDetail> getCompletedOrder(Long associationId);
 
 }

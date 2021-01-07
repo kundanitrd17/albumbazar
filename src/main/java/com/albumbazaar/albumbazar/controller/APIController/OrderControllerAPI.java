@@ -95,7 +95,6 @@ public class OrderControllerAPI {
 
         System.out.println(orderDetail);
         try {
-            googleDriveService.createFolderAndMakePublic("folderName", "chuhiyadotcom@gmail.com", orderDetail);
             final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (principal instanceof CustomerPrincipal) {
                 final CustomerPrincipal customerPrincipal = (CustomerPrincipal) principal;
@@ -122,8 +121,6 @@ public class OrderControllerAPI {
         try {
             files.forEach(e -> logger.info(e.getOriginalFilename()));
 
-            googleDriveService.uploadToGoogleDrive(files, orderInfo.getPhotoFolderGoogleDriveId(),
-                    "chuhiyadotcom@gmail.com");
             final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (principal instanceof CustomerPrincipal) {
                 final CustomerPrincipal customerPrincipal = (CustomerPrincipal) principal;

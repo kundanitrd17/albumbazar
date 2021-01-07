@@ -5,6 +5,7 @@ import javax.validation.Valid;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
 import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.model.Customer;
+import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.services.CustomerService;
 import com.albumbazaar.albumbazar.services.GoogleDriveService;
 
@@ -12,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -67,7 +69,10 @@ public class CustomerControllerAPI {
     @DeleteMapping(value = "/address")
     protected ResponseEntity<?> deleteAddressOfACustomer(@RequestBody final Long addressId) {
 
-        customerService.deleteAddress(1l, addressId);
+        final CustomerPrincipal principal = (CustomerPrincipal) SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+
+        customerService.deleteAddress(principal.getId(), addressId);
 
         return ResponseEntity.ok().body("body");
     }

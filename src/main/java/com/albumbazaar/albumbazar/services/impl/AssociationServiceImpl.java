@@ -8,13 +8,17 @@ import javax.validation.ConstraintViolationException;
 import com.albumbazaar.albumbazar.dao.AssociationRepository;
 import com.albumbazaar.albumbazar.form.association.AssociationDetailForm;
 import com.albumbazaar.albumbazar.model.Association;
+import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.services.AssociationService;
+import com.albumbazaar.albumbazar.services.OrderService;
+import com.albumbazaar.albumbazar.services.storage.ImageStorageService;
 import com.albumbazaar.albumbazar.services.storage.StorageService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -26,14 +30,16 @@ public class AssociationServiceImpl implements AssociationService {
 
     private final AssociationRepository associationRepository;
 
-    // Dependent services
     private final StorageService imageStorageService;
+    private final ApplicationContext applicationContext;
 
     @Autowired
     public AssociationServiceImpl(final AssociationRepository associationRepository,
-            @Qualifier("imageStorageService") final StorageService imageStorageService) {
-        this.imageStorageService = imageStorageService;
+            @Qualifier("imageStorageService") final StorageService imageStorageService,
+            final ApplicationContext applicationContext) {
         this.associationRepository = associationRepository;
+        this.imageStorageService = imageStorageService;
+        this.applicationContext = applicationContext;
     }
 
     @Override
@@ -119,6 +125,25 @@ public class AssociationServiceImpl implements AssociationService {
 
         association.setProfilePhoto(saved_file_name);
 
+    }
+
+    @Override
+    public List<OrderDetail> getAllNewlyArrivedOrders(final Long associationId) {
+
+        return applicationContext.getBean(OrderService.class)
+                .getOrderWithAssociationIdAndAssociationStatus(associationId, false);
+
+    }
+
+    @Override
+    public List<OrderDetail> getUnderProcessOrders(final Long associationId) {
+
+        return applicationContext.getBean(OrderService.class).getUnderProcessOrdersWithAssociationId(associationId);
+    }
+
+    @Override
+    public List<OrderDetail> getCompletedOrder(final Long associationId) {
+        return applicationContext.getBean(OrderService.class).getCompletedOrdersWithAssociationId(associationId);
     }
 
 }
