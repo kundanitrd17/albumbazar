@@ -1,6 +1,7 @@
 package com.albumbazaar.albumbazar.controller.APIController;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -8,11 +9,13 @@ import javax.validation.Valid;
 
 import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
+import com.albumbazaar.albumbazar.dto.SheetDetailDTO;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.services.GoogleDriveService;
 import com.albumbazaar.albumbazar.services.OrderService;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -138,6 +141,35 @@ public class OrderControllerAPI {
         }
 
         return ResponseEntity.ok().body("body");
+    }
+
+    @GetMapping(value = "/secured/order/{order_id}/sheet/details")
+    public ResponseEntity<?> getSheetDetail(@PathVariable("order_id") final Long orderId) {
+
+        try {
+            final List<SheetDetailDTO> sheetDetailDTOs = orderService.getSheetDetails(orderId);
+
+            HashMap<String, Object> data = new HashMap<>();
+            data.put("data", sheetDetailDTOs);
+
+            return ResponseEntity.ok().body(data);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping(value = "/secured/order/{order_id}/delivery/address")
+    public ResponseEntity<?> getOrderDeliveryAddress(@PathVariable("order_id") final Long orderId) {
+
+        try {
+            return ResponseEntity.ok().body(orderService.getDeliveryAddress(orderId));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return ResponseEntity.badRequest().build();
+
     }
 
 }

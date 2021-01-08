@@ -30,6 +30,14 @@ public interface AssociationService {
 
     List<OrderDetail> getUnderProcessOrders(Long associationId);
 
+    List<OrderDetail> getReadyToDeliverOrders(Long associationId);
+
     List<OrderDetail> getCompletedOrder(Long associationId);
+
+    void acceptOrder(Long orderId);
+
+    void setOrderCompleted(Long orderId);
+
+    void processForDelivery(Long orderId);
 
 }

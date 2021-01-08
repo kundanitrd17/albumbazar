@@ -104,7 +104,7 @@ public class RazorPayPaymentServiceImpl implements RazorPayPaymentService {
 
     @Transactional
     @Override
-    public OrderDetail saveCredentialOnPaymentSuccess(String razorpayOrderId, String razorpayPaymentId,
+    public void saveCredentialOnPaymentSuccess(String razorpayOrderId, String razorpayPaymentId,
             String razorpaySignature) {
 
         final OrderDetail orderDetail = orderService.getOrderWithRazorpayOrderId(razorpayOrderId);
@@ -114,7 +114,6 @@ public class RazorPayPaymentServiceImpl implements RazorPayPaymentService {
         orderDetail.setRazorPaySignature(razorpaySignature);
         orderDetail.setPaymentStatus(true);
 
-        return orderDetail;
     }
 
     @Override

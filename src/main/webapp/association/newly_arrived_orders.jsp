@@ -5,23 +5,40 @@
 
     <head>
         <title>Album Bazaar</title>
+
+
+
+        <!-- CSS only -->
+        <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+            integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous"> -->
+        <!-- JavaScript Bundle with Popper -->
+        <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"
+            crossorigin="anonymous"></script> -->
+
+        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+            integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"> -->
+        <link href="https://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <meta charset="utf-8">
         <meta name="_csrf" content="${_csrf.token}" />
         <!-- default header name is X-CSRF-TOKEN -->
         <meta name="_csrf_header" content="${_csrf.headerName}" />
         <!-- ... -->
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
         <link rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="http://localhost:8080/customercare/css/dashboard-superuser.css">
 
 
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script> -->
         <link rel="stylesheet" type="text/css" href="http://localhost:8080/customercare/css/dashboard-superuser.css">
 
     </head>
@@ -36,10 +53,10 @@
                 <nav class="navbar navbar-default">
                     <div class="container-fluid">
                         <div class="navbar-header">
-                            <button type="button" class="navbar-toggle collapsed show-side-btn" data-toggle="collapse"
+                            <!-- <button type="button" class="navbar-toggle collapsed show-side-btn" data-toggle="collapse"
                                 data-target="" aria-expanded="false">
 
-                            </button>
+                            </button> -->
                             <ul class="nav navbar-nav">
                                 <li id="bs-example-navbar-collapse-1"> <a href="#"><i data-show="show-side-navigation1"
                                             class="fa fa-bars show-side-btn"></i></a></li>
@@ -52,7 +69,7 @@
                 </nav>
 
 
-                <div class="container">
+                <div class="container" style="background-color: #e6dfee;">
                     <input type="text" id="employee_id_hidden" value="${employee_id}" hidden>
                     <div class="row">
                         <div class="panel panel-primary filterable table-responsive">
@@ -66,14 +83,16 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                 <thead>
                                     <tr class="filters">
                                         <th><input type="text" class="form-control" placeholder="Id" disabled></th>
-                                        <th><input type="text" class="form-control" placeholder=" Name" disabled></th>
-
-                                        <th><input type="text" class="form-control" placeholder="Contact 1" disabled>
-                                        </th>
-                                        <th><input type="text" class="form-control" placeholder="Contact 2" disabled>
+                                        <th><input type="text" class="form-control" placeholder="Description" disabled>
                                         </th>
 
-                                        <th><input type="text" class="form-control" placeholder="E-mail" disabled></th>
+                                        <th><input type="text" class="form-control" placeholder="Sheet Details"
+                                                disabled>
+                                        </th>
+                                        <th><input type="text" class="form-control" placeholder="Cover" disabled>
+                                        </th>
+
+                                        <th><input type="text" class="form-control" placeholder="Images" disabled></th>
 
 
                                         <th colspan="2" style="text-align: center;"><a class="btn btn-success"
@@ -89,16 +108,61 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                         <tr id="orderRow${eachOrder.id}">
                                             <td class="orderId" id="orderId${eachOrder.id}"
                                                 data-orderId="${eachOrder.id}">${eachOrder.id}</td>
-                                            <td id="associationName">${eachOrder.associationName}</td>
-                                            <td id="associationPhone1">${eachOrder.orderStatus}</td>
-                                            <td id="associationPhone2">9832177025</td>
 
-                                            <td id="associationEmail">kundanitrd17@gmail.com</td>
+                                            <td id="OrderDescription"><button type="button" class="btn"
+                                                    data-toggle="modal"
+                                                    data-target="#DescriptionCard${eachOrder.id}">Show
+                                                    Description</button>
 
-                                            <td><a class="btn btn-danger accept-order-icon">Accept Order</a></td>
+                                                <div class="modal" id="DescriptionCard${eachOrder.id}">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title" id="myModalLabel">Comapny Name
+                                                                </h4>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+
+                                                                ${eachOrder.description}
+
+                                                            </div>
+
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-danger"
+                                                                    data-dismiss="modal">Close</button>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            <td id="OrderPageDetails"><a class="btn">Show Pages Detail</a></td>
+                                            <td id="OrderCoverPage">${eachOrder.cover.coverName}
+                                            </td>
+
+                                            <td id="OrderImages">
+                                                <a class="btn" href="${eachOrder.photoFolderGoogleDriveLink}"
+                                                    target="_blank">Show
+                                                    Images</a>
+                                            </td>
+
+                                            <td><a class="btn btn-danger accept-order-icon"
+                                                    onclick="acceptOrderByAssociation('${eachOrder.id}')">Accept
+                                                    Order</a></td>
                                         </tr>
 
 
+                                        <div class="modal fade" id="ShowDesc${eachOrder.id}" tabindex="-1" role="dialog"
+                                            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+
+                                            ${eachOrder.description}
+
+                                        </div>
                                     </c:forEach>
 
 
@@ -111,9 +175,15 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                     </div>
                 </div>
 
+
+
+
+
             </section>
 
+
             <script type="text/javascript" src="http://localhost:8080/customercare/js/data-table.js"></script>
+            <script type="text/javascript" src="http://localhost:8080/association/js/new_order.js"></script>
 
 
             <script type="text/javascript">

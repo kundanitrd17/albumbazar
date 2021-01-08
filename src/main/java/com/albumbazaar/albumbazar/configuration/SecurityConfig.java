@@ -167,19 +167,20 @@ public class SecurityConfig {
     // /**
     // * Securing Rest Endpoints
     // */
-    @Configuration
-    @Order(5)
-    public static class RestEndpointsSecurityConfig extends WebSecurityConfigurerAdapter {
+    // @Configuration
+    // @Order(5)
+    // public static class RestEndpointsSecurityConfig extends
+    // WebSecurityConfigurerAdapter {
 
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            http.antMatcher("/api/secured/**").authorizeRequests().antMatchers("/api/secured/customer/**")
-                    .hasAuthority(AvailableRoles.Code.USER).antMatchers("/api/secured/customer-care/**")
-                    .hasAuthority(AvailableRoles.Code.CUSTOMER_CARE);
+    // @Override
+    // protected void configure(HttpSecurity http) throws Exception {
+    // http.antMatcher("/api/secured/**").authorizeRequests().antMatchers("/api/secured/customer/**")
+    // .hasAuthority(AvailableRoles.Code.USER).antMatchers("/api/secured/customer-care/**")
+    // .hasAuthority(AvailableRoles.Code.CUSTOMER_CARE);
 
-        }
+    // }
 
-    }
+    // }
 
     /**
      * Securing Remaining endpoints

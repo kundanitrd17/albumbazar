@@ -3,7 +3,9 @@ package com.albumbazaar.albumbazar.services.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -12,9 +14,12 @@ import com.albumbazaar.albumbazar.dao.OrderAndCustomerCareRepository;
 import com.albumbazaar.albumbazar.dao.OrderRepository;
 import com.albumbazaar.albumbazar.dao.PaperRepository;
 import com.albumbazaar.albumbazar.dao.SheetDetailRepository;
+import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
+import com.albumbazaar.albumbazar.dto.SheetDetailDTO;
 import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
 import com.albumbazaar.albumbazar.form.order.OrderDetailFormDTO;
+import com.albumbazaar.albumbazar.model.AddressEntity;
 import com.albumbazaar.albumbazar.model.Association;
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.OrderAndCustomerCareEntity;
@@ -260,12 +265,14 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<OrderDetail> getOrderWithAssociationIdAndAssociationStatus(final Long associationId, boolean status) {
 
         return orderRepository.findAllByAssociationIdAndHasAssociationAccepted(associationId, status);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<OrderDetail> getCompletedOrdersWithAssociationId(final Long associationId) {
 
         return orderRepository.findAllByAssociationIdAndOrderStatus(associationId,
@@ -273,9 +280,68 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<OrderDetail> getUnderProcessOrdersWithAssociationId(final Long associationId) {
 
         return orderRepository.findAllUnderProcessByAssociationId(associationId);
+    }
+
+    @Override
+    @Transactional
+    public void updateHasAssociationAccepted(Long orderId, boolean status) {
+
+        final OrderDetail order = this.getOrder(orderId);
+        order.setHasAssociationAccepted(status);
+
+    }
+
+    @Override
+    public List<OrderDetail> getOrdersWithAssociationAndStatus(Association association,
+            OrderDetailStatus readyToDeliver) {
+
+        return orderRepository.findAllByAssociationAndOrderStatus(association, readyToDeliver.toString());
+
+    }
+
+    @Override
+    public List<SheetDetailDTO> getSheetDetails(Long orderId) {
+        // Get Order Detail
+        final OrderDetail order = this.getOrder(orderId);
+
+        // List of sheet detail DTO
+        final List<SheetDetailDTO> sheetDetailDTOs = new ArrayList<>();
+        // Fetching array from order Entity
+        final JSONArray sheetDetailArray = new JSONArray(order.getPaperDetailsWithNumberOfSheetsList());
+
+        for (int index = 0; index < sheetDetailArray.length(); ++index) {
+            final JSONObject eachSheetInfo = new JSONObject(sheetDetailArray.get(index).toString());
+
+            long paperId = eachSheetInfo.getLong("paper_id");
+            int sheetCount = eachSheetInfo.getInt("sheets");
+
+            final Paper paper = productService.getPaperEntity(paperId);
+
+            final SheetDetailDTO sheetDetail = new SheetDetailDTO();
+            sheetDetail.setPaperId(paper.getId());
+            sheetDetail.setPaperName(paper.getPaperQuality());
+            sheetDetail.setPaperSize(paper.getPaperSize());
+            sheetDetail.setSheets(sheetCount);
+
+            sheetDetailDTOs.add(sheetDetail);
+
+        }
+
+        // Creating a JSONObject with sheet info
+        final HashMap<String, Object> sheetDetails = new HashMap<>();
+        sheetDetails.put("data", sheetDetailDTOs);
+        return sheetDetailDTOs;
+
+    }
+
+    @Override
+    public AddressEntity getDeliveryAddress(Long orderId) {
+        final OrderDetail order = this.getOrder(orderId);
+        return order.getDeliveryAddress();
     }
 
 }

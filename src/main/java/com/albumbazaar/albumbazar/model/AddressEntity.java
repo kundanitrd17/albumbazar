@@ -33,7 +33,7 @@ public class AddressEntity {
 
     @NotNull
     @NotBlank
-    @Size(min = 10, max = 10)
+    @Size(min = 10, max = 15)
     @Column(nullable = false)
     private String contactNo;
 

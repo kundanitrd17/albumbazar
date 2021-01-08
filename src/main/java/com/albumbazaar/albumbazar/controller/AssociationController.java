@@ -86,6 +86,15 @@ public final class AssociationController {
         return modelAndView;
     }
 
+    @GetMapping("/order-list/ready-to-deliver")
+    public ModelAndView readyToDeliverOrderListView() {
+        final ModelAndView modelAndView = new ModelAndView("association/ready_to_deliver");
+
+        modelAndView.addObject("allOrders", associationService.getReadyToDeliverOrders(1l));
+
+        return modelAndView;
+    }
+
     @GetMapping("/order-list/completed")
     public ModelAndView completedOrderListView() {
         final ModelAndView modelAndView = new ModelAndView("association/completed_orders");

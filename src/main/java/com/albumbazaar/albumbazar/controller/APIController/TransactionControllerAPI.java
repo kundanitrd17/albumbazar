@@ -64,9 +64,9 @@ public class TransactionControllerAPI {
 
                 boolean isEqual = Utils.verifyPaymentSignature(options, "aDCCVMEUiVoDkZXhdpE8cA75");
                 if (isEqual) {
-                    final OrderDetail orderDetail = razorPayPaymentService
-                            .saveCredentialOnPaymentSuccess(razorpayOrderId, razorpayPaymentId, razorpaySignature);
-                    return ResponseEntity.ok().body(orderDetail);
+                    razorPayPaymentService.saveCredentialOnPaymentSuccess(razorpayOrderId, razorpayPaymentId,
+                            razorpaySignature);
+                    return ResponseEntity.ok().build();
                 }
 
             } catch (RazorpayException e) {

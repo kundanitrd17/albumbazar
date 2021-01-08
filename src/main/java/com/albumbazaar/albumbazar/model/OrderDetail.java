@@ -21,7 +21,8 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "order_detail")
-@JsonIgnoreProperties(value = { "customer", "deliveryAddress", "sheets", "employee" })
+@JsonIgnoreProperties(value = { "customer", "deliveryAddress", "sheets", "employee", "association",
+        "cover" }, ignoreUnknown = true)
 public class OrderDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -55,6 +56,8 @@ public class OrderDetail {
     private Association association;
 
     private Boolean hasAssociationAccepted;
+
+    private Boolean isForwardedToAssociation;
 
     private String associationName;
 
@@ -114,7 +117,7 @@ public class OrderDetail {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "delivery_location_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
-    private Address1 deliveryAddress;
+    private AddressEntity deliveryAddress;
 
     @PrePersist
     public void prePersist() {
@@ -122,7 +125,7 @@ public class OrderDetail {
         this.paymentStatus = false;
         this.totalAmount = 1f;
         this.hasAssociationAccepted = false;
-
+        this.isForwardedToAssociation = false;
     }
 
     public OrderDetail() {

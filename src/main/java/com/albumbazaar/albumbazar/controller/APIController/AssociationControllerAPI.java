@@ -13,7 +13,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 @Controller
@@ -44,6 +48,51 @@ public class AssociationControllerAPI {
 
         return ResponseEntity.ok(photo);
 
+    }
+
+    @PutMapping("/secured/association/order/accept")
+    public ResponseEntity<?> acceptOrderByAssociation(@RequestBody Long orderId) {
+
+        System.err.println(orderId);
+
+        try {
+            associationService.acceptOrder(orderId);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/secured/association/order/completed")
+    public ResponseEntity<?> workDoneByAssociation(@RequestBody Long orderId) {
+
+        System.err.println(orderId);
+
+        try {
+            associationService.setOrderCompleted(orderId);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/secured/association/order/deliver")
+    public ResponseEntity<?> deliverByAssociation(@RequestBody Long orderId) {
+
+        System.err.println(orderId);
+
+        try {
+            associationService.processForDelivery(orderId);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok().build();
     }
 
 }

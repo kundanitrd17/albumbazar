@@ -8,7 +8,9 @@ import javax.validation.ConstraintViolationException;
 import com.albumbazaar.albumbazar.dao.AssociationRepository;
 import com.albumbazaar.albumbazar.form.association.AssociationDetailForm;
 import com.albumbazaar.albumbazar.model.Association;
+import com.albumbazaar.albumbazar.model.Employee;
 import com.albumbazaar.albumbazar.model.OrderDetail;
+import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.OrderService;
 import com.albumbazaar.albumbazar.services.storage.ImageStorageService;
@@ -144,6 +146,43 @@ public class AssociationServiceImpl implements AssociationService {
     @Override
     public List<OrderDetail> getCompletedOrder(final Long associationId) {
         return applicationContext.getBean(OrderService.class).getCompletedOrdersWithAssociationId(associationId);
+    }
+
+    @Override
+    public void acceptOrder(final Long orderId) {
+
+        applicationContext.getBean(OrderService.class).updateHasAssociationAccepted(orderId, true);
+    }
+
+    @Override
+    public void setOrderCompleted(final Long orderId) {
+
+        final OrderService orderService = applicationContext.getBean(OrderService.class);
+        final OrderDetail order = orderService.getOrder(orderId);
+        final Employee customerCare = order.getEmployee();
+
+        orderService.changeOrderStatus(orderId, customerCare.getId(), OrderDetailStatus.READY_TO_DELIVER);
+
+    }
+
+    @Override
+    public List<OrderDetail> getReadyToDeliverOrders(Long associationId) {
+
+        final Association association = this.getAssociation(associationId);
+
+        return applicationContext.getBean(OrderService.class).getOrdersWithAssociationAndStatus(association,
+                OrderDetailStatus.READY_TO_DELIVER);
+    }
+
+    @Override
+    @Transactional
+    public void processForDelivery(Long orderId) {
+
+        final OrderService orderService = applicationContext.getBean(OrderService.class);
+        final OrderDetail order = orderService.getOrder(orderId);
+
+        order.setOrderStatus(OrderDetailStatus.DELIVER.toString());
+
     }
 
 }

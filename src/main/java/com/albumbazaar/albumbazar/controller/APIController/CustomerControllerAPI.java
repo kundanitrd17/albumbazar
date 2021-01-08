@@ -12,6 +12,7 @@ import com.albumbazaar.albumbazar.services.GoogleDriveService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -77,4 +78,21 @@ public class CustomerControllerAPI {
         return ResponseEntity.ok().body("body");
     }
 
+    @GetMapping(value = { "/is-google-auth-allowed" })
+    public ResponseEntity<?> isSignedInToGoogleAccount() {
+
+        if (SecurityContextHolder.getContext().getAuthentication() != null) {
+
+            final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (principal instanceof CustomerPrincipal) {
+
+                final CustomerPrincipal customerPrincipal = (CustomerPrincipal) principal;
+                Boolean isLogged = googleDriveService.isAuthenticatedToGoogle(customerPrincipal.getUsername());
+                if (isLogged == true) {
+                    return ResponseEntity.ok().build();
+                }
+            }
+        }
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
 }

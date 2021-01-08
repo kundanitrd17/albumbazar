@@ -15,8 +15,7 @@ public interface RazorPayPaymentService {
 
     RazorPayEntity getRazorPayEntityForNewOrder(OrderDetail orderDetail, Customer customer);
 
-    OrderDetail saveCredentialOnPaymentSuccess(String razorpayOrderId, String razorpayPaymentId,
-            String razorpaySignature);
+    void saveCredentialOnPaymentSuccess(String razorpayOrderId, String razorpayPaymentId, String razorpaySignature);
 
     List<PaymentDTORazorpay> getAllPayments() throws RazorpayException;
 

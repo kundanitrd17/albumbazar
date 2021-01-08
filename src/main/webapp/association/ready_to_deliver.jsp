@@ -133,9 +133,8 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                     <button class="btn btn-warning e-icon">Edit</button></td> -->
                                             <td>
                                                 <!-- <a class="btn btn-danger change-status-icon">${eachOrder.orderStatus}</a> -->
-                                                <button class="btn btn-warning"
-                                                    onclick="associationWorkCompleted('${eachOrder.id}')">Work
-                                                    Done</button>
+                                                <button onclick="sendForDelivery('${eachOrder.id}')"
+                                                    class="btn btn-danger">Send Delivery</button>
                                             </td>
                                         </tr>
 
@@ -303,10 +302,40 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
             </div>
 
             <script type="text/javascript" src="http://localhost:8080/customercare/js/data-table.js"></script>
-            <script type="text/javascript"
-                src="http://localhost:8080/association/js/under_process_association.js"></script>
 
             <script type="text/javascript">
+
+
+                function sendForDelivery(order_id) {
+                    const xhr = new XMLHttpRequest();
+
+                    const url = "http://localhost:8080/api/secured/association/order/deliver";
+                    xhr.open('PUT', url, true);
+
+                    var header = $("meta[name='_csrf_header']").attr("content");
+                    var token = $("meta[name='_csrf']").attr("content");
+
+                    xhr.setRequestHeader('Content-type', 'application/json');
+                    xhr.setRequestHeader(header, token);
+
+
+                    xhr.onreadystatechange = function () {
+                        if (this.readyState === 4 && this.status === 200) {
+                            console.log("done");
+                            document.getElementById("orderRow" + order_id).remove();
+                        }
+                    }
+
+                    if (order_id == null) {
+                        return false;
+                    }
+
+                    xhr.send(JSON.stringify(order_id));
+
+                }
+
+
+
 
                 var token = $("meta[name='_csrf']").attr("content");
                 var header = $("meta[name='_csrf_header']").attr("content");

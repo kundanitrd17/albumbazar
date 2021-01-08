@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
+import com.albumbazaar.albumbazar.model.Association;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -27,10 +28,13 @@ public interface OrderRepository extends JpaRepository<OrderDetail, Long> {
 
     Optional<OrderDetail> findByRazorpayPaymentId(String razorpayPaymentId);
 
+    @Query(value = "SELECT * FROM order_detail WHERE is_forwarded_to_association = true AND association_id = ?1 AND has_association_accepted = ?2", nativeQuery = true)
     List<OrderDetail> findAllByAssociationIdAndHasAssociationAccepted(Long associationId, boolean status);
 
     List<OrderDetail> findAllByAssociationIdAndOrderStatus(Long associationId, String orderStatus);
 
-    @Query(value = "SELECT * FROM order_detail WHERE association_id = ?1 AND has_association_accepted = true AND order_status not in ('pending', 'completed')", nativeQuery = true)
+    @Query(value = "SELECT * FROM order_detail WHERE association_id = ?1 AND has_association_accepted = true AND order_status not in ('READY_TO_DELIVER', 'DELIVER', 'UNDER_DELIVERY', 'DELIVERED', 'COMPLETED')", nativeQuery = true)
     List<OrderDetail> findAllUnderProcessByAssociationId(Long associationId);
+
+    List<OrderDetail> findAllByAssociationAndOrderStatus(Association association, String orderStatus);
 }

@@ -207,23 +207,4 @@ public final class HomeController {
 
     }
 
-    @GetMapping(value = { "/api/secured/customer/is-google-auth-allowed" })
-    @ResponseBody
-    public ResponseEntity<?> isSignedInToGoogleAccount() {
-        System.out.println("here");
-        if (SecurityContextHolder.getContext().getAuthentication() != null) {
-            System.out.println("here1");
-            final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            if (principal instanceof CustomerPrincipal) {
-                System.out.println("impossinle");
-                final CustomerPrincipal customerPrincipal = (CustomerPrincipal) principal;
-                Boolean isLogged = googleDriveService.isAuthenticatedToGoogle(customerPrincipal.getUsername());
-                if (isLogged == true) {
-                    return ResponseEntity.ok().build();
-                }
-            }
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-
 }

@@ -1,12 +1,19 @@
 package com.albumbazaar.albumbazar.services;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
+import com.albumbazaar.albumbazar.dto.SheetDetailDTO;
 import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
 import com.albumbazaar.albumbazar.form.order.OrderDetailFormDTO;
+import com.albumbazaar.albumbazar.model.AddressEntity;
+import com.albumbazaar.albumbazar.model.Association;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
+
+import org.json.JSONObject;
 
 public interface OrderService {
 
@@ -109,5 +116,13 @@ public interface OrderService {
     List<OrderDetail> getCompletedOrdersWithAssociationId(Long associationId);
 
     List<OrderDetail> getUnderProcessOrdersWithAssociationId(final Long associationId);
+
+    void updateHasAssociationAccepted(Long orderId, boolean status);
+
+    List<OrderDetail> getOrdersWithAssociationAndStatus(Association association, OrderDetailStatus readyToDeliver);
+
+    List<SheetDetailDTO> getSheetDetails(Long orderId);
+
+    AddressEntity getDeliveryAddress(Long orderId);
 
 }

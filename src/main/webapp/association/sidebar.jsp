@@ -77,7 +77,7 @@
     };
 </script>
 <aside class="side-nav" id="show-side-navigation1">
-    <i class="fa fa-bars close-aside hidden-sm hidden-md hidden-lg" data-close="show-side-navigation1"></i>
+    <!-- <i class="fa fa-bars close-aside hidden-sm hidden-md hidden-lg" data-close="show-side-navigation1"></i> -->
     <div class="heading row">
         <img id="associationProfilePhoto"
             src="https://uniim1.shutterfly.com/ng/services/mediarender/THISLIFE/021036514417/media/23148907008/medium/1501685726/enhance"
@@ -106,6 +106,7 @@
             <ul class="side-nav-dropdown">
                 <li><a href="/association/order-list/new-arrived-order">Newly Arrived Orders</a></li>
                 <li><a href="/association/order-list/processing">Order Under Process</a></li>
+                <li><a href="/association/order-list/ready-to-deliver">Ready to Deliver</a></li>
                 <li><a href="/association/order-list/completed">Completed Order</a></li>
             </ul>
         </li>
