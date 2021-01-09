@@ -220,7 +220,7 @@
 
                           <tr>
                             <td colspan="4">
-                              <textarea cols="60" rows="5" placeholder="description"></textarea>
+                              <textarea name="description" cols="60" rows="5" placeholder="description"></textarea>
                             </td>
                           </tr>
                         </tfoot>

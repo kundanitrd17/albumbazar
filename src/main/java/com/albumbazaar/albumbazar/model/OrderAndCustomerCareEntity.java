@@ -24,7 +24,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(name = "order_associated_customer_care", uniqueConstraints = { @UniqueConstraint(columnNames = { "order_id" }) })
+@Table(name = "order_associated_customer_care")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OrderAndCustomerCareEntity {
 

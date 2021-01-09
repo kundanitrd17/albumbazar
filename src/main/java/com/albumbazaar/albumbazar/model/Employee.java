@@ -96,7 +96,7 @@ public class Employee {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
-    private Address1 address;
+    private AddressEntity address;
 
     @PrePersist
     void prePersist() {
@@ -298,11 +298,11 @@ public class Employee {
         this.branch = branch;
     }
 
-    public Address1 getAddress() {
+    public AddressEntity getAddress() {
         return address;
     }
 
-    public void setAddress(Address1 address) {
+    public void setAddress(AddressEntity address) {
         this.address = address;
     }
 

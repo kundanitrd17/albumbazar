@@ -19,7 +19,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
+@Getter
+@Setter
 @Table(name = "branch", uniqueConstraints = { @UniqueConstraint(columnNames = "name"),
         @UniqueConstraint(columnNames = "contact_no"), @UniqueConstraint(columnNames = "address_id") })
 @JsonIgnoreProperties(value = { "admin", "address" }, ignoreUnknown = true)
@@ -38,7 +43,7 @@ public class Branch {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
-    private Address1 address;
+    private AddressEntity address;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "admin_id")
@@ -95,26 +100,5 @@ public class Branch {
         this.active = active;
     }
 
-    @Override
-    public String toString() {
-        return "Branch [active=" + active + ", contactNo=" + contactNo + ", date=" + date + ", id=" + id + ", name="
-                + name + "]";
-    }
-
-    public Address1 getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address1 address) {
-        this.address = address;
-    }
-
-    public Employee getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(Employee admin) {
-        this.admin = admin;
-    }
-
+   
 }

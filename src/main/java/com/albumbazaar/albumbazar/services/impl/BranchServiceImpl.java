@@ -6,15 +6,11 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import com.albumbazaar.albumbazar.dao.Address1Repository;
-import com.albumbazaar.albumbazar.dao.Address2Repository;
 import com.albumbazaar.albumbazar.dao.BranchRepository;
 import com.albumbazaar.albumbazar.dao.EmployeeRepository;
 import com.albumbazaar.albumbazar.dto.BranchDTO;
 import com.albumbazaar.albumbazar.form.BasicBranchInfoForm;
 import com.albumbazaar.albumbazar.form.LocationForm;
-import com.albumbazaar.albumbazar.model.Address1;
-import com.albumbazaar.albumbazar.model.Address2;
 import com.albumbazaar.albumbazar.model.Branch;
 import com.albumbazaar.albumbazar.model.Employee;
 import com.albumbazaar.albumbazar.services.BranchService;
@@ -32,29 +28,18 @@ public class BranchServiceImpl implements BranchService {
     private final Logger logger = LoggerFactory.getLogger(BranchServiceImpl.class);
 
     final BranchRepository branchRepository;
-    final Address1Repository address1Repository;
-    final Address2Repository address2Repository;
     final EmployeeRepository employeeRepository;
 
-    public BranchServiceImpl(final BranchRepository branchRepository, final Address1Repository address1Repository,
-            final EmployeeRepository employeeRepository, final Address2Repository address2Repository) {
+    public BranchServiceImpl(final BranchRepository branchRepository,
+            final EmployeeRepository employeeRepository) {
         this.branchRepository = branchRepository;
-        this.address1Repository = address1Repository;
-        this.address2Repository = address2Repository;
         this.employeeRepository = employeeRepository;
     }
 
     @Override
     public boolean addBranch(final BasicBranchInfoForm branchInfo, final LocationForm locationDetails) {
         try {
-            // working on the address2 creation (pin address)
-            final Address2 address2 = new Address2(locationDetails); // creating the address2 model
-            address2Repository.save(address2); // saving the model
-
-            // Working on the address1 creation (street address)
-            final Address1 address1 = new Address1(locationDetails); // creating the address1 model
-            address1.setAddress2(address2); // mapping the address2 to address1
-            address1Repository.save(address1); // saving address1
+    
 
             // Setting the admin for this branch
             Employee admin;
@@ -67,7 +52,7 @@ public class BranchServiceImpl implements BranchService {
             // Working on the branch creation
             final Branch branch = new Branch(branchInfo); // creating the branch model
             branch.setAdmin(admin); // mapping to the admin employee
-            branch.setAddress(address1); // mapping the address column to the address1
+            // branch.setAddress(address1); // mapping the address column to the address1
             branchRepository.save(branch); // saving the branch
 
         } catch (Exception e) {

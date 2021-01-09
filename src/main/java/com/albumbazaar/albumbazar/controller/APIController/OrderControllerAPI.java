@@ -7,11 +7,17 @@ import java.util.NoSuchElementException;
 
 import javax.validation.Valid;
 
+import com.albumbazaar.albumbazar.Mapper.AddressMapper;
+import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
+import com.albumbazaar.albumbazar.dto.ProductDetailDTO;
 import com.albumbazaar.albumbazar.dto.SheetDetailDTO;
+import com.albumbazaar.albumbazar.form.order.OrderDetailFormDTO;
+import com.albumbazaar.albumbazar.model.AddressEntity;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
+import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
 import com.albumbazaar.albumbazar.services.GoogleDriveService;
 import com.albumbazaar.albumbazar.services.OrderService;
 
@@ -25,11 +31,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
@@ -42,6 +50,9 @@ public class OrderControllerAPI {
 
     private final OrderService orderService;
     private final GoogleDriveService googleDriveService;
+
+    @Autowired(required = true)
+    AddressMapper addressMapper;
 
     @Autowired(required = true)
     protected OrderControllerAPI(@Qualifier("orderService") final OrderService orderService,
@@ -96,24 +107,29 @@ public class OrderControllerAPI {
     public ResponseEntity<?> createGoogleDriveFolderAndSaveId(
             @PathVariable(name = "order_id") OrderDetail orderDetail) {
 
-        System.out.println(orderDetail);
         try {
+            String USER_IDENTIFICATION_KEY = new String();
             final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (principal instanceof CustomerPrincipal) {
                 final CustomerPrincipal customerPrincipal = (CustomerPrincipal) principal;
-
-                googleDriveService.createFolderAndMakePublic("folderName", customerPrincipal.getUsername(),
-                        orderDetail);
+                USER_IDENTIFICATION_KEY = customerPrincipal.getUsername();
+            } else if (principal instanceof EmployeePrincipal) {
+                final EmployeePrincipal employeePrincipal = (EmployeePrincipal) principal;
+                USER_IDENTIFICATION_KEY = employeePrincipal.getUsername();
+            } else {
+                throw new RuntimeException();
             }
+            googleDriveService.createFolderAndMakePublic("folderName", USER_IDENTIFICATION_KEY, orderDetail);
+
+            return ResponseEntity.ok().build();
+
         } catch (Exception e) {
             logger.error(e.getMessage());
-
-            final ErrorDTO error = new ErrorDTO();
-            error.setMessage("unable to create folder... try again");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
         }
 
-        return ResponseEntity.ok().body("body");
+        final ErrorDTO error = new ErrorDTO();
+        error.setMessage("unable to create folder... try again");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
 
     }
 
@@ -122,25 +138,33 @@ public class OrderControllerAPI {
             @RequestPart("files") List<MultipartFile> files) {
 
         try {
+
             files.forEach(e -> logger.info(e.getOriginalFilename()));
 
+            String USER_IDENTIFICATION_KEY = new String();
             final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             if (principal instanceof CustomerPrincipal) {
                 final CustomerPrincipal customerPrincipal = (CustomerPrincipal) principal;
-                googleDriveService.uploadToGoogleDrive(files, orderInfo.getPhotoFolderGoogleDriveId(),
-                        customerPrincipal.getUsername());
+                USER_IDENTIFICATION_KEY = customerPrincipal.getUsername();
+            } else if (principal instanceof EmployeePrincipal) {
+                final EmployeePrincipal employeePrincipal = (EmployeePrincipal) principal;
+                USER_IDENTIFICATION_KEY = employeePrincipal.getUsername();
+            } else {
+                throw new RuntimeException();
             }
+
+            googleDriveService.uploadToGoogleDrive(files, orderInfo.getPhotoFolderGoogleDriveId(),
+                    USER_IDENTIFICATION_KEY);
+
+            return ResponseEntity.ok().build();
 
         } catch (IOException e) {
             logger.error(e.getMessage());
-            return ResponseEntity.badRequest().body("Unable to process request");
+            return ResponseEntity.badRequest().body("Unable to Upload Files...!");
         } catch (Exception e) {
             logger.error(e.getMessage());
-
-            return ResponseEntity.notFound().build();
         }
-
-        return ResponseEntity.ok().body("body");
+        return ResponseEntity.notFound().build();
     }
 
     @GetMapping(value = "/secured/order/{order_id}/sheet/details")
@@ -159,16 +183,56 @@ public class OrderControllerAPI {
         return ResponseEntity.badRequest().build();
     }
 
+    @GetMapping(value = "/secured/order/{order_id}/product/details")
+    public ResponseEntity<?> getProductDetail(@PathVariable("order_id") final Long orderId) {
+
+        try {
+            final ProductDetailDTO productDetailDTO = orderService.getProductInfo(orderId);
+
+            return ResponseEntity.ok().body(productDetailDTO);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
     @GetMapping(value = "/secured/order/{order_id}/delivery/address")
     public ResponseEntity<?> getOrderDeliveryAddress(@PathVariable("order_id") final Long orderId) {
 
         try {
-            return ResponseEntity.ok().body(orderService.getDeliveryAddress(orderId));
+            final AddressEntity addressEntity = orderService.getDeliveryAddress(orderId);
+            return ResponseEntity.ok().body(addressEntity);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
 
         return ResponseEntity.badRequest().build();
+    }
+
+    @PutMapping(value = "/secured/order/forward/association")
+    public ResponseEntity<?> forwardOrderToAssociation(@RequestBody final long orderId) {
+
+        try {
+            orderService.forwardToAssociation(orderId);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).build();
+        }
+
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(value = "/secured/order/create")
+    public ResponseEntity<?> createNewOrder(OrderDetailFormDTO orderDetailFormDTO) {
+
+        logger.info(orderDetailFormDTO.toString());
+        try {
+            final OrderDetail createdOrder = orderService.createOrderByBranchOrAdmin(orderDetailFormDTO);
+            return ResponseEntity.ok().body(createdOrder);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return ResponseEntity.badRequest().body("Unable to create Order... Please check details");
 
     }
 

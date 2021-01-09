@@ -4,9 +4,13 @@ import java.util.List;
 
 import com.albumbazaar.albumbazar.dao.ExpenseRepository;
 import com.albumbazaar.albumbazar.dao.IncomeRepository;
+import com.albumbazaar.albumbazar.dto.OrderBillDTO;
+import com.albumbazaar.albumbazar.dto.SheetDetailDTO;
 import com.albumbazaar.albumbazar.model.Expense;
 import com.albumbazaar.albumbazar.model.Income;
 import com.albumbazaar.albumbazar.model.OrderDetail;
+import com.albumbazaar.albumbazar.services.OrderService;
+import com.albumbazaar.albumbazar.services.ProductService;
 import com.albumbazaar.albumbazar.services.RazorPayPaymentService;
 import com.albumbazaar.albumbazar.services.TransactionService;
 import com.albumbazaar.albumbazar.utilities.PaymentDTORazorpay;
@@ -25,11 +29,18 @@ public class TransactionServiceImpl implements TransactionService {
 
     private final RazorPayPaymentService razorPayPaymentService;
 
+    private final OrderService orderService;
+    private final ProductService productService;
+
     public TransactionServiceImpl(final IncomeRepository incomeRepository, final ExpenseRepository expenseRepository,
-            @Qualifier("razorPayPaymentService") final RazorPayPaymentService razorPayPaymentService) {
+            @Qualifier("razorPayPaymentService") final RazorPayPaymentService razorPayPaymentService,
+            @Qualifier("orderService") final OrderService orderService, 
+            @Qualifier("productService")final ProductService productService){
         this.expenseRepository = expenseRepository;
         this.incomeRepository = incomeRepository;
         this.razorPayPaymentService = razorPayPaymentService;
+        this.orderService = orderService;
+        this.productService = productService;
     }
 
     @Override
@@ -59,11 +70,12 @@ public class TransactionServiceImpl implements TransactionService {
     @Transactional
     public void addNewIncome(final OrderDetail orderDetail) {
         final Income income = new Income();
-        income.setAmount(orderDetail.getTotalAmount());
+        income.setAmount(orderDetail.getOrderBill().getAmountToPay());
         income.setOrder(orderDetail);
 
         incomeRepository.save(income);
 
     }
+
 
 }

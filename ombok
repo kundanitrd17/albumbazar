@@ -23,8 +23,8 @@
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD FAILURE
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  18.354 s
-[INFO] Finished at: 2021-01-08T00:54:24+05:30
+[INFO] Total time:  6.264 s
+[INFO] Finished at: 2021-01-08T10:27:58+05:30
 [INFO] ------------------------------------------------------------------------
 [ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:compile (default-compile) on project albumbazar: Compilation failure
 [ERROR] /C:/dev/projects/AlbumBazaar/backend/albumbazar/src/main/java/com/albumbazaar/albumbazar/Mapper/CustomerMapper.java:[15,35] Unknown property "password" in result type CustomerDTO. Did you mean "null"?

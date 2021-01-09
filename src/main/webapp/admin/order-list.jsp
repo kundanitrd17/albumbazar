@@ -108,8 +108,8 @@
                       <td>${order_detail.coverName}</td>
                       <td>${order_detail.orientation}</td>
                       <td>${order_detail.orderTime}</td>
-                      <td>${order_detail.discount}</td>
-                      <td>${order_detail.totalAmount}</td>
+                      <td>${order_detail.orderBill.discount}</td>
+                      <td>${order_detail.orderBill.totalAmount}</td>
                       <td><button class="btn btn-success">${order_detail.orderStatus}</button></td>
 
                     </tr>

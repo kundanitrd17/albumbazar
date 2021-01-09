@@ -3,26 +3,32 @@ package com.albumbazaar.albumbazar.services.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import javax.validation.Valid;
+
+import com.albumbazaar.albumbazar.Mapper.AddressMapper;
+import com.albumbazaar.albumbazar.Mapper.CoverMapper;
+import com.albumbazaar.albumbazar.dao.AddressRepository;
 import com.albumbazaar.albumbazar.dao.OrderAndCustomerCareRepository;
 import com.albumbazaar.albumbazar.dao.OrderRepository;
-import com.albumbazaar.albumbazar.dao.PaperRepository;
 import com.albumbazaar.albumbazar.dao.SheetDetailRepository;
 import com.albumbazaar.albumbazar.dto.AddressDTO;
+import com.albumbazaar.albumbazar.dto.OrderBillDTO;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
+import com.albumbazaar.albumbazar.dto.ProductDetailDTO;
 import com.albumbazaar.albumbazar.dto.SheetDetailDTO;
 import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
 import com.albumbazaar.albumbazar.form.order.OrderDetailFormDTO;
 import com.albumbazaar.albumbazar.model.AddressEntity;
 import com.albumbazaar.albumbazar.model.Association;
+import com.albumbazaar.albumbazar.model.Cover;
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.OrderAndCustomerCareEntity;
+import com.albumbazaar.albumbazar.model.OrderBillEmbeddable;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 import com.albumbazaar.albumbazar.model.Paper;
@@ -39,7 +45,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -53,18 +58,29 @@ public class OrderServiceImpl implements OrderService {
     private final SheetDetailRepository sheetDetailRepository;
     private final OrderAndCustomerCareRepository orderAndCustomerCareRepository;
     private final ProductService productService;
+    private final AddressRepository addressRepository;
     private final ApplicationContext context;
 
     @Autowired
     public OrderServiceImpl(final OrderRepository orderRepository, final SheetDetailRepository sheetDetailRepository,
             final OrderAndCustomerCareRepository orderAndCustomerCareRepository,
-            @Qualifier("productService") final ProductService productService, final ApplicationContext context) {
+            @Qualifier("productService") final ProductService productService, final AddressRepository addressRepository,
+            final ApplicationContext context) {
 
         this.context = context;
         this.orderAndCustomerCareRepository = orderAndCustomerCareRepository;
         this.orderRepository = orderRepository;
         this.sheetDetailRepository = sheetDetailRepository;
         this.productService = productService;
+        this.addressRepository = addressRepository;
+    }
+
+    @Override
+    public OrderDetail createOrderByBranchOrAdmin(OrderDetailFormDTO orderDetailFormDTO) {
+
+        final OrderDetail orderDetail = this.createNewOrder(orderDetailFormDTO, orderDetailFormDTO.getCustomerId());
+
+        return orderDetail;
 
     }
 
@@ -79,10 +95,12 @@ public class OrderServiceImpl implements OrderService {
         orderDetail.setAssociationName(orderDetailFormDTO.getAssociationName());
         orderDetail.setAssociation(association);
 
-        orderDetail.setCover(productService.getCoverEntity(orderDetailFormDTO.getCoverId()));
+        // Calculating total amount of the order
+        float totalAmount = 0f;
 
-        final CustomerService customerService = context.getBean(CustomerService.class);
-        orderDetail.setCustomer(customerService.getCustomer(customerId));
+        final Cover cover = productService.getCoverEntity(orderDetailFormDTO.getCoverId());
+        totalAmount += cover.getCoverPrice();
+        orderDetail.setCover(cover);
 
         orderDetail.setDescription(orderDetailFormDTO.getDescription());
         orderDetail.setOrientation(orderDetailFormDTO.getOrientation());
@@ -92,24 +110,40 @@ public class OrderServiceImpl implements OrderService {
         final JSONArray paperAndNumberOfPaperDetailList = new JSONArray();
         int length = orderDetailFormDTO.getPaperId().length;
         for (int index = 0; index < length; index++) {
-            try {
-                final JSONObject paperIdAndNumberOfSheet = new JSONObject();
 
-                final Long paperId = orderDetailFormDTO.getPaperId()[index];
+            final JSONObject paperIdAndNumberOfSheet = new JSONObject();
 
-                final Paper paper = productService.getPaperEntity(paperId);
+            System.out.println("paper: " + orderDetailFormDTO.getPaperId()[index] + "\nsheets: "
+                    + orderDetailFormDTO.getNumberOfSheet()[index]);
 
-                paperIdAndNumberOfSheet.put("paper_id", paper.getId());
-                paperIdAndNumberOfSheet.put("sheets", orderDetailFormDTO.getNumberOfSheet()[index]);
+            final Long paperId = orderDetailFormDTO.getPaperId()[index];
 
-                paperAndNumberOfPaperDetailList.put(paperIdAndNumberOfSheet);
+            final Paper paper = productService.getPaperEntity(paperId);
 
-            } catch (Exception e) {
-                logger.info(e.getMessage());
-            }
+            paperIdAndNumberOfSheet.put("paper_id", paper.getId());
+            paperIdAndNumberOfSheet.put("sheets", orderDetailFormDTO.getNumberOfSheet()[index]);
+
+            paperAndNumberOfPaperDetailList.put(paperIdAndNumberOfSheet);
+
+            totalAmount += paper.getPaperPrice() * Math.abs(orderDetailFormDTO.getNumberOfSheet()[index]);
+
         }
 
         orderDetail.setPaperDetailsWithNumberOfSheetsList(paperAndNumberOfPaperDetailList.toString());
+
+        final CustomerService customerService = context.getBean(CustomerService.class);
+        final Customer customer = customerService.getCustomer(customerId);
+
+        // Creating the object for OrderBillEmbeddable to return
+        final OrderBillEmbeddable orderBill = new OrderBillEmbeddable();
+        orderBill.setTotalAmount(totalAmount);
+        orderBill.setDiscount(customer.getDiscount());
+        orderBill.setWallet(customer.getWallet());
+        orderBill.setAmountToPay(orderBill.getTotalAmount() - orderBill.getDiscount() - orderBill.getWallet());
+
+        orderDetail.setOrderBill(orderBill);
+
+        orderDetail.setCustomer(customer);
 
         return orderRepository.save(orderDetail);
 
@@ -296,6 +330,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<OrderDetail> getOrdersWithAssociationAndStatus(Association association,
             OrderDetailStatus readyToDeliver) {
 
@@ -306,12 +341,20 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<SheetDetailDTO> getSheetDetails(Long orderId) {
         // Get Order Detail
-        final OrderDetail order = this.getOrder(orderId);
+        final OrderDetail orderDetail = this.getOrder(orderId);
+
+        return this.getActualSheetDetailInfo(orderDetail);
+
+    }
+
+    @Transactional(readOnly = true)
+    private List<SheetDetailDTO> getActualSheetDetailInfo(final OrderDetail orderDetail) {
 
         // List of sheet detail DTO
         final List<SheetDetailDTO> sheetDetailDTOs = new ArrayList<>();
+
         // Fetching array from order Entity
-        final JSONArray sheetDetailArray = new JSONArray(order.getPaperDetailsWithNumberOfSheetsList());
+        final JSONArray sheetDetailArray = new JSONArray(orderDetail.getPaperDetailsWithNumberOfSheetsList());
 
         for (int index = 0; index < sheetDetailArray.length(); ++index) {
             final JSONObject eachSheetInfo = new JSONObject(sheetDetailArray.get(index).toString());
@@ -325,23 +368,86 @@ public class OrderServiceImpl implements OrderService {
             sheetDetail.setPaperId(paper.getId());
             sheetDetail.setPaperName(paper.getPaperQuality());
             sheetDetail.setPaperSize(paper.getPaperSize());
+            sheetDetail.setPaperPrice(paper.getPaperPrice());
             sheetDetail.setSheets(sheetCount);
 
             sheetDetailDTOs.add(sheetDetail);
 
         }
 
-        // Creating a JSONObject with sheet info
-        final HashMap<String, Object> sheetDetails = new HashMap<>();
-        sheetDetails.put("data", sheetDetailDTOs);
         return sheetDetailDTOs;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public AddressEntity getDeliveryAddress(Long orderId) {
+        final OrderDetail order = this.getOrder(orderId);
+        return order.getDeliveryAddress();
+    }
+
+    @Override
+    @Transactional
+    public void forwardToAssociation(Long orderId) {
+
+        final OrderDetail order = this.getOrder(orderId);
+
+        if (order.getDeliveryAddress() == null) {
+            throw new RuntimeException("Delivery Address is Invalid to continue!");
+        }
+
+        order.setIsForwardedToAssociation(true);
 
     }
 
     @Override
-    public AddressEntity getDeliveryAddress(Long orderId) {
+    @Transactional(readOnly = true)
+    public ProductDetailDTO getProductInfo(Long orderId) {
+        final OrderDetail orderDetail = this.getOrder(orderId);
+
+        final ProductDetailDTO productDetailDTO = new ProductDetailDTO();
+
+        // Set sheet details infos
+        final List<SheetDetailDTO> sheetDetailDTOs = this.getActualSheetDetailInfo(orderDetail);
+        productDetailDTO.setSheet_detail_list(sheetDetailDTOs);
+
+        // Fetch cover info
+        final Cover cover = orderDetail.getCover();
+        productDetailDTO.setCover(context.getBean(CoverMapper.class).coverTCoverDTO(cover));
+
+        // Set other info's
+        productDetailDTO.setAssociation_name(orderDetail.getAssociation().getName());
+        productDetailDTO.setProduct_name(orderDetail.getProductName());
+        productDetailDTO.setProduct_size(orderDetail.getProductSize());
+
+        return productDetailDTO;
+    }
+
+    @Override
+    @Transactional
+    public void changeDeliveryAddress(final AddressDTO addressDTO, final Long EmployeeId) {
+        final AddressMapper addressMapper = context.getBean(AddressMapper.class);
+
+        final Long orderId = addressDTO.getOrderId();
         final OrderDetail order = this.getOrder(orderId);
-        return order.getDeliveryAddress();
+
+        final AddressEntity address = addressMapper.addressDTOToAddressEntity(addressDTO);
+
+        final AddressEntity savedAddressEntity = addressRepository.save(address);
+
+        order.setDeliveryAddress(savedAddressEntity);
+
+    }
+
+    @Override
+    @Transactional
+    public void changeOrderDescription(final Long orderId, final String description) {
+        if (description == null || description.isBlank()) {
+            throw new RuntimeException();
+        }
+
+        final OrderDetail order = this.getOrder(orderId);
+
+        order.setDescription(description);
     }
 
 }

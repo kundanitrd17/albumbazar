@@ -8,6 +8,7 @@ import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.RazorPayEntity;
 import com.albumbazaar.albumbazar.services.OrderService;
 import com.albumbazaar.albumbazar.services.RazorPayPaymentService;
+import com.albumbazaar.albumbazar.services.TransactionService;
 import com.razorpay.RazorpayException;
 import com.razorpay.Utils;
 
@@ -17,6 +18,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,12 +33,15 @@ public class TransactionControllerAPI {
 
     private final OrderService orderService;
     private final RazorPayPaymentService razorPayPaymentService;
+    private final TransactionService transactionService;
 
     @Autowired(required = true)
     protected TransactionControllerAPI(@Qualifier("orderService") final OrderService orderService,
-            @Qualifier("razorPayPaymentService") final RazorPayPaymentService razorPayPaymentService) {
+            @Qualifier("razorPayPaymentService") final RazorPayPaymentService razorPayPaymentService, 
+            @Qualifier("transactionService")final TransactionService transactionService) {
         this.orderService = orderService;
         this.razorPayPaymentService = razorPayPaymentService;
+        this.transactionService = transactionService;
     }
 
     @PostMapping(value = "secured/bill/paid")
@@ -111,5 +117,6 @@ public class TransactionControllerAPI {
         error.setMessage("unable to process bill try again");
         return ResponseEntity.badRequest().body(error);
     }
+
 
 }

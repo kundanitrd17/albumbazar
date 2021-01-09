@@ -58,42 +58,73 @@ public class SecurityConfig {
 
     }
 
-    // // /**
-    // // * Security configuration for authenticating Customer care endpoints
-    // // */
-    // @Configuration
-    // @Order(2)
-    // public static class CustomerCareSecurityConfig extends
-    // WebSecurityConfigurerAdapter {
+    // /**
+    // * Security configuration for authenticating Customer care endpoints
+    // */
+    @Configuration
+    @Order(2)
+    public static class CustomerCareSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    // // Even the customer care in an employee, thus we can access it using
-    // // customer-care service
-    // private final UserDetailsService employeeService;
+        // Even the customer care in an employee, thus we can access it using
+        // customer-care service
+        private final UserDetailsService employeeService;
 
-    // @Autowired
-    // protected CustomerCareSecurityConfig(
-    // @Qualifier("employeeService") final UserDetailsService userDetailsService) {
-    // this.employeeService = userDetailsService;
-    // }
+        @Autowired
+        protected CustomerCareSecurityConfig(
+                @Qualifier("employeeService") final UserDetailsService userDetailsService) {
+            this.employeeService = userDetailsService;
+        }
 
-    // @Override
-    // protected void configure(final AuthenticationManagerBuilder auth) throws
-    // Exception {
-    // auth.userDetailsService(employeeService);
-    // }
+        @Override
+        protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+            auth.userDetailsService(employeeService);
+        }
 
-    // @Override
-    // protected void configure(final HttpSecurity http) throws Exception {
-    // http.antMatcher("/customer-care/**").authorizeRequests().anyRequest()
-    // .hasAuthority(AvailableRoles.Code.CUSTOMER_CARE).and().formLogin().loginPage("/customer-care/login")
-    // .loginProcessingUrl("/customer-care/login").failureUrl("/customer-care/login?error=true")
-    // .defaultSuccessUrl("/customer-care").permitAll().and().logout().logoutUrl("/customer-care/logout")
-    // .logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID",
-    // "XSRF-TOKEN");
+        @Override
+        protected void configure(final HttpSecurity http) throws Exception {
+            http.antMatcher("/customer-care/**").authorizeRequests().anyRequest()
+                    .hasAnyAuthority(AvailableRoles.Code.CUSTOMER_CARE, AvailableRoles.Code.ADMIN).and().formLogin()
+                    .loginPage("/customer-care/login").loginProcessingUrl("/customer-care/login")
+                    .failureUrl("/customer-care/login?error=true").defaultSuccessUrl("/customer-care").permitAll().and()
+                    .logout().logoutUrl("/customer-care/logout").logoutSuccessUrl("/").invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID", "XSRF-TOKEN");
 
-    // }
+        }
 
-    // }
+    }
+
+    // /**
+    // * Security configuration for authenticating Customer care endpoints
+    // */
+    @Configuration
+    @Order(3)
+    public static class AdminSecurityConfig extends WebSecurityConfigurerAdapter {
+
+        // Even the customer care in an employee, thus we can access it using
+        // customer-care service
+        private final UserDetailsService employeeService;
+
+        @Autowired
+        protected AdminSecurityConfig(@Qualifier("employeeService") final UserDetailsService userDetailsService) {
+            this.employeeService = userDetailsService;
+        }
+
+        @Override
+        protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+            auth.userDetailsService(employeeService);
+        }
+
+        @Override
+        protected void configure(final HttpSecurity http) throws Exception {
+            http.antMatcher("/admin/**").authorizeRequests().anyRequest().hasAuthority(AvailableRoles.Code.ADMIN).and()
+                    .formLogin().loginPage("/admin/login").loginProcessingUrl("/admin/login")
+                    .failureUrl("/admin/login?error=true").defaultSuccessUrl("/admin").permitAll().and().logout()
+                    .logoutUrl("/admin/logout").logoutSuccessUrl("/admin").invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID", "XSRF-TOKEN");
+
+        }
+
+    }
 
     // /**
     // * Securing endpoints for the Delivery EndPoint
@@ -164,23 +195,22 @@ public class SecurityConfig {
 
     }
 
-    // /**
-    // * Securing Rest Endpoints
-    // */
-    // @Configuration
-    // @Order(5)
-    // public static class RestEndpointsSecurityConfig extends
-    // WebSecurityConfigurerAdapter {
+    /**
+     * Securing Rest Endpoints
+     */
+    @Configuration
+    @Order(5)
+    public static class RestEndpointsSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    // @Override
-    // protected void configure(HttpSecurity http) throws Exception {
-    // http.antMatcher("/api/secured/**").authorizeRequests().antMatchers("/api/secured/customer/**")
-    // .hasAuthority(AvailableRoles.Code.USER).antMatchers("/api/secured/customer-care/**")
-    // .hasAuthority(AvailableRoles.Code.CUSTOMER_CARE);
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+            http.antMatcher("/api/secured/**").authorizeRequests().antMatchers("/api/secured/customer/**")
+                    .hasAuthority(AvailableRoles.Code.USER).antMatchers("/api/secured/customer-care/**")
+                    .hasAuthority(AvailableRoles.Code.CUSTOMER_CARE);
 
-    // }
+        }
 
-    // }
+    }
 
     /**
      * Securing Remaining endpoints

@@ -9,5 +9,6 @@ public class SheetDetailDTO {
     private Integer sheets;
     private String paperName;
     private String paperSize;
+    private Float paperPrice;
 
 }

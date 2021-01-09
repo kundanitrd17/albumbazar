@@ -109,7 +109,11 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                             <td class="orderId" id="orderId${eachOrder.id}"
                                                 data-orderId="${eachOrder.id}">${eachOrder.id}</td>
 
-                                            <td id="OrderDescription"><button type="button" class="btn"
+                                                
+
+                                            <td id="OrderDescription">
+                                                
+                                                <button type="button" class="btn"
                                                     data-toggle="modal"
                                                     data-target="#DescriptionCard${eachOrder.id}">Show
                                                     Description</button>

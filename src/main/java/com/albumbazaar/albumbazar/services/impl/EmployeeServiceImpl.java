@@ -6,16 +6,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import com.albumbazaar.albumbazar.dao.Address1Repository;
-import com.albumbazaar.albumbazar.dao.Address2Repository;
 import com.albumbazaar.albumbazar.dao.EmployeeRepository;
-import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
 import com.albumbazaar.albumbazar.form.LocationForm;
 import com.albumbazaar.albumbazar.form.employee.BasicEmployeeDetailForm;
-import com.albumbazaar.albumbazar.model.Address1;
-import com.albumbazaar.albumbazar.model.Address2;
 import com.albumbazaar.albumbazar.model.AvailableRoles;
 import com.albumbazaar.albumbazar.model.Employee;
+import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
 import com.albumbazaar.albumbazar.services.EmployeeService;
 
 import org.slf4j.Logger;
@@ -35,15 +31,12 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
     private Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
     private final EmployeeRepository employeeRepository;
-    private final Address1Repository address1Repository;
-    private final Address2Repository address2Repository;
+
 
     @Autowired
-    public EmployeeServiceImpl(final EmployeeRepository employeeRepository, final Address1Repository address1Repository,
-            final Address2Repository address2Repository) {
+    public EmployeeServiceImpl(final EmployeeRepository employeeRepository) {
         this.employeeRepository = employeeRepository;
-        this.address1Repository = address1Repository;
-        this.address2Repository = address2Repository;
+        
     }
 
     @Override

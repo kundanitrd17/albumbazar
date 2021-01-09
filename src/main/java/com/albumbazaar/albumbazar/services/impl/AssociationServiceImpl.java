@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -123,10 +124,8 @@ public class AssociationServiceImpl implements AssociationService {
 
         final String saved_file_name = imageStorageService.store(photoFile, fileName);
 
-        System.out.println(saved_file_name);
-
         association.setProfilePhoto(saved_file_name);
-
+        
     }
 
     @Override

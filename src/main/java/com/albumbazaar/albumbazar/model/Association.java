@@ -75,10 +75,4 @@ public class Association {
         this.active = true;
     }
 
-    @Override
-    public String toString() {
-        return "Association [active=" + active + ", contact1=" + contact1 + ", contact2=" + contact2 + ", email="
-                + email + ", id=" + id + ", name=" + name + ", password=" + password + "]";
-    }
-
 }

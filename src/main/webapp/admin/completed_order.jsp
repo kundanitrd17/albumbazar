@@ -132,7 +132,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                             <td>${eachOrder.productName}</td>    
                                             <td >${eachOrder.associationName}</td>
                                             <td >${eachOrder.deliveryDate}</td>
-                                            <td >${eachOrder.totalAmount}</td>
+                                            <td >${eachOrder.orderBill.totalAmount}</td>
 
                                         </tr>
 

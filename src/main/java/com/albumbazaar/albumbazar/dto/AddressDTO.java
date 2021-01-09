@@ -4,13 +4,12 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-@Getter
-@Setter
+import lombok.Data;
+
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class AddressDTO {
 
     private Long id;
@@ -32,6 +31,7 @@ public class AddressDTO {
     @NotNull
     private String city;
     private String district;
+
     @NotNull
     @NotBlank
     @Size(min = 6, max = 6)
@@ -43,4 +43,6 @@ public class AddressDTO {
 
     private String cityCode;
     private String stateCode;
+
+    private Long orderId;
 }

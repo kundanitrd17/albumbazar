@@ -1,7 +1,5 @@
 package com.albumbazaar.albumbazar.form.order;
 
-import java.util.HashMap;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
@@ -25,5 +23,7 @@ public class OrderDetailFormDTO {
     private String description;
 
     private Long branchId;
+
+    private Long customerId;
 
 }

@@ -20,6 +20,7 @@ import com.albumbazaar.albumbazar.dao.TestingRepository;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
+import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
 import com.albumbazaar.albumbazar.services.CustomerService;
 import com.albumbazaar.albumbazar.services.GoogleDriveService;
 import com.albumbazaar.albumbazar.services.RazorPayPaymentService;
@@ -49,6 +50,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 import lombok.Data;
 
@@ -165,8 +167,9 @@ public final class HomeController {
     // Need to change this callback url later when I create a separate account for
     // this project itself
     @GetMapping(value = { "/Callback" })
+    public RedirectView saveGoogleDriveAuthorizationCode(HttpServletRequest request) throws Exception {
 
-    public String saveGoogleDriveAuthorizationCode(HttpServletRequest request) throws Exception {
+        final RedirectView redirectView = new RedirectView("/");
 
         // Object principal =
         // SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -175,25 +178,26 @@ public final class HomeController {
         // This user id has to taken from the SecurityContextHolder object after adding
         // spring security
         // Get Customer id from the pricipal objects
+
+        final String code = request.getParameter("code");
+        String USER_IDENTIFICATION_KEY = new String();
         final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        if (!(principal instanceof CustomerPrincipal)) {
-            logger.info("No Principal found");
-            return "redirect:/";
+        if (principal instanceof CustomerPrincipal) {
+            final CustomerPrincipal customerPrincipal = (CustomerPrincipal) principal;
+            USER_IDENTIFICATION_KEY = customerPrincipal.getUsername();            
+        } else if(principal instanceof EmployeePrincipal) {
+            final EmployeePrincipal employeePrincipal = (EmployeePrincipal) principal;
+            USER_IDENTIFICATION_KEY = employeePrincipal.getUsername();
+            redirectView.setUrl("/admin/new-order");
+        } else {
+            request.setAttribute("error", "Unable to Authenticate");
+            return redirectView;
         }
 
-        final CustomerPrincipal customerPrincipal = (CustomerPrincipal) principal;
+        googleDriveService.saveGoogleAuthorizationCode(code, USER_IDENTIFICATION_KEY);        
 
-        String userId = customerPrincipal.getUsername();
-        final String code = request.getParameter("code");
-
-        googleDriveService.saveGoogleAuthorizationCode(code, userId);
-
-        System.out.println("request object has---------------");
-        System.out.println(request.getRequestURL());
-        System.out.println(request.getRequestURI());
-
-        return "redirect:/";
+        return redirectView;
     }
 
     @GetMapping(value = { "/googlesignin" })

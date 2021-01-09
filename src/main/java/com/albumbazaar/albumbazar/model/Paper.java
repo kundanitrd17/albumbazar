@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "paper_quality", "paper_quality", "association_id" }))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "paper_quality", "paper_size", "association_id" }))
 @JsonIgnoreProperties(value = { "association" })
 public class Paper {
 

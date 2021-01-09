@@ -69,7 +69,7 @@ public class RazorPayPaymentServiceImpl implements RazorPayPaymentService {
         }
 
         JSONObject options = new JSONObject();
-        options.put("amount", order.getTotalAmount() * 100);
+        options.put("amount",order.getOrderBill().getAmountToPay()*100);
         options.put("currency", "INR");
         options.put("receipt", "txn_123456");
         options.put("payment_capture", 1);
@@ -86,7 +86,7 @@ public class RazorPayPaymentServiceImpl implements RazorPayPaymentService {
 
         RazorPayEntity razorPay = new RazorPayEntity();
 
-        razorPay.setApplicationFee(String.valueOf(orderDetail.getTotalAmount() * 100));
+        razorPay.setApplicationFee(String.valueOf(orderDetail.getOrderBill().getAmountToPay()*100));
         razorPay.setCustomerName(customer.getName());
         razorPay.setCustomerEmail(customer.getEmail());
         razorPay.setMerchantName("Merchant Name");

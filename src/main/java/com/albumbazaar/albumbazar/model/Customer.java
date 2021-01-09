@@ -44,6 +44,7 @@ public class Customer {
 
     private String referralCode;
 
+    @Column(columnDefinition = "float default 0.0")
     private Float wallet;
 
     @Column(columnDefinition = "boolean default true")

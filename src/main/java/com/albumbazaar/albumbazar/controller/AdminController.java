@@ -2,8 +2,12 @@ package com.albumbazaar.albumbazar.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
+import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
+import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
 import com.albumbazaar.albumbazar.services.CustomerCareEmployeeService;
 import com.albumbazaar.albumbazar.services.CustomerService;
@@ -14,14 +18,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import javax.security.sasl.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @RequestMapping(value = "/admin")
@@ -48,6 +56,41 @@ public final class AdminController {
     @GetMapping(value = "")
     public String adminView() {
         return "admin/admin_home";
+    }
+
+    @GetMapping(value = "/login")
+    public String adminLoginView() {
+
+        return "admin/admin_login_panel";
+    }
+
+    @PostMapping(value = "/order/address/change")
+    public RedirectView updateAddressOfCustomer(@Valid @ModelAttribute final AddressDTO addressDTO,
+            final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
+
+        final RedirectView redirectView = new RedirectView("/admin/order/accepted");
+        if (bindingResult.hasErrors()) {
+            logger.error("Invalid Address information");
+            redirectAttributes.addAttribute("error", "Invalid Data");
+            return redirectView;
+        }
+
+        try {
+
+            System.out.println(addressDTO);
+
+            // Get Customer id from the pricipal objects
+            final EmployeePrincipal principal = (EmployeePrincipal) SecurityContextHolder.getContext()
+                    .getAuthentication().getPrincipal();
+
+            orderService.changeDeliveryAddress(addressDTO, principal.getId());
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            redirectAttributes.addAttribute("error", true);
+        }
+
+        return redirectView;
     }
 
     // Orders endpoints for superuser
@@ -205,6 +248,14 @@ public final class AdminController {
 
         return modelAndView;
 
+    }
+
+    @GetMapping(value = "/new-order")
+    public ModelAndView createNewOrderView() {
+
+        final ModelAndView modelAndView = new ModelAndView("admin/create_order");
+
+        return modelAndView;
     }
 
 }

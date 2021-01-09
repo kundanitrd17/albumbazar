@@ -4,7 +4,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.validation.Valid;
+
+import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
+import com.albumbazaar.albumbazar.dto.ProductDetailDTO;
 import com.albumbazaar.albumbazar.dto.SheetDetailDTO;
 import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
 import com.albumbazaar.albumbazar.form.order.OrderDetailFormDTO;
@@ -124,5 +128,15 @@ public interface OrderService {
     List<SheetDetailDTO> getSheetDetails(Long orderId);
 
     AddressEntity getDeliveryAddress(Long orderId);
+
+    void forwardToAssociation(Long orderId);
+
+    ProductDetailDTO getProductInfo(Long orderId);
+
+    OrderDetail createOrderByBranchOrAdmin(OrderDetailFormDTO orderDetailFormDTO);
+
+    void changeDeliveryAddress(@Valid AddressDTO addressDTO, Long EmployeeId);
+
+    void changeOrderDescription(Long orderId, String description);
 
 }

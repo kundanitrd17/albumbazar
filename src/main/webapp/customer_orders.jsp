@@ -83,10 +83,10 @@
 
                                         <div class="flex-sm-column" style="padding: 20px; margin: auto;">
                                             <li class="nav-item" style="color: red;">
-                                                <strong>Total: ${eachOrder.totalAmount}</strong>
+                                                <strong>Total: ${eachOrder.orderBill.totalAmount}</strong>
                                             </li>
                                             <li class="nav-item">
-                                                <strike>Discount: ${eachOrder.discount}</strike>
+                                                <strike>Discount: ${eachOrder.orderBill.discount}</strike>
                                             </li>
                                             <li class="nav-item">
                                                 <strong>Delivery: 9000</strong>

@@ -41,12 +41,16 @@ public class AssociationControllerAPI {
 
     @GetMapping("secured/association/dp")
     public ResponseEntity<?> associationProfilePhoto() {
-        String photo = MvcUriComponentsBuilder
-                .fromMethodName(FileUploadController.class, "serveFile", imageStorageService
-                        .load(associationService.getAssociation(1l).getProfilePhoto()).getFileName().toString())
-                .build().toUri().toString();
 
-        return ResponseEntity.ok(photo);
+        String image = associationService.getAssociation(1l).getProfilePhoto();
+
+        if (image != null && !image.isBlank()) {
+            String photo = MvcUriComponentsBuilder.fromMethodName(FileUploadController.class, "serveFile",
+                    imageStorageService.load(image).getFileName().toString()).build().toUri().toString();
+
+            return ResponseEntity.ok(photo);
+        }
+        return ResponseEntity.notFound().build();
 
     }
 

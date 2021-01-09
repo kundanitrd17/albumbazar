@@ -3,7 +3,8 @@
 function checkGoogleAuth() {
 
     const xhr = new XMLHttpRequest();
-    const url = "http://localhost:8080/api/secured/customer/is-google-auth-allowed";
+    const url = "http://localhost:8080/api/admin/is-google-auth-allowed";
+
     xhr.open('GET', url, true);
 
     xhr.onreadystatechange = function () {
@@ -21,6 +22,7 @@ function checkGoogleAuth() {
             document.querySelectorAll('.caption').forEach(parent => {
                 console.log("adding");
                 var signinBtn = document.createElement('a');
+                // signinBtn.target = "_blank";
                 signinBtn.type = "button";
                 signinBtn.className = "btn btn-info button";
                 signinBtn.href = "/googlesignin";
@@ -43,9 +45,6 @@ function checkGoogleAuth() {
 }
 
 
-
-
-
 // Controlling orders 
 // State management variables
 var allSizes = [];
@@ -61,9 +60,6 @@ var availableCovers = []
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    $('.carousel').carousel({
-        interval: 5000
-    })
 
     loadAssociationPriceView();
 
@@ -277,27 +273,16 @@ $(document).on("click", ".delete-row", function () {
     return false;
 });
 
-// copy to clipboard
-document.getElementById('ButtonToCopyReferralCode').addEventListener('click', event => {
-    let element = document.getElementById("customer_referral_code");
-    var range, selection, worked;
 
-    if (document.body.createTextRange) {
-        range = document.body.createTextRange();
-        range.moveToElementText(element);
-        range.select();
-    } else if (window.getSelection) {
-        selection = window.getSelection();
-        range = document.createRange();
-        range.selectNodeContents(element);
-        selection.removeAllRanges();
-        selection.addRange(range);
-    }
-    document.execCommand('copy');
 
-    console.log("copied");
 
-});
+
+
+
+
+
+
+// Loading menu
 
 
 

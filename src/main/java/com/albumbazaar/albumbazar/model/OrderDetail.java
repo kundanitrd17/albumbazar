@@ -45,10 +45,6 @@ public class OrderDetail {
 
     private String razorPaySignature;
 
-    private Float totalAmount;
-
-    private Float discount;
-
     // Product details
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -76,6 +72,9 @@ public class OrderDetail {
     private Cover cover;
 
     // End of product details
+
+    @Embedded
+    private OrderBillEmbeddable orderBill;
 
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
@@ -123,7 +122,6 @@ public class OrderDetail {
     public void prePersist() {
         this.orderStatus = OrderDetailStatus.PENDING.toString();
         this.paymentStatus = false;
-        this.totalAmount = 1f;
         this.hasAssociationAccepted = false;
         this.isForwardedToAssociation = false;
     }
@@ -136,7 +134,6 @@ public class OrderDetail {
         this.coverName = orderDetails.getCoverQuality();
         this.productName = orderDetails.getAlbumType();
         this.productSize = orderDetails.getAlbumSize();
-        this.description = orderDetails.getDescription();
         if (orderDetails.getBranchId() != null) {
             try {
                 this.branchId = Long.parseLong(orderDetails.getBranchId());
@@ -146,6 +143,36 @@ public class OrderDetail {
 
         }
         // this.coverPrice = Float.parseFloat(orderDetails.getCoverPrice());
+    }
+
+    public void setDescription(final String description) {
+        if (description == null || description.isBlank()) {
+            return;
+        }
+
+        // remove all '"' double quotes before a string so that it can be easily
+        // inserted in a value tag
+        int startCopyingPosition = 0, endCopyingPosition = description.length();
+
+        for (int index = 0; index < description.length(); ++index) {
+            if (description.charAt(index) == '"' || description.charAt(index) == '\'') {
+                startCopyingPosition++;
+            } else
+                break;
+        }
+        for (int index = description.length() - 1; index >= 0; --index) {
+            if (description.charAt(index) == '"' || description.charAt(index) == '\'') {
+                endCopyingPosition--;
+            } else
+                break;
+        }
+
+        if (startCopyingPosition >= endCopyingPosition) {
+            throw new RuntimeException("Description is Invalid");
+        }
+
+        this.description = description.substring(startCopyingPosition, endCopyingPosition);
+
     }
 
 }
