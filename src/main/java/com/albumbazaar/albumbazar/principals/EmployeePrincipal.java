@@ -28,6 +28,10 @@ public class EmployeePrincipal implements UserDetails {
         return employee.getId();
     }
 
+    public String getRole() {
+        return employee.getRole();
+    }
+
     @Override
     public String getPassword() {
         return employee.getPassword();

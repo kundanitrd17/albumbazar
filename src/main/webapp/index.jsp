@@ -261,6 +261,7 @@
                       <th colspan="4" class="bg-dark">Cover Price List</th>
                     </tr>
                     <tr style="background-color: none;color:black;">
+                      <th>Image</th>
                       <th>Quality</th>
                       <th>Size</th>
                       <th>Price</th>

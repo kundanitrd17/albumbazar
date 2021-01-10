@@ -65,25 +65,22 @@ public class ProductServiceImpl implements ProductService {
             // Flooding Categories
             products.setProductCategories(productCategoryRepository.findAllByAssociationId(id).stream()
                     .map(item -> item.getProductName()).collect(Collectors.toList()));
-            // Flooding covers
-            final List<Cover> covers = coverRepository.findAllByAssociationId(id);
-            products.setCovers(covers);
 
-            // Flooding papers
-            List<Paper> papers = paperRepository.findAllByAssociationId(id);
-            products.setPapers(papers);
+            final List<Cover> covers = coverRepository.findAllByAssociationId(id);
+            final List<Paper> papers = paperRepository.findAllByAssociationId(id);
 
             // Extracting all the size
             HashSet<String> sizes = new HashSet<>();
-            for (Cover cover : covers) {
-                sizes.add(cover.getCoverSize());
-            }
-            for (Paper paper : papers) {
-                sizes.add(paper.getPaperSize());
-            }
+            covers.stream().forEach(cover -> sizes.add(cover.getCoverSize()));
+
+            papers.stream().forEach(paper -> sizes.add(paper.getPaperSize()));
 
             // Flooding sizes
             products.setSizes(sizes);
+            // Flooding covers
+            products.setCovers(covers.stream().map(coverMapper::coverTCoverDTO).collect(Collectors.toList()));
+            // Flooding papers
+            products.setPapers(papers.stream().map(paperMapper::paperEntityToPaperDTO).collect(Collectors.toList()));
 
             return products;
 

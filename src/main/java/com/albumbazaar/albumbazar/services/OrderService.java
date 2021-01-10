@@ -17,8 +17,6 @@ import com.albumbazaar.albumbazar.model.Association;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 
-import org.json.JSONObject;
-
 public interface OrderService {
 
     /**
@@ -27,6 +25,8 @@ public interface OrderService {
      * @return A list of order details
      */
     List<OrderDetail> getOrdersWithStatus(OrderDetailStatus status);
+
+    List<OrderDetail> getOrdersWithStatus(List<OrderDetailStatus> allStatus);
 
     /**
      * Create a new order
@@ -139,4 +139,5 @@ public interface OrderService {
 
     void changeOrderDescription(Long orderId, String description);
 
+    void changeDeliveryStatus(final Long orderId, final OrderDetailStatus orderDetailStatus);
 }

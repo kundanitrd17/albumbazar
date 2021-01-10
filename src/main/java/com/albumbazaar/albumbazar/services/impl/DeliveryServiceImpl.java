@@ -1,21 +1,30 @@
 package com.albumbazaar.albumbazar.services.impl;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.albumbazaar.albumbazar.dto.DeliveryOrderDTO;
+import com.albumbazaar.albumbazar.model.AddressEntity;
+import com.albumbazaar.albumbazar.model.Association;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 import com.albumbazaar.albumbazar.services.DeliveryService;
 import com.albumbazaar.albumbazar.services.OrderService;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Qualifier("deliveryService")
-public final class DeliveryServiceImpl implements DeliveryService {
+public class DeliveryServiceImpl implements DeliveryService {
+
+    private Logger logger = LoggerFactory.getLogger(DeliveryServiceImpl.class);
 
     private final OrderService orderService;
 
@@ -25,22 +34,72 @@ public final class DeliveryServiceImpl implements DeliveryService {
     }
 
     @Override
+    @Transactional(readOnly = true)
+    public List<DeliveryOrderDTO> recentlyReceivedOrUnseenDeliveries() {
+
+        final List<OrderDetail> orderDetails = orderService
+                .getOrdersWithStatus(OrderDetailStatus.SENT_TO_DELIVERY_PARTNER);
+
+        return orderDetails.stream().map(eachOrder -> {
+            final AddressEntity address = eachOrder.getDeliveryAddress();
+            final Association association = eachOrder.getAssociation();
+
+            try {
+                return DeliveryOrderDTO.builder().order_id(eachOrder.getId()).UUID_CODE("UUID_CODE")
+                        .name(address.getName()).contact(address.getContactNo())
+                        .pickup_address(association.getAddress().getId()).delivery_address(address.getId()).build();
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
+            return null;
+        }).filter(delivery -> delivery != null).collect(Collectors.toList());
+
+    }
+
+    @Override
     public List<DeliveryOrderDTO> undeliveredOrders() {
 
-        List<OrderDetail> allOrdersToDeliver = orderService.getOrdersWithStatus(OrderDetailStatus.DELIVER);
+        final List<OrderDetail> allOrdersToDeliver = orderService
+                .getOrdersWithStatus(OrderDetailStatus.DELIVERY_UNDER_PROCESS);
 
-        List<DeliveryOrderDTO> allUndDeliveryOrderDTOs = new ArrayList<>(100);
+        return allOrdersToDeliver.stream().map(eachOrder -> {
+            final AddressEntity address = eachOrder.getDeliveryAddress();
+            final Association association = eachOrder.getAssociation();
 
-        allOrdersToDeliver.stream().forEach(each_item -> {
-            DeliveryOrderDTO item = new DeliveryOrderDTO();
-            item.setFromAddress("fromAddress");
-            item.setToAddress("to Address");
-            item.setId(each_item.getId());
-            item.setUUID_CODE("UUITLD");
-            allUndDeliveryOrderDTOs.add(item);
-        });
+            try {
+                return DeliveryOrderDTO.builder().order_id(eachOrder.getId()).UUID_CODE("UUID_CODE")
+                        .name(address.getName()).contact(address.getContactNo())
+                        .pickup_address(association.getAddress().getId()).delivery_address(address.getId()).build();
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
+            return null;
+        }).filter(delivery -> delivery != null).collect(Collectors.toList());
 
-        return allUndDeliveryOrderDTOs;
+    }
+
+    @Override
+    public List<DeliveryOrderDTO> completedDeliveries() {
+
+        final List<OrderDetailStatus> allStatus = Arrays.asList(OrderDetailStatus.COMPLETED,
+                OrderDetailStatus.DELIVERED);
+
+        final List<OrderDetail> allOrdersToDeliver = orderService.getOrdersWithStatus(allStatus);
+
+        return allOrdersToDeliver.stream().map(eachOrder -> {
+            final AddressEntity address = eachOrder.getDeliveryAddress();
+            final Association association = eachOrder.getAssociation();
+
+            try {
+                return DeliveryOrderDTO.builder().order_id(eachOrder.getId()).UUID_CODE("UUID_CODE")
+                        .name(address.getName()).contact(address.getContactNo())
+                        .pickup_address(association.getAddress().getId()).delivery_address(address.getId()).build();
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+            }
+            return null;
+        }).filter(delivery -> delivery != null).collect(Collectors.toList());
+
     }
 
 }

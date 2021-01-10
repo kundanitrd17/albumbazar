@@ -16,6 +16,7 @@ import com.albumbazaar.albumbazar.dto.SheetDetailDTO;
 import com.albumbazaar.albumbazar.form.order.OrderDetailFormDTO;
 import com.albumbazaar.albumbazar.model.AddressEntity;
 import com.albumbazaar.albumbazar.model.OrderDetail;
+import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
 import com.albumbazaar.albumbazar.services.GoogleDriveService;
@@ -41,6 +42,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import okhttp3.Response;
 
 @RestController
 @RequestMapping(value = "api")
@@ -234,6 +237,36 @@ public class OrderControllerAPI {
 
         return ResponseEntity.badRequest().body("Unable to create Order... Please check details");
 
+    }
+
+    @PutMapping(value = "/secured/delivery/order/{order_id}/under-process")
+    public ResponseEntity<?> orderUnderProcessing(@PathVariable("order_id") final Long orderId) {
+
+        try {
+
+            orderService.changeDeliveryStatus(orderId, OrderDetailStatus.DELIVERY_UNDER_PROCESS);
+            return ResponseEntity.ok().build();
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PutMapping(value = "/secured/delivery/order/{order_id}/delivered")
+    public ResponseEntity<?> orderDelivered(@PathVariable("order_id") final Long orderId) {
+
+        try {
+
+            orderService.changeDeliveryStatus(orderId, OrderDetailStatus.DELIVERED);
+            return ResponseEntity.ok().build();
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return ResponseEntity.badRequest().build();
     }
 
 }

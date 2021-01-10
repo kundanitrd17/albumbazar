@@ -169,6 +169,36 @@ public class SecurityConfig {
 
     @Configuration
     @Order(4)
+    public static class BranchSecurityConfig extends WebSecurityConfigurerAdapter {
+
+        // Even the customer care in an employee, thus we can access it using
+        // customer-care service
+        private final UserDetailsService employeeService;
+
+        @Autowired
+        protected BranchSecurityConfig(@Qualifier("employeeService") final UserDetailsService userDetailsService) {
+            this.employeeService = userDetailsService;
+        }
+
+        @Override
+        protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+            auth.userDetailsService(employeeService);
+        }
+
+        @Override
+        protected void configure(final HttpSecurity http) throws Exception {
+            http.antMatcher("/branch/**").authorizeRequests().anyRequest().hasAuthority(AvailableRoles.Code.BRANCH)
+                    .and().formLogin().loginPage("/branch/login").loginProcessingUrl("/branch/login")
+                    .failureUrl("/branch/login?error=true").defaultSuccessUrl("/branch").permitAll().and().logout()
+                    .logoutUrl("/branch/logout").logoutSuccessUrl("/branch").invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID", "XSRF-TOKEN");
+
+        }
+
+    }
+
+    @Configuration
+    @Order(5)
     public static class CustomerSecurityConfig extends WebSecurityConfigurerAdapter {
 
         private final UserDetailsService customService;
@@ -199,7 +229,7 @@ public class SecurityConfig {
      * Securing Rest Endpoints
      */
     @Configuration
-    @Order(5)
+    @Order(6)
     public static class RestEndpointsSecurityConfig extends WebSecurityConfigurerAdapter {
 
         @Override

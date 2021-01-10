@@ -45,8 +45,8 @@ public class AssociationControllerAPI {
         String image = associationService.getAssociation(1l).getProfilePhoto();
 
         if (image != null && !image.isBlank()) {
-            String photo = MvcUriComponentsBuilder.fromMethodName(FileUploadController.class, "serveFile",
-                    imageStorageService.load(image).getFileName().toString()).build().toUri().toString();
+            String photo = MvcUriComponentsBuilder.fromMethodName(FileUploadController.class, "serveFile", image)
+                    .build().toUri().toString();
 
             return ResponseEntity.ok(photo);
         }

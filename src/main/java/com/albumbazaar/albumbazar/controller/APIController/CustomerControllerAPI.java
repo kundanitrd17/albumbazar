@@ -38,6 +38,18 @@ public class CustomerControllerAPI {
         this.googleDriveService = googleDriveService;
     }
 
+    @GetMapping(value = "/{customer-id}")
+    public ResponseEntity<?> customerDetails(@PathVariable("customer-id") final Long customerId) {
+
+        final Customer customer = customerService.getCustomer(customerId);
+        final CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO.setName(customer.getName());
+        customerDTO.setEmail(customer.getEmail());
+        customerDTO.setContactNo(customer.getContactNo());
+
+        return ResponseEntity.ok().body(customerDTO);
+    }
+
     @PutMapping("info")
     public ResponseEntity<?> emp(@RequestBody @Valid CustomerDTO customerInfo) {
 

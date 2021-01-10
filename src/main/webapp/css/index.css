@@ -149,3 +149,15 @@ text-align: center;
 }
 
 /* End of Order fancy cards */
+
+.product-cover-image{
+  height: 100px;
+  width: 100px;
+  transition: transform .2s;
+  margin: 0;
+}
+
+.product-cover-image:hover {
+  height: 100px;
+  transform: scale(2.5);
+}

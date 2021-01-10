@@ -25,6 +25,8 @@
 
   <body>
 
+
+
     <%@include file="sidebar.jsp" %>
 
 
@@ -93,8 +95,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                     <th><input type="text" class="form-control" placeholder="Salary" disabled></th>
                     <th><input type="text" class="form-control" placeholder="Join Date" disabled></th>
                     <th><input type="text" class="form-control" placeholder="Status" disabled></th>
-                    <th colspan="2" style="text-align: center;"><a class="btn btn-success" href="add-employee">Add
-                        Employee</a></th>
+
                   </tr>
                 </thead>
                 <tbody>
@@ -117,11 +118,11 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                         <!-- Active  -->
                         <c:if test="${employee.active}">
                           <button class="btn btn-success act disabled">Active</button>
-                      </c:if>
-                      <!-- Deactive  -->
-                      <c:if test="${!employee.active}">
-                        <button class="btn btn-warning de-act disabled">Deactive</button>                        
-                      </c:if>
+                        </c:if>
+                        <!-- Deactive  -->
+                        <c:if test="${!employee.active}">
+                          <button class="btn btn-warning de-act disabled">Deactive</button>
+                        </c:if>
                       </td>
 
                       <!-- <td><a class="btn btn-danger d-icon">Delete</button></a></td> -->

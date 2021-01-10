@@ -16,6 +16,8 @@ public interface OrderRepository extends JpaRepository<OrderDetail, Long> {
 
     List<OrderDetail> findByOrderStatus(String orderStatus);
 
+    List<OrderDetail> findByOrderStatusIn(Collection<String> orderStatus);
+
     List<OrderDetail> findByOrderStatusNotIn(Collection<String> orderStatus);
 
     @Query(value = "SELECT * FROM order_detail WHERE employee_id = ?1 and order_status = ?2", nativeQuery = true)

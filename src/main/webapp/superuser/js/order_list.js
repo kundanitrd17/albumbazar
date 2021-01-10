@@ -1,4 +1,9 @@
 
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelector("#addressModal").querySelectorAll('input').forEach(element => {
+        element.disabled = true;
+    });
+});
 
 function fetchDeliveryAddressFromServer(orderId) {
     const modal = document.querySelector("#addressModal");
@@ -41,33 +46,6 @@ function fetchDeliveryAddressFromServer(orderId) {
     xhr.send(null);
 }
 
-function changeOrderDescription(order_id) {
-    const description = document.getElementById("updatableOrderDescription" + order_id).value;
-
-    var header = document.querySelector("meta[name='_csrf_header']").content;//.attr("content");
-    var token = document.querySelector("meta[name='_csrf']").content;//.attr("content");
-
-
-    const xhr = new XMLHttpRequest();
-    const url = "http://localhost:8080/api/admin/order/" + order_id + "/description";
-    xhr.open('PUT', url, true);
-    xhr.setRequestHeader('Content-type', 'application/json');
-    xhr.setRequestHeader(header, token);
-
-    xhr.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            console.log("Updated");
-            $('#orderDescriptionDialog' + order_id).modal('hide')
-
-        } else if (this.readyState === 4) {
-            alert("Something went wrong...! Please try again...");
-        }
-    }
-
-    console.log(description);
-    xhr.send(description);
-
-}
 
 
 // Show product details

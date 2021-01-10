@@ -14,4 +14,8 @@ public interface DeliveryService {
 
     List<DeliveryOrderDTO> undeliveredOrders();
 
+    List<DeliveryOrderDTO> recentlyReceivedOrUnseenDeliveries();
+
+    List<DeliveryOrderDTO> completedDeliveries();
+
 }

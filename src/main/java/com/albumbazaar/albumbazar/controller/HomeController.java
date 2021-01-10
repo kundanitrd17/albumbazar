@@ -18,6 +18,7 @@ import com.albumbazaar.albumbazar.dao.OrderRepository;
 import com.albumbazaar.albumbazar.dao.SuperuserRepository;
 import com.albumbazaar.albumbazar.dao.TestingRepository;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
+import com.albumbazaar.albumbazar.model.AvailableRoles;
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
@@ -185,17 +186,22 @@ public final class HomeController {
 
         if (principal instanceof CustomerPrincipal) {
             final CustomerPrincipal customerPrincipal = (CustomerPrincipal) principal;
-            USER_IDENTIFICATION_KEY = customerPrincipal.getUsername();            
-        } else if(principal instanceof EmployeePrincipal) {
+            USER_IDENTIFICATION_KEY = customerPrincipal.getUsername();
+        } else if (principal instanceof EmployeePrincipal) {
             final EmployeePrincipal employeePrincipal = (EmployeePrincipal) principal;
             USER_IDENTIFICATION_KEY = employeePrincipal.getUsername();
-            redirectView.setUrl("/admin/new-order");
+
+            if (employeePrincipal.getRole().equalsIgnoreCase(AvailableRoles.Code.ADMIN)) {
+                redirectView.setUrl("/admin/new-order");
+            } else if (employeePrincipal.getRole().equalsIgnoreCase(AvailableRoles.Code.BRANCH)) {
+                redirectView.setUrl("/branch");
+            }
         } else {
             request.setAttribute("error", "Unable to Authenticate");
             return redirectView;
         }
 
-        googleDriveService.saveGoogleAuthorizationCode(code, USER_IDENTIFICATION_KEY);        
+        googleDriveService.saveGoogleAuthorizationCode(code, USER_IDENTIFICATION_KEY);
 
         return redirectView;
     }

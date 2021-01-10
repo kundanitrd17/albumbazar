@@ -25,6 +25,10 @@ public class CoverDTO {
     @NotBlank
     private Float coverPrice;
 
+    private String image;
+
+    private Float GST;
+
     private Long associationId;
 
 }

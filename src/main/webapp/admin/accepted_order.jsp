@@ -102,7 +102,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                         <th><input type="text" class="form-control" placeholder="Id" disabled></th>
                                         <th><input type="text" class="form-control" placeholder="CustomerId" disabled>
                                         </th>
-                                        <th><input type="text" class="form-control" placeholder=" Name" disabled></th>
+                                        <th><input type="text" class="form-control" placeholder="Product" disabled></th>
 
                                         <th><input type="text" class="form-control" placeholder="OrderTime" disabled>
                                         </th>
@@ -128,7 +128,11 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                         <tr>
                                             <td class="orderId" data-order-id="${eachOrder.id}">${eachOrder.id}</td>
                                             <td class="customerId" data-order-id="${eachOrder.customer.id}">
-                                                ${eachOrder.customer.id}</td>
+                                                <button class="btn"
+                                                    onclick="fetchCustomerDetails('${eachOrder.customer.id}')"
+                                                    data-toggle="modal"
+                                                    data-target="#customerDetailModal">${eachOrder.customer.id}</button>
+                                            </td>
                                             <td>${eachOrder.productName}</td>
                                             <td>${eachOrder.orderTime}</td>
                                             <td>
@@ -229,11 +233,16 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
 
 
+
+
+
+
+
             <div class="modal" id="orderProductViewDetails">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h4 class="modal-title" id="myModalLabel">Comapny Name</h4>
+                            <h4 class="modal-title" id="myModalLabel">Company Name</h4>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
@@ -301,6 +310,50 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                 aria-hidden="true">
 
             </div>
+
+
+
+            <!-- Customer detail modal -->
+            <div class="modal" id="customerDetailModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Customer</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <th>Name: </th>
+                                        <td id="name"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Contact: </th>
+                                        <td id="contact"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email: </th>
+                                        <td id="email"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- End of customer Detail modal -->
 
 
 
@@ -391,6 +444,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
             </div>
 
             <!-- End of address modal -->
+
 
 
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>

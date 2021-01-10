@@ -8,16 +8,13 @@ import java.util.stream.Collectors;
 
 import com.albumbazaar.albumbazar.Mapper.AddressMapper;
 import com.albumbazaar.albumbazar.Mapper.CustomerMapper;
-import com.albumbazaar.albumbazar.Mapper.OrderDetailMapper;
 import com.albumbazaar.albumbazar.dao.AddressRepository;
 import com.albumbazaar.albumbazar.dao.CustomerRepository;
 import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
-import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.model.AddressEntity;
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.OrderDetail;
-import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.services.CustomerService;
 import com.albumbazaar.albumbazar.services.OrderService;
@@ -42,19 +39,16 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
     private final CustomerMapper customerMapper;
-    private final OrderDetailMapper orderDetailMapper;
 
     @Autowired
     public CustomerServiceImpl(final CustomerRepository customerRepository,
             @Qualifier("orderService") final OrderService orderService, final AddressRepository addressRepository,
-            final AddressMapper addressMapper, final CustomerMapper customerMapper,
-            final OrderDetailMapper orderDetailMapper) {
+            final AddressMapper addressMapper, final CustomerMapper customerMapper) {
         this.addressRepository = addressRepository;
         this.orderService = orderService;
         this.customerRepository = customerRepository;
         this.addressMapper = addressMapper;
         this.customerMapper = customerMapper;
-        this.orderDetailMapper = orderDetailMapper;
     }
 
     @Override

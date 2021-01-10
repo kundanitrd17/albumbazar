@@ -25,6 +25,7 @@ import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
 import com.albumbazaar.albumbazar.form.order.OrderDetailFormDTO;
 import com.albumbazaar.albumbazar.model.AddressEntity;
 import com.albumbazaar.albumbazar.model.Association;
+import com.albumbazaar.albumbazar.model.AvailableRoles;
 import com.albumbazaar.albumbazar.model.Cover;
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.OrderAndCustomerCareEntity;
@@ -199,6 +200,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Deprecated
     public List<OrderDetail> getAllOrderWithStatus(final String status) {
 
         try {
@@ -216,6 +218,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<OrderDetail> getOrdersWithStatus(final OrderDetailStatus status) {
         try {
             return orderRepository.findByOrderStatus(status.toString());
@@ -224,6 +227,19 @@ public class OrderServiceImpl implements OrderService {
             throw new RuntimeException("Unable to get Orders");
         }
 
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<OrderDetail> getOrdersWithStatus(final List<OrderDetailStatus> statusList) {
+
+        if (statusList == null)
+            throw new RuntimeException("Invalid list");
+
+        final List<String> statusListString = statusList.parallelStream().map(status -> status.toString())
+                .collect(Collectors.toList());
+
+        return orderRepository.findByOrderStatusIn(statusListString);
     }
 
     @Override
@@ -269,6 +285,15 @@ public class OrderServiceImpl implements OrderService {
             orderAndCustomerCareRepository.delete(orderAndCustomerCareEntity);
 
         }
+
+    }
+
+    @Override
+    @Transactional
+    public void changeDeliveryStatus(final Long orderId, final OrderDetailStatus orderDetailStatus) {
+
+        final OrderDetail order = this.getOrder(orderId);
+        order.setOrderStatus(orderDetailStatus.toString());
 
     }
 

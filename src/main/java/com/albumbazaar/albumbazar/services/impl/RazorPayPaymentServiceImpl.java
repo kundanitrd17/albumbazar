@@ -10,7 +10,6 @@ import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.RazorPayEntity;
 import com.albumbazaar.albumbazar.services.OrderService;
 import com.albumbazaar.albumbazar.services.RazorPayPaymentService;
-import com.albumbazaar.albumbazar.services.TransactionService;
 import com.albumbazaar.albumbazar.utilities.PaymentDTORazorpay;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.razorpay.Order;
@@ -69,7 +68,7 @@ public class RazorPayPaymentServiceImpl implements RazorPayPaymentService {
         }
 
         JSONObject options = new JSONObject();
-        options.put("amount",order.getOrderBill().getAmountToPay()*100);
+        options.put("amount", order.getOrderBill().getAmountToPay() * 100);
         options.put("currency", "INR");
         options.put("receipt", "txn_123456");
         options.put("payment_capture", 1);
@@ -86,7 +85,7 @@ public class RazorPayPaymentServiceImpl implements RazorPayPaymentService {
 
         RazorPayEntity razorPay = new RazorPayEntity();
 
-        razorPay.setApplicationFee(String.valueOf(orderDetail.getOrderBill().getAmountToPay()*100));
+        razorPay.setApplicationFee(String.valueOf(orderDetail.getOrderBill().getAmountToPay() * 100));
         razorPay.setCustomerName(customer.getName());
         razorPay.setCustomerEmail(customer.getEmail());
         razorPay.setMerchantName("Merchant Name");
