@@ -161,3 +161,27 @@ text-align: center;
   height: 100px;
   transform: scale(2.5);
 }
+
+
+/* delivery address cards */
+.card-content > .card {
+  margin: 1%;
+  width: calc(96% / 2);
+  border-radius: 7px;
+  box-sizing: border-box;
+  text-align: center;
+  /* font-size: 141px; */
+  /* text-transform: uppercase; */
+  padding: 10px 0;
+  float: left;
+  transition: 0.5s;
+  /* -webkit-transition: 0.5s; */
+  /* cursor: pointer; */
+  /* -webkit-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.11); */
+  /* -moz-box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.11); */
+  /* box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.11); */
+}
+.card-content > .card:hover {
+  cursor: pointer;
+  box-shadow: 0 6px 10px -6px black;
+}

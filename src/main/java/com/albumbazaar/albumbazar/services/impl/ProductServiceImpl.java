@@ -16,6 +16,8 @@ import com.albumbazaar.albumbazar.model.Cover;
 import com.albumbazaar.albumbazar.model.Paper;
 import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.ProductService;
+import com.albumbazaar.albumbazar.services.storage.ImageStorageService;
+import com.albumbazaar.albumbazar.services.storage.StorageService;
 import com.albumbazaar.albumbazar.utilities.AllProducts;
 
 import org.slf4j.Logger;
@@ -39,6 +41,7 @@ public class ProductServiceImpl implements ProductService {
 
     // dependent services
     private final AssociationService associationService;
+    private final StorageService imageStorageService;
 
     // Entit mappers
     private final PaperMapper paperMapper;
@@ -48,13 +51,14 @@ public class ProductServiceImpl implements ProductService {
     protected ProductServiceImpl(final ProductCategoryRepository productCategoryRepository,
             final CoverRepository coverRepository, final PaperRepository paperRepository,
             @Qualifier("associationService") final AssociationService associationService, final PaperMapper paperMapper,
-            final CoverMapper coverMapper) {
+            final CoverMapper coverMapper, @Qualifier("imageStorageService") final StorageService imageStorageService) {
         this.productCategoryRepository = productCategoryRepository;
         this.coverRepository = coverRepository;
         this.paperRepository = paperRepository;
         this.associationService = associationService;
         this.paperMapper = paperMapper;
         this.coverMapper = coverMapper;
+        this.imageStorageService = imageStorageService;
     }
 
     public AllProducts getAllProducts(final String company) {
@@ -111,6 +115,7 @@ public class ProductServiceImpl implements ProductService {
     private void savePaperDetail(final Association association, final PaperDTO paperDTO) {
 
         final Paper paper = paperMapper.paperDTOToPaperEntity(paperDTO);
+
         paper.setAssociation(association);
         paperRepository.save(paper);
 
@@ -118,22 +123,34 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void saveCoverDetailsForAssociation(Long associationId, List<CoverDTO> coverDTOs) {
-        final Association association = associationService.getAssociation(associationId);
+        // final Association association = associationService.getAssociation();
 
         coverDTOs.stream().forEach(coverDTO -> {
             try {
-                saveCoverDetail(association, coverDTO);
+                saveCoverDetail(associationId, coverDTO);
             } catch (Exception e) {
                 logger.error(e.getMessage());
             }
         });
     }
 
-    private void saveCoverDetail(final Association association, final CoverDTO coverDTO) {
+    @Override
+    @Transactional
+    public void saveCoverDetail(final Long associationId, final CoverDTO coverDTO) {
+
+        final Association association = associationService.getAssociation(associationId);
+
+        System.out.println(coverDTO.getUploadImageFile().getOriginalFilename());
         final Cover cover = coverMapper.coverDTOToCover(coverDTO);
         cover.setAssociation(association);
 
-        coverRepository.save(cover);
+        final Cover saved_cover = coverRepository.save(cover);
+
+        String fileName = "cover" + saved_cover.getId() + coverDTO.getUploadImageFile().getOriginalFilename();
+        fileName = imageStorageService.store(coverDTO.getUploadImageFile(), fileName);
+
+        saved_cover.setImage(fileName);
+
     }
 
     @Override

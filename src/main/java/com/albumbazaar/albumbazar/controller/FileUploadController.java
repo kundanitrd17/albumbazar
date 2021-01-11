@@ -1,21 +1,31 @@
 package com.albumbazaar.albumbazar.controller;
 
+import java.util.List;
+
 import com.albumbazaar.albumbazar.services.storage.StorageFileNotFoundException;
 import com.albumbazaar.albumbazar.services.storage.StorageService;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Controller
 public final class FileUploadController {
@@ -34,12 +44,13 @@ public final class FileUploadController {
 
     @PostMapping(value = "/upload")
     @ResponseBody
-    public String upload(@RequestParam("files") MultipartFile[] files) {
+    public String upload(@ModelAttribute form coversList) {
 
+        System.out.println(coversList);
         try {
-            for (MultipartFile file : files) {
-                imageStorageService.store(file, file.getOriginalFilename());
-            }
+            // for (MultipartFile file : files) {
+            // imageStorageService.store(f.getPhoto(), f.getPhoto().getOriginalFilename());
+            // }
         } catch (Exception e) {
             return "Exception";
         }
@@ -61,4 +72,19 @@ public final class FileUploadController {
         return ResponseEntity.notFound().build();
     }
 
+}
+
+@Data
+@JsonIgnoreProperties(ignoreUnknown = true)
+class form {
+    List<cv> covers;
+}
+
+@Data
+@JsonIgnoreProperties(ignoreUnknown = true)
+@AllArgsConstructor
+@NoArgsConstructor
+class cv {
+    String name;
+    MultipartFile photo;
 }

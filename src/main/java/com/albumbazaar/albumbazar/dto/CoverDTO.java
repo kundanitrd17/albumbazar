@@ -5,6 +5,8 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -30,5 +32,7 @@ public class CoverDTO {
     private Float GST;
 
     private Long associationId;
+
+    private MultipartFile uploadImageFile;
 
 }

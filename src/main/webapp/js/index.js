@@ -1,4 +1,29 @@
 
+var totalOrderAmount = 0;
+
+function setTotalAmount(amount) {
+    totalOrderAmount = amount;
+}
+function getTotalAmount() {
+    return totalOrderAmount;
+}
+
+// ENd of total state management
+
+
+
+
+
+$(document).ready(function () {
+
+    $('.modal').on("hidden.bs.modal", function (e) { //fire on closing modal box
+        if ($('.modal:visible').length) { // check whether parent modal is opend after child modal close
+            $('body').addClass('modal-open'); // if open mean length is 1 then add a bootstrap css class to body of the page
+        }
+    });
+});
+
+
 // Check auth to google
 function checkGoogleAuth() {
 
@@ -9,7 +34,7 @@ function checkGoogleAuth() {
     xhr.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             console.log("fine");
-            console.log(this);
+            // console.log(this);
             // $('.fancy-cards .fancy-card a .associationSelection').remove();
         } else if (this.readyState === 4 && this.status === 404) {
             console.log("Not fine");
@@ -27,10 +52,10 @@ function checkGoogleAuth() {
                 signinBtn.innerText = "SignIn";
 
                 parent.append(signinBtn);
-                console.log(parent);
+                // console.log(parent);
             })
         } else if (this.readyState === 4 && this.status === 403) {
-            console.log("Not auth bro");
+            // console.log("Not auth bro");
             var selectBtn = document.querySelectorAll('.associationSelection');
             selectBtn.forEach(ele => {
                 ele.remove();
@@ -99,7 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
         $.ajax({
             url: URI,
             success: function (result) {
-                console.log(result);
+                // console.log(result);
                 allSizes = result["sizes"]
                 allProductCategories = result["productCategories"];
                 allCovers = result["covers"];
@@ -126,13 +151,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
 
                 selectedProductSize = $("#myModal form #albumSize option:selected").val();
-                console.log(selectedProductSize);
 
                 paperRow = 0;
                 changeCoverAndPaperOptions(selectedProductSize);
 
+
+
+                loadDeliveryAddressCards();
+
+
             }
         });
+
+
 
     })
 
@@ -140,7 +171,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     $('#albumSize').on('change', () => {
         const selectedSize = $("#albumSize option:selected").val();
-        console.log("Selected Option Text: " + selectedSize);
         selectedProductSize = selectedSize;
         changeCoverAndPaperOptions(selectedProductSize);
     });
@@ -183,7 +213,6 @@ function changeCoverAndPaperOptions(selectedProductSize) {
 
 function setCoverPriceInInput() {
     const id = $("#myModal form #coverPageQuality option:selected").val();
-    console.log(id);
 
     availableCovers.forEach(cover => {
         // console.log(parseInt(cover["id"]), parseInt(id));
@@ -191,6 +220,7 @@ function setCoverPriceInInput() {
             $("#myModal form #coverPrice").val(cover["price"]);
         }
     })
+
 
 }
 
@@ -218,13 +248,13 @@ function addCoverOptions() {
 // $('#myModal form .sheet-paper-type').on('change', setPaperPriceOnChange);
 
 function setPaperPriceOnChange(id) {
-    console.log(id);
+    // console.log(id);
     const paperId = $("#myModal form #sheetType" + id + " option:selected").val();
-    console.log(paperId);
+    // console.log(paperId);
 
     availablePapers.forEach(paper => {
         if (parseInt(paper["id"]) === parseInt(paperId)) {
-            console.log(paper);
+            // console.log(paper);
             const sheetPriceInput = document.querySelector("#PaperRow" + id + " td input[name='sheetPrice']");
             sheetPriceInput.value = paper["price"];
         }
@@ -316,7 +346,7 @@ function loadAssociationPriceView() {
 
         var associationId = $(this).siblings("input").val();
         var associationName = $(this).siblings(".title").text();
-        console.log(associationId, associationName);
+        // console.log(associationId, associationName);
         $("#largeModal #myModalLabel").text(associationName);
         $('#largeModal #selected_association_id').val(associationId);
 
@@ -326,12 +356,12 @@ function loadAssociationPriceView() {
         $.ajax({
             url: URI,
             success: function (result) {
-                console.log(result);
+                // console.log(result);
                 allProductCategories = result["productCategories"];
                 allCovers = result["covers"];
                 allPapers = result["papers"];
 
-                console.log(allCovers, allPapers, allProductCategories);
+                // console.log(allCovers, allPapers, allProductCategories);
 
                 // fill-in cover table 
                 var coverTable = document.querySelector("#coverDetails tbody");
@@ -344,7 +374,7 @@ function loadAssociationPriceView() {
                     `;
                     image.innerHTML = img;
                     image.style.backgroundImage = element['image'];
-                    console.log(image);
+                    // console.log(image);
 
                     var coverName = document.createElement('td');
                     coverName.innerHTML = element.coverName;

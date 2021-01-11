@@ -145,7 +145,8 @@
               <div class="modal-body">
 
                 <form class="" action="customer/order" method="POST">
-                  <input type="text" name="selectedAssociationId" id="selectedAssociationId">
+                  <input type="text" name="selectedAssociationId" id="selectedAssociationId" hidden>
+                  <input type="text" name="deliveryAddress" id="selectedDeliveryAddressId" hidden>
                   <h4>Select Album</h4>
                   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                   <div class="container">
@@ -194,29 +195,9 @@
 
                         <tbody id="test-body">
 
-                          <!-- <tr id="row0">
-                            <td>
-                              <select id="sheetType" name="paperId" class="form-control " style="width: 160px;">
-                                <option value="paper type1">Paper Type</option>
-                              </select>
-                            </td>
-
-                            <td>
-                              <input name="numberOfSheet" id="pr" type="number" class="form-control input-md"
-                                placeholder="" style="width: 80px;" />
-                            </td>
-
-                            <td>
-                              <input name="sheetPrice" type="number" class="form-control input-md" placeholder=""
-                                style="width: 80px;" disabled />
-                            </td>
-                            <td><input id="add-row" class="btn btn-primary" type="button" value="+" /></td>
-                          </tr> -->
-
-
-
                         </tbody>
                         <tfoot>
+
 
                           <tr>
                             <td colspan="4">
@@ -234,14 +215,57 @@
 
               <!-- Modal footer -->
               <div class="modal-footer">
-                <button type="submit" class="btn btn-success">submit</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                <input id="orderTotalInput" type="number" class="form-control" style="width: 100px;" disabled>
+                <button type=" button" class="btn btn-primary btn-order-next">
+                  Select Address
+                </button>
+                <button type="submit" class="btn btn-success">Submit</button>
+
 
               </div>
+
+
+
               </form>
             </div>
           </div>
         </div>
+
+
+        <!-- Delivery Address -->
+
+        <div class="modal fade" id="deliveryAddressSelectorModal" tabindex="-1" role="dialog"
+          aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Address</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+
+              <div class="modal-body container-fluid">
+                <a href="/customer/my-address" class="btn btn-primary">Create New Address</a>
+                <hr>
+                <div class="card-content clearfix">
+
+                </div>
+
+              </div>
+
+              <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-order-prev">Confirm</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ENd of delivery address -->
+
+
+
         <!-- View Price List Of Association-->
         <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal"
           aria-hidden="true">
@@ -345,6 +369,8 @@
 
       <script src="./js/index.js"></script>
 
+      <script src="./js/delivery_address_handler.js"></script>
+
       <script type="text/javascript">
 
 
@@ -355,6 +381,31 @@
 
           $(".fancy-card #t").css("background-image", "url('https://static-1.gumroad.com/res/gumroad/assets/collections/food_and_cooking_thumb-34fb9ef316a7b01177529839891c3a03.jpg')");
         });
+
+        $("#myModal").each(function () {
+
+          var currentModal = $(this);
+
+          //click next
+          currentModal.find('.btn-order-next').click(function () {
+            currentModal.modal('hide');
+            $('#deliveryAddressSelectorModal').modal('show');
+          });
+
+        });
+
+        $("#deliveryAddressSelectorModal").each(function () {
+
+          var currentModal = $(this);
+
+          //click prev
+          currentModal.find('.btn-order-prev').click(function () {
+            currentModal.modal('hide');
+            $('#myModal').modal('show');
+          });
+
+        });
+
 
 
       </script>

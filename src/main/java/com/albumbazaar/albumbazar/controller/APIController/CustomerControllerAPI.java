@@ -1,7 +1,12 @@
 package com.albumbazaar.albumbazar.controller.APIController;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 
+import com.albumbazaar.albumbazar.Mapper.AddressMapper;
+import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
 import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.model.Customer;
@@ -29,13 +34,17 @@ public class CustomerControllerAPI {
 
     private final Logger logger = LoggerFactory.getLogger(CustomerControllerAPI.class);
 
+    private final AddressMapper addressMapper;
+
     private final CustomerService customerService;
     private final GoogleDriveService googleDriveService;
 
     protected CustomerControllerAPI(@Qualifier("customerService") final CustomerService customerService,
-            @Qualifier("googleDriveService") final GoogleDriveService googleDriveService) {
+            @Qualifier("googleDriveService") final GoogleDriveService googleDriveService,
+            final AddressMapper addressMapper) {
         this.customerService = customerService;
         this.googleDriveService = googleDriveService;
+        this.addressMapper = addressMapper;
     }
 
     @GetMapping(value = "/{customer-id}")
@@ -77,6 +86,28 @@ public class CustomerControllerAPI {
 
         return ResponseEntity.notFound().build();
 
+    }
+
+    @GetMapping(value = "/address")
+    public ResponseEntity<?> customerAddressList() {
+        try {
+
+            // Get Customer id from the pricipal objects
+            final CustomerPrincipal principal = (CustomerPrincipal) SecurityContextHolder.getContext()
+                    .getAuthentication().getPrincipal();
+
+            final Customer customer = customerService.getCustomer(principal.getId());
+            final Set<AddressDTO> addresses = customer.getAddress().stream().map(addressMapper::addressToAddressDto)
+                    .collect(Collectors.toSet());
+
+            return ResponseEntity.ok().body(addresses);
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+
+        }
+
+        return ResponseEntity.badRequest().build();
     }
 
     @DeleteMapping(value = "/address")

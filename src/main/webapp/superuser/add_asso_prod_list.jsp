@@ -44,6 +44,32 @@
 
         border: none;
       }
+
+      .loader {
+        position: absolute;
+        margin-top: 25%;
+        margin-left: 30%;
+        z-index: 1;
+
+        border: 16px solid #f3f3f3;
+        /* Light grey */
+        border-top: 16px solid #3498db;
+        /* Blue */
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+
+        100% {
+          transform: rotate(360deg);
+        }
+      }
     </style>
 
     <link rel="stylesheet" href="http://localhost:8080/superuser/css/super-admin.css">
@@ -94,97 +120,114 @@
           </div>
         </nav>
 
-
-        <div class="container col-md-8">
-
-          <div class="form-group">
-            <label for="Association">Association select</label>
-            <select class="form-control" id="Association">
-              <option value="null" selected>--Select--</option>
-
-              <c:forEach items="${availableAssociations}" var="association">
-                <option value="${association.id}">${association.name}</option>
-              </c:forEach>
-
-            </select>
+        <main>
+          <!-- Modal -->
+          <div class="modal fade loader" id="exampleModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
           </div>
-          <div class="table-responsive">
-            <table id="test-table" class="table table-condensed table-bordered">
-              <thead>
-                <tr>
-                  <th colspan="4" style="text-align: left;padding-left: 20px;">
-                    Add Paper List
-                  </th>
-                </tr>
-                <tr>
-                  <th>Paper Type</th>
-                  <th>Paper Size</th>
-                  <th>Paper Price</th>
-                  <th> <input id='addPaper' class='btn btn-primary' type='button' value='Add' /></th>
-                </tr>
-              </thead>
-              <form action="#" id="paperForm">
-                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                <tbody id="paperList">
 
-                  <tr id="paperRow0">
-                    <td>
-                      <input name='paperQuality' value='' type='text' class='form-control' placeholder="Paper Type" />
-                    </td>
-                    <td>
-                      <input name='paperSize' value='' type='text' class='form-control input-md'
-                        placeholder="Paper Size" />
-                    </td>
 
-                    <td>
-                      <input name='paperPrice' value='' type='number' class='form-control input-md'
-                        placeholder="Paper Price" />
-                    </td>
+          <div class="container col-md-8">
 
-                    <td>
-                      <input class='delete-row btn btn-danger' type='button' value='X' />
-                    </td>
-                  </tr>
-                </tbody>
-                <tfoot>
+            <div class="form-group">
+              <label for="Association">Association select</label>
+              <select class="form-control" id="Association">
+                <option value="null" selected>--Select--</option>
+
+                <c:forEach items="${availableAssociations}" var="association">
+                  <option value="${association.id}">${association.name}</option>
+                </c:forEach>
+
+              </select>
+            </div>
+            <div class="table-responsive">
+              <table id="test-table" class="table table-condensed table-bordered">
+                <thead>
                   <tr>
-                    <td colspan="4" align="center">
-                      <button type="submit" class='btn btn-success' id="paperListSubmit">Submit</button>
-                    </td>
+                    <th colspan="4" style="text-align: left;padding-left: 20px;">
+                      Add Paper List
+                    </th>
                   </tr>
+                  <tr>
+                    <th>Paper Type</th>
+                    <th>Paper Size</th>
+                    <th>Paper Price</th>
+                    <th> <input id='addPaper' class='btn btn-primary' type='button' value='Add' /></th>
+                  </tr>
+                </thead>
+                <form action="#" id="paperForm">
+                  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                  <tbody id="paperList">
 
-                </tfoot>
-              </form>
-            </table>
+                    <tr id="paperRow0">
+                      <td>
+                        <input name='paperQuality' value='' type='text' class='form-control' placeholder="Paper Type" />
+                      </td>
+                      <td>
+                        <input name='paperSize' value='' type='text' class='form-control input-md'
+                          placeholder="Paper Size" />
+                      </td>
+
+                      <td>
+                        <input name='paperPrice' value='' type='number' class='form-control input-md'
+                          placeholder="Paper Price" />
+                      </td>
+
+                      <td>
+                        <input class='delete-paper-row btn btn-danger' type='button' value='X' />
+                      </td>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="4" align="center">
+                        <button type="submit" class='btn btn-success' id="paperListSubmit">Submit</button>
+                      </td>
+                    </tr>
+
+                  </tfoot>
+                </form>
+              </table>
+
+            </div>
+
 
           </div>
 
-
-        </div>
-
-        <div class="container col-md-8">
+          <div class="container col-md-8">
 
 
-          <div class="table-responsive">
-            <table id="test-table" class="table table-condensed table-bordered">
-              <thead>
-                <tr>
-                  <th colspan="4" style="text-align: left;padding-left: 20px;">
-                    Add Cover List
-                  </th>
-                </tr>
-                <tr>
-                  <th>Cover Type</th>
-                  <th>Cover Size</th>
-                  <th>Cover Price</th>
-                  <th> <input id='addCover' class='btn btn-primary' type='button' value='Add' /></th>
-                </tr>
-              </thead>
-              <form id="coverForm" action="#">
-                <!-- Association Id -->
-                <!-- <input name="selectedAssociationId" type="text" class="selectedAssociationId" hidden> -->
-                <tbody id="coverList">
-                  <tr id="coverRow0">
+            <div class="table-responsive">
+              <table id="test-table" class="table table-condensed table-bordered">
+                <thead>
+                  <tr>
+                    <th colspan="4" style="text-align: left;padding-left: 20px;">
+                      Add Cover List
+                    </th>
+                  </tr>
+                  <tr>
+                    <th>Cover Image</th>
+                    <th>Cover Type</th>
+                    <th>Cover Size</th>
+                    <th>Cover Price</th>
+                    <th> <input id='addCover' class='btn btn-primary' type='button' value='Add' /></th>
+                  </tr>
+                </thead>
+                <form id="coverForm" action="#">
+                  <!-- Association Id -->
+                  <!-- <input name="selectedAssociationId" type="text" class="selectedAssociationId" hidden> -->
+                  <tbody id="coverList">
+                    <!-- <tr id="coverRow0">
+                    <td>
+                      <div class="image-upload text-center">
+                        <label for="file-input">
+                          <img src="https://icon-library.net/images/upload-photo-icon/upload-photo-icon-21.jpg"
+                            style=" height: 30px; width: 30px;" />
+                        </label>
+
+                        <input id="file-input" name="image" type="file" style="display: none;" />
+                      </div>
+                    </td>
                     <td>
                       <input name='coverName' value='' type='text' class='form-control' placeholder="Cover Type" />
                     </td>
@@ -199,28 +242,28 @@
                     </td>
 
                     <td>
-                      <input class='delete-row btn btn-danger' type='button' value='X' />
+                      <input class='delete-cover-row btn btn-danger' type='button' value='X' />
                     </td>
-                  </tr>
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <td colspan="4" align="center">
-                      <button class='btn btn-success' id="coverListSubmit" onclick="">Submit</button>
-                    </td>
-                  </tr>
+                  </tr> -->
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="4" align="center">
+                        <button class='btn btn-success' id="coverListSubmit" onclick="">Submit</button>
+                      </td>
+                    </tr>
 
-                </tfoot>
-              </form>
-            </table>
+                  </tfoot>
+                </form>
+              </table>
+
+            </div>
+
 
           </div>
 
 
-        </div>
-
-
-
+        </main>
 
 
 

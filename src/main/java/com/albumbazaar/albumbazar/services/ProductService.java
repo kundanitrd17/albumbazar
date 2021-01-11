@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.albumbazaar.albumbazar.dto.CoverDTO;
 import com.albumbazaar.albumbazar.dto.PaperDTO;
+import com.albumbazaar.albumbazar.model.Association;
 import com.albumbazaar.albumbazar.model.Cover;
 import com.albumbazaar.albumbazar.model.Paper;
 import com.albumbazaar.albumbazar.utilities.AllProducts;
@@ -19,5 +20,7 @@ public interface ProductService {
     Paper getPaperEntity(Long id);
 
     Cover getCoverEntity(Long id);
+
+    void saveCoverDetail(final Long association, final CoverDTO coverDTO);
 
 }

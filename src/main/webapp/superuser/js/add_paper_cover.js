@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', () => {
     header = $("meta[name='_csrf_header']").attr("content");
     token = $("meta[name='_csrf']").attr("content");
 
+    addNewCoverRow();
+
 
 });
 
@@ -28,7 +30,7 @@ $('#Association').on('change', function () {
 var paper_row = 1;
 $(document).on("click", "#addPaper", addNewPaperRow);
 function addNewPaperRow() {
-    var new_row = '<tr id="paperRow' + paper_row + '"><td><input name="paperQuality' + '" type="text" placeholder="Paper Type" class="form-control" /></td><td><input name="paperSize' + '" type="text" class="form-control" placeholder="Paper Size" /></td><td><input name="paperPrice' + '" type="number" class="form-control" placeholder="Paper Price" /></td><td><input class="delete-row btn btn-danger" type="button" value="X" /></td></tr>';
+    var new_row = '<tr id="paperRow' + paper_row + '"><td><input name="paperQuality' + '" type="text" placeholder="Paper Type" class="form-control" /></td><td><input name="paperSize' + '" type="text" class="form-control" placeholder="Paper Size" /></td><td><input name="paperPrice' + '" type="number" class="form-control" placeholder="Paper Price" /></td><td><input class="delete-paper-row btn btn-danger" type="button" value="X" /></td></tr>';
 
     $('#paperList').append(new_row);
     paper_row++;
@@ -38,35 +40,43 @@ function addNewPaperRow() {
 // adding form data on submit paper_form_data
 document.getElementById('paperForm').addEventListener('submit', function (e) {
     e.preventDefault();
+
+
     console.log("hi");
     if (paper_form_data.associationId == null) {
         alert("select an association");
         return false;
     }
 
+    $('.loader').modal('show');
 
-    const paperDetails = [];
-    for (let index = 0; index < paper_row; ++index) {
-        const paperRow = document.getElementById('paperRow' + index);
-        console.log(paperRow);
-        const paperQuality = paperRow.querySelector('input[name="paperQuality"]').value;
-        const paperSize = paperRow.querySelector('input[name="paperSize"]').value;
-        const paperPrice = paperRow.querySelector('input[name="paperPrice"]').value;
-        console.log(paperQuality, paperSize, paperPrice);
+    try {
+        const paperDetails = [];
+        for (let index = 0; index < paper_row; ++index) {
+            const paperRow = document.getElementById('paperRow' + index);
+            console.log(paperRow);
+            const paperQuality = paperRow.querySelector('input[name="paperQuality"]').value;
+            const paperSize = paperRow.querySelector('input[name="paperSize"]').value;
+            const paperPrice = paperRow.querySelector('input[name="paperPrice"]').value;
+            console.log(paperQuality, paperSize, paperPrice);
 
-        const paperDetail = {
-            "paperQuality": paperQuality,
-            "paperSize": paperSize,
-            "paperPrice": paperPrice
-        };
+            const paperDetail = {
+                "paperQuality": paperQuality,
+                "paperSize": paperSize,
+                "paperPrice": paperPrice
+            };
 
-        paperDetails.push(paperDetail);
+            paperDetails.push(paperDetail);
 
+        }
+
+        paper_form_data["paperDetails"] = paperDetails;
+
+        submitPaperForm();
+    } catch (e) {
+        alert("Unable to add papers... Check details...!");
     }
-
-    paper_form_data["paperDetails"] = paperDetails;
-
-    submitPaperForm();
+    $('.loader').modal('hide');
 
 
 });
@@ -103,10 +113,39 @@ function submitPaperForm() {
 }
 
 // Add cover row
-var cover_row = 1;
+var cover_row = 0;
 $(document).on("click", "#addCover", addNewCoverRow);
 function addNewCoverRow() {
-    var new_row = '<tr id="coverRow' + cover_row + '"><td><input name="coverName' + '" type="text" placeholder="Cover Type" class="form-control" /></td><td><input name="coverSize' + '" type="text" class="form-control" placeholder="Cover Size" /></td><td><input name="coverPrice' + '" type="number" class="form-control" placeholder="Cover Price" /></td><td><input class="delete-row btn btn-danger" type="button" value="X" /></td></tr>';
+    var new_row = `
+        <tr id="coverRow${cover_row}">
+            <td>
+                <div class="image-upload text-center">
+                    <label for="file-input${cover_row}">
+                    <img src="https://icon-library.net/images/upload-photo-icon/upload-photo-icon-21.jpg"
+                        style=" height: 30px; width: 30px;" />
+                    </label>
+
+                    <input id="file-input${cover_row}" name="image" type="file" style="display: none;" />
+                </div>
+            </td>
+            <td>
+                <input name='coverName' value='' type='text' class='form-control' placeholder="Cover Type" />
+            </td>
+            <td>
+                <input name='coverSize' value='' type='text' class='form-control input-md'
+                    placeholder="Cover Size" />
+            </td>
+
+            <td>
+                <input name='coverPrice' value='' type='number' class='form-control input-md'
+                    placeholder="Cover Price" />
+            </td>
+
+            <td>
+                <input class='delete-cover-row btn btn-danger' type='button' value='X' />
+            </td>
+        </tr>
+        `;
 
     $('#coverList').append(new_row);
     cover_row++;
@@ -114,7 +153,7 @@ function addNewCoverRow() {
 }
 
 // Remove criterion
-$(document).on("click", ".delete-row", function () {
+$(document).on("click", ".delete-cover-row", function () {
     //  alert("deleting row#"+row);
     if (cover_row > 1) {
         $(this).closest('tr').remove();
@@ -122,72 +161,97 @@ $(document).on("click", ".delete-row", function () {
     }
     return false;
 });
+// Remove criterion
+$(document).on("click", ".delete-paper-row", function () {
+    //  alert("deleting row#"+row);
+    if (paper_row > 1) {
+        $(this).closest('tr').remove();
+        paper_row--;
+    }
+    return false;
+});
+
 
 
 // adding form data on submit paper_form_data
 document.getElementById('coverForm').addEventListener('submit', function (e) {
     e.preventDefault();
+
+
     if (cover_form_data.associationId == null) {
         alert("select an association");
         return false;
     }
+    $('.loader').modal('show');
 
+    try {
+        const coverDetails = [];
+        for (let index = 0; index < cover_row; ++index) {
+            const coverRow = document.getElementById('coverRow' + index);
+            // console.log(coverRow);
+            const coverName = coverRow.querySelector('input[name="coverName"]').value;
+            const coverSize = coverRow.querySelector('input[name="coverSize"]').value;
+            const coverPrice = coverRow.querySelector('input[name="coverPrice"]').value;
+            const image = coverRow.querySelector('input[name="image"]').files[0];
 
+            const coverDetail = {
+                "coverName": coverName,
+                "coverSize": coverSize,
+                "coverPrice": coverPrice,
+                "image": image
+            };
 
-    const coverDetails = [];
-    for (let index = 0; index < cover_row; ++index) {
-        const coverRow = document.getElementById('coverRow' + index);
-        console.log(coverRow);
-        const coverName = coverRow.querySelector('input[name="coverName"]').value;
-        const coverSize = coverRow.querySelector('input[name="coverSize"]').value;
-        const coverPrice = coverRow.querySelector('input[name="coverPrice"]').value;
+            coverDetails.push(coverDetail);
+        }
+        // cover_form_data["coverDetails"] = coverDetails;
+        // submitCoverForm();
 
-        const coverDetail = {
-            "coverName": coverName,
-            "coverSize": coverSize,
-            "coverPrice": coverPrice
-        };
+        const selectedAssociationId = cover_form_data.associationId;
+        coverDetails.forEach(cover => uploadCoverInfo(selectedAssociationId, cover));
 
-        coverDetails.push(coverDetail);
+        while (--cover_row >= 0) {
+            document.getElementById('coverRow' + cover_row).remove();
+        }
+        cover_row = 0;
+        addNewCoverRow();
+    } catch (e) {
+        alert("check info...!");
     }
-    cover_form_data["coverDetails"] = coverDetails;
-    submitCoverForm();
 
+
+    $('.loader').modal('hide');
 
 });
-// Sending paper data to the server
-function submitCoverForm() {
 
-    if (cover_form_data.coverDetails == null || cover_form_data.coverDetails.length < 0) {
-        alert("fill info");
+
+function uploadCoverInfo(associationId, cover) {
+
+    if (cover === null) {
         return false;
     }
 
-    console.log(JSON.stringify(cover_form_data));
-    console.log("Submitting form");
-
-    // Make API call
-    var xhr = new XMLHttpRequest();
-
-    // Replace 1 with current order id
-    var url = 'http://localhost:8080/superuser/product/cover/add';
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader('Content-type', 'application/json');
+    const xhr = new XMLHttpRequest();
+    const url = "http://localhost:8080/api/superuser/product/cover/add";
+    xhr.open('POST', url, true)
     xhr.setRequestHeader(header, token);
-    xhr.onreadystatechange = function () { // Call a function when the state changes.
-        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
 
+    xhr.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
             console.log(this.response);
-            while (--cover_row >= 0) {
-                document.getElementById('coverRow' + cover_row).remove();
-            }
-            cover_row = 0;
-            addNewCoverRow();
+
         }
     }
-    xhr.send(JSON.stringify(cover_form_data));
+
+    console.log(cover);
+    const coverForm = new FormData();
+    coverForm.append("associationId", associationId);
+    coverForm.append("coverName", cover.coverName);
+    coverForm.append("coverSize", cover.coverSize);
+    coverForm.append("coverPrice", cover.coverPrice);
+    coverForm.append("uploadImageFile", cover.image);
+
+    xhr.send(coverForm);
 
 }
-
 
 
