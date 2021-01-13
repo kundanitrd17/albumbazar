@@ -152,6 +152,7 @@
                     <th>Paper Type</th>
                     <th>Paper Size</th>
                     <th>Paper Price</th>
+                    <th>GST</th>
                     <th> <input id='addPaper' class='btn btn-primary' type='button' value='Add' /></th>
                   </tr>
                 </thead>
@@ -159,7 +160,7 @@
                   <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                   <tbody id="paperList">
 
-                    <tr id="paperRow0">
+                    <!-- <tr id="paperRow0">
                       <td>
                         <input name='paperQuality' value='' type='text' class='form-control' placeholder="Paper Type" />
                       </td>
@@ -174,9 +175,13 @@
                       </td>
 
                       <td>
+                        <input name='GST' value='' type='number' class='form-control input-md' placeholder="GST" />
+                      </td>
+
+                      <td>
                         <input class='delete-paper-row btn btn-danger' type='button' value='X' />
                       </td>
-                    </tr>
+                    </tr> -->
                   </tbody>
                   <tfoot>
                     <tr>
@@ -210,6 +215,7 @@
                     <th>Cover Type</th>
                     <th>Cover Size</th>
                     <th>Cover Price</th>
+                    <th>GST</th>
                     <th> <input id='addCover' class='btn btn-primary' type='button' value='Add' /></th>
                   </tr>
                 </thead>

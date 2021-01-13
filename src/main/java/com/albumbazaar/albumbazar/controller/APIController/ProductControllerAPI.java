@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.albumbazaar.albumbazar.dto.CoverDTO;
+import com.albumbazaar.albumbazar.dto.PaperDTO;
 import com.albumbazaar.albumbazar.model.Association;
 import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.ProductService;
@@ -68,6 +69,21 @@ public final class ProductControllerAPI {
         try {
             System.out.println(coverInfo);
             productService.saveCoverDetail(coverInfo.getAssociationId(), coverInfo);
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping(value = "/superuser/product/paper/add")
+    public ResponseEntity<?> uploadPaper(@ModelAttribute final PaperDTO paperInfo) {
+
+        try {
+            System.out.println(paperInfo);
+            productService.savePaperDetail(paperInfo.getAssociationId(), paperInfo);
 
             return ResponseEntity.ok().build();
         } catch (Exception e) {

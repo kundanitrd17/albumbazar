@@ -1,23 +1,32 @@
 package com.albumbazaar.albumbazar.services.impl;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.albumbazaar.albumbazar.dao.EmployeeRepository;
+import com.albumbazaar.albumbazar.dto.EmployeeDTO;
 import com.albumbazaar.albumbazar.form.LocationForm;
 import com.albumbazaar.albumbazar.form.employee.BasicEmployeeDetailForm;
 import com.albumbazaar.albumbazar.model.AvailableRoles;
+import com.albumbazaar.albumbazar.model.Branch;
 import com.albumbazaar.albumbazar.model.Employee;
 import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
+import com.albumbazaar.albumbazar.services.BranchService;
 import com.albumbazaar.albumbazar.services.EmployeeService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.format.datetime.DateFormatter;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -31,12 +40,13 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
     private Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
     private final EmployeeRepository employeeRepository;
-
+    private final BranchService branchService;
 
     @Autowired
-    public EmployeeServiceImpl(final EmployeeRepository employeeRepository) {
+    public EmployeeServiceImpl(final EmployeeRepository employeeRepository, final BranchService branchService) {
         this.employeeRepository = employeeRepository;
-        
+        this.branchService = branchService;
+
     }
 
     @Override
@@ -66,6 +76,34 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
         }
 
         return true;
+    }
+
+    @Transactional
+    @Override
+    public void createEmployee(final EmployeeDTO employeeDTO) {
+
+        final Employee employee = new Employee();
+        employee.setName(employeeDTO.getName());
+        employee.setEmail(employeeDTO.getEmail());
+
+        try {
+            DateFormat format = new SimpleDateFormat();
+            Date date_of_birth = format.parse(employeeDTO.getDate_of_birth());
+            employee.setDate_of_birth(date_of_birth);
+        } catch (ParseException e) {
+            logger.error(e.getMessage());
+        }
+
+        employee.setPersonal_contact(employeeDTO.getPersonal_contact());
+        employee.setSalary(employeeDTO.getSalary());
+        employee.setRole(employeeDTO.getRole().toString());
+        employee.setPassword(employeeDTO.getPassword());
+
+        final Branch branch = branchService.getbranch(employeeDTO.getBranchId());
+        employee.setBranch(branch);
+
+        employeeRepository.save(employee);
+
     }
 
     @Override

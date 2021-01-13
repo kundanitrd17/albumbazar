@@ -5,6 +5,8 @@ import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -29,6 +31,11 @@ public class PaperDTO {
     @NotBlank
     private Float paperPrice;
 
-    private Long selectedAssociationId;
+    private Float GST;
 
+    private String image;
+
+    private Long associationId;
+
+    // private MultipartFile uploadImageFile;
 }

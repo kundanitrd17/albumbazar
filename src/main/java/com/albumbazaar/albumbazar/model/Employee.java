@@ -116,7 +116,7 @@ public class Employee {
         this.date_of_birth = null; // employeeDetail.getDateOfBirth();
         this.personal_contact = employeeDetail.getPhone();
         this.salary = Float.parseFloat(employeeDetail.getSalary());
-        this.role = employeeDetail.getDesignation();
+        this.role = employeeDetail.getDesignation().toString();
         this.password = "password";
     }
 

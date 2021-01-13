@@ -28,7 +28,7 @@
         </li>
         <li><i class="fa fa-envelope fa-fw"></i><a href="#"> Employees</a>
             <ul class="side-nav-dropdown">
-                <li><a href="/superuser/employee-add">Add Employee</a></li>
+                <li><a href="/superuser/employee/add">Add Employee</a></li>
                 <li><a href="/superuser/employee-list">View Employees</a></li>
             </ul>
         </li>

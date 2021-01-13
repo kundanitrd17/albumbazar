@@ -84,7 +84,15 @@ public class ProductServiceImpl implements ProductService {
             // Flooding covers
             products.setCovers(covers.stream().map(coverMapper::coverTCoverDTO).collect(Collectors.toList()));
             // Flooding papers
-            products.setPapers(papers.stream().map(paperMapper::paperEntityToPaperDTO).collect(Collectors.toList()));
+
+            products.setPapers(papers.stream().map(paper -> {
+                final PaperDTO paperDTO = new PaperDTO();
+                paperDTO.setId(paper.getId());
+                paperDTO.setPaperQuality(paper.getPaperQuality());
+                paperDTO.setPaperSize(paper.getPaperSize());
+                paperDTO.setPaperPrice(paper.getPaperPrice());
+                return paperDTO;
+            }).collect(Collectors.toList()));
 
             return products;
 
@@ -96,30 +104,22 @@ public class ProductServiceImpl implements ProductService {
         return products;
     }
 
-    @Override
-    public void savePaperDetailsForAssociation(final Long associationId, final List<PaperDTO> paperDTOs) {
+    // @Override
+    // public void savePaperDetailsForAssociation(final Long associationId, final
+    // List<PaperDTO> paperDTOs) {
 
-        final Association association = associationService.getAssociation(associationId);
+    // final Association association =
+    // associationService.getAssociation(associationId);
 
-        paperDTOs.stream().forEach(paperDTO -> {
-            try {
-                this.savePaperDetail(association, paperDTO);
-            } catch (Exception e) {
-                logger.error(e.getMessage());
-            }
-        });
+    // paperDTOs.stream().forEach(paperDTO -> {
+    // try {
+    // this.savePaperDetail(association, paperDTO);
+    // } catch (Exception e) {
+    // logger.error(e.getMessage());
+    // }
+    // });
 
-    }
-
-    @Transactional
-    private void savePaperDetail(final Association association, final PaperDTO paperDTO) {
-
-        final Paper paper = paperMapper.paperDTOToPaperEntity(paperDTO);
-
-        paper.setAssociation(association);
-        paperRepository.save(paper);
-
-    }
+    // }
 
     @Override
     public void saveCoverDetailsForAssociation(Long associationId, List<CoverDTO> coverDTOs) {
@@ -154,6 +154,19 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Transactional
+    public void savePaperDetail(final Long associationId, final PaperDTO paperDTO) {
+
+        final Association association = associationService.getAssociation(associationId);
+
+        final Paper paper = paperMapper.paperDTOToPaperEntity(paperDTO);
+        paper.setAssociation(association);
+
+        paperRepository.save(paper);
+
+    }
+
+    @Override
     public Paper getPaperEntity(final Long id) {
         return paperRepository.findById(id).orElseThrow();
     }
@@ -161,6 +174,12 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Cover getCoverEntity(Long id) {
         return coverRepository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public void savePaperDetailsForAssociation(Long associationId, List<PaperDTO> paperDTOs) {
+        // TODO Auto-generated method stub
+
     }
 
 }

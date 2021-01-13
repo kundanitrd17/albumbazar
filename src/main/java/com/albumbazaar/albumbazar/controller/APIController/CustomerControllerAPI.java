@@ -9,6 +9,7 @@ import com.albumbazaar.albumbazar.Mapper.AddressMapper;
 import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
 import com.albumbazaar.albumbazar.dto.ErrorDTO;
+import com.albumbazaar.albumbazar.model.AddressEntity;
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.services.CustomerService;
@@ -97,8 +98,7 @@ public class CustomerControllerAPI {
                     .getAuthentication().getPrincipal();
 
             final Customer customer = customerService.getCustomer(principal.getId());
-            final Set<AddressDTO> addresses = customer.getAddress().stream().map(addressMapper::addressToAddressDto)
-                    .collect(Collectors.toSet());
+            final Set<AddressEntity> addresses = customer.getAddress();
 
             return ResponseEntity.ok().body(addresses);
 

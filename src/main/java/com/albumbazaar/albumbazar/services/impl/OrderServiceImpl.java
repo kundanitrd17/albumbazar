@@ -182,7 +182,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(readOnly = true)
     public OrderDetail getOrder(final Long id) throws NoSuchElementException {
-        return orderRepository.findById(id).get();
+        return orderRepository.findById(id).orElseThrow();
     }
 
     @Override

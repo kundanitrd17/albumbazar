@@ -23,4 +23,6 @@ public interface ProductService {
 
     void saveCoverDetail(final Long association, final CoverDTO coverDTO);
 
+    void savePaperDetail(Long associationId, PaperDTO paperInfo);
+
 }

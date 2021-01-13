@@ -1,16 +1,42 @@
 
 var totalOrderAmount = 0;
 
-function setTotalAmount(amount) {
+function setOrderTotalAmount() {
+    let coverPrice = $("#myModal form #coverPrice").val();
+
+    let amount = parseFloat(coverPrice);
+    console.log("1st: ", amount);
+
+    for (let index = 0; index < paperRow; index++) {
+        try {
+            let paperPriceEle = document.querySelector("#PaperRow" + index + " td input[name='sheetPrice']");
+            let paperPrice = 0;
+            if (paperPriceEle !== null)
+                paperPrice = paperPriceEle.value;
+            let noOfSheetsEle = document.querySelector("#PaperRow" + index + " td input[name='numberOfSheet']")
+            let noOfSheets = 0;
+            if (noOfSheetsEle !== null)
+                noOfSheets = noOfSheetsEle.value;
+            let temp = parseFloat(paperPrice) * parseInt(noOfSheets);
+            if (temp !== null && temp > 0) {
+                amount += temp;
+            }
+            console.log(amount);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     totalOrderAmount = amount;
+
+    $("#orderTotalInput").val(totalOrderAmount);
 }
-function getTotalAmount() {
+function getOrderTotalAmount() {
     return totalOrderAmount;
 }
 
+
 // ENd of total state management
-
-
 
 
 
@@ -21,6 +47,56 @@ $(document).ready(function () {
             $('body').addClass('modal-open'); // if open mean length is 1 then add a bootstrap css class to body of the page
         }
     });
+
+
+    // const orderModal = document.getElementById('#myModal');
+    // console.log(orderModal);
+    // const deliveryModal = document.getElementById('#deliveryAddressSelectorModal');
+    // orderModal.querySelector('button').addEventListener('click', function (e) {
+    //     e.preventDefault();
+    //     orderModal.modal('hide');
+    //     document.getElementById('#deliveryAddressSelectorModal').modal('show');
+    // });
+
+    // deliveryModal.querySelector('.btn-order-prev').addEventListener('click', function (e) {
+    //     e.preventDefault();
+    //     deliveryModal.modal('hide');
+    //     orderModal.modal('show');
+    // });
+
+
+
+    $("#myModal").each(function () {
+
+        var currentModal = $(this);
+
+        //click next
+        currentModal.find('.btn-order-next').click(function (e) {
+            e.preventDefault();
+            currentModal.modal('hide');
+            $('#deliveryAddressSelectorModal').modal('show');
+        });
+
+    });
+
+    $("#deliveryAddressSelectorModal").each(function () {
+
+        var currentModal = $(this);
+
+        //click prev
+        currentModal.find('.btn-order-prev').click(function (e) {
+            e.preventDefault();
+            currentModal.modal('hide');
+            $('#myModal').modal('show');
+        });
+
+    });
+
+
+
+
+
+
 });
 
 
@@ -94,6 +170,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     checkGoogleAuth();
 
+    try {
+        loadDeliveryAddressCards();
+    } catch (error) {
+        console.log(error);
+    }
 
 
     // Select a particular company
@@ -155,11 +236,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 paperRow = 0;
                 changeCoverAndPaperOptions(selectedProductSize);
 
-
-
-                loadDeliveryAddressCards();
-
-
             }
         });
 
@@ -218,6 +294,7 @@ function setCoverPriceInInput() {
         // console.log(parseInt(cover["id"]), parseInt(id));
         if (parseInt(cover["id"]) === parseInt(id)) {
             $("#myModal form #coverPrice").val(cover["price"]);
+            setOrderTotalAmount();
         }
     })
 
@@ -257,6 +334,8 @@ function setPaperPriceOnChange(id) {
             // console.log(paper);
             const sheetPriceInput = document.querySelector("#PaperRow" + id + " td input[name='sheetPrice']");
             sheetPriceInput.value = paper["price"];
+
+            setOrderTotalAmount();
         }
     })
 
@@ -284,25 +363,28 @@ var paperRow = 0;
 $(document).on("click", "#add-row", appendPaperRow);
 
 function appendPaperRow() {
-    if (paperRow > 4) {
+    if (count_of_paper_row > 4) {
         return false;
     }
 
-    var new_row = '<tr id="PaperRow' + paperRow + '"><td> <select onchange="setPaperPriceOnChange(' + paperRow + ')" class="form-control" name="paperId" id="sheetType' + paperRow + '"  style="width: 160px;"><option value="">Paper Type</option></select></td><td><input name="numberOfSheet" value="" type="number" class="form-control input-md"  placeholder=""  style="width: 80px;" required /></td><td><input name="sheetPrice" type="number" class="form-control" placeholder=""  style="width: 80px;" disabled/></td><td><input id="add-row" class="btn btn-primary" type="button" value="+" /></td><td><input class="delete-row btn btn-danger" type="button" value="X" /></td></tr>';
+    var new_row = '<tr id="PaperRow' + paperRow + '"><td> <select onchange="setPaperPriceOnChange(' + paperRow + ')" class="form-control" name="paperId" id="sheetType' + paperRow + '"  style="width: 160px;"><option value="">Paper Type</option></select></td><td><input onchange="setOrderTotalAmount();" name="numberOfSheet" value="" type="number" class="form-control input-md"  placeholder=""  style="width: 80px;" required /></td><td><input name="sheetPrice" type="number" class="form-control" placeholder=""  style="width: 80px;" disabled/></td><td><input id="add-row" class="btn btn-primary" type="button" value="+" /></td><td><input class="delete-row btn btn-danger" type="button" value="X" /></td></tr>';
 
     $('#test-body').append(new_row);
 
     ++paperRow;
+    count_of_paper_row++;
     addPaperOptions();
     return false;
 }
-
+var count_of_paper_row = 0;
 // Remove criterion
 $(document).on("click", ".delete-row", function () {
     //  alert("deleting row#"+row);
-    if (paperRow > 1) {
+    if (count_of_paper_row > 1) {
         $(this).closest('tr').remove();
-        paperRow--;
+        // paperRow--;
+        count_of_paper_row--;
+        setOrderTotalAmount();
     }
     return false;
 });

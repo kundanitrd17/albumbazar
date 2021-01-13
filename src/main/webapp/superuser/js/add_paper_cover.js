@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     token = $("meta[name='_csrf']").attr("content");
 
     addNewCoverRow();
+    addNewPaperRow();
 
 
 });
@@ -27,10 +28,34 @@ $('#Association').on('change', function () {
 
 
 // Add paper row
-var paper_row = 1;
+var paper_row = 0;
 $(document).on("click", "#addPaper", addNewPaperRow);
 function addNewPaperRow() {
-    var new_row = '<tr id="paperRow' + paper_row + '"><td><input name="paperQuality' + '" type="text" placeholder="Paper Type" class="form-control" /></td><td><input name="paperSize' + '" type="text" class="form-control" placeholder="Paper Size" /></td><td><input name="paperPrice' + '" type="number" class="form-control" placeholder="Paper Price" /></td><td><input class="delete-paper-row btn btn-danger" type="button" value="X" /></td></tr>';
+    var new_row = `
+    <tr id="paperRow${paper_row}">
+    <td>
+      <input name='paperQuality' value='' type='text' class='form-control' placeholder="Paper Type" />
+    </td>
+    <td>
+      <input name='paperSize' value='' type='text' class='form-control input-md'
+        placeholder="Paper Size" />
+    </td>
+
+    <td>
+      <input name='paperPrice' value='' type='number' class='form-control input-md'
+        placeholder="Paper Price" />
+    </td>
+
+    <td>
+      <input name='GST' value='' type='number' class='form-control input-md' placeholder="GST" />
+    </td>
+
+    <td>
+      <input class='delete-paper-row btn btn-danger' type='button' value='X' />
+    </td>
+  </tr>
+    `;
+
 
     $('#paperList').append(new_row);
     paper_row++;
@@ -41,8 +66,6 @@ function addNewPaperRow() {
 document.getElementById('paperForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
-
-    console.log("hi");
     if (paper_form_data.associationId == null) {
         alert("select an association");
         return false;
@@ -52,65 +75,122 @@ document.getElementById('paperForm').addEventListener('submit', function (e) {
 
     try {
         const paperDetails = [];
-        for (let index = 0; index < paper_row; ++index) {
-            const paperRow = document.getElementById('paperRow' + index);
-            console.log(paperRow);
-            const paperQuality = paperRow.querySelector('input[name="paperQuality"]').value;
-            const paperSize = paperRow.querySelector('input[name="paperSize"]').value;
-            const paperPrice = paperRow.querySelector('input[name="paperPrice"]').value;
-            console.log(paperQuality, paperSize, paperPrice);
+        try {
+            for (let index = 0; index < paper_row; ++index) {
+                const paperRow = document.getElementById('paperRow' + index);
+                console.log(paperRow);
+                const paperQuality = paperRow.querySelector('input[name="paperQuality"]').value;
+                const paperSize = paperRow.querySelector('input[name="paperSize"]').value;
+                const paperPrice = paperRow.querySelector('input[name="paperPrice"]').value;
+                const GST = paperRow.querySelector('input[name="GST"]').value;
+                console.log(paperQuality, paperSize, paperPrice, GST);
 
-            const paperDetail = {
-                "paperQuality": paperQuality,
-                "paperSize": paperSize,
-                "paperPrice": paperPrice
-            };
+                const paperDetail = {
+                    "paperQuality": paperQuality,
+                    "paperSize": paperSize,
+                    "paperPrice": paperPrice,
+                    "GST": GST
+                };
 
-            paperDetails.push(paperDetail);
+                paperDetails.push(paperDetail);
 
+            }
+
+        } catch (error) {
+            console.log(error);
         }
+        const selectedAssociationId = paper_form_data.associationId;
+        paperDetails.forEach(paper =>
+            uploadPaperInfo(selectedAssociationId, paper)
+        );
 
-        paper_form_data["paperDetails"] = paperDetails;
+        while (--paper_row >= 0) {
+            document.getElementById('paperRow' + paper_row).remove();
+        }
+        paper_row = 0;
+        addNewPaperRow();
 
-        submitPaperForm();
+        // paper_form_data["paperDetails"] = paperDetails;
+
+        // submitPaperForm();
     } catch (e) {
+        console.log(e);
         alert("Unable to add papers... Check details...!");
     }
+
+
+
     $('.loader').modal('hide');
 
 
 });
+
 // Sending paper data to the server
-function submitPaperForm() {
-    if (paper_form_data.paperDetails == null || paper_form_data.paperDetails.length < 0) {
-        alert("fill info");
+
+function uploadPaperInfo(associationId, paper) {
+
+    if (paper === null) {
         return false;
     }
 
-    console.log(JSON.stringify(paper_form_data));
-    console.log("Submitting form");
-
-    // Make API call
-    var xhr = new XMLHttpRequest();
-
-    // Replace 1 with current order id
-    var url = 'http://localhost:8080/superuser/product/paper/add';
-    xhr.open("POST", url, true);
-    xhr.setRequestHeader('Content-type', 'application/json');
+    const xhr = new XMLHttpRequest();
+    const url = "http://localhost:8080/api/superuser/product/paper/add";
+    xhr.open('POST', url, true)
     xhr.setRequestHeader(header, token);
-    xhr.onreadystatechange = function () { // Call a function when the state changes.
-        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+
+    xhr.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
             console.log(this.response);
-            while (--paper_row >= 0) {
-                document.getElementById('paperRow' + paper_row).remove();
-            }
-            paper_row = 0;
-            addNewPaperRow();
+
         }
     }
-    xhr.send(JSON.stringify(paper_form_data));
+
+    console.log(paper);
+    const paperForm = new FormData();
+    paperForm.append("associationId", associationId);
+    paperForm.append("paperQuality", paper.paperQuality);
+    paperForm.append("paperSize", paper.paperSize);
+    paperForm.append("paperPrice", paper.paperPrice);
+    // paperForm.append("uploadImageFile", paper.image);
+    paperForm.append("GST", paper.GST);
+
+    xhr.send(paperForm);
 
 }
+
+
+
+// function submitPaperForm() {
+//     if (paper_form_data.paperDetails == null || paper_form_data.paperDetails.length < 0) {
+//         alert("fill info");
+//         return false;
+//     }
+
+//     console.log(JSON.stringify(paper_form_data));
+//     console.log("Submitting form");
+
+//     // Make API call
+//     var xhr = new XMLHttpRequest();
+
+//     // Replace 1 with current order id
+//     var url = 'http://localhost:8080/superuser/product/paper/add';
+//     xhr.open("POST", url, true);
+//     xhr.setRequestHeader('Content-type', 'application/json');
+//     xhr.setRequestHeader(header, token);
+//     xhr.onreadystatechange = function () { // Call a function when the state changes.
+//         if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+//             console.log(this.response);
+//             while (--paper_row >= 0) {
+//                 document.getElementById('paperRow' + paper_row).remove();
+//             }
+//             paper_row = 0;
+//             addNewPaperRow();
+//         }
+//     }
+//     console.log(JSON.stringify(paper_form_data));
+//     xhr.send(JSON.stringify(paper_form_data));
+
+// }
 
 // Add cover row
 var cover_row = 0;
@@ -141,6 +221,8 @@ function addNewCoverRow() {
                     placeholder="Cover Price" />
             </td>
 
+            <td>
+                <input name='GST' value='' type='number' class='form-control input-md' placeholder="GST" />
             <td>
                 <input class='delete-cover-row btn btn-danger' type='button' value='X' />
             </td>
@@ -192,13 +274,15 @@ document.getElementById('coverForm').addEventListener('submit', function (e) {
             const coverName = coverRow.querySelector('input[name="coverName"]').value;
             const coverSize = coverRow.querySelector('input[name="coverSize"]').value;
             const coverPrice = coverRow.querySelector('input[name="coverPrice"]').value;
+            const GST = coverRow.querySelector('input[name="GST"]').value;
             const image = coverRow.querySelector('input[name="image"]').files[0];
 
             const coverDetail = {
                 "coverName": coverName,
                 "coverSize": coverSize,
                 "coverPrice": coverPrice,
-                "image": image
+                "image": image,
+                "GST": GST
             };
 
             coverDetails.push(coverDetail);
@@ -249,6 +333,7 @@ function uploadCoverInfo(associationId, cover) {
     coverForm.append("coverSize", cover.coverSize);
     coverForm.append("coverPrice", cover.coverPrice);
     coverForm.append("uploadImageFile", cover.image);
+    coverForm.append("GST", cover.GST);
 
     xhr.send(coverForm);
 

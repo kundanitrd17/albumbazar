@@ -48,7 +48,7 @@ public class GoogleDriveServiceImpl implements GoogleDriveService {
     private static HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
     private static JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
 
-    private static final List<String> SCOPES = Collections.singletonList(DriveScopes.DRIVE);
+    private static final List<String> SCOPES = Collections.singletonList(DriveScopes.DRIVE_FILE);
 
     // private static final List<String> SCOPES = Arrays.asList(DriveScopes.DRIVE,
     // "https://www.googleapis.com/auth/drive.install");

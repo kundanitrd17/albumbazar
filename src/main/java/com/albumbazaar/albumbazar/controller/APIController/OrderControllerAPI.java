@@ -65,6 +65,21 @@ public class OrderControllerAPI {
 
     }
 
+    @GetMapping(value = "/secured/order/{order-id}")
+    public ResponseEntity<?> orderInfo(@PathVariable("order-id") final Long orderId) {
+
+        try {
+            System.out.println(orderId);
+            final OrderDetail orderDetail = orderService.getOrder(orderId);
+
+            return ResponseEntity.ok(orderDetail);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return ResponseEntity.notFound().build();
+    }
+
     /**
      * Change the order status given order id, and new order status.
      * 
@@ -76,8 +91,10 @@ public class OrderControllerAPI {
         try {
 
             // Get customer care's id from the security context object
-            final Long customerCareId = 1l;
-            orderService.changeOrderStatus(order.getId(), customerCareId, order.getStatus());
+            final EmployeePrincipal employeePrincipal = (EmployeePrincipal) SecurityContextHolder.getContext()
+                    .getAuthentication().getPrincipal();
+
+            orderService.changeOrderStatus(order.getId(), employeePrincipal.getId(), order.getStatus());
             return ResponseEntity.ok().build();
         } catch (Exception e) {
             logger.error(e.getMessage());

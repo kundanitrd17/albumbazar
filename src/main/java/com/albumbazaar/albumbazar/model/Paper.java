@@ -3,12 +3,17 @@ package com.albumbazaar.albumbazar.model;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@Getter
+@Setter
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = { "paper_quality", "paper_size", "association_id" }))
 @JsonIgnoreProperties(value = { "association" })
@@ -33,55 +38,19 @@ public class Paper {
     @Column(name = "paper_price")
     private Float paperPrice;
 
+    private Float GST;
+
+    private String image;
+
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "association_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Association association;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getPaperQuality() {
-        return paperQuality;
-    }
-
-    public void setPaperQuality(String paperQuality) {
-        this.paperQuality = paperQuality;
-    }
-
-    public String getPaperSize() {
-        return paperSize;
-    }
-
-    public void setPaperSize(String paperSize) {
-        this.paperSize = paperSize;
-    }
-
-    public Float getPaperPrice() {
-        return paperPrice;
-    }
-
-    public void setPaperPrice(Float paperPrice) {
-        this.paperPrice = paperPrice;
-    }
-
-    public Association getAssociation() {
-        return association;
-    }
-
-    public void setAssociation(Association association) {
-        this.association = association;
-    }
-
     @Override
     public String toString() {
         return "Paper{" + "id=" + id + ", paperQuality='" + paperQuality + '\'' + ", paperSize='" + paperSize + '\''
-                + ", paperPrice=" + paperPrice + '}';
+                + ", paperPrice=" + paperPrice + ", GST" + GST + '}';
     }
 }

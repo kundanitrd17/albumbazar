@@ -180,16 +180,15 @@ public final class AdminController {
             final List<OrderDetail> recentlyReceivedOrders = orderService
                     .getOrdersWithStatus(OrderDetailStatus.PENDING);
 
-            modelAndView.addObject("employee_id", 1);
-            // final Object principal =
-            // SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            // if (principal instanceof EmployeePrincipal) {
-            // final EmployeePrincipal employeePrincipal = (EmployeePrincipal) principal;
-            // modelAndView.addObject("employee_id", employeePrincipal.getId());
-            // } else {
-            // throw new AuthenticationException("Unable to authenticate");
+            // modelAndView.addObject("employee_id", 1);
+            final Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            if (principal instanceof EmployeePrincipal) {
+                final EmployeePrincipal employeePrincipal = (EmployeePrincipal) principal;
+                modelAndView.addObject("employee_id", employeePrincipal.getId());
+            } else {
+                throw new RuntimeException("UnAuthorized");
 
-            // }
+            }
 
             modelAndView.addObject("recentlyReceivedOrders", recentlyReceivedOrders);
             // } catch (AuthenticationException e) {
@@ -216,11 +215,11 @@ public final class AdminController {
              * Get the Principal object from SecurityContextHolder and populate
              * orderAndCustomerCare.customerCareId
              */
-            // final EmployeePrincipal employeePrincipal = (EmployeePrincipal)
-            // SecurityContextHolder.getContext()
-            // .getAuthentication().getPrincipal();
+            final EmployeePrincipal employeePrincipal = (EmployeePrincipal) SecurityContextHolder.getContext()
+                    .getAuthentication().getPrincipal();
 
-            modelAndView.addObject("allOrders", customerCareEmployeeService.acceptedOrdersByCustomerCare(1l));
+            modelAndView.addObject("allOrders",
+                    customerCareEmployeeService.acceptedOrdersByCustomerCare(employeePrincipal.getId()));
 
             modelAndView.addObject("availableOrderStatus", orderService.availableOrderStatus());
 
@@ -236,11 +235,11 @@ public final class AdminController {
         final ModelAndView modelAndView = new ModelAndView("admin/completed_order");
 
         try {
-            // final EmployeePrincipal employeePrincipal = (EmployeePrincipal)
-            // SecurityContextHolder.getContext()
-            // .getAuthentication().getPrincipal();
+            final EmployeePrincipal employeePrincipal = (EmployeePrincipal) SecurityContextHolder.getContext()
+                    .getAuthentication().getPrincipal();
 
-            modelAndView.addObject("allOrders", customerCareEmployeeService.getCompletedOrders(1l));
+            modelAndView.addObject("allOrders",
+                    customerCareEmployeeService.getCompletedOrders(employeePrincipal.getId()));
 
         } catch (Exception e) {
             logger.error(e.getMessage());

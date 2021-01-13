@@ -20,6 +20,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import okhttp3.Response;
 
@@ -51,7 +52,7 @@ public final class TransactionController {
 
         List<PaymentDTORazorpay> payments = razorPayPaymentService.getAllPayments();
         payments.forEach(System.out::println);
-        return ResponseEntity.ok().body("payments");
+        return ResponseEntity.ok().body(payments);
     }
 
     @GetMapping("/expense")
@@ -73,8 +74,8 @@ public final class TransactionController {
     }
 
     @GetMapping("/income")
-    public ResponseEntity<Object> getIncomeByDate(@RequestParam(value = "date", defaultValue = "") String date) {
-
+    public ModelAndView getIncomeByDate(@RequestParam(value = "date", defaultValue = "") String date) {
+        final ModelAndView modelAndView = new ModelAndView("superuser/offline_income");
         // final AllTransactions transactions = new AllTransactions();
         // try {
         // if (date.isBlank()) {
@@ -88,14 +89,19 @@ public final class TransactionController {
         // }
 
         try {
-            final List<PaymentDTORazorpay> payments = transactionService.getIncomeAfterDate(null);
-            return ResponseEntity.ok().body(payments);
+            final List<Income> incomes = transactionService.getAllIncome();
+
+            modelAndView.addObject("incomes", incomes);
+            // final List<PaymentDTORazorpay> payments =
+            // transactionService.getIncomeAfterDate(null);
+            // return ResponseEntity.ok().body(payments);
 
         } catch (Exception e) {
-            // TODO: handle exception
+            logger.error(e.getMessage());
+            modelAndView.addObject("error", "unable to fetch info... Please Try again!");
         }
 
-        return ResponseEntity.notFound().build();
+        return modelAndView;
     }
 
 }

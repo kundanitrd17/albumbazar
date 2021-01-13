@@ -3,8 +3,11 @@ package com.albumbazaar.albumbazar.controller;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import javax.validation.Valid;
+
 import com.albumbazaar.albumbazar.principals.SuperuserPrincipal;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
+import com.albumbazaar.albumbazar.dto.EmployeeDTO;
 import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.form.BasicBranchInfoForm;
 import com.albumbazaar.albumbazar.form.ForgotPasswordFormSuperuser;
@@ -28,6 +31,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -193,7 +197,7 @@ public final class SuperuserController {
         return modelAndView;
     }
 
-    @GetMapping(value = "/employee-add")
+    @GetMapping(value = "/employee/add")
     public ModelAndView viewAddEmployee() {
         final ModelAndView modelAndView = new ModelAndView("/superuser/add-emp");
 
@@ -213,14 +217,26 @@ public final class SuperuserController {
         return modelAndView;
     }
 
-    @PostMapping(value = "/add-employee")
-    @ResponseBody
-    public String addEmployee(@ModelAttribute BasicEmployeeDetailForm employeeDetail,
-            @ModelAttribute LocationForm addressDetail) {
+    @PostMapping(value = "/employee/add")
+    // @ResponseBody
+    public String addEmployee(@Valid @ModelAttribute EmployeeDTO employeeDetail,
+            @ModelAttribute LocationForm addressDetail, final BindingResult bindingResult,
+            final RedirectAttributes redirectAttributes) {
 
-        employeeService.addEmployee(employeeDetail, addressDetail);
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addAttribute("error", true);
+            return "redirect:/employee-add";
+        }
+        System.out.println(employeeDetail);
+        // employeeService.addEmployee(employeeDetail, addressDetail);
+        try {
+            employeeService.createEmployee(employeeDetail);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            redirectAttributes.addAttribute("error", true);
+        }
 
-        return "Added Employee";
+        return "redirect:/superuser/employee/add";
     }
 
     // Orders endpoints for superuser

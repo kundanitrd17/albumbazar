@@ -18,6 +18,11 @@ public enum AvailableRoles implements GrantedAuthority {
         return authority;
     }
 
+    @Override
+    public String toString() {
+        return this.authority.toString();
+    }
+
     public class Code {
         public static final String SUPERUSER = "ROLE_SUPERUSER";
         public static final String CUSTOMER_CARE = "ROLE_CUSTOMER_CARE";

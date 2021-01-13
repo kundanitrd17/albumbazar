@@ -23,7 +23,7 @@
 
           <div class="col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-6 col-lg-offset-3 form-wizard">
             <!-- Form Wizard -->
-            <form role="form" action="add-employee" method="POST">
+            <form role="form" action="/superuser/employee/add" method="POST">
               <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
               <h3>Sign Up Office Employee Account</h3>
@@ -64,7 +64,7 @@
                 </div>
                 <div class="form-group">
                   <label>Employee Branch <span>*</span></label>
-                  <select class="form-control" name="branch">
+                  <select class="form-control" name="branchId">
                     <c:forEach items="${active_branches}" var="branch">
                       <option value="${branch.id}">${branch.name}</option>
                     </c:forEach>
@@ -73,7 +73,7 @@
 
                 <div class="form-group">
                   <label>Designation</label>
-                  <select class="form-control" name="designation">
+                  <select class="form-control" name="role">
 
                     <c:forEach items="${employee_roles}" var="role">
                       <option value="${role}">${role}</option>
@@ -87,31 +87,34 @@
 
                 <div class="form-group">
                   <label>Gender : </label>
-
-                  <input type="radio" name="Gender" value="option1" checked="checked" />
+                  <input type="radio" name="Gender" value="Male" checked="checked" />
                   Male
-
-
-                  <input type="radio" name="Gender" value="option2" /> Female
-
+                  <input type="radio" name="Gender" value="Female" /> Female
                 </div>
 
                 <div class="form-group col-md-5 col-xs-5">
                   <label>Date of Birth<span> *</span></label>
-                  <input type="date" name="dateOfBirth" placeholder="Branch Inougration Date " class="form-control" />
+                  <input type="date" name="date_of_birth" placeholder="Branch Inougration Date " class="form-control" />
                 </div>
 
 
 
                 <div class="form-group">
                   <label>Phone: <span>*</span></label>
-                  <input type="text" name="phone" placeholder="Phone" class="form-control required" />
+                  <input type="text" name="personal_contact" placeholder="Phone" class="form-control required" />
                 </div>
 
                 <div class="form-group">
                   <label>Email <span>*</span></label>
-                  <input type="text" name="email" placeholder="Branch E-mail " class="form-control" />
+                  <input type="text" name="email" placeholder="E-mail " class="form-control" />
                 </div>
+
+                <div class="form-group">
+                  <label>Password <span>*</span></label>
+                  <input type="text" name="password" placeholder="Password " class="form-control" />
+                </div>
+
+
 
 
 

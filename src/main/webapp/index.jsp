@@ -20,7 +20,49 @@
     <link rel="stylesheet" href="./css/navbar.css">
     <link rel="stylesheet" href="./css/index.css">
 
+    <style>
+      #carouselExampleSlidesOnly {
+        padding-top: 20px;
+        padding-left: 50px;
+        padding-right: 50px;
+        height: 80vh !important;
+        width: 100% !important;
+      }
+
+      /* .item, */
+      .card img {
+        /* padding: 50px; */
+        height: 80vh !important;
+        width: 100% !important;
+      }
+
+      .association-card {
+        max-width: 20rem;
+      }
+
+      .association-card p {
+        font-size: 12px;
+      }
+
+      .association-card .card-img-top {
+        height: 250px !important;
+        width: 500px;
+      }
+
+      .accordion-body {
+        font-weight: 400;
+        font-size: 13px;
+        text-align: left;
+      }
+
+      .accordion-item h2 button {
+        font-weight: 700;
+        font-size: 14px;
+      }
+    </style>
+
   </head>
+
 
   <body>
 
@@ -28,6 +70,7 @@
     <%@include file="navbar.jsp" %>
       <!-- End of Navbar section -->
 
+      <!-- Carousel -->
       <!-- Slides -->
       <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
         <!-- Indicators -->
@@ -64,6 +107,13 @@
 
 
       <section style=" margin-bottom: 5rem; padding-top: 50px; padding-bottom: 50px;">
+        <center>
+          <h3>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</h3>
+          <p>Awamet consectetur adipisicing elit.P.</p>
+          <hr style="width: 50%; 
+          margin-top:50px; 
+          margin-bottom:50px;">
+        </center>
 
         <div class="container">
           <div class="row">
@@ -130,6 +180,7 @@
         </div>
 
 
+
         <!-- The Modal -->
         <div class="modal fade" id="myModal">
           <div class="modal-dialog modal-lg">
@@ -183,22 +234,19 @@
                           <th>
                             <h6>Type</h6>
                           </th>
-
                           <th>
                             <h6> sheet</h6>
                           </th>
                           <th>
                             <h6>Price</h6>
                           </th>
-
                         </tr>
 
                         <tbody id="test-body">
 
                         </tbody>
+
                         <tfoot>
-
-
                           <tr>
                             <td colspan="4">
                               <textarea name="description" cols="60" rows="5" placeholder="description"></textarea>
@@ -332,6 +380,55 @@
             </div>
           </div>
         </div>
+
+      </section>
+
+
+      <section>
+        <center>
+
+          <div class="container">
+            <div class="row">
+              <div class="col-sm">
+                <div class="card association-card" style="">
+                  <img
+                    src="https://www.albumsremembered.com/wp-content/uploads/2018/10/AlbumsRemembered_Product-acrylic-sq.jpg"
+                    class="card-img-top" style="" alt="BACKGROUND">
+                  <div class="card-body">
+                    <h5 class="card-title">Photo Books</h5>
+                    <p>Metallic album</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm">
+                <div class="card association-card">
+                  <img
+                    src="https://www.photojaanic.com/blog/wp-content/uploads/sites/2/2017/06/Wedding-photo-albums.jpg"
+                    class="card-img-top" style="" alt="BACKGROUND">
+                  <div class="card-body">
+                    <h5 class="card-title">Photo Books</h5>
+                    <p>Metallic album</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                  </div>
+                </div>
+              </div>
+              <div class="col-sm">
+                <div class="card association-card">
+                  <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSt0py5TDsBZXnx9ELkcHF9bf4AFY9nN3XVhA&usqp=CAU"
+                    class="card-img-top" style="" alt="BACKGROUND">
+                  <div class="card-body">
+                    <h5 class="card-title">Photo Books</h5>
+                    <p>Metallic album</p>
+                    <a href="#" class="btn btn-primary">Go somewhere</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </center>
       </section>
 
       <section class="w-100 py-3 my-3">
@@ -354,11 +451,182 @@
 
 
 
+      <section>
+        <center>
+          <h3>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</h3>
+          <p>Awamet consectetur adipisicing elit.P.</p>
+          <hr style="width: 50%; 
+          margin-top:50px; 
+          margin-bottom:50px;">
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <h4 style="text-align:left ;font-size: 18px; margin-bottom: 30px;">Why choose us.</h4>
+                <div class="accordion" id="accordionExample">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingOne">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="">
+                        <strong> Who we are ?</strong>
+                      </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
+                      data-bs-parent="#accordionExample">
+                      <div class="accordion-body" style="">
+                        VENUS PHOTO ALBUM is India ‘s leading company 1976. We are market – driven and technology –
+                        based organization serving millions of customers in India and Abroad. Over the years Venus
+                        Photo Albums have reached 250 million homes scaling beyond the geo- political boundaries. We
+                        have a well established market networking developed over three decades.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingTwo">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"
+                        style="font-weight: 700; font-size: 14px ;">
+                        <strong> What we do ?</strong>
+                      </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
+                      data-bs-parent="#accordionExample">
+                      <div class="accordion-body" style="">
+                        Venus photo books believe in creating stories out of Images. We are passionate about
+                        revolutionizing era of photo book, mini photo book, table calendar and wall calendar . All
+                        options that preserve your cherished memories are being catered beautifully. How especially we
+                        treat the choicest memories of your life and how perfectly we use advanced technology to liven
+                        up valuable sentiments of life is a thing to see.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingThree">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="">
+                        <strong> Our Capabilities</strong>
+                      </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
+                      data-bs-parent="#accordionExample">
+                      <div class="accordion-body" style="">
+                        We have the production units in Amritsar, Chandigarh and Ludhiana, (Punjab) which functions
+                        through modern computerized technology. One and half lack albums roll out of these units every
+                        month.
+                        A workforce of 100 technical people and experts are working together to improve upon
+                        international quality range and doing constant research to find out the latest market trends
+                        to provide its customer with the best quality product.
+                        There are some 11 main market agents working for us and 1200+ wholesellers for state based
+                        sales throughout India. Apart from these are several thousand commercial photographers who buy
+                        Venus Photo Albums throughout the year.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col" style="margin-left: 70px;">
+                <h4 style="text-align:left ;font-size: 18px; margin-bottom: 30px;">What customers say about us</h4>
+                <div class="card">
+                  <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                      <p style="font-size:12px; text-align : left;">I just wanted to say thank you very much to
+                        VenusAlbum. I got 2 photo books last week and they are fabulous. Quality of photo books is
+                        tremendous. My friends are inspired by seeing these photo books. Thanks again and I will
+                        definitely be making more photo books too.</p>
+                      <footer class="blockquote-footer" style="font-size:13px; text-align:right; margin-top : 10px;">
+                        Ruby Bhatia <cite title="Source Title">Chandigarh</cite></footer>
+                    </blockquote>
+                  </div>
+                </div>
+                <div class="card mt-3">
+                  <div class="card-body">
+                    <blockquote class="blockquote mb-0">
+                      <p style="font-size:12px; text-align : left;">Since 1976 venusalbum is in printing business and
+                        that reflects in their products. Highest level of printing and quality. Your standards are
+                        truly world class, and as a photographer for over 10 years I know great reproduction when I
+                        see it. You do remarkable work. With great appreciation.</p>
+                      <footer class="blockquote-footer" style="font-size:13px; text-align:right; margin-top : 10px;">
+                        Sanjeev Mehta <cite title="Source Title">Ludhiana</cite></footer>
+                    </blockquote>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </center>
+      </section>
+      </section>
+
+
+
+
+      <!-- Footer -->
+      <footer class="footers text-center text-lg-start mt-5 bg-dark" style="color: white">
+        <!-- Grid container -->
+        <div class="container p-5">
+          <!--Grid row-->
+          <div class="row">
+            <!--Grid column-->
+            <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
+              <h5 class="text-uppercase">Newsletter Sign Up</h5>
+
+              <p style="color: gray;">
+                Just register with us, and get updates and special offers for you by venusalbum.com
+              </p>
+              <button type="button" class="btn btn-primary">click here to sign up</button>
+            </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+              <h5 class="text-uppercase">Latest Updates</h5>
+
+              <ul class="list-unstyled mb-0">
+                <li>
+                  <a href="#!" class="text-light">HP Awarded Venus album a Star Company</a>
+                </li>
+              </ul>
+            </div>
+            <!--Grid column-->
+
+            <!--Grid column-->
+            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
+              <h5 class="text-uppercase mb-0"> Quick Links</h5>
+
+              <ul class="list-unstyled">
+                <li>
+                  <a href="#!" class="text-light">Home</a>
+                </li>
+                <li>
+                  <a href="#!" class="text-light">About</a>
+                </li>
+                <li>
+                  <a href="#!" class="text-light">Services</a>
+                </li>
+                <li>
+                  <a href="#!" class="text-light">Contact us</a>
+                </li>
+              </ul>
+            </div>
+            <!--Grid column-->
+          </div>
+          <!--Grid row-->
+        </div>
+        <!-- Grid container -->
+
+        <!-- Copyright -->
+        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+          © 2020 Copyright:
+          <a class="text-light" href="#">Company Name</a>
+        </div>
+        <!-- Copyright -->
+      </footer>
+      <!-- Footer -->
+
       <!-- Footer Section -->
-      <nav class="navbar sticky-bottom navbar-dark bg-dark">
+      <!-- <nav class="navbar sticky-bottom navbar-dark bg-dark">
         <a class="navbar-brand" href="#" style="height: 40vh; font-size: medium;"> All rights reserved
           &#169; </a>
-      </nav>
+      </nav> -->
 
       <!-- End of Footer section -->
 
@@ -382,29 +650,6 @@
           $(".fancy-card #t").css("background-image", "url('https://static-1.gumroad.com/res/gumroad/assets/collections/food_and_cooking_thumb-34fb9ef316a7b01177529839891c3a03.jpg')");
         });
 
-        $("#myModal").each(function () {
-
-          var currentModal = $(this);
-
-          //click next
-          currentModal.find('.btn-order-next').click(function () {
-            currentModal.modal('hide');
-            $('#deliveryAddressSelectorModal').modal('show');
-          });
-
-        });
-
-        $("#deliveryAddressSelectorModal").each(function () {
-
-          var currentModal = $(this);
-
-          //click prev
-          currentModal.find('.btn-order-prev').click(function () {
-            currentModal.modal('hide');
-            $('#myModal').modal('show');
-          });
-
-        });
 
 
 

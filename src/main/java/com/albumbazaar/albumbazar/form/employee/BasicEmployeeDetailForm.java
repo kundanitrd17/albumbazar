@@ -1,10 +1,11 @@
 package com.albumbazaar.albumbazar.form.employee;
 
 import com.albumbazaar.albumbazar.form.api.BasicDetailForm;
+import com.albumbazaar.albumbazar.model.AvailableRoles;
 
 public class BasicEmployeeDetailForm extends BasicDetailForm {
     private String branch;
-    private String designation;
+    private AvailableRoles designation;
     private String salary;
 
     public String getBranch() {
@@ -15,11 +16,11 @@ public class BasicEmployeeDetailForm extends BasicDetailForm {
         this.branch = branch;
     }
 
-    public String getDesignation() {
+    public AvailableRoles getDesignation() {
         return designation;
     }
 
-    public void setDesignation(String designation) {
+    public void setDesignation(AvailableRoles designation) {
         this.designation = designation;
     }
 
@@ -37,6 +38,5 @@ public class BasicEmployeeDetailForm extends BasicDetailForm {
         return "BasicEmployeeDetailForm [branch=" + branch + ", designation=" + designation + ", salary=" + salary
                 + "]";
     }
-    
-    
+
 }

@@ -3,6 +3,7 @@ package com.albumbazaar.albumbazar.services;
 import java.util.List;
 import java.util.Set;
 
+import com.albumbazaar.albumbazar.dto.EmployeeDTO;
 import com.albumbazaar.albumbazar.form.LocationForm;
 import com.albumbazaar.albumbazar.form.employee.BasicEmployeeDetailForm;
 import com.albumbazaar.albumbazar.model.AvailableRoles;
@@ -11,6 +12,8 @@ import com.albumbazaar.albumbazar.model.Employee;
 public interface EmployeeService {
 
     boolean addEmployee(final BasicEmployeeDetailForm employeeDetail, final LocationForm addressDetail);
+
+    void createEmployee(EmployeeDTO employeeDTO);
 
     Employee deleteEmployee(Long id);
 
