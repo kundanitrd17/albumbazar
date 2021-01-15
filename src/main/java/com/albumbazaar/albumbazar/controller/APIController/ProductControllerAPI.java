@@ -93,4 +93,11 @@ public final class ProductControllerAPI {
         return ResponseEntity.badRequest().build();
     }
 
+    @GetMapping(value = "/product/paper/{paper_id}")
+    public ResponseEntity<?> paperDetailsWithId(@PathVariable("paper_id") final Long paperId) {
+
+        return ResponseEntity.ok().body(productService.getPaperEntity(paperId));
+
+    }
+
 }

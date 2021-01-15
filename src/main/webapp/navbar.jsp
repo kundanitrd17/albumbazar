@@ -59,8 +59,7 @@
                         <li class="nav-item mr-3 px-2">
                             <form action="/customer/logout" method="post">
                                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                                <button class="btn btn-primary" href="#" data-toggle="modal"
-                                    data-target="#LoginCustomerModal">Logout</button>
+                                <button class="btn btn-primary">Logout</button>
                             </form>
 
                         </li>

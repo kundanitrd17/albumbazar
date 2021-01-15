@@ -21,6 +21,8 @@
 
         <link rel="stylesheet" href="/superuser/css/super-admin.css">
 
+
+
     </head>
 
     <body>
@@ -139,7 +141,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
             <div class="modal fade" id="orderDetailModal" tabindex="-1" role="dialog"
                 aria-labelledby="exampleModalLabel" aria-hidden="true">
                 <div class="modal-dialog" role="document">
-                    <div class="modal-content">
+                    <div class="modal-content" style="border-collapse: collapse;">
                         <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Order Info</h5>
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -148,8 +150,33 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                         </div>
                         <div class="modal-body">
 
-                            <!-- 
-                            <table class="table">
+                            <!-- <dialog id="myFirstDialog"
+                                style="width:80%;background-color:#F4FFEF;border:1px dotted black; margin-left: 10%;">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <th>PaperName</th>
+                                        <th>PaperPrice</th>
+                                        <th>Tax</th>
+                                        <th>Number Of Sheets</th>
+                                    </thead>
+
+                                    <tbody>
+
+                                        <tr>
+                                            <td>metallci</td>
+                                            <td>900</td>
+                                            <td>90</td>
+                                            <td>10</td>
+                                        </tr>
+
+                                    </tbody>
+
+                                </table>
+                                <button class="btn btn-danger" id="hide">Close</button>
+                            </dialog>
+
+
+                            <table class="table table-striped">
                                 <thead>
                                 </thead>
                                 <tbody>
@@ -205,9 +232,22 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                         <td>Amount</td>
                                     </tr>
 
+                                    <tr>
+                                        <th scope="row">Images</th>
+                                        <td>staus</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th scope="row">paper details</th>
+                                        <td>
+
+                                            <button class="btn btn-primary" id="show">Show Dialog</button>
+                                        </td>
+                                    </tr>
+
+
                                 </tbody>
                             </table> -->
-
 
                         </div>
                         <div class="modal-footer">
@@ -218,6 +258,58 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                 </div>
             </div>
 
+
+
+            <!-- JavaScript to provide the "Show/Close" functionality -->
+            <script type="text/JavaScript">
+            function paperDialogShow(paperAndSheetDetails) {
+                var dialog = document.getElementById('myFirstDialog'); 
+                document.querySelector('#myFirstDialog tbody').innerHTML = '';
+                
+
+                for(let index = 0; index < paperAndSheetDetails.length; index++) {
+                    
+                    try {
+                        let element = paperAndSheetDetails[index];
+                        let requestObject = new XMLHttpRequest();
+                        const paperDetailURL = "http://localhost:8080/api/product/paper/" + element["paper_id"];
+                        requestObject.open('GET', paperDetailURL, true);
+                        requestObject.onreadystatechange = function () {
+                            if (this.readyState === 4 && this.status === 200) {
+                                let requestData = JSON.parse(this.response);
+                                
+                                var row = `
+                                    <tr>
+                                        <td>`+requestData["paperQuality"]+`</td>
+                                        <td>`+requestData["paperPrice"]+`</td>
+                                        <td>`+requestData["GST"]+`</td>
+                                        <td>`+element["sheets"]+`</td>
+                                    </tr>
+                                `;
+
+                                document.querySelector('#myFirstDialog tbody').innerHTML += row;;
+                                // console.log(tableBody);
+
+                                // paperDetailsList.push(paperData);
+                                // console.log(paperDetailsList, paperData);
+                            }
+                        }
+                        requestObject.send(null);
+                    } catch (error) {
+                        console.log(error);
+                    }
+
+                }
+              
+                    dialog.show();    
+            }
+
+            function paperDialogHide() {
+                var dialog = document.getElementById('myFirstDialog');   
+                dialog.close();     
+            }
+               
+            </script>
 
 
             <script>
@@ -231,8 +323,113 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                     xhr.onreadystatechange = function () {
                         if (this.readyState === 4 && this.status === 200) {
                             let data = JSON.parse(this.response);
-                            console.log(data);
-                            console.log(JSON.parse(data["paperDetailsWithNumberOfSheetsList"]));
+
+                            let paperAndSheetDetails = JSON.parse(data["paperDetailsWithNumberOfSheetsList"]);
+
+                            const modalBody = document.querySelector('#orderDetailModal .modal-body');
+
+                            if (data["photoFolderGoogleDriveLink"] === null)
+                                data["photoFolderGoogleDriveLink"] = '#';
+
+                            const ele = `
+                            <dialog id="myFirstDialog"
+                                style="width:80%;background-color:#F4FFEF;border:1px dotted black; margin-left: 10%;">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <th>PaperName</th>
+                                        <th>PaperPrice</th>
+                                        <th>Tax</th>
+                                        <th>Number Of Sheets</th>
+                                    </thead>
+
+                                    <tbody>
+
+                                    </tbody>
+
+                                </table>
+                                <button class="btn btn-danger" id="hide" onclick='paperDialogHide()'>Close</button>
+                            </dialog>
+
+
+                            <table class="table table-striped">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <th scope="row">Order Id</th>
+                                        <td>`+ data["id"] + `</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Association Id</th>
+                                        <td>`+ data["associationName"] + `</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Product Name</th>
+                                        <td>`+ data["productName"] + `</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Product Size</th>
+                                        <td>`+ data["productSize"] + `</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Cover Name</th>
+                                        <td>`+ data["coverName"] + `</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">Cover Price</th>
+                                        <td>`+ data["coverPrice"] + `</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th scope="row">orientation</th>
+                                        <td>`+ data["orientation"] + `</td>
+                                    </tr>                                   
+
+                                    <tr>
+                                        <th scope="row">Status</th>
+                                        <td>`+ data["orderStatus"] + `</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th scope="row">Description</th>
+                                        <td><p>`+ data["description"] + `</p></td>
+                                    </tr>
+
+                                    <tr>
+                                        <th scope="row">Total</th>
+                                        <td>`+ data["orderBill"]["totalAmount"] + `</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th scope="row">Discount</th>
+                                        <td>`+ data["orderBill"]["discount"] + `</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th scope="row">Payable Amount</th>
+                                        <td>`+ data["orderBill"]["amountToPay"] + `</td>
+                                    </tr>
+
+                                    <tr>
+                                        <th scope="row">Images</th>                                        
+                                        <td> <a href="`+ data["photoFolderGoogleDriveLink"] + `"> Click </a></td>
+                                    </tr>
+
+                                    <tr>
+                                        <th scope="row">paper details</th>
+                                        <td>
+
+                                            <button class="btn btn-primary" id="show" onclick='paperDialogShow(`+ data["paperDetailsWithNumberOfSheetsList"] + `)'>Show Dialog</button>
+                                        </td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                            `;
+
+                            modalBody.innerHTML = ele;
+
                         }
                     }
 

@@ -71,6 +71,7 @@ public class OrderControllerAPI {
         try {
             System.out.println(orderId);
             final OrderDetail orderDetail = orderService.getOrder(orderId);
+            orderDetail.getCover();
 
             return ResponseEntity.ok(orderDetail);
         } catch (Exception e) {
