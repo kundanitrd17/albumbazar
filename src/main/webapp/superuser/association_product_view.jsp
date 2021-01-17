@@ -1,23 +1,27 @@
-<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-<!DOCTYPE html>
-<html lang="en">
+    <!DOCTYPE html>
+    <html lang="en">
 
-<head>
+    <head>
 
 
-    <title>Album Bazaar</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <title>Album Bazaar</title>
+        <meta charset="utf-8">
+        <meta name="_csrf" content="${_csrf.token}" />
+        <!-- default header name is X-CSRF-TOKEN -->
+        <meta name="_csrf_header" content="${_csrf.headerName}" />
+        <!-- ... -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    <style type="">
-        html{
+        <style type="">
+            html{
   font-family: 'open sans';
 }
 h1{
@@ -155,282 +159,483 @@ text-align: center;
 }
 </style>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link href="https://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet">
-    <link rel="stylesheet" href="/superuser/css/super-admin.css">
-</head>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+            integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet">
+        <link rel="stylesheet" href="/superuser/css/super-admin.css">
+    </head>
 
-<body>
+    <body>
 
-    <%@include file="sidebar.jsp" %>
+        <%@include file="sidebar.jsp" %>
 
-    <div class="container">
-        <div class="row">
+            <div class="container">
+                <div class="row">
 
 
-            <c:forEach items="${associations}" var="association">
-                <div class="col-md-4 col-lg-4 col-xl-4">
-                    <div class="fancy-cards">
-                        <!-- <h1>Microinteraction on active</h1>
+                    <c:forEach items="${associations}" var="association">
+                        <div class="col-md-4 col-lg-4 col-xl-4">
+                            <div class="fancy-cards">
+                                <!-- <h1>Microinteraction on active</h1>
   <p>It triggers a subtle micro-interaction (scales and adjusts) when the user interacts with it.</p>-->
-                        <div class="fancy-card">
-                            <div class="top" id="t">
-                                <div class="caption">
-                                    <h3 class="title">${association.name}</h3>
-                                    <input type="text" name="associationId" value="${association.id}" hidden>
+                                <div class="fancy-card">
+                                    <div class="top" id="t">
+                                        <div class="caption">
+                                            <h3 class="title">${association.name}</h3>
+                                            <input type="text" name="associationId" value="${association.id}" hidden>
 
-                                    <a type="button" id="associationViewPrice"
-                                        class="btn btn-primary button1 associationViewPrice" data-toggle="modal"
-                                        data-target="#largeModal">
-                                        View Products
-                                    </a>
+                                            <a type="button" id="associationViewPrice"
+                                                class="btn btn-primary button1 associationViewPrice" data-toggle="modal"
+                                                data-target="#largeModal">
+                                                View Products
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="middle" id="m"></div>
+                                    <div class="bottom" id="b"></div>
                                 </div>
                             </div>
-                            <div class="middle" id="m"></div>
-                            <div class="bottom" id="b"></div>
+                        </div>
+                    </c:forEach>
+
+
+
+
+                </div>
+                <!-- Button to Open the Modal -->
+
+
+
+
+
+
+            </div>
+
+            <!-- View Price List Of Association-->
+
+            <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal"
+                aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel"></h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body table-responsive">
+                            <input type="text" name="association_id" id="selected_association_id">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th colspan="5">CoverPage Price List</th>
+                                    </tr>
+                                    <tr style="background-color: none;color:black;">
+                                        <th>Quality</th>
+                                        <th>Size</th>
+                                        <th>Price</th>
+                                        <th>Delete</th>
+                                        <th>Edit</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="coverDetails">
+                                    <!-- <tr>
+                                <td>John</td>
+                                <td>Doe</td>
+                                <td>john@example.com</td>
+                                <td><i style="color: rgb(236, 34, 34); font-size: 20px; cursor: pointer;"
+                                        class="fa fa-trash"></i></td>
+                            </tr> -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-body table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th colspan="5">Paper Price List</th>
+                                    </tr>
+                                    <tr style="background-color: none;color:black;">
+                                        <th>Quality</th>
+                                        <th>Size</th>
+                                        <th>Price</th>
+                                        <th>Delete</th>
+                                        <th>Edit</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="paperDetails">
+                                    <!-- <tr>
+                                <td>John</td>
+                                <td>Doe</td>
+                                <td>john@example.com</td>
+                                <td><i style="color: rgb(236, 34, 34); font-size: 20px; cursor: pointer;"
+                                        class="fa fa-trash"></i></td>
+                            </tr> -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
                         </div>
                     </div>
                 </div>
-            </c:forEach>
-
-
-
-
-        </div>
-        <!-- Button to Open the Modal -->
-
-
-
-
-
-
-    </div>
-
-    <!-- View Price List Of Association-->
-
-    <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel"></h4>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body table-responsive">
-                    <input type="text" name="association_id" id="selected_association_id">
-                    <table class="table table-bordered" id="coverDetails">
-                        <thead>
-                            <tr>
-                                <th colspan="4">CoverPage Price List</th>
-                            </tr>
-                            <tr style="background-color: none;color:black;">
-                                <th>Quality</th>
-                                <th>Size</th>
-                                <th>Price</th>
-                                <th><a href="/product/add" class="btn btn-success">Add</a></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>John</td>
-                                <td>Doe</td>
-                                <td>john@example.com</td>
-                                <td><i style="color: rgb(236, 34, 34); font-size: 20px; cursor: pointer;"
-                                        class="fa fa-trash"></i></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-body table-responsive">
-                    <table class="table table-bordered" id="paperDetails">
-                        <thead>
-                            <tr>
-                                <th colspan="4">Paper Price List</th>
-                            </tr>
-                            <tr style="background-color: none;color:black;">
-                                <th>Quality</th>
-                                <th>Size</th>
-                                <th>Price</th>
-                                <th><a href="/product/add" class="btn btn-success">Add</a></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>John</td>
-                                <td>Doe</td>
-                                <td>john@example.com</td>
-                                <td><i style="color: rgb(236, 34, 34); font-size: 20px; cursor: pointer;"
-                                        class="fa fa-trash"></i></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-
-                </div>
             </div>
-        </div>
-    </div>
-    <script type="text/javascript">
+            <script type="text/javascript">
 
-        $(document).ready(function () {
-            $(".fancy-card #t").css("background-image", "url('https://static-1.gumroad.com/res/gumroad/assets/collections/food_and_cooking_thumb-34fb9ef316a7b01177529839891c3a03.jpg')");
-        });
-    </script>
+                $(document).ready(function () {
+                    $(".fancy-card #t").css("background-image", "url('https://static-1.gumroad.com/res/gumroad/assets/collections/food_and_cooking_thumb-34fb9ef316a7b01177529839891c3a03.jpg')");
+                });
+            </script>
 
-    <script type="text/javascript">
+            <script type="text/javascript">
 
-        // State management variables
-        var allProductCategories = [];
-        var allCovers = [];
-        var allPapers = [];
+                // State management variables
+                var allProductCategories = [];
+                var allCovers = [];
+                var allPapers = [];
 
 
 
-        // Select a particular company
-        $(".associationViewPrice").click(function () {
-            $("#paperDetails").empty()
-            $("#coverDetails").empty()
-            // $('#largeModal').modal('show');
-
-            var associationId = $(this).siblings("input").val();
-            var associationName = $(this).siblings(".title").text();
-            console.log(associationId, associationName);
-            $("#largeModal #myModalLabel").text(associationName);
-            $('#largeModal #selected_association_id').val(associationId);
+                var header = document.querySelector("meta[name='_csrf_header']").content;//.attr("content");
+                var token = document.querySelector("meta[name='_csrf']").content;//.attr("content");
 
 
-            const URI = "http://localhost:8080/api/product/company/" + associationId;
+                document.addEventListener('DOMContentLoaded', () => {
 
-            $.ajax({
-                url: URI,
-                success: function (result) {
-                    console.log(result);
-                    allProductCategories = result["productCategories"];
-                    allCovers = result["covers"];
-                    allPapers = result["papers"];
-
-                    console.log(allCovers, allPapers, allProductCategories);
-
-                    // fill-in cover table 
-                    var coverTable = document.getElementById("coverDetails");
-                    allCovers.forEach(element => {
-                        var row = document.createElement('tr');
-                        var coverName = document.createElement('td');
-                        coverName.innerHTML = element.coverName;
-
-                        var coverSize = document.createElement('td');
-                        coverSize.innerHTML = element.coverSize;
-
-                        var coverPrice = document.createElement('td');
-                        coverPrice.innerHTML = element.coverPrice;
-
-                        // <td><i style="color: rgb(236, 34, 34); font-size: 20px; cursor: pointer;" class="fa fa-trash"></i></td>
-                        var deletebutton = document.createElement('td');
-                        var deleteBtn = document.createElement('i');
-                        deleteBtn.style.color = 'rgb(236, 34, 34)';
-                        deleteBtn.style.fontSize = '20px';
-                        deleteBtn.style.cursor = 'pointer';
-                        deleteBtn.className = 'fa fa-trash';
-                        deletebutton.appendChild(deleteBtn);
+                    header = document.querySelector("meta[name='_csrf_header']").content;//.attr("content");
+                    token = document.querySelector("meta[name='_csrf']").content;//.attr("content");
 
 
-                        row.appendChild(coverName);
-                        row.appendChild(coverSize);
-                        row.appendChild(coverPrice);
-                        row.appendChild(deletebutton);
+                });
 
-                        coverTable.appendChild(row);
+                // Select a particular company
+                $(".associationViewPrice").click(function () {
+                    $("#paperDetails").empty()
+                    $("#coverDetails").empty()
+                    // $('#largeModal').modal('show');
 
-                        // coverTable.append('<tr><td>' + element.coverName + '</td><td>' + element.coverSize + '</td><td>' + element.coverPrice + '</td> </tr>');
+                    var associationId = $(this).siblings("input").val();
+                    var associationName = $(this).siblings(".title").text();
+                    console.log(associationId, associationName);
+                    $("#largeModal #myModalLabel").text(associationName);
+                    $('#largeModal #selected_association_id').val(associationId);
 
 
+                    const URI = "http://localhost:8080/api/product/company/" + associationId;
+
+                    $.ajax({
+                        url: URI,
+                        success: function (result) {
+                            console.log(result);
+                            allProductCategories = result["productCategories"];
+                            allCovers = result["covers"];
+                            allPapers = result["papers"];
+
+                            console.log(allCovers, allPapers, allProductCategories);
+
+                            // fill-in cover table 
+                            var coverTable = document.getElementById("coverDetails");
+                            allCovers.forEach(element => {
+                                var row = document.createElement('tr');
+                                row.id = "coverRow" + element.id;
+
+                                var coverName = document.createElement('td');
+                                coverName.innerHTML = element.coverName;
+
+                                var coverSize = document.createElement('td');
+                                coverSize.innerHTML = element.coverSize;
+
+                                var coverPrice = document.createElement('td');
+                                coverPrice.innerHTML = element.coverPrice;
+                                coverPrice.id = "coverPriceTd" + element.id;
+
+
+
+
+                                var edit_save_button = document.createElement('td');
+                                var editBtn = document.createElement('i');
+                                editBtn.id = "editCoverBtn" + element.id;
+                                editBtn.onclick = () => makeCoverRowEditable(element.id);
+                                editBtn.style.color = 'blue';
+                                editBtn.style.fontSize = '20px';
+                                editBtn.style.cursor = 'pointer';
+                                editBtn.className = 'fa fa-pencil';
+
+                                var saveBtn = document.createElement('i');
+                                saveBtn.id = "saveCoverBtn" + element.id;
+                                saveBtn.onclick = () => saveCoverRowDetail(element.id);
+                                saveBtn.style.color = 'green';
+                                saveBtn.style.fontSize = '20px';
+                                saveBtn.style.display = "none";
+                                saveBtn.style.cursor = 'pointer';
+                                saveBtn.className = 'fa fa-check';
+
+
+                                edit_save_button.appendChild(editBtn);
+                                edit_save_button.appendChild(saveBtn);
+
+                                // <td><i style="color: rgb(236, 34, 34); font-size: 20px; cursor: pointer;" class="fa fa-trash"></i></td>
+                                var deletebutton = document.createElement('td');
+                                var deleteBtn = document.createElement('i');
+                                deleteBtn.style.color = 'rgb(236, 34, 34)';
+                                deleteBtn.style.fontSize = '20px';
+                                deleteBtn.style.cursor = 'pointer';
+                                deleteBtn.className = 'fa fa-trash';
+                                deleteBtn.onclick = () => deleteCover(element.id);
+                                deletebutton.appendChild(deleteBtn);
+
+
+                                row.appendChild(coverName);
+                                row.appendChild(coverSize);
+                                row.appendChild(coverPrice);
+                                row.appendChild(deletebutton);
+                                row.appendChild(edit_save_button);
+
+                                coverTable.appendChild(row);
+
+                                // coverTable.append('<tr><td>' + element.coverName + '</td><td>' + element.coverSize + '</td><td>' + element.coverPrice + '</td> </tr>');
+
+
+                            });
+
+                            // fill-in Paper Table
+                            var paperTable = document.getElementById("paperDetails");
+
+                            allPapers.forEach(element => {
+
+                                var row = document.createElement('tr');
+                                row.id = "paperRow" + element.id;
+
+                                var paperQuality = document.createElement('td');
+                                paperQuality.innerHTML = element.paperQuality;
+
+                                var paperSize = document.createElement('td');
+                                paperSize.innerHTML = element.paperSize;
+
+                                var paperPrice = document.createElement('td');
+                                paperPrice.id = "paperPriceTd" + element.id;
+                                paperPrice.innerHTML = element.paperPrice;
+
+                                var edit_save_button = document.createElement('td');
+                                var editBtn = document.createElement('i');
+                                editBtn.id = "editPaperBtn" + element.id;
+                                editBtn.onclick = () => makePaperRowEditable(element.id);
+                                editBtn.style.color = 'blue';
+                                editBtn.style.fontSize = '20px';
+                                editBtn.style.cursor = 'pointer';
+                                editBtn.className = 'fa fa-pencil';
+
+                                var saveBtn = document.createElement('i');
+                                saveBtn.id = "savePaperBtn" + element.id;
+                                saveBtn.onclick = () => savePaperRowDetail(element.id);
+                                saveBtn.style.color = 'green';
+                                saveBtn.style.fontSize = '20px';
+                                saveBtn.style.display = "none";
+                                saveBtn.style.cursor = 'pointer';
+                                saveBtn.className = 'fa fa-check';
+
+
+                                edit_save_button.appendChild(editBtn);
+                                edit_save_button.appendChild(saveBtn);
+
+
+
+
+                                // <td><i style="color: rgb(236, 34, 34); font-size: 20px; cursor: pointer;" class="fa fa-trash"></i></td>
+                                var deletebutton = document.createElement('td');
+                                var deleteBtn = document.createElement('i');
+                                deleteBtn.style.color = 'rgb(236, 34, 34)';
+                                deleteBtn.style.fontSize = '20px';
+                                deleteBtn.style.cursor = 'pointer';
+                                deleteBtn.className = 'fa fa-trash';
+                                deleteBtn.onclick = () => deletePaper(element.id);
+                                deletebutton.appendChild(deleteBtn);
+
+
+                                row.appendChild(paperQuality);
+                                row.appendChild(paperSize);
+                                row.appendChild(paperPrice);
+                                row.appendChild(deletebutton);
+                                row.appendChild(edit_save_button);
+
+                                paperTable.appendChild(row);
+
+
+                            });
+
+                        }
                     });
 
-                    // fill-in Paper Table
-                    var paperTable = document.getElementById("paperDetails");
+                })
 
-                    allPapers.forEach(element => {
+                // Add row
+                var row = 1;
+                $(document).on("click", "#add-row", function () {
+                    console.log(allCovers);
+                    if (row > 4) {
+                        return false;
+                    }
+                    var new_row = '<tr id="row' + row + '"><td> <select name="sheetType" class="form-control" style="width: 160px;"><option value="">Paper Type</option></select></td><td><input name="sheetRange" value="" type="number" class="form-control input-md"  placeholder=""  style="width: 80px;"  /></td><td><input name="sheetPrice"' + row + '" type="number" class="form-control" placeholder=""  style="width: 80px;" disabled/></td><td><input class="delete-row btn btn-danger" type="button" value="X" /></td></tr>';
 
-                        var row = document.createElement('tr');
-                        var paperQuality = document.createElement('td');
-                        paperQuality.innerHTML = element.paperQuality;
+                    $('#test-body').append(new_row);
+                    row++;
+                    return false;
+                });
 
-                        var paperSize = document.createElement('td');
-                        paperSize.innerHTML = element.paperSize;
-
-                        var paperPrice = document.createElement('td');
-                        paperPrice.innerHTML = element.paperPrice;
-
-                        // <td><i style="color: rgb(236, 34, 34); font-size: 20px; cursor: pointer;" class="fa fa-trash"></i></td>
-                        var deletebutton = document.createElement('td');
-                        var deleteBtn = document.createElement('i');
-                        deleteBtn.style.color = 'rgb(236, 34, 34)';
-                        deleteBtn.style.fontSize = '20px';
-                        deleteBtn.style.cursor = 'pointer';
-                        deleteBtn.className = 'fa fa-trash';
-                        deletebutton.appendChild(deleteBtn);
-
-
-                        row.appendChild(paperQuality);
-                        row.appendChild(paperSize);
-                        row.appendChild(paperPrice);
-                        row.appendChild(deletebutton);
-
-                        paperTable.appendChild(row);
+                // Remove criterion
+                $(document).on("click", ".delete-row", function () {
+                    //  alert("deleting row#"+row);
+                    if (row > 1) {
+                        $(this).closest('tr').remove();
+                        row--;
+                    }
+                    return false;
+                });
 
 
-                    });
+
+                function deleteCover(id) {
+                    console.log(id);
+                    let is_confirm = confirm("Sure to delete cover");
+                    if (!is_confirm) {
+                        return;
+                    }
+
+
+                    const xhr = new XMLHttpRequest();
+                    const url = "http://localhost:8080/api/superuser/cover/" + id;
+                    xhr.open('DELETE', url, true);
+                    xhr.setRequestHeader('Content-type', 'application/json');
+                    xhr.setRequestHeader(header, token);
+
+                    xhr.onreadystatechange = function () {
+                        if (this.readyState === 4 && this.status === 200) {
+                            document.getElementById("coverRow" + id).remove();
+
+                        } else if (this.readyState === 4) {
+                            alert("Unable to make changes... Try again!");
+                        }
+                    }
+
+                    xhr.send(id);
+
+
+
 
                 }
-            });
 
-        })
+                function deletePaper(id) {
 
-        // Add row
-        var row = 1;
-        $(document).on("click", "#add-row", function () {
-            console.log(allCovers);
-            if (row > 4) {
-                return false;
-            }
-            var new_row = '<tr id="row' + row + '"><td> <select name="sheetType" class="form-control" style="width: 160px;"><option value="">Paper Type</option></select></td><td><input name="sheetRange" value="" type="number" class="form-control input-md"  placeholder=""  style="width: 80px;"  /></td><td><input name="sheetPrice"' + row + '" type="number" class="form-control" placeholder=""  style="width: 80px;" disabled/></td><td><input class="delete-row btn btn-danger" type="button" value="X" /></td></tr>';
+                    let is_confirm = confirm("Sure to delete paper");
+                    if (!is_confirm) {
+                        return;
+                    }
 
-            $('#test-body').append(new_row);
-            row++;
-            return false;
-        });
+                    console.log(id);
 
-        // Remove criterion
-        $(document).on("click", ".delete-row", function () {
-            //  alert("deleting row#"+row);
-            if (row > 1) {
-                $(this).closest('tr').remove();
-                row--;
-            }
-            return false;
-        });
+                    const xhr = new XMLHttpRequest();
+                    const url = "http://localhost:8080/api/superuser/paper/" + id;
+                    xhr.open('DELETE', url, true);
+                    xhr.setRequestHeader('Content-type', 'application/json');
+                    xhr.setRequestHeader(header, token);
 
+                    xhr.onreadystatechange = function () {
+                        if (this.readyState === 4 && this.status === 200) {
+                            document.getElementById("paperRow" + id).remove();
+
+                        } else if (this.readyState === 4) {
+                            alert("Unable to make changes... Try again!");
+                        }
+                    }
+
+                    xhr.send(id);
 
 
 
+                }
 
-    </script>
+                function makePaperRowEditable(id) {
+                    console.log(id);
+                    document.getElementById("editPaperBtn" + id).style.display = "none";
+                    document.getElementById("savePaperBtn" + id).style.display = "block";
 
-    <script src='http://code.jquery.com/jquery-latest.js'></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-        integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-        crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
-    <script src='/superuser/js/super-admin.js'></script>
-
+                    $("#paperPriceTd" + id).attr("contenteditable", "true").focus();
 
 
+                }
 
-</body>
+                function savePaperRowDetail(id) {
+                    let paperPrice = $("#paperPriceTd" + id).text();
+                    console.log(paperPrice);
 
-</html>
+                    const xhr = new XMLHttpRequest();
+                    const url = "http://localhost:8080/api/superuser/paper/price/" + id;
+                    xhr.open('PUT', url, true);
+                    xhr.setRequestHeader('Content-type', 'application/json');
+                    xhr.setRequestHeader(header, token);
+
+                    xhr.onreadystatechange = function () {
+                        if (this.readyState === 4 && this.status === 200) {
+                            document.getElementById("editPaperBtn" + id).style.display = "block";
+                            document.getElementById("savePaperBtn" + id).style.display = "none";
+
+                        } else if (this.readyState === 4) {
+                            alert("Unable to make changes... Try again!");
+                        }
+                    }
+
+                    xhr.send(paperPrice);
+
+
+                }
+
+                function makeCoverRowEditable(id) {
+
+                    console.log(id);
+                    document.getElementById("editCoverBtn" + id).style.display = "none";
+                    document.getElementById("saveCoverBtn" + id).style.display = "block";
+
+                    $("#coverPriceTd" + id).attr("contenteditable", "true").focus();
+                }
+
+                function saveCoverRowDetail(id) {
+                    console.log(id);
+                    let coverPrice = $("#coverPriceTd" + id).text();
+                    const xhr = new XMLHttpRequest();
+                    const url = "http://localhost:8080/api/superuser/cover/price/" + id;
+                    xhr.open('PUT', url, true);
+                    xhr.setRequestHeader('Content-type', 'application/json');
+                    xhr.setRequestHeader(header, token);
+
+                    xhr.onreadystatechange = function () {
+                        if (this.readyState === 4 && this.status === 200) {
+                            document.getElementById("editCoverBtn" + id).style.display = "block";
+                            document.getElementById("saveCoverBtn" + id).style.display = "none";
+
+                        } else if (this.readyState === 4) {
+                            alert("Unable to make changes... Try again!");
+                        }
+                    }
+
+                    xhr.send(coverPrice);
+                }
+
+
+
+            </script>
+
+            <script src='http://code.jquery.com/jquery-latest.js'></script>
+            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+                crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
+            <script src='/superuser/js/super-admin.js'></script>
+
+
+
+
+    </body>
+
+    </html>

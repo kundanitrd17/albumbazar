@@ -25,4 +25,12 @@ public interface ProductService {
 
     void savePaperDetail(Long associationId, PaperDTO paperInfo);
 
+    void changeCoverPrice(Long coverId, float price);
+
+    void changePaperPrice(Long paperId, float price);
+
+    void deletePaperDetail(Long paperId);
+
+    void deleteCoverDetail(Long coverId);
+
 }

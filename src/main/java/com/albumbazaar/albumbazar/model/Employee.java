@@ -28,7 +28,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "employee")
-@JsonIgnoreProperties(value = { "address" }, ignoreUnknown = true)
+@JsonIgnoreProperties(value = { "address", "branch" }, ignoreUnknown = true)
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
