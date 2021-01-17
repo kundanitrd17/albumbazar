@@ -33,10 +33,10 @@ insert into paper(paper_quality, paper_size, paper_price, association_id) values
 insert into paper(paper_quality, paper_size, paper_price, association_id) values("glasshd", "12*24", 90, 1);
 
 
-insert into product_category values(1, "category1", 1);
-insert into product_category values(2, "category2", 1);
-insert into product_category values(3, "category3", 1);
-insert into product_category values(4, "category4", 1);
+insert into product_category values(1, true, "category1", 1);
+insert into product_category values(2, true, "category2", 1);
+insert into product_category values(3, true, "category3", 1);
+insert into product_category values(4, true, "category4", 1);
 
 insert into customer (id, active, contact_no, email, password) values(1, 1, 8918930270, "nishigupta726@gmail.com", "123123123");
 

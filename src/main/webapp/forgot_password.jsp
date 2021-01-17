@@ -4,6 +4,10 @@
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="_csrf" content="${_csrf.token}" />
+    <!-- default header name is X-CSRF-TOKEN -->
+    <meta name="_csrf_header" content="${_csrf.headerName}" />
+    <!-- ... -->
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
@@ -101,40 +105,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
 
-    <script>
-
-        document.addEventListener('DOMContentLoaded', function () {
-
-            document.getElementById('OTPSendButton').addEventListener('click', () => {
-                const inputEmail = document.getElementById('inputEmailAddress').value;
-                // Valid email value
-                if (inputEmail == null || inputEmail.length < 0) {
-                    alert("Enter Email valid address!");
-                    return false;
-                }
-                let flag = false;
-                for (let index = 0; index < inputEmail.length; index++) {
-                    if (inputEmail[index] === '@') {
-                        flag = true;
-                        break;
-                    }
-                }
-                if (!flag) {
-                    alert("Enter Email valid address!");
-                    return false;
-                }
-
-                // Send OTP
-                console.log(inputEmail);
-
-
-                // After a success response
-                document.querySelector('main').innerHTML = `<div class="alert alert-danger" role="alert">OTP Sent</div>` + document.querySelector('body').innerHTML;
-
-            });
-
-        });
-
+    <script src="./js/forgot_password.js">
     </script>
 
 </body>

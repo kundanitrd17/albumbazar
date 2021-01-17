@@ -19,6 +19,107 @@
 
     <link rel="stylesheet" href="./css/navbar.css">
     <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <style>
+      
+
+
+
+
+
+
+.wyc-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.wyc {
+  background-color: transparent;
+  border: 1px solid #9fa4a8;
+  border-radius: 10px;
+  margin: 20px 0;
+  padding: 30px;
+  position: relative;
+  overflow: hidden;
+  transition: 0.3 ease;
+}
+
+.wyc.active {
+  background-color: #fff;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.wyc.active::before,
+.wyc.active::after {
+  content: "\f075";
+  font-family: "Font Awesome 5 Free";
+  color: #2ecc71;
+  font-size: 7rem;
+  position: absolute;
+  opacity: 0.2;
+  top: 20px;
+  left: 20px;
+  z-index: 0;
+}
+
+.wyc.active::before {
+  color: #3498db;
+  top: -10px;
+  left: -30px;
+  transform: rotateY(180deg);
+}
+
+.wyc-title {
+  margin: 0 35px 0 0;
+}
+
+.wyc-text {
+  display: none;
+  margin: 30px 0 0;
+}
+
+.wyc.active .wyc-text {
+  display: block;
+}
+
+.wyc-toggle {
+  background-color: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  padding: 0;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  height: 30px;
+  width: 30px;
+}
+
+.wyc-toggle:focus {
+  outline: 0;
+}
+
+.wyc-toggle .fa-times {
+  display: none;
+}
+
+.wyc.active .wyc-toggle .fa-times {
+  color: #fff;
+  display: block;
+}
+
+.wyc.active .wyc-toggle .fa-chevron-down {
+  display: none;
+}
+
+.wyc.active .wyc-toggle {
+  background-color: #9fa4a8;
+}
+    </style>
 
     <style>
       #carouselExampleSlidesOnly {
@@ -460,70 +561,61 @@
           margin-bottom:50px;">
           <div class="container">
             <div class="row">
-              <div class="col">
+              <div class="col-12 col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
                 <h4 style="text-align:left ;font-size: 18px; margin-bottom: 30px;">Why choose us.</h4>
-                <div class="accordion" id="accordionExample">
-                  <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingOne">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="">
-                        <strong> Who we are ?</strong>
-                      </button>
-                    </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne"
-                      data-bs-parent="#accordionExample">
-                      <div class="accordion-body" style="">
-                        VENUS PHOTO ALBUM is India ‘s leading company 1976. We are market – driven and technology –
-                        based organization serving millions of customers in India and Abroad. Over the years Venus
-                        Photo Albums have reached 250 million homes scaling beyond the geo- political boundaries. We
-                        have a well established market networking developed over three decades.
-                      </div>
-                    </div>
+                <div class="wyc-container">
+                  <div class="wyc ">
+                    <h4 class="wyc-title">Why shouldn't we trust atoms?</h4>
+                    <p class="wyc-text">They make up everything</p>
+                    <button class="wyc-toggle">
+                      <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                      <i class="fa fa-times"></i>
+                    </button>
                   </div>
-                  <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingTwo">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo"
-                        style="font-weight: 700; font-size: 14px ;">
-                        <strong> What we do ?</strong>
-                      </button>
-                    </h2>
-                    <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                      data-bs-parent="#accordionExample">
-                      <div class="accordion-body" style="">
-                        Venus photo books believe in creating stories out of Images. We are passionate about
-                        revolutionizing era of photo book, mini photo book, table calendar and wall calendar . All
-                        options that preserve your cherished memories are being catered beautifully. How especially we
-                        treat the choicest memories of your life and how perfectly we use advanced technology to liven
-                        up valuable sentiments of life is a thing to see.
-                      </div>
-                    </div>
+                  <div class="wyc">
+                    <h3 class="wyc-title">
+                      What do you call someone with no body and no nose?
+                    </h3>
+                    <p class="wyc-text">Nobody knows.</p>
+                    <button class="wyc-toggle">
+                      <i class="fas fa-chevron-down"></i>
+                      <i class="fas fa-times"></i>
+                    </button>
                   </div>
-                  <div class="accordion-item">
-                    <h2 class="accordion-header" id="headingThree">
-                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="">
-                        <strong> Our Capabilities</strong>
-                      </button>
-                    </h2>
-                    <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
-                      data-bs-parent="#accordionExample">
-                      <div class="accordion-body" style="">
-                        We have the production units in Amritsar, Chandigarh and Ludhiana, (Punjab) which functions
-                        through modern computerized technology. One and half lack albums roll out of these units every
-                        month.
-                        A workforce of 100 technical people and experts are working together to improve upon
-                        international quality range and doing constant research to find out the latest market trends
-                        to provide its customer with the best quality product.
-                        There are some 11 main market agents working for us and 1200+ wholesellers for state based
-                        sales throughout India. Apart from these are several thousand commercial photographers who buy
-                        Venus Photo Albums throughout the year.
-                      </div>
-                    </div>
+            
+                  <div class="wyc">
+                    <h3 class="wyc-title">
+                      What's the object-oriented way to become wealthy?
+                    </h3>
+                    <p class="wyc-text">Inheritance.</p>
+                    <button class="wyc-toggle">
+                      <i class="fas fa-chevron-down"></i>
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+            
+                  <div class="wyc">
+                    <h3 class="wyc-title">
+                      How many tickles does it take to tickle an octopus?
+                    </h3>
+                    <p class="wyc-text">Ten-tickles!</p>
+                    <button class="wyc-toggle">
+                      <i class="fas fa-chevron-down"></i>
+                      <i class="fas fa-times"></i>
+                    </button>
+                  </div>
+            
+                  <div class="wyc">
+                    <h3 class="wyc-title">What is: 1 + 1?</h3>
+                    <p class="wyc-text">Depends on who are you asking.</p>
+                    <button class="wyc-toggle">
+                      <i class="fas fa-chevron-down"></i>
+                      <i class="fas fa-times"></i>
+                    </button>
                   </div>
                 </div>
               </div>
-              <div class="col" style="margin-left: 70px;">
+              <div class="col col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" style="margin-left: 70px;">
                 <h4 style="text-align:left ;font-size: 18px; margin-bottom: 30px;">What customers say about us</h4>
                 <div class="card">
                   <div class="card-body">
@@ -637,6 +729,16 @@
       <script src="./js/index.js"></script>
 
       <script src="./js/delivery_address_handler.js"></script>
+
+      <script>
+        const toggles = document.querySelectorAll(".wyc-toggle");
+  
+  toggles.forEach((toggle) => {
+    toggle.addEventListener("click", () => {
+      toggle.parentNode.classList.toggle("active");
+    });
+  });
+      </script>
 
       <script type="text/javascript">
 

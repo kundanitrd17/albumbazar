@@ -55,6 +55,7 @@ public class HomeAPIController {
 
         try {
 
+            // System.out.println(email);
             utilityService.sendOTPToCustomer(email);
 
             return ResponseEntity.ok().build();
