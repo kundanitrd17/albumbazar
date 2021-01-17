@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
@@ -34,11 +35,17 @@ public class Branch {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, updatable = false)
     private Long id;
+
+    @Column(unique = true)
     private String name;
-    @Column(name = "contact_no")
+
+    @Column(name = "contact_no", unique = true)
     private String contactNo;
+
     private Date date;
-    private boolean active = true;
+
+    @Column(columnDefinition = "boolean default true")
+    private Boolean active;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "address_id")
@@ -49,6 +56,13 @@ public class Branch {
     @JoinColumn(name = "admin_id")
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Employee admin;
+
+    @PrePersist()
+    void prePersist() {
+        if (this.active == null) {
+            this.active = true;
+        }
+    }
 
     public Branch(final BasicBranchInfoForm branchDetail) {
         this.name = branchDetail.getName();
@@ -100,5 +114,4 @@ public class Branch {
         this.active = active;
     }
 
-   
 }

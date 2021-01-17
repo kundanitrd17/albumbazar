@@ -1,6 +1,5 @@
 package com.albumbazaar.albumbazar.model;
 
-import javax.annotation.PostConstruct;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,19 +7,18 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.albumbazaar.albumbazar.form.association.AssociationDetailForm;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.PrePersist;
 
 import lombok.Setter;
@@ -37,20 +35,36 @@ public class Association {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, updatable = false)
     private Long id;
+
+    @NotNull
+    @NotBlank
+    @Column(unique = true, nullable = false)
     private String name;
+
+    @NotNull
     @Size(max = 15)
+    @Column(unique = true, nullable = false)
     private String contact1;
+
     @Size(max = 15)
     private String contact2;
+
     @Email
+    @Column(unique = true)
     private String email;
 
     @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
     @JoinColumn(name = "address_id")
     private AddressEntity address;
 
+    @NotNull
+    @NotBlank
+    @Size(min = 8, message = "Password needs to be more stronger")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @Column(nullable = false)
     private String password;
+
+    @Column(columnDefinition = "boolean default true")
     private Boolean active;
 
     private String profilePhoto;

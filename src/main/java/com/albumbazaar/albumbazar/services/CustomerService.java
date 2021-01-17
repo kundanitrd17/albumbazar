@@ -4,9 +4,10 @@ import java.util.List;
 
 import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
-import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.OrderDetail;
+
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public interface CustomerService {
 
@@ -129,5 +130,7 @@ public interface CustomerService {
      * @param discount
      */
     void setRewardForCustomer(Long customerId, Float discount);
+
+    Customer loadByEmail(final String email) throws UsernameNotFoundException;
 
 }

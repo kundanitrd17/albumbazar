@@ -84,17 +84,12 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                 <thead>
                                     <tr class="filters">
                                         <th><input type="text" class="form-control" placeholder="Id" disabled></th>
-                                        <th><input type="text" class="form-control" placeholder="Branch" disabled></th>
                                         <th><input type="text" class="form-control" placeholder="Name" disabled></th>
-                                        <th><input type="text" class="form-control" placeholder="Account Detail"
-                                                disabled></th>
-                                        <th><input type="text" class="form-control" placeholder="Phone" disabled></th>
-                                        <th><input type="text" class="form-control" placeholder="Address" disabled></th>
-                                        <th><input type="text" class="form-control" placeholder="Salary" disabled></th>
-                                        <th><input type="text" class="form-control" placeholder="Attendance" disabled>
+                                        <th><input type="text" class="form-control" placeholder="contact1" disabled>
                                         </th>
-                                        <th><input type="text" class="form-control" placeholder="Join Date" disabled>
+                                        <th><input type="text" class="form-control" placeholder="contact2" disabled>
                                         </th>
+                                        <th><input type="text" class="form-control" placeholder="email" disabled></th>
                                         <th><input type="text" class="form-control" placeholder="Status" disabled></th>
                                         <th colspan="2" style="text-align: center;"><a class="btn btn-success"
                                                 href="add-employee">Add
@@ -108,35 +103,21 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                         <tr>
                                             <td>${association.id}</td>
                                             <td>${association.name}</td>
-                                            <td>${association.name}</td>
-                                            <td>${association.name}</td>
-                                            <td>${association.name}</td>
+                                            <td>${association.contact1}</td>
+                                            <td>${association.contact2}</td>
+                                            <td>${association.email}</td>
+                                            <td><a href="#" class="btn btn-success act disabled">Active</a>
+                                                <a href="#" class="btn btn-warning de-act"
+                                                    style="display: none;">Deactive</a>
+                                            </td>
+                                            <!-- <td class=""><a href="#" class="btn btn-success s-icon "
+                                                    style="display: none;">Save</a>
+                                                <button class="btn btn-warning e-icon">Edit</button>
+                                            </td> -->
+                                            <td><a class="btn btn-danger d-icon">Delete</button></a></td>
 
                                         </tr>
                                     </c:forEach>
-
-                                    <tr>
-                                        <td>101</td>
-                                        <td>Asansol Branch</td>
-                                        <td>Kundan Srivastava</td>
-                                        <td>1234567890</td>
-                                        <td>876897971</td>
-                                        <td><a href="#">Branch Order LINK</a></td>
-                                        <td>Salary</td>
-                                        <td><a href="#">Branch Order LINK</a></td>
-                                        <td>Date Join</td>
-                                        <td><a href="#" class="btn btn-success act">Active</a>
-                                            <a href="#" class="btn btn-warning de-act"
-                                                style="display: none;">Deactive</a>
-                                        </td>
-
-
-                                        <td class=""><a href="#" class="btn btn-success s-icon "
-                                                style="display: none;">Save</a>
-                                            <button class="btn btn-warning e-icon">Edit</button>
-                                        </td>
-                                        <td><a class="btn btn-danger d-icon">Delete</button></a></td>
-                                    </tr>
 
                                 </tbody>
                             </table>

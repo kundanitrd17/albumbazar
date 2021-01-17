@@ -2,6 +2,7 @@ package com.albumbazaar.albumbazar.dao;
 
 import java.util.List;
 
+import com.albumbazaar.albumbazar.model.Association;
 import com.albumbazaar.albumbazar.model.ProductCategory;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,5 +12,7 @@ public interface ProductCategoryRepository extends JpaRepository<ProductCategory
 
     @Query(value = "SELECT * FROM product_category WHERE association_id = ?1", nativeQuery = true)
     List<ProductCategory> findAllByAssociationId(Long id);
+
+    List<ProductCategory> findAllByAssociationAndActive(Association association, boolean active);
 
 }

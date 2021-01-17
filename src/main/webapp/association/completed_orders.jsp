@@ -18,17 +18,10 @@
         <link rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-
-
-
-        <!--  -->
-
-        <!--    libs for stomp and sockjs-->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-        <!--    end libs for stomp and sockjs-->
-
-        <!--  -->
+<!-- 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+        integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+        crossorigin="anonymous" /> -->
 
 
 
@@ -109,17 +102,19 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                 <thead>
                                     <tr class="filters">
                                         <th><input type="text" class="form-control" placeholder="Id" disabled></th>
-                                        <th><input type="text" class="form-control" placeholder="Product" disabled>
-                                        </th>
-                                        <th><input type="text" class="form-control" placeholder="Association" disabled>
+                                        <th><input type="text" class="form-control" placeholder="Description" disabled>
                                         </th>
 
-                                        <th><input type="text" class="form-control" placeholder="Delivery" disabled>
+                                        <th><input type="text" class="form-control" placeholder="Sheet Details"
+                                                disabled>
                                         </th>
-                                        <th><input type="text" class="form-control" placeholder="Amount" disabled>
+                                        <th><input type="text" class="form-control" placeholder="Cover" disabled>
                                         </th>
 
-                                        <th colspan="3" style="text-align: center;"><a class="btn btn-success"
+                                        <th><input type="text" class="form-control" placeholder="Images" disabled></th>
+
+
+                                        <th colspan="2" style="text-align: center;"><a class="btn btn-success"
                                                 href="/association/order-list/processing">View Accepted Order
                                             </a></th>
                                     </tr>
@@ -130,11 +125,56 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                         <tr id="orderRow${eachOrder.id}">
                                             <td class="orderId" id="orderId${eachOrder.id}"
                                                 data-orderId="${eachOrder.id}">${eachOrder.id}</td>
-                                            <td>${eachOrder.productName}</td>
-                                            <td>${eachOrder.associationName}</td>
-                                            <td>${eachOrder.deliveryDate}</td>
-                                            <td>${eachOrder.totalAmount}</td>
 
+                                                
+
+                                            <td id="OrderDescription">
+                                                
+                                                <button type="button" class="btn"
+                                                    data-toggle="modal"
+                                                    data-target="#DescriptionCard${eachOrder.id}">Show
+                                                    Description</button>
+
+                                                <div class="modal" id="DescriptionCard${eachOrder.id}">
+                                                    <div class="modal-dialog modal-lg">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h4 class="modal-title" id="myModalLabel">Comapny Name
+                                                                </h4>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+
+                                                                ${eachOrder.description}
+
+                                                            </div>
+
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-danger"
+                                                                    data-dismiss="modal">Close</button>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+
+                                            <td id="OrderPageDetails"><a class="btn">Show Pages Detail</a></td>
+                                            <td id="OrderCoverPage">${eachOrder.cover.coverName}
+                                            </td>
+
+                                            <td id="OrderImages">
+                                                <a class="btn" href="${eachOrder.photoFolderGoogleDriveLink}"
+                                                    target="_blank">Show
+                                                    Images</a>
+                                            </td>
+
+                                            <td><a class="btn btn-success disabled"
+                                                    href="#">
+                                                    Done ✔ </a></td>
                                         </tr>
 
                                     </c:forEach>
@@ -142,6 +182,8 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
                                 </tbody>
                             </table>
+
+                            
                         </div>
                     </div>
                 </div>

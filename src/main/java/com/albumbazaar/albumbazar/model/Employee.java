@@ -14,6 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -26,9 +27,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
-@Table(name = "employee", uniqueConstraints = { @UniqueConstraint(columnNames = { "email" }),
-        @UniqueConstraint(columnNames = { "pan" }), @UniqueConstraint(columnNames = { "voter" }),
-        @UniqueConstraint(columnNames = { "aadhaar" }), @UniqueConstraint(columnNames = { "personal_contact" }) })
+@Table(name = "employee")
 @JsonIgnoreProperties(value = { "address" }, ignoreUnknown = true)
 public class Employee {
     @Id
@@ -36,6 +35,8 @@ public class Employee {
     @Column(name = "id", unique = true, updatable = false)
     private Long id;
 
+    @NotNull
+    @NotBlank
     @Size(max = 100)
     private String name;
 
@@ -58,14 +59,19 @@ public class Employee {
     private Date leaving_date;
 
     @Column(columnDefinition = "boolean default true")
-    private Boolean active = true;
+    private Boolean active;
 
     private String profile_pic;
 
+    @NotNull
+    @NotBlank
     @Size(max = 15)
+    @Column(unique = true)
     private String personal_contact;
 
     @Size(max = 50)
+    @Email
+    @Column(name = "email", unique = true)
     private String email;
 
     @Size(max = 20)
@@ -83,11 +89,13 @@ public class Employee {
     @Size(max = 40)
     private String role;
 
-    @NotBlank
     @NotNull
+    @NotBlank
+    @Size(min = 8, message = "Password needs to be more stronger")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "branch_id")
     @OnDelete(action = OnDeleteAction.CASCADE)

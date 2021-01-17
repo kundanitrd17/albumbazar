@@ -35,8 +35,14 @@ public interface OrderRepository extends JpaRepository<OrderDetail, Long> {
 
     List<OrderDetail> findAllByAssociationIdAndOrderStatus(Long associationId, String orderStatus);
 
-    @Query(value = "SELECT * FROM order_detail WHERE association_id = ?1 AND has_association_accepted = true AND order_status not in ('READY_TO_DELIVER', 'DELIVER', 'UNDER_DELIVERY', 'DELIVERED', 'COMPLETED')", nativeQuery = true)
-    List<OrderDetail> findAllUnderProcessByAssociationId(Long associationId);
+    // @Query(value = "SELECT * FROM order_detail WHERE association_id = ?1 AND has_association_accepted = true AND order_status not in ('READY_TO_DELIVER', 'DELIVER', 'UNDER_DELIVERY', 'DELIVERED', 'COMPLETED')", nativeQuery = true)
+    // List<OrderDetail> findAllUnderProcessByAssociationId(Long associationId);
+
+    List<OrderDetail> findAllByAssociationAndHasAssociationAcceptedAndOrderStatus(Association association, 
+        boolean hasAssociationAccepted, String orderStatus
+    );
 
     List<OrderDetail> findAllByAssociationAndOrderStatus(Association association, String orderStatus);
+
+    List<OrderDetail> findByOrderStatusInAndAssociation(Collection<String> orderStatus, Association association);
 }

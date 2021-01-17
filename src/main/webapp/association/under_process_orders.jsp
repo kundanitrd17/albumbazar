@@ -121,12 +121,12 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                             <td>${eachOrder.associationName}</td>
                                             <td>7047261982</td>
                                             <td>9832177025</td>
-                                            <td><a href="" data-toggle="modal" data-target="#branchAddress"
-                                                    id="link_address" onclick="addrLink(1)">Address Id</a></td>
+                                            <td><a href="" data-toggle="modal" data-target="#AddressModal"
+                                                    id="link_address" onclick="fetchAddress('${eachOrder.deliveryAddress.id}')">Address Id</a></td>
                                             <td id="associationEmail">kundanitrd17@gmail.com</td>
                                             <td><a type="button" href="" id="link_adminId" data-toggle="modal"
-                                                    data-target="#associationProductViewDetails"
-                                                    onclick="associationProductView(1)">View Product</a></td>
+                                                    data-target="#orderProductViewDetails"
+                                                    onclick="orderProductView('${eachOrder.id}')">View Product</a></td>
                                             <td><a href="">Show Order</a></td>
                                             <!-- <td class=""> <a href="#" class="btn btn-success s-icon " style="display: none;"
                                         onclick="saveBranch(1)">Save</a>
@@ -152,79 +152,141 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
             </section>
 
+            
 
-            <div class="modal" id="branchAddress">
+            <div class="modal" id="AddressModal">
                 <div class="modal-dialog">
                     <div class="modal-content">
 
                         <!-- Modal Header -->
                         <div class="modal-header">
-                            <h4 class="modal-title">Branch Address</h4>
+                            <h4 class="modal-title">Modal Heading</h4>
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
                         </div>
 
                         <!-- Modal body -->
                         <div class="modal-body">
-                            <div class="container table-responsive col-12 col-md-12 col-xl-12 col-lg-12">
-                                <table class="table table-borderless">
-                                    <tbody>
-                                        <tr>
-                                            <th>LandMark: </th>
-                                            <td id="landmark"></td>
-                                        </tr>
-                                        <tr>
-                                            <th>Street 1: </th>
-                                            <td id="street1"></td>
-                                        </tr>
-                                        <tr>
-                                            <th>Street 2: </th>
-                                            <td id="street2"></td>
-                                        </tr>
-                                        <tr>
-                                            <th>Post Office: </th>
-                                            <td id="postoffice"></td>
-                                        </tr>
-                                        <tr>
-                                            <th>City: </th>
-                                            <td id="city"></td>
-                                        </tr>
-                                        <tr>
-                                            <th>Pin Code: </th>
-                                            <td id="pincode"></td>
-                                        </tr>
-                                        <tr>
-                                            <th>District: </th>
-                                            <td id="district"></td>
-                                        </tr>
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <th>Name: </th>
+                                        <td id="name"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Contact: </th>
+                                        <td id="contact"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Landmark: </th>
+                                        <td id="landmark"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Line1: </th>
+                                        <td id="line1"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Line2: </th>
+                                        <td id="line2"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>City: </th>
+                                        <td id="city"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Pincode: </th>
+                                        <td id="pincode"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>District: </th>
+                                        <td id="district"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>State: </th>
+                                        <td id="state"></td>
+                                    </tr>
 
-                                        <tr>
-                                            <th>State</th>
-                                            <td id="state"></td>
-                                        </tr>
-                                        <tr>
-                                            <td> <a href="#" class="btn btn-success save-icon" style="display: none;"
-                                                    onclick="u_address('')">Save</a>
-                                                <button class="btn btn-warning u-icon">Update</button>
-                                                <button type="button" class="btn btn-danger"
-                                                    data-dismiss="modal">Close</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                </tbody>
+                            </table>
                         </div>
 
                         <!-- Modal footer -->
                         <div class="modal-footer">
-                            <input type="hidden" name="" id="hidden_address_id" value="1">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
                         </div>
 
                     </div>
                 </div>
             </div>
 
+            <div class="modal" id="orderProductViewDetails">
+                <div class="modal-dialog modal-lg">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h4 class="modal-title" id="myModalLabel">Company Name</h4>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+      
+      
+                    <div class="modal-body table-responsive">
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th colspan="5">Cover Info</th>
+                          </tr>
+                          <tr style="background-color: none;color:black;">
+                            <th>Product Name</th>
+                            <th>Product Size</th>
+                            <th>CoverName</th>
+                            <th>Cover Size</th>
+      
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td id="productName">album</td>
+                            <td id="productSize">90*09</td>
+                            <td id="coverName">John</td>
+                            <td id="coverSize">Doe</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+      
+      
+                    <div class="modal-body table-responsive">
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr>
+                            <th colspan="5">Paper Info</th>
+                          </tr>
+                          <tr style="background-color: none;color:black;">
+                            <th>Quality</th>
+                            <th>Size</th>
+                            <th>No. of Sheets</th>
+                          </tr>
+                        </thead>
+                        <tbody id="paperListRow">
+                          <tr>
+                            <td id="pageQuality">John</td>
+                            <td id="pageSize">Doe</td>
+                            <td id="numberOfSheets">200</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+      
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+      
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-            <div class="modal" id="associationProductViewDetails">
+
+            <!-- <div class="modal" id="associationProductViewDetails">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -294,7 +356,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
 
             <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal"
@@ -365,25 +427,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
                 //view Branch Address
 
-                function addrLink(id) {
-                    $('#branchAddress #hidden_address_id').val(id);
-
-                    console.log("Address");
-                    // $.Post("url", { id: id }, function (data, status) {
-
-                    //     var addr = JSON.parse(data);
-                    //     $('#landmark').text("kundan").css("text-tranform", "capitalize");
-                    //     $('#street1').text("upper Kulti").css("text-tranform", "capitalize");
-                    //     $('#street2').text().css("text-tranform", "capitalize");
-                    //     $('#postoffice').text().css("text-tranform", "capitalize");
-                    //     $('#city').text().css("text-tranform", "capitalize");
-                    //     $('#pincode').text().css("text-tranform", "capitalize");
-                    //     $('#district').text().css("text-tranform", "capitalize");
-                    //     $('#state').text().css("text-tranform", "capitalize");
-
-                    // })
-                }
-
+                
                 //update branch address
                 function u_address(id) {
                     var id = $('#branchAddress #hidden_address_id').val();

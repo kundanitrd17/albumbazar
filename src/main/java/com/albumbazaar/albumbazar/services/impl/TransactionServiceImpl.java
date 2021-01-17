@@ -4,8 +4,6 @@ import java.util.List;
 
 import com.albumbazaar.albumbazar.dao.ExpenseRepository;
 import com.albumbazaar.albumbazar.dao.IncomeRepository;
-import com.albumbazaar.albumbazar.dto.OrderBillDTO;
-import com.albumbazaar.albumbazar.dto.SheetDetailDTO;
 import com.albumbazaar.albumbazar.model.Expense;
 import com.albumbazaar.albumbazar.model.Income;
 import com.albumbazaar.albumbazar.model.OrderDetail;
@@ -34,8 +32,8 @@ public class TransactionServiceImpl implements TransactionService {
 
     public TransactionServiceImpl(final IncomeRepository incomeRepository, final ExpenseRepository expenseRepository,
             @Qualifier("razorPayPaymentService") final RazorPayPaymentService razorPayPaymentService,
-            @Qualifier("orderService") final OrderService orderService, 
-            @Qualifier("productService")final ProductService productService){
+            @Qualifier("orderService") final OrderService orderService,
+            @Qualifier("productService") final ProductService productService) {
         this.expenseRepository = expenseRepository;
         this.incomeRepository = incomeRepository;
         this.razorPayPaymentService = razorPayPaymentService;
@@ -76,6 +74,5 @@ public class TransactionServiceImpl implements TransactionService {
         incomeRepository.save(income);
 
     }
-
 
 }

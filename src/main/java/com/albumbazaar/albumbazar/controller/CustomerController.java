@@ -115,10 +115,10 @@ public final class CustomerController {
             System.out.println(customerDTO.getReferralCode());
             final Customer savedCustomer = customerService.registerCustomer(customerDTO);
 
-            List<GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority(AvailableRoles.Code.USER));
-            CustomerPrincipal principal = new CustomerPrincipal(savedCustomer);
-            Authentication authentication = new UsernamePasswordAuthenticationToken(principal, null, authorities);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            // List<GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority(AvailableRoles.Code.USER));
+            // CustomerPrincipal principal = new CustomerPrincipal(savedCustomer);
+            // Authentication authentication = new UsernamePasswordAuthenticationToken(principal, null, authorities);
+            // SecurityContextHolder.getContext().setAuthentication(authentication);
             System.out.println(savedCustomer);
         } catch (Exception e) {
             logger.error(e.getMessage());
@@ -193,5 +193,8 @@ public final class CustomerController {
 
         return redirectView;
     }
+
+
+
 
 }

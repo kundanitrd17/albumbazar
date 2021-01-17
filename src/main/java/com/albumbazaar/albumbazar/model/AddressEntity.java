@@ -14,11 +14,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 
-
 @Data
 @Entity
 @Table(name = "address")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" }, ignoreUnknown = true)
 public class AddressEntity {
 
     @Id
@@ -37,14 +36,24 @@ public class AddressEntity {
     @Column(nullable = false)
     private String contactNo;
 
+    @NotNull
+    @NotBlank
     private String landmark;
+
     @NotNull
     @NotBlank
     private String line1;
+
     private String line2;
+
     @NotNull
+    @NotBlank
     private String city;
+
+    @NotNull
+    @NotBlank
     private String district;
+
     @NotNull
     @NotBlank
     @Size(min = 6, max = 6)
@@ -55,6 +64,7 @@ public class AddressEntity {
     private String state;
 
     private String cityCode;
+
     private String stateCode;
 
 }

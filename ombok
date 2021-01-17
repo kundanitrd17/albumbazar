@@ -13,23 +13,23 @@
 [INFO] 
 [INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ albumbazar ---
 [INFO] Changes detected - recompiling the module!
-[INFO] Compiling 158 source files to C:\dev\projects\AlbumBazaar\backend\albumbazar\target\classes
+[INFO] Compiling 153 source files to C:\dev\projects\AlbumBazaar\backend\albumbazar\target\classes
 [INFO] -------------------------------------------------------------
 [ERROR] COMPILATION ERROR : 
 [INFO] -------------------------------------------------------------
-[ERROR] /C:/dev/projects/AlbumBazaar/backend/albumbazar/src/main/java/com/albumbazaar/albumbazar/Mapper/CustomerMapper.java:[15,35] Unknown property "password" in result type CustomerDTO. Did you mean "null"?
 [ERROR] /C:/dev/projects/AlbumBazaar/backend/albumbazar/src/main/java/com/albumbazaar/albumbazar/Mapper/CoverMapper.java:[17,23] No property named "image" exists in source parameter(s). Did you mean "null"?
+[ERROR] /C:/dev/projects/AlbumBazaar/backend/albumbazar/src/main/java/com/albumbazaar/albumbazar/Mapper/CustomerMapper.java:[15,35] Unknown property "password" in result type CustomerDTO. Did you mean "null"?
 [INFO] 2 errors 
 [INFO] -------------------------------------------------------------
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD FAILURE
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  7.998 s
-[INFO] Finished at: 2021-01-12T01:22:45+05:30
+[INFO] Total time:  4.048 s
+[INFO] Finished at: 2021-01-15T17:15:14+05:30
 [INFO] ------------------------------------------------------------------------
 [ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:compile (default-compile) on project albumbazar: Compilation failure: Compilation failure: 
-[ERROR] /C:/dev/projects/AlbumBazaar/backend/albumbazar/src/main/java/com/albumbazaar/albumbazar/Mapper/CustomerMapper.java:[15,35] Unknown property "password" in result type CustomerDTO. Did you mean "null"?
 [ERROR] /C:/dev/projects/AlbumBazaar/backend/albumbazar/src/main/java/com/albumbazaar/albumbazar/Mapper/CoverMapper.java:[17,23] No property named "image" exists in source parameter(s). Did you mean "null"?
+[ERROR] /C:/dev/projects/AlbumBazaar/backend/albumbazar/src/main/java/com/albumbazaar/albumbazar/Mapper/CustomerMapper.java:[15,35] Unknown property "password" in result type CustomerDTO. Did you mean "null"?
 [ERROR] -> [Help 1]
 [ERROR] 
 [ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.

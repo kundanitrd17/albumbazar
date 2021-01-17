@@ -38,12 +38,6 @@ public interface OrderService {
     public OrderDetail createNewOrder(final OrderDetailFormDTO orderDetailFormDTO, final Long customerId);
 
     /**
-     * @param OrderDetailForm which contains all the data regarding the order
-     * @return boolean value denoting whether the tast has been completed or not
-     */
-    OrderDetail addOrder(final OrderDetailForm orderDetails);
-
-    /**
      * @param id of the order
      * @return OrderDetail model form
      */
@@ -119,7 +113,7 @@ public interface OrderService {
 
     List<OrderDetail> getCompletedOrdersWithAssociationId(Long associationId);
 
-    List<OrderDetail> getUnderProcessOrdersWithAssociationId(final Long associationId);
+    List<OrderDetail> getUnderProcessOrdersWithAssociationId(final Association association);
 
     void updateHasAssociationAccepted(Long orderId, boolean status);
 
@@ -135,9 +129,12 @@ public interface OrderService {
 
     OrderDetail createOrderByBranchOrAdmin(OrderDetailFormDTO orderDetailFormDTO);
 
-    void changeDeliveryAddress(@Valid AddressDTO addressDTO, Long EmployeeId);
+    void changeDeliveryAddress(AddressDTO addressDTO, Long EmployeeId);
 
     void changeOrderDescription(Long orderId, String description);
 
     void changeDeliveryStatus(final Long orderId, final OrderDetailStatus orderDetailStatus);
+
+	List<OrderDetail> getOrdersWithAssociationAndStatus(Association association,
+			List<String> orderDetailStatusList);
 }

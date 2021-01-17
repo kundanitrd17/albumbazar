@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Setter
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = { "paper_quality", "paper_size", "association_id" }))
-@JsonIgnoreProperties(value = { "association" })
+@JsonIgnoreProperties(value = { "association" }, ignoreUnknown = true)
 public class Paper {
 
     @Id
@@ -42,11 +42,20 @@ public class Paper {
 
     private String image;
 
+    @Column(name = "active", columnDefinition = "boolean default true")
+    private Boolean active;
+
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "association_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Association association;
+
+    @PrePersist
+    void prePersist() {
+        if (this.active == null)
+            this.active = true;
+    }
 
     @Override
     public String toString() {

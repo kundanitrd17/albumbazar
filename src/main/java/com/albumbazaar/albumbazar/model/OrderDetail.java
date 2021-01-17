@@ -1,21 +1,33 @@
 package com.albumbazaar.albumbazar.model;
 
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import java.util.Date;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.util.Date;
-import java.util.List;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
+import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -46,12 +58,15 @@ public class OrderDetail {
 
     // Product details
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "association_id", nullable = false)
     private Association association;
 
+    @Column(columnDefinition = "boolean default true")
     private Boolean hasAssociationAccepted;
 
+    @Column(columnDefinition = "boolean default true")
     private Boolean isForwardedToAssociation;
 
     private String associationName;
@@ -64,10 +79,14 @@ public class OrderDetail {
 
     private Float coverPrice;
 
-    @Column(columnDefinition = "json")
+    @NotNull
+    @NotBlank
+    @Column(columnDefinition = "json", nullable = false)
     private String paperDetailsWithNumberOfSheetsList;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cover_id", nullable = false)
     private Cover cover;
 
     // End of product details
@@ -75,9 +94,9 @@ public class OrderDetail {
     @Embedded
     private OrderBillEmbeddable orderBill;
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
-    private List<SheetDetail> sheets;
+    // @OneToMany(fetch = FetchType.LAZY)
+    // @JoinColumn(name = "order_id")
+    // private List<SheetDetail> sheets;
     // end of finance
 
     // Tracking the current position of the order
@@ -89,15 +108,15 @@ public class OrderDetail {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id", nullable = false)
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Customer customer;
 
     // The employee who handled this order
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_id")
-    @OnDelete(action = OnDeleteAction.NO_ACTION)
     private Employee employee;
 
     private Long branchId;
@@ -119,10 +138,17 @@ public class OrderDetail {
 
     @PrePersist
     public void prePersist() {
-        this.orderStatus = OrderDetailStatus.PENDING.toString();
-        this.paymentStatus = false;
-        this.hasAssociationAccepted = false;
-        this.isForwardedToAssociation = false;
+        if (this.orderStatus == null)
+            this.orderStatus = OrderDetailStatus.PENDING.toString();
+
+        if (this.paymentStatus == null)
+            this.paymentStatus = false;
+
+        if (this.hasAssociationAccepted == null)
+            this.hasAssociationAccepted = false;
+
+        if (this.isForwardedToAssociation == null)
+            this.isForwardedToAssociation = false;
     }
 
     public OrderDetail() {

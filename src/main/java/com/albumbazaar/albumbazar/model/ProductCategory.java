@@ -4,6 +4,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -15,12 +16,24 @@ public class ProductCategory {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, updatable = false)
     private Long id;
+
     @Column(name = "product_name")
     private String productName;
+
+    @Column(name = "active", columnDefinition = "boolean default true")
+    private Boolean active;
+
+    @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "association_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Association association;
+
+    @PrePersist
+    void prePersist() {
+        if (this.active == null)
+            active = true;
+    }
 
     public String getProductName() {
         return productName;
@@ -40,7 +53,15 @@ public class ProductCategory {
 
     @Override
     public String toString() {
-        return "ProductCategory [id=" + id + ", productName=" + productName + "]";
+        return "ProductCategory [id=" + id + ", productName=" + productName + ", active " + active + "]";
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
     }
 
 }

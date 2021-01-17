@@ -1,8 +1,5 @@
 package com.albumbazaar.albumbazar.model;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -35,12 +32,23 @@ public class Cover {
 
     private String image;
 
+    @Column(columnDefinition = "float default 0.0")
     private Float GST;
+
+    @Column(name = "active", columnDefinition = "boolean default true")
+    private Boolean active;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Association association;
+
+    @PrePersist
+    void prePersist() {
+        if (this.active == null) {
+            this.active = true;
+        }
+
+    }
 
     @Override
     public String toString() {

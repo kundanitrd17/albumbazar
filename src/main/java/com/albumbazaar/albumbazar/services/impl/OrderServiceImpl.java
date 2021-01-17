@@ -8,24 +8,18 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import javax.validation.Valid;
-
 import com.albumbazaar.albumbazar.Mapper.AddressMapper;
 import com.albumbazaar.albumbazar.Mapper.CoverMapper;
 import com.albumbazaar.albumbazar.dao.AddressRepository;
 import com.albumbazaar.albumbazar.dao.OrderAndCustomerCareRepository;
 import com.albumbazaar.albumbazar.dao.OrderRepository;
-import com.albumbazaar.albumbazar.dao.SheetDetailRepository;
 import com.albumbazaar.albumbazar.dto.AddressDTO;
-import com.albumbazaar.albumbazar.dto.OrderBillDTO;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.dto.ProductDetailDTO;
 import com.albumbazaar.albumbazar.dto.SheetDetailDTO;
-import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
 import com.albumbazaar.albumbazar.form.order.OrderDetailFormDTO;
 import com.albumbazaar.albumbazar.model.AddressEntity;
 import com.albumbazaar.albumbazar.model.Association;
-import com.albumbazaar.albumbazar.model.AvailableRoles;
 import com.albumbazaar.albumbazar.model.Cover;
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.OrderAndCustomerCareEntity;
@@ -33,7 +27,6 @@ import com.albumbazaar.albumbazar.model.OrderBillEmbeddable;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 import com.albumbazaar.albumbazar.model.Paper;
-import com.albumbazaar.albumbazar.model.SheetDetail;
 import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.CustomerService;
 import com.albumbazaar.albumbazar.services.OrderService;
@@ -56,14 +49,13 @@ public class OrderServiceImpl implements OrderService {
     private Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
 
     private final OrderRepository orderRepository;
-    private final SheetDetailRepository sheetDetailRepository;
     private final OrderAndCustomerCareRepository orderAndCustomerCareRepository;
     private final ProductService productService;
     private final AddressRepository addressRepository;
     private final ApplicationContext context;
 
     @Autowired
-    public OrderServiceImpl(final OrderRepository orderRepository, final SheetDetailRepository sheetDetailRepository,
+    public OrderServiceImpl(final OrderRepository orderRepository,
             final OrderAndCustomerCareRepository orderAndCustomerCareRepository,
             @Qualifier("productService") final ProductService productService, final AddressRepository addressRepository,
             final ApplicationContext context) {
@@ -71,7 +63,6 @@ public class OrderServiceImpl implements OrderService {
         this.context = context;
         this.orderAndCustomerCareRepository = orderAndCustomerCareRepository;
         this.orderRepository = orderRepository;
-        this.sheetDetailRepository = sheetDetailRepository;
         this.productService = productService;
         this.addressRepository = addressRepository;
     }
@@ -147,35 +138,6 @@ public class OrderServiceImpl implements OrderService {
         orderDetail.setCustomer(customer);
 
         return orderRepository.save(orderDetail);
-
-    }
-
-    @Deprecated
-    @Override
-    @Transactional
-    public OrderDetail addOrder(final OrderDetailForm orderDetails) {
-        // parse the form to get in proper input
-
-        final OrderDetail order = new OrderDetail(orderDetails); // parse orderdetail to get a proper order
-
-        final List<SheetDetail> sheets = new ArrayList<>(50);
-
-        final String[] paperQuality = orderDetails.getSheetType();
-        final String[] paperPrice = orderDetails.getSheetPrice();
-
-        for (int index = 0; index < orderDetails.getSheetType().length; index++) {
-
-            SheetDetail sheet = new SheetDetail();
-            sheet.setPaperIndex(index + 1);
-
-            sheetDetailRepository.save(sheet);
-
-            sheets.add(sheet);
-        }
-
-        order.setSheets(sheets);
-
-        return orderRepository.save(order);
 
     }
 
@@ -340,9 +302,9 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<OrderDetail> getUnderProcessOrdersWithAssociationId(final Long associationId) {
+    public List<OrderDetail> getUnderProcessOrdersWithAssociationId(final Association association) {
 
-        return orderRepository.findAllUnderProcessByAssociationId(associationId);
+        return orderRepository.findAllByAssociationAndHasAssociationAcceptedAndOrderStatus(association, true, OrderDetailStatus.UNDER_PROCESS_BY_ASSOCIATION.toString());
     }
 
     @Override
@@ -351,6 +313,7 @@ public class OrderServiceImpl implements OrderService {
 
         final OrderDetail order = this.getOrder(orderId);
         order.setHasAssociationAccepted(status);
+        order.setOrderStatus(OrderDetailStatus.UNDER_PROCESS_BY_ASSOCIATION.toString());
 
     }
 
@@ -361,6 +324,14 @@ public class OrderServiceImpl implements OrderService {
 
         return orderRepository.findAllByAssociationAndOrderStatus(association, readyToDeliver.toString());
 
+    }
+
+    @Override
+    public List<OrderDetail> getOrdersWithAssociationAndStatus(Association association,
+            List<String> orderDetailStatusList) {
+
+        
+        return orderRepository.findByOrderStatusInAndAssociation(orderDetailStatusList, association);
     }
 
     @Override
@@ -450,6 +421,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public void changeDeliveryAddress(final AddressDTO addressDTO, final Long EmployeeId) {
+
+        
         final AddressMapper addressMapper = context.getBean(AddressMapper.class);
 
         final Long orderId = addressDTO.getOrderId();
@@ -457,6 +430,7 @@ public class OrderServiceImpl implements OrderService {
 
         final AddressEntity address = addressMapper.addressDTOToAddressEntity(addressDTO);
 
+        
         final AddressEntity savedAddressEntity = addressRepository.save(address);
 
         order.setDeliveryAddress(savedAddressEntity);

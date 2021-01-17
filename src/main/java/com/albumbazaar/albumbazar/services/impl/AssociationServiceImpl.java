@@ -1,5 +1,6 @@
 package com.albumbazaar.albumbazar.services.impl;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -139,12 +140,24 @@ public class AssociationServiceImpl implements AssociationService {
     @Override
     public List<OrderDetail> getUnderProcessOrders(final Long associationId) {
 
-        return applicationContext.getBean(OrderService.class).getUnderProcessOrdersWithAssociationId(associationId);
+        final Association association = this.getAssociation(associationId);
+
+        return applicationContext.getBean(OrderService.class).getUnderProcessOrdersWithAssociationId(association);
     }
 
     @Override
     public List<OrderDetail> getCompletedOrder(final Long associationId) {
-        return applicationContext.getBean(OrderService.class).getCompletedOrdersWithAssociationId(associationId);
+
+        final Association association = this.getAssociation(associationId);
+
+        List<String> orderDetailStatusList = Arrays.asList(
+            OrderDetailStatus.COMPLETED.toString(), OrderDetailStatus.DELIVERY_UNDER_PROCESS.toString(), OrderDetailStatus.DELIVER.toString(), OrderDetailStatus.SENT_TO_DELIVERY_PARTNER.toString(),
+           OrderDetailStatus.DELIVERED.toString()
+        );
+
+    
+
+        return applicationContext.getBean(OrderService.class).getOrdersWithAssociationAndStatus(association, orderDetailStatusList);
     }
 
     @Override
@@ -180,7 +193,7 @@ public class AssociationServiceImpl implements AssociationService {
         final OrderService orderService = applicationContext.getBean(OrderService.class);
         final OrderDetail order = orderService.getOrder(orderId);
 
-        order.setOrderStatus(OrderDetailStatus.DELIVER.toString());
+        order.setOrderStatus(OrderDetailStatus.SENT_TO_DELIVERY_PARTNER.toString());
 
     }
 

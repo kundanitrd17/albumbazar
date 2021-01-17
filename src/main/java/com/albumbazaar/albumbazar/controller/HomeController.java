@@ -2,9 +2,11 @@ package com.albumbazaar.albumbazar.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import com.albumbazaar.albumbazar.Mapper.CustomerMapper;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
+import com.albumbazaar.albumbazar.dto.ResetPasswordDTO;
 import com.albumbazaar.albumbazar.model.AvailableRoles;
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
@@ -18,9 +20,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
@@ -122,6 +128,37 @@ public class HomeController {
         System.out.println(url);
         response.sendRedirect(url);
 
+    }
+
+    @GetMapping(value = "forgot-password")
+    public String resetPassword(HttpServletRequest request) {
+
+        return "forgot_password";
+    }
+
+    @PostMapping(value = "forgot-password")
+    public RedirectView customerResetPassword(@ModelAttribute final ResetPasswordDTO resetPasswordDTO,
+            final RedirectAttributes redirectAttributes, final BindingResult bindingResult) {
+
+        final RedirectView redirectView = new RedirectView("/");
+
+        if (bindingResult.hasErrors()) {
+            redirectView.setUrl("/forgot-password");
+            redirectAttributes.addFlashAttribute("error", "Invalid data!");
+            return redirectView;
+        }
+
+        System.out.println(resetPasswordDTO);
+
+        return redirectView;
+
+    }
+
+    @GetMapping(value = "forgot-password/employee")
+    public ModelAndView employeeResetPasswordView() {
+        final ModelAndView modelAndView = new ModelAndView("/employee");
+
+        return modelAndView;
     }
 
 }

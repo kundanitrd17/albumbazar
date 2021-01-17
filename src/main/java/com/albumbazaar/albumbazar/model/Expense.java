@@ -1,11 +1,16 @@
 package com.albumbazaar.albumbazar.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.Date;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+
+import org.hibernate.annotations.CreationTimestamp;
 
 @Entity
 public class Expense {
@@ -13,10 +18,17 @@ public class Expense {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, updatable = false)
     private Long id;
+
     private String paymentType;
+
     private Float amount;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @CreationTimestamp
     private Date dateTime;
+
     private Long receiverId;
+
     private String receiverRole;
 
     public Long getId() {

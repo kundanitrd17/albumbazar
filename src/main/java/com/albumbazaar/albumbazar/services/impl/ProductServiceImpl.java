@@ -64,20 +64,23 @@ public class ProductServiceImpl implements ProductService {
     public AllProducts getAllProducts(final String company) {
         AllProducts products = new AllProducts();
         try {
-            Long id = Long.parseLong(company);
+            final Long associationId = Long.parseLong(company);
+
+            final Association association = associationService.getAssociation(associationId);
 
             // Flooding Categories
-            products.setProductCategories(productCategoryRepository.findAllByAssociationId(id).stream()
-                    .map(item -> item.getProductName()).collect(Collectors.toList()));
+            products.setProductCategories(productCategoryRepository.findAllByAssociationAndActive(association, true)
+                    .stream().map(item -> item.getProductName()).collect(Collectors.toList()));
 
-            final List<Cover> covers = coverRepository.findAllByAssociationId(id);
-            final List<Paper> papers = paperRepository.findAllByAssociationId(id);
+            final List<Cover> covers = coverRepository.findAllByAssociationAndActive(association, true);
+            final List<Paper> papers = paperRepository.findAllByAssociationAndActive(association, true);
 
             // Extracting all the size
             HashSet<String> sizes = new HashSet<>();
             covers.stream().forEach(cover -> sizes.add(cover.getCoverSize()));
 
-            papers.stream().forEach(paper -> sizes.add(paper.getPaperSize()));
+            // Paper sizes need not be included
+            // papers.stream().forEach(paper -> sizes.add(paper.getPaperSize()));
 
             // Flooding sizes
             products.setSizes(sizes);
@@ -85,14 +88,7 @@ public class ProductServiceImpl implements ProductService {
             products.setCovers(covers.stream().map(coverMapper::coverTCoverDTO).collect(Collectors.toList()));
             // Flooding papers
 
-            products.setPapers(papers.stream().map(paper -> {
-                final PaperDTO paperDTO = new PaperDTO();
-                paperDTO.setId(paper.getId());
-                paperDTO.setPaperQuality(paper.getPaperQuality());
-                paperDTO.setPaperSize(paper.getPaperSize());
-                paperDTO.setPaperPrice(paper.getPaperPrice());
-                return paperDTO;
-            }).collect(Collectors.toList()));
+            products.setPapers(papers.stream().map(paperMapper::paperEntityToPaperDTO).collect(Collectors.toList()));
 
             return products;
 

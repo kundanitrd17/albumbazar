@@ -1,6 +1,7 @@
 package com.albumbazaar.albumbazar.model;
 
 import javax.persistence.Embeddable;
+import javax.validation.constraints.NotNull;
 
 import lombok.Data;
 
@@ -8,10 +9,12 @@ import lombok.Data;
 @Data
 public class OrderBillEmbeddable {
 
+    @NotNull
     private Float totalAmount;
     private Float discount;
     private Float wallet;
 
+    @NotNull
     private Float amountToPay;
 
     public OrderBillEmbeddable() {
@@ -20,5 +23,5 @@ public class OrderBillEmbeddable {
         this.wallet = 0f;
         this.amountToPay = 0f;
     }
-    
+
 }

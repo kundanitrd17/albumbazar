@@ -9,6 +9,8 @@ import com.albumbazaar.albumbazar.form.employee.BasicEmployeeDetailForm;
 import com.albumbazaar.albumbazar.model.AvailableRoles;
 import com.albumbazaar.albumbazar.model.Employee;
 
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
 public interface EmployeeService {
 
     boolean addEmployee(final BasicEmployeeDetailForm employeeDetail, final LocationForm addressDetail);
@@ -22,6 +24,8 @@ public interface EmployeeService {
     List<Employee> getAllEmployee();
 
     Employee getEmployee(Long id);
+
+    Employee loadByEmail(final String email) throws UsernameNotFoundException;
 
     Employee updateEmployee(final Employee updatedEmployeeDetails);
 

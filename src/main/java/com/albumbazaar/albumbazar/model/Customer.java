@@ -40,19 +40,22 @@ public class Customer {
     private String email;
 
     @Size(min = 6, max = 20, message = "Contact number is Invalid")
+    @NotNull
+    @Column(name = "contact_no", unique = true)
     private String contactNo;
 
+    @Column(name = "referral_code", unique = true)
     private String referralCode;
 
     @Column(columnDefinition = "float default 0.0")
     private Float wallet;
 
-    @Column(columnDefinition = "boolean default true")
+    @Column(columnDefinition = "boolean default false")
     private Boolean active;
 
     @NotNull(message = "Password cannot be null")
     @NotBlank(message = "Password cannot be blank")
-    // @Size(min = 8, message = "Password needs to be more stronger")
+    @Size(min = 8, message = "Password needs to be more stronger")
     @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
@@ -73,7 +76,7 @@ public class Customer {
     @PrePersist
     void prePersist() {
         if (this.active == null) {
-            this.active = true;
+            this.active = false;
         }
         if (this.discount == null) {
             this.discount = 0f;

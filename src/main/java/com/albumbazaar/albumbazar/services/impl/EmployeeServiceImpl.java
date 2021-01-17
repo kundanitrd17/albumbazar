@@ -61,6 +61,12 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
     }
 
     @Override
+    public Employee loadByEmail(final String email) throws UsernameNotFoundException {
+
+        return employeeRepository.findByEmail(email);
+    }
+
+    @Override
     public boolean addEmployee(final BasicEmployeeDetailForm employeeDetail, final LocationForm addressDetail) {
         try {
 

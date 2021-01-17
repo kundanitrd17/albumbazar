@@ -258,6 +258,13 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
     }
 
     @Override
+    public Customer loadByEmail(final String email) throws UsernameNotFoundException {
+
+        return customerRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("Invalid Credentials"));
+    }
+
+    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         final Customer customer = customerRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Invalid Credentials"));
