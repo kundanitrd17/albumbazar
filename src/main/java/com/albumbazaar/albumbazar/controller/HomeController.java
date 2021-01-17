@@ -13,7 +13,9 @@ import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
 import com.albumbazaar.albumbazar.services.CustomerService;
 import com.albumbazaar.albumbazar.services.GoogleDriveService;
+import com.albumbazaar.albumbazar.services.UtilityService;
 
+import org.hibernate.annotations.common.util.impl.Log_.logger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,15 +39,17 @@ public class HomeController {
     private CustomerMapper customerMapper;
 
     private CustomerService customerService;
-
+    private UtilityService utilityService;
     private GoogleDriveService googleDriveService;
 
     @Autowired(required = true)
-    private HomeController(@Qualifier("googleDriveService") final GoogleDriveService googleDriveService,
+    private HomeController(@Qualifier("utilityService") final UtilityService utilityService,
+            @Qualifier("googleDriveService") final GoogleDriveService googleDriveService,
             @Qualifier("customerService") final CustomerService customerService, final CustomerMapper customerMapper) {
         this.googleDriveService = googleDriveService;
         this.customerService = customerService;
         this.customerMapper = customerMapper;
+        this.utilityService = utilityService;
 
     }
 
@@ -148,7 +152,13 @@ public class HomeController {
             return redirectView;
         }
 
-        System.out.println(resetPasswordDTO);
+        try {
+            utilityService.resetCustomerPassword(resetPasswordDTO);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            redirectView.setUrl("/forgot-password");
+            redirectAttributes.addFlashAttribute("error", "Invalid data!");
+        }
 
         return redirectView;
 
@@ -156,9 +166,33 @@ public class HomeController {
 
     @GetMapping(value = "forgot-password/employee")
     public ModelAndView employeeResetPasswordView() {
-        final ModelAndView modelAndView = new ModelAndView("/employee");
+        final ModelAndView modelAndView = new ModelAndView("/employee_forgot_password");
 
         return modelAndView;
+    }
+
+    @PostMapping(value = "forgot-password/employee")
+    public RedirectView employeeResetPassword(@ModelAttribute final ResetPasswordDTO resetPasswordDTO,
+            final RedirectAttributes redirectAttributes, final BindingResult bindingResult) {
+
+        final RedirectView redirectView = new RedirectView("/");
+
+        if (bindingResult.hasErrors()) {
+            redirectView.setUrl("/forgot-password");
+            redirectAttributes.addFlashAttribute("error", "Invalid data!");
+            return redirectView;
+        }
+
+        try {
+            utilityService.resetEmployeePassword(resetPasswordDTO);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            redirectView.setUrl("/forgot-password/employee");
+            redirectAttributes.addFlashAttribute("error", "Invalid data!");
+        }
+
+        return redirectView;
+
     }
 
 }
