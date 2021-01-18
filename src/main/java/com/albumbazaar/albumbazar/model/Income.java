@@ -21,7 +21,12 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import lombok.Getter;
+import lombok.Setter;
+
 @Entity
+@Getter
+@Setter
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = { "order_id", "received_time" }))
 @JsonIgnoreProperties(value = { "order" })
 public class Income {
@@ -40,43 +45,6 @@ public class Income {
     @Column(name = "received_time")
     private Date receivedTime;
 
-    private Float amount;
+    private Double amount;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public OrderDetail getOrder() {
-        return order;
-    }
-
-    public void setOrder(OrderDetail order) {
-        this.order = order;
-    }
-
-    public Date getReceivedTime() {
-        return receivedTime;
-    }
-
-    public void setReceivedTime(Date receivedTime) {
-        this.receivedTime = receivedTime;
-    }
-
-    public Float getAmount() {
-        return amount;
-    }
-
-    public void setAmount(Float amount) {
-        this.amount = amount;
-    }
-
-    @Override
-    public String toString() {
-        return "Income{" + "id=" + id + ", order=" + order + ", receivedTime=" + receivedTime + ", amount=" + amount
-                + '}';
-    }
 }

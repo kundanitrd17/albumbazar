@@ -28,12 +28,12 @@ public class Cover {
     private String coverSize;
 
     @NotNull
-    private Float coverPrice;
+    private Double coverPrice;
 
     private String image;
 
-    @Column(columnDefinition = "float default 0.0")
-    private Float GST;
+    @Column(columnDefinition = "double default 0.0")
+    private Double GST;
 
     @Column(name = "active", columnDefinition = "boolean default true")
     private Boolean active;

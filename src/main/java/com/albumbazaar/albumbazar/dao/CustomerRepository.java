@@ -11,15 +11,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 public interface CustomerRepository extends JpaRepository<Customer, Long> {
 
-    List<Customer> findByDiscountGreaterThan(Float discount);
+    List<Customer> findByDiscountGreaterThan(Double discount);
 
     List<Customer> findByActive(Boolean active);
 
     @Query(value = "SELECT wallet FROM customer WHERE id = ?1", nativeQuery = true)
-    Float getWalletAmount(Long id);
+    Double getWalletAmount(Long id);
 
     @Query(value = "SELECT discount FROM customer WHERE id = ?1", nativeQuery = true)
-    Float getDiscount(Long id);
+    Double getDiscount(Long id);
 
     @Transactional
     @Modifying(clearAutomatically = true)

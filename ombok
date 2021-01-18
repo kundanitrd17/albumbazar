@@ -13,27 +13,26 @@
 [INFO] 
 [INFO] --- maven-compiler-plugin:3.8.1:compile (default-compile) @ albumbazar ---
 [INFO] Changes detected - recompiling the module!
-[INFO] Compiling 153 source files to C:\dev\projects\AlbumBazaar\backend\albumbazar\target\classes
-[INFO] -------------------------------------------------------------
-[ERROR] COMPILATION ERROR : 
-[INFO] -------------------------------------------------------------
-[ERROR] /C:/dev/projects/AlbumBazaar/backend/albumbazar/src/main/java/com/albumbazaar/albumbazar/Mapper/CoverMapper.java:[17,23] No property named "image" exists in source parameter(s). Did you mean "null"?
-[ERROR] /C:/dev/projects/AlbumBazaar/backend/albumbazar/src/main/java/com/albumbazaar/albumbazar/Mapper/CustomerMapper.java:[15,35] Unknown property "password" in result type CustomerDTO. Did you mean "null"?
-[INFO] 2 errors 
-[INFO] -------------------------------------------------------------
+[INFO] Compiling 157 source files to C:\dev\projects\AlbumBazaar\backend\albumbazar\target\classes
+[INFO] /C:/dev/projects/AlbumBazaar/backend/albumbazar/src/main/java/com/albumbazaar/albumbazar/services/impl/SuperuserServiceImpl.java: Some input files use or override a deprecated API.
+[INFO] /C:/dev/projects/AlbumBazaar/backend/albumbazar/src/main/java/com/albumbazaar/albumbazar/services/impl/SuperuserServiceImpl.java: Recompile with -Xlint:deprecation for details.
+[INFO] 
+[INFO] --- maven-resources-plugin:3.1.0:testResources (default-testResources) @ albumbazar ---
+[INFO] Using 'UTF-8' encoding to copy filtered resources.
+[INFO] skip non existing resourceDirectory C:\dev\projects\AlbumBazaar\backend\albumbazar\src\test\resources
+[INFO] 
+[INFO] --- maven-compiler-plugin:3.8.1:testCompile (default-testCompile) @ albumbazar ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 1 source file to C:\dev\projects\AlbumBazaar\backend\albumbazar\target\test-classes
+[INFO] 
+[INFO] <<< spring-boot-maven-plugin:2.3.3.RELEASE:run (default-cli) < test-compile @ albumbazar <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot-maven-plugin:2.3.3.RELEASE:run (default-cli) @ albumbazar ---
+[INFO] Attaching agents: []
 [INFO] ------------------------------------------------------------------------
-[INFO] BUILD FAILURE
+[INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  4.048 s
-[INFO] Finished at: 2021-01-15T17:15:14+05:30
+[INFO] Total time:  58:46 min
+[INFO] Finished at: 2021-01-18T02:32:55+05:30
 [INFO] ------------------------------------------------------------------------
-[ERROR] Failed to execute goal org.apache.maven.plugins:maven-compiler-plugin:3.8.1:compile (default-compile) on project albumbazar: Compilation failure: Compilation failure: 
-[ERROR] /C:/dev/projects/AlbumBazaar/backend/albumbazar/src/main/java/com/albumbazaar/albumbazar/Mapper/CoverMapper.java:[17,23] No property named "image" exists in source parameter(s). Did you mean "null"?
-[ERROR] /C:/dev/projects/AlbumBazaar/backend/albumbazar/src/main/java/com/albumbazaar/albumbazar/Mapper/CustomerMapper.java:[15,35] Unknown property "password" in result type CustomerDTO. Did you mean "null"?
-[ERROR] -> [Help 1]
-[ERROR] 
-[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
-[ERROR] Re-run Maven using the -X switch to enable full debug logging.
-[ERROR] 
-[ERROR] For more information about the errors and possible solutions, please read the following articles:
-[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

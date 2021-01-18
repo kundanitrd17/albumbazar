@@ -310,7 +310,7 @@ public final class SuperuserController {
 
         logger.info(customerId + " " + amount);
         try {
-            customerService.setRewardForCustomer(Long.parseLong(customerId), Float.parseFloat(amount));
+            customerService.setRewardForCustomer(Long.parseLong(customerId), Double.parseDouble(amount));
         } catch (NumberFormatException e) {
             redirectAttributes.addAttribute("error", "Invalid Inputs");
         } catch (Exception e) {

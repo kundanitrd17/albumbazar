@@ -129,8 +129,8 @@
                                                             </div>
 
                                                             <div class="form-group">
-                                                                <label
-                                                                    for="exampleInputAddress1${address.id}">Address</label>
+                                                                <label for="exampleInputAddress1${address.id}">Line
+                                                                    1</label>
                                                                 <input name="line1" type="text" class="form-control"
                                                                     id="exampleInputAddress1${address.id}"
                                                                     value="${address.line1}"
@@ -138,8 +138,8 @@
                                                             </div>
 
                                                             <div class="form-group">
-                                                                <label
-                                                                    for="exampleInputAddress2${address.id}">Address</label>
+                                                                <label for="exampleInputAddress2${address.id}">Line
+                                                                    2</label>
                                                                 <input name="line2" type="text" class="form-control"
                                                                     id="exampleInputAddress2${address.id}"
                                                                     value="${address.line2}"

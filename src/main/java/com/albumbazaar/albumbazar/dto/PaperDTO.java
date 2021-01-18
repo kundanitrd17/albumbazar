@@ -29,9 +29,9 @@ public class PaperDTO {
 
     @NotNull
     @NotBlank
-    private Float paperPrice;
+    private Double paperPrice;
 
-    private Float GST;
+    private Double GST;
 
     private String image;
 

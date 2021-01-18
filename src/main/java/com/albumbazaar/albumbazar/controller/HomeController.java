@@ -11,6 +11,7 @@ import com.albumbazaar.albumbazar.model.AvailableRoles;
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
+import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.CustomerService;
 import com.albumbazaar.albumbazar.services.GoogleDriveService;
 import com.albumbazaar.albumbazar.services.UtilityService;
@@ -40,15 +41,18 @@ public class HomeController {
     private CustomerService customerService;
     private UtilityService utilityService;
     private GoogleDriveService googleDriveService;
+    private AssociationService associationService;
 
     @Autowired(required = true)
     private HomeController(@Qualifier("utilityService") final UtilityService utilityService,
             @Qualifier("googleDriveService") final GoogleDriveService googleDriveService,
+            @Qualifier("associationService") final AssociationService associationService,
             @Qualifier("customerService") final CustomerService customerService, final CustomerMapper customerMapper) {
         this.googleDriveService = googleDriveService;
         this.customerService = customerService;
         this.customerMapper = customerMapper;
         this.utilityService = utilityService;
+        this.associationService = associationService;
 
     }
 
@@ -69,6 +73,8 @@ public class HomeController {
                     CustomerDTO customerDTO = customerMapper.customerEntityToCustomerDTO(customer);
 
                     modelAndView.addObject("customer", customerDTO);
+
+                    modelAndView.addObject("associations", associationService.getAllAssociation());
                 }
             }
 

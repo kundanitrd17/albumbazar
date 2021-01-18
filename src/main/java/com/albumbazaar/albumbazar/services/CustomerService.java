@@ -59,7 +59,7 @@ public interface CustomerService {
      * @param id
      * @return Total amount in wallet
      */
-    Float getWalletAmount(Long id);
+    Double getWalletAmount(Long id);
 
     /**
      * add amount to the existing wallet
@@ -68,9 +68,9 @@ public interface CustomerService {
      * @param amount amount needs to be added
      * @return totol amount
      */
-    Float updateWallet(Long id, float amount);
+    Double updateWallet(Long id, double amount);
 
-    Float getDiscount(Long id);
+    Double getDiscount(Long id);
 
     /**
      * It will replace the previous discount to the amount passed
@@ -80,7 +80,7 @@ public interface CustomerService {
      * @return current amount
      */
 
-    Float setDiscount(Long id, float amount);
+    Double setDiscount(Long id, double amount);
 
     /**
      * set status to false for the customer
@@ -129,7 +129,7 @@ public interface CustomerService {
      * @param customerId
      * @param discount
      */
-    void setRewardForCustomer(Long customerId, Float discount);
+    void setRewardForCustomer(Long customerId, Double discount);
 
     Customer loadByEmail(final String email) throws UsernameNotFoundException;
 

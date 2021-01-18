@@ -19,106 +19,100 @@
 
     <link rel="stylesheet" href="./css/navbar.css">
     <link rel="stylesheet" href="./css/index.css">
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
     <style>
-      
+      .wyc-container {
+        max-width: 600px;
+        margin: 0 auto;
+      }
 
+      .wyc {
+        background-color: transparent;
+        border: 1px solid #9fa4a8;
+        border-radius: 10px;
+        margin: 20px 0;
+        padding: 30px;
+        position: relative;
+        overflow: hidden;
+        transition: 0.3 ease;
+      }
 
+      .wyc.active {
+        background-color: #fff;
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.1);
+      }
 
+      .wyc.active::before,
+      .wyc.active::after {
+        content: "\f075";
+        font-family: "Font Awesome 5 Free";
+        color: #2ecc71;
+        font-size: 7rem;
+        position: absolute;
+        opacity: 0.2;
+        top: 20px;
+        left: 20px;
+        z-index: 0;
+      }
 
+      .wyc.active::before {
+        color: #3498db;
+        top: -10px;
+        left: -30px;
+        transform: rotateY(180deg);
+      }
 
+      .wyc-title {
+        margin: 0 35px 0 0;
+      }
 
-.wyc-container {
-  max-width: 600px;
-  margin: 0 auto;
-}
+      .wyc-text {
+        display: none;
+        margin: 30px 0 0;
+      }
 
-.wyc {
-  background-color: transparent;
-  border: 1px solid #9fa4a8;
-  border-radius: 10px;
-  margin: 20px 0;
-  padding: 30px;
-  position: relative;
-  overflow: hidden;
-  transition: 0.3 ease;
-}
+      .wyc.active .wyc-text {
+        display: block;
+      }
 
-.wyc.active {
-  background-color: #fff;
-  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.1);
-}
+      .wyc-toggle {
+        background-color: transparent;
+        border: 0;
+        border-radius: 50%;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        padding: 0;
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        height: 30px;
+        width: 30px;
+      }
 
-.wyc.active::before,
-.wyc.active::after {
-  content: "\f075";
-  font-family: "Font Awesome 5 Free";
-  color: #2ecc71;
-  font-size: 7rem;
-  position: absolute;
-  opacity: 0.2;
-  top: 20px;
-  left: 20px;
-  z-index: 0;
-}
+      .wyc-toggle:focus {
+        outline: 0;
+      }
 
-.wyc.active::before {
-  color: #3498db;
-  top: -10px;
-  left: -30px;
-  transform: rotateY(180deg);
-}
+      .wyc-toggle .fa-times {
+        display: none;
+      }
 
-.wyc-title {
-  margin: 0 35px 0 0;
-}
+      .wyc.active .wyc-toggle .fa-times {
+        color: #fff;
+        display: block;
+      }
 
-.wyc-text {
-  display: none;
-  margin: 30px 0 0;
-}
+      .wyc.active .wyc-toggle .fa-chevron-down {
+        display: none;
+      }
 
-.wyc.active .wyc-text {
-  display: block;
-}
-
-.wyc-toggle {
-  background-color: transparent;
-  border: 0;
-  border-radius: 50%;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  padding: 0;
-  position: absolute;
-  top: 30px;
-  right: 30px;
-  height: 30px;
-  width: 30px;
-}
-
-.wyc-toggle:focus {
-  outline: 0;
-}
-
-.wyc-toggle .fa-times {
-  display: none;
-}
-
-.wyc.active .wyc-toggle .fa-times {
-  color: #fff;
-  display: block;
-}
-
-.wyc.active .wyc-toggle .fa-chevron-down {
-  display: none;
-}
-
-.wyc.active .wyc-toggle {
-  background-color: #9fa4a8;
-}
+      .wyc.active .wyc-toggle {
+        background-color: #9fa4a8;
+      }
     </style>
 
     <style>
@@ -219,46 +213,19 @@
         <div class="container">
           <div class="row">
 
-            <div class="col-md-4 col-lg-4 col-xl-4">
-              <div class="fancy-cards">
-                <!-- <h1>Microinteraction on active</h1>
-      <p>It triggers a subtle micro-interaction (scales and adjusts) when the user interacts with it.</p>-->
-                <div class="fancy-card">
-                  <div class="top" id="t">
-                    <div class="caption">
-                      <h3 class="title">Company Name</h3>
-                      <input type="text" name="associationId" value="1" hidden>
-
-                      <a type="button" id="" class="btn btn-primary button associationSelection" data-toggle="modal"
-                        data-target="#myModal">
-                        Select
-                      </a>
-                      <a type="button" id="associationViewPrice" class="btn btn-primary button1 associationViewPrice"
-                        data-toggle="modal" data-target="#largeModal">
-                        View Price
-                      </a>
-                    </div>
-                  </div>
-                  <div class="middle" id="m"></div>
-                  <div class="bottom" id="b"></div>
-                </div>
-              </div>
-            </div>
-
-
-
-            <c:forEach begin="0" end="4" varStatus="loop">
+            <c:forEach items="${associations}" var="association">
               <div class="col-md-4 col-lg-4 col-xl-4">
                 <div class="fancy-cards">
                   <!-- <h1>Microinteraction on active</h1>
-        <p>It triggers a subtle micro-interaction (scales and adjusts) when the user interacts with it.</p>-->
+      <p>It triggers a subtle micro-interaction (scales and adjusts) when the user interacts with it.</p>-->
                   <div class="fancy-card">
                     <div class="top" id="t">
                       <div class="caption">
-                        <h3 class="title">Company Name</h3>
-                        <input type="text" name="associationId" value="3" hidden>
-                        <a type="button" id="associationSelection" class="btn btn-primary button associationSelection"
-                          data-toggle="modal" data-target="#myModal">
+                        <h3 class="title">${association.name}</h3>
+                        <input type="text" name="associationId" value="${association.id}" hidden>
+
+                        <a type="button" id="" class="btn btn-primary button associationSelection" data-toggle="modal"
+                          data-target="#myModal">
                           Select
                         </a>
                         <a type="button" id="associationViewPrice" class="btn btn-primary button1 associationViewPrice"
@@ -273,7 +240,6 @@
                 </div>
               </div>
             </c:forEach>
-
 
           </div>
           <!-- Button to Open the Modal -->
@@ -582,7 +548,7 @@
                       <i class="fas fa-times"></i>
                     </button>
                   </div>
-            
+
                   <div class="wyc">
                     <h3 class="wyc-title">
                       What's the object-oriented way to become wealthy?
@@ -593,7 +559,7 @@
                       <i class="fas fa-times"></i>
                     </button>
                   </div>
-            
+
                   <div class="wyc">
                     <h3 class="wyc-title">
                       How many tickles does it take to tickle an octopus?
@@ -604,7 +570,7 @@
                       <i class="fas fa-times"></i>
                     </button>
                   </div>
-            
+
                   <div class="wyc">
                     <h3 class="wyc-title">What is: 1 + 1?</h3>
                     <p class="wyc-text">Depends on who are you asking.</p>
@@ -732,12 +698,12 @@
 
       <script>
         const toggles = document.querySelectorAll(".wyc-toggle");
-  
-  toggles.forEach((toggle) => {
-    toggle.addEventListener("click", () => {
-      toggle.parentNode.classList.toggle("active");
-    });
-  });
+
+        toggles.forEach((toggle) => {
+          toggle.addEventListener("click", () => {
+            toggle.parentNode.classList.toggle("active");
+          });
+        });
       </script>
 
       <script type="text/javascript">

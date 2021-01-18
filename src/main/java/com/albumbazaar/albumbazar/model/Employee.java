@@ -19,12 +19,14 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.albumbazaar.albumbazar.controller.FileUploadController;
 import com.albumbazaar.albumbazar.form.employee.BasicEmployeeDetailForm;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 @Entity
 @Table(name = "employee")
@@ -49,7 +51,7 @@ public class Employee {
 
     private String qualification;
 
-    private Float salary;
+    private Double salary;
 
     @Size(max = 15)
     private String home_contact;
@@ -123,7 +125,7 @@ public class Employee {
         this.active = true;
         this.date_of_birth = null; // employeeDetail.getDateOfBirth();
         this.personal_contact = employeeDetail.getPhone();
-        this.salary = Float.parseFloat(employeeDetail.getSalary());
+        this.salary = Double.parseDouble(employeeDetail.getSalary());
         this.role = employeeDetail.getDesignation().toString();
         this.password = "password";
     }
@@ -186,11 +188,11 @@ public class Employee {
         this.qualification = qualification;
     }
 
-    public Float getSalary() {
+    public Double getSalary() {
         return salary;
     }
 
-    public void setSalary(Float salary) {
+    public void setSalary(Double salary) {
         this.salary = salary;
     }
 
@@ -227,7 +229,14 @@ public class Employee {
     }
 
     public String getProfile_pic() {
+
+        if (profile_pic != null && !profile_pic.isBlank()) {
+            return MvcUriComponentsBuilder.fromMethodName(FileUploadController.class, "serveFile", profile_pic).build()
+                    .toUri().toString();
+        }
+
         return profile_pic;
+
     }
 
     public void setProfile_pic(String profile_pic) {

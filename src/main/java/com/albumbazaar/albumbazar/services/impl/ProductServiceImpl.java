@@ -180,9 +180,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void changeCoverPrice(final Long coverId, final float price) {
+    public void changeCoverPrice(final Long coverId, final double price) {
 
-        if (price <= 0f) {
+        if (price <= 0.0) {
             throw new RuntimeException("Price is invalid");
         }
 
@@ -194,8 +194,8 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void changePaperPrice(final Long paperId, final float price) {
-        if (price <= 0f) {
+    public void changePaperPrice(final Long paperId, final double price) {
+        if (price <= 0.0) {
             throw new RuntimeException("Price is invalid");
         }
 

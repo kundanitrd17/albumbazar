@@ -126,47 +126,6 @@ public class SecurityConfig {
 
     }
 
-    // /**
-    // * Securing endpoints for the Delivery EndPoint
-    // */
-    // @Configuration
-    // @Order(3)
-    // public static class DeliverySecurityConfig extends
-    // WebSecurityConfigurerAdapter {
-
-    // // Even the Delivery agent is an employee, thus we can access it using
-    // // customer-care service
-    // private final UserDetailsService employeeService;
-
-    // @Autowired
-    // protected DeliverySecurityConfig(@Qualifier("employeeService") final
-    // UserDetailsService userDetailsService) {
-    // this.employeeService = userDetailsService;
-    // }
-
-    // @Override
-    // protected void configure(final AuthenticationManagerBuilder auth) throws
-    // Exception {
-    // auth.userDetailsService(employeeService);
-    // }
-
-    // @Override
-    // protected void configure(final HttpSecurity http) throws Exception {
-    // http.antMatcher("/delivery/**").authorizeRequests().anyRequest().hasAuthority(AvailableRoles.Code.DELIVERY)
-    // .and().formLogin().loginPage("/delivery/login").loginProcessingUrl("/delivery/login")
-    // .failureUrl("/delivery/login-user?error=true").defaultSuccessUrl("/delivery",
-    // true).permitAll()
-    // .and().logout().logoutUrl("/delivery/logout").logoutSuccessUrl("/").invalidateHttpSession(true)
-    // .deleteCookies("JSESSIONID", "XSRF-TOKEN");
-
-    // }
-
-    // }
-
-    // /**
-    // * Securing endpoints for customer
-    // */
-
     @Configuration
     @Order(4)
     public static class BranchSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -201,16 +160,16 @@ public class SecurityConfig {
     @Order(5)
     public static class CustomerSecurityConfig extends WebSecurityConfigurerAdapter {
 
-        private final UserDetailsService customService;
+        private final UserDetailsService customerService;
 
         @Autowired(required = true)
         protected CustomerSecurityConfig(@Qualifier("customerService") final UserDetailsService customerService) {
-            this.customService = customerService;
+            this.customerService = customerService;
         }
 
         @Override
         protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
-            auth.userDetailsService(customService);
+            auth.userDetailsService(customerService);
         }
 
         @Override
@@ -225,11 +184,41 @@ public class SecurityConfig {
 
     }
 
+    @Configuration
+    @Order(6)
+    public static class associationSecurityConfig extends WebSecurityConfigurerAdapter {
+
+        private final UserDetailsService associationService;
+
+        @Autowired(required = true)
+        protected associationSecurityConfig(
+                @Qualifier("associationService") final UserDetailsService associationService) {
+            this.associationService = associationService;
+        }
+
+        @Override
+        protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+            auth.userDetailsService(associationService);
+        }
+
+        @Override
+        protected void configure(HttpSecurity http) throws Exception {
+
+            http.antMatcher("/association/**").authorizeRequests().anyRequest()
+                    .hasAuthority(AvailableRoles.Code.ASSOCIATION).and().formLogin().loginPage("/association/login")
+                    .loginProcessingUrl("/association/login").failureUrl("/association/login?error=true")
+                    .defaultSuccessUrl("/association", true).permitAll().and().logout().logoutUrl("/delivery/logout")
+                    .logoutSuccessUrl("/").invalidateHttpSession(true).deleteCookies("JSESSIONID", "XSRF-TOKEN");
+
+        }
+
+    }
+
     /**
      * Securing Rest Endpoints
      */
     @Configuration
-    @Order(6)
+    @Order(7)
     public static class RestEndpointsSecurityConfig extends WebSecurityConfigurerAdapter {
 
         @Override
@@ -237,6 +226,39 @@ public class SecurityConfig {
             http.antMatcher("/api/secured/**").authorizeRequests().antMatchers("/api/secured/customer/**")
                     .hasAuthority(AvailableRoles.Code.USER).antMatchers("/api/secured/customer-care/**")
                     .hasAuthority(AvailableRoles.Code.CUSTOMER_CARE);
+
+        }
+
+    }
+
+    /**
+     * Securing endpoints for the Delivery EndPoint
+     */
+    @Configuration
+    @Order(8)
+    public static class DeliverySecurityConfig extends WebSecurityConfigurerAdapter {
+
+        // Even the Delivery agent is an employee, thus we can access it using
+        // customer-care service
+        private final UserDetailsService employeeService;
+
+        @Autowired
+        protected DeliverySecurityConfig(@Qualifier("employeeService") final UserDetailsService userDetailsService) {
+            this.employeeService = userDetailsService;
+        }
+
+        @Override
+        protected void configure(final AuthenticationManagerBuilder auth) throws Exception {
+            auth.userDetailsService(employeeService);
+        }
+
+        @Override
+        protected void configure(final HttpSecurity http) throws Exception {
+            http.antMatcher("/delivery/**").authorizeRequests().anyRequest().hasAuthority(AvailableRoles.Code.DELIVERY)
+                    .and().formLogin().loginPage("/delivery/login").loginProcessingUrl("/delivery/login")
+                    .failureUrl("/delivery/login-user?error=true").defaultSuccessUrl("/delivery", true).permitAll()
+                    .and().logout().logoutUrl("/delivery/logout").logoutSuccessUrl("/").invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID", "XSRF-TOKEN");
 
         }
 

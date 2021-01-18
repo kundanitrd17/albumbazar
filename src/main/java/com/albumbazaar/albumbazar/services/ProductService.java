@@ -25,9 +25,9 @@ public interface ProductService {
 
     void savePaperDetail(Long associationId, PaperDTO paperInfo);
 
-    void changeCoverPrice(Long coverId, float price);
+    void changeCoverPrice(Long coverId, double price);
 
-    void changePaperPrice(Long paperId, float price);
+    void changePaperPrice(Long paperId, double price);
 
     void deletePaperDetail(Long paperId);
 

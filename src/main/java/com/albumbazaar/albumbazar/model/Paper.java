@@ -36,9 +36,9 @@ public class Paper {
 
     @NotNull
     @Column(name = "paper_price")
-    private Float paperPrice;
+    private Double paperPrice;
 
-    private Float GST;
+    private Double GST;
 
     private String image;
 
