@@ -2,19 +2,30 @@ package com.albumbazaar.albumbazar.services.impl;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 import javax.persistence.EntityNotFoundException;
 
+import com.albumbazaar.albumbazar.dao.CarasoulRepository;
+import com.albumbazaar.albumbazar.dao.FrequentQuestionRespository;
 import com.albumbazaar.albumbazar.dao.ResetPasswordCodeRepository;
+import com.albumbazaar.albumbazar.dao.SampleAlbumRespository;
 import com.albumbazaar.albumbazar.dto.ResetPasswordDTO;
+import com.albumbazaar.albumbazar.dto.SampleAlbumDTO;
+import com.albumbazaar.albumbazar.model.CarasoulEntity;
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.Employee;
+import com.albumbazaar.albumbazar.model.FrequentQuestionEntity;
 import com.albumbazaar.albumbazar.model.ResetPasswordCode;
+import com.albumbazaar.albumbazar.model.SampleAlbumEntity;
 import com.albumbazaar.albumbazar.services.CustomerService;
 import com.albumbazaar.albumbazar.services.EmployeeService;
 import com.albumbazaar.albumbazar.services.MailService;
 import com.albumbazaar.albumbazar.services.UtilityService;
+import com.albumbazaar.albumbazar.services.storage.ImageStorageService;
+import com.albumbazaar.albumbazar.services.storage.StorageService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +34,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Qualifier("utilityService")
@@ -31,22 +43,31 @@ public class UtilityServiceImpl implements UtilityService {
     private Logger logger = LoggerFactory.getLogger(UtilityServiceImpl.class);
 
     private final ResetPasswordCodeRepository resetPasswordCodeRepository;
+    private final CarasoulRepository carasoulRepository;
 
     // Dependent services
     private CustomerService customerService;
     private EmployeeService employeeService;
     private MailService gmailService;
+    private StorageService imageStorageService;
+    private SampleAlbumRespository sampleAlbumRespository;
+    private FrequentQuestionRespository frequentQuestionRespository;
+
 
     @Autowired
     protected UtilityServiceImpl(@Qualifier("customerService") final CustomerService customerService,
             @Qualifier("gmailService") final MailService gmailService,
+            @Qualifier("imageStorageService") final StorageService imageStorageService,
             @Qualifier("employeeService") final EmployeeService employeeService,
+            final CarasoulRepository carasoulRepository,
             final ResetPasswordCodeRepository resetPasswordCodeRepository) {
 
         this.customerService = customerService;
         this.resetPasswordCodeRepository = resetPasswordCodeRepository;
         this.gmailService = gmailService;
         this.employeeService = employeeService;
+        this.imageStorageService = imageStorageService;
+        this.carasoulRepository = carasoulRepository;
 
     }
 
@@ -164,5 +185,95 @@ public class UtilityServiceImpl implements UtilityService {
         gmailService.sendEmail("princewillz2013@gmail.com", email, "Reset Password OTP", OTP);
 
     }
+
+    @Override
+    @Transactional
+    public void createCarasoul(final MultipartFile carasoul) {
+
+        final CarasoulEntity carasoulEntity = new CarasoulEntity();
+
+        final Random random = new Random();
+
+        String imageName = imageStorageService.store(carasoul,
+                "carasoul" + random.nextInt(10000) + carasoul.getOriginalFilename());
+
+        carasoulEntity.setImage(imageName);
+
+        carasoulRepository.save(carasoulEntity);
+
+    }
+
+    @Override
+    public void deleteCarasoul(final Long id) {
+
+        carasoulRepository.deleteById(id);
+
+    }
+
+    @Override
+    public List<CarasoulEntity> getAllCarasoul() {
+
+        return carasoulRepository.findAll();
+
+    }
+
+    @Override
+    @Transactional
+    public void uploadSampleAlbum(final SampleAlbumDTO sampleAlbumDTO) {
+       
+        SampleAlbumEntity sampleAlbumEntity;
+
+        if(sampleAlbumDTO.getId() != null) {
+            sampleAlbumEntity = sampleAlbumRespository.findById(sampleAlbumDTO.getId()).orElseThrow();
+        } else {
+            sampleAlbumEntity  = new SampleAlbumEntity();
+        }
+
+        sampleAlbumEntity.setTitle(sampleAlbumDTO.getTitle());
+        sampleAlbumEntity.setDescription(sampleAlbumDTO.getDescription());
+
+        final String imageFileName = imageStorageService.store(sampleAlbumDTO.getImage(), "sample_album" + new Random().nextInt(10000) + sampleAlbumDTO.getImage().getOriginalFilename());
+
+        sampleAlbumEntity.setImage(imageFileName);
+
+
+        sampleAlbumRespository.save(sampleAlbumEntity);
+        
+        
+    }
+
+
+    @Override
+    public void deleteSampleAlbum(final Long id) {
+        sampleAlbumRespository.deleteById(id);
+    }
+
+
+
+    @Override
+    public void createQuestion(FrequentQuestionEntity frequentQuestion) {
+        
+
+        frequentQuestionRespository.save(frequentQuestion);
+        
+
+    }
+
+
+    @Override
+    public void deleteFrequentQuestion(final Long id) {
+        frequentQuestionRespository.deleteById(id);
+    }
+
+    @Override
+    public List<SampleAlbumEntity> getAllSampleAlbum() {
+        return sampleAlbumRespository.findAll();
+    }
+
+    @Override
+    public List<FrequentQuestionEntity> getAllFrequentQuestions() {
+        return frequentQuestionRespository.findAll();
+    }
+
 
 }

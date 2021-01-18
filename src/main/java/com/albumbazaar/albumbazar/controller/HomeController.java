@@ -1,14 +1,17 @@
 package com.albumbazaar.albumbazar.controller;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
 
 import com.albumbazaar.albumbazar.Mapper.CustomerMapper;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
 import com.albumbazaar.albumbazar.dto.ResetPasswordDTO;
+import com.albumbazaar.albumbazar.dto.SampleAlbumDTO;
 import com.albumbazaar.albumbazar.model.AvailableRoles;
 import com.albumbazaar.albumbazar.model.Customer;
+import com.albumbazaar.albumbazar.model.FrequentQuestionEntity;
 import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
 import com.albumbazaar.albumbazar.services.AssociationService;
@@ -20,13 +23,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
@@ -199,5 +207,76 @@ public class HomeController {
         return redirectView;
 
     }
+
+
+
+    @PostMapping(value = "/carasoul")
+    @ResponseBody
+    public ResponseEntity<?> uploadCarasoul(final MultipartFile carasoul) {
+
+        System.out.println(carasoul);
+
+        utilityService.createCarasoul(carasoul);
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping(value = "/carasoul")
+    @ResponseBody
+    public ResponseEntity<?> deleteCarasoul(@RequestBody final Long id) {
+
+        System.out.println(id);
+
+        utilityService.deleteCarasoul(id);
+
+        return ResponseEntity.ok().build();
+    }
+
+
+    @PostMapping(value = "/sample-album")
+    @ResponseBody
+    public ResponseEntity<?> uploadSampleAlbum(@ModelAttribute SampleAlbumDTO sampleAlbumDTO) {
+
+        System.out.println(sampleAlbumDTO);
+
+        utilityService.uploadSampleAlbum(sampleAlbumDTO);
+
+
+        return ResponseEntity.ok().build();
+    }
+
+
+    @DeleteMapping(value = "/sample-album")
+    @ResponseBody
+    public ResponseEntity<?> deleteSampleAlbum(@RequestBody final Long id) {
+
+        System.out.println(id);
+
+        utilityService.deleteSampleAlbum(id);
+
+
+        return ResponseEntity.ok().build();
+    }
+
+
+    @PostMapping(value = "/frequent/question")
+    @ResponseBody
+    public ResponseEntity<?> createQuestion(@ModelAttribute final FrequentQuestionEntity frequentQuestion) {
+
+        utilityService.createQuestion(frequentQuestion);
+
+        return ResponseEntity.ok().build();
+    }
+
+
+    @DeleteMapping(value = "/frequent/question")
+    @ResponseBody
+    public ResponseEntity<?> deleteQuestion(@RequestBody final Long id) {
+
+        utilityService.deleteFrequentQuestion(id);
+
+        return ResponseEntity.ok().build();
+    }
+
 
 }

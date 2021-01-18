@@ -87,20 +87,5 @@ public class HomeAPIController {
 
     }
 
-    @PostMapping(value = "/superuser/carasoul")
-    public ResponseEntity<?> uploadCarasoul(List<MultipartFile> carasouls) {
-
-        System.out.println(carasouls);
-
-        return ResponseEntity.ok().build();
-    }
-
-    @DeleteMapping(value = "/superuser/carasoul")
-    public ResponseEntity<?> deleteCarasoul() {
-
-        // System.out.println(carasouls);
-
-        return ResponseEntity.ok().build();
-    }
 
 }
