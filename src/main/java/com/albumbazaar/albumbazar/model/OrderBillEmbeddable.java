@@ -10,18 +10,18 @@ import lombok.Data;
 public class OrderBillEmbeddable {
 
     @NotNull
-    private Float totalAmount;
-    private Float discount;
-    private Float wallet;
+    private Double totalAmount;
+    private Double discount;
+    private Double wallet;
 
     @NotNull
-    private Float amountToPay;
+    private Double amountToPay;
 
     public OrderBillEmbeddable() {
-        this.totalAmount = 0f;
-        this.discount = 0f;
-        this.wallet = 0f;
-        this.amountToPay = 0f;
+        this.totalAmount = 0.0;
+        this.discount = 0.0;
+        this.wallet = 0.0;
+        this.amountToPay = 0.0;
     }
 
 }

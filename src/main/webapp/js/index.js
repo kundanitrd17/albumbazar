@@ -166,11 +166,12 @@ document.addEventListener('DOMContentLoaded', function () {
         interval: 5000
     })
 
-    loadAssociationPriceView();
 
-    checkGoogleAuth();
 
     try {
+        loadAssociationPriceView();
+
+        checkGoogleAuth();
         loadDeliveryAddressCards();
     } catch (error) {
         console.log(error);
@@ -278,10 +279,15 @@ function changeCoverAndPaperOptions(selectedProductSize) {
 
     addCoverOptions();
 
-    while (paperRow-- > 0) {
-        document.getElementById('PaperRow' + paperRow).remove();
+    // while (paperRow-- > 0) {
+    try {
+        $('#test-body').empty();
+    } catch (error) {
+
     }
+    // }
     paperRow = 0;
+    count_of_paper_row = 0;
     appendPaperRow();
 }
 

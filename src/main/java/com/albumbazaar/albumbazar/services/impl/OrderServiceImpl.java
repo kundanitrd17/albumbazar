@@ -88,7 +88,7 @@ public class OrderServiceImpl implements OrderService {
         orderDetail.setAssociation(association);
 
         // Calculating total amount of the order
-        float totalAmount = 0f;
+        double totalAmount = 0.0;
 
         final Cover cover = productService.getCoverEntity(orderDetailFormDTO.getCoverId());
         totalAmount += cover.getCoverPrice();
@@ -144,6 +144,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional(readOnly = true)
     public OrderDetail getOrder(final Long id) throws NoSuchElementException {
+
         return orderRepository.findById(id).orElseThrow();
     }
 
@@ -304,12 +305,13 @@ public class OrderServiceImpl implements OrderService {
     @Transactional(readOnly = true)
     public List<OrderDetail> getUnderProcessOrdersWithAssociationId(final Association association) {
 
-        return orderRepository.findAllByAssociationAndHasAssociationAcceptedAndOrderStatus(association, true, OrderDetailStatus.UNDER_PROCESS_BY_ASSOCIATION.toString());
+        return orderRepository.findAllByAssociationAndHasAssociationAcceptedAndOrderStatus(association, true,
+                OrderDetailStatus.UNDER_PROCESS_BY_ASSOCIATION.toString());
     }
 
     @Override
     @Transactional
-    public void updateHasAssociationAccepted(Long orderId, boolean status) {
+    public void updateHasAssociationAccepted(final Long orderId, boolean status) {
 
         final OrderDetail order = this.getOrder(orderId);
         order.setHasAssociationAccepted(status);
@@ -330,12 +332,11 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderDetail> getOrdersWithAssociationAndStatus(Association association,
             List<String> orderDetailStatusList) {
 
-        
         return orderRepository.findByOrderStatusInAndAssociation(orderDetailStatusList, association);
     }
 
     @Override
-    public List<SheetDetailDTO> getSheetDetails(Long orderId) {
+    public List<SheetDetailDTO> getSheetDetails(final Long orderId) {
         // Get Order Detail
         final OrderDetail orderDetail = this.getOrder(orderId);
 
@@ -376,14 +377,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(readOnly = true)
-    public AddressEntity getDeliveryAddress(Long orderId) {
+    public AddressEntity getDeliveryAddress(final Long orderId) {
         final OrderDetail order = this.getOrder(orderId);
         return order.getDeliveryAddress();
     }
 
     @Override
     @Transactional
-    public void forwardToAssociation(Long orderId) {
+    public void forwardToAssociation(final Long orderId) {
 
         final OrderDetail order = this.getOrder(orderId);
 
@@ -397,7 +398,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(readOnly = true)
-    public ProductDetailDTO getProductInfo(Long orderId) {
+    public ProductDetailDTO getProductInfo(final Long orderId) {
         final OrderDetail orderDetail = this.getOrder(orderId);
 
         final ProductDetailDTO productDetailDTO = new ProductDetailDTO();
@@ -422,7 +423,6 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public void changeDeliveryAddress(final AddressDTO addressDTO, final Long EmployeeId) {
 
-        
         final AddressMapper addressMapper = context.getBean(AddressMapper.class);
 
         final Long orderId = addressDTO.getOrderId();
@@ -430,7 +430,6 @@ public class OrderServiceImpl implements OrderService {
 
         final AddressEntity address = addressMapper.addressDTOToAddressEntity(addressDTO);
 
-        
         final AddressEntity savedAddressEntity = addressRepository.save(address);
 
         order.setDeliveryAddress(savedAddressEntity);

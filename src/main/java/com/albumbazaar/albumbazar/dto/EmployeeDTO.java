@@ -21,7 +21,7 @@ public class EmployeeDTO {
 
     private String qualification;
 
-    private Float salary;
+    private Double salary;
 
     private String home_contact;
 

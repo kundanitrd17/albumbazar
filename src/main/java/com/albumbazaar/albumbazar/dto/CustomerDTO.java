@@ -27,11 +27,11 @@ public class CustomerDTO {
 
     private String referralCode;
 
-    private Float wallet;
+    private Double wallet;
 
     private Boolean active;
 
-    private Float discount;
+    private Double discount;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;

@@ -82,8 +82,8 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
             if (referredByCode != null && !referredByCode.isBlank()) {
                 final Long referredById = Long.parseLong(referredByCode.split("@")[0]);
                 final Customer referredByCustomer = this.getCustomer(referredById);
-                referredByCustomer.setWallet(referredByCustomer.getWallet() + 100f);
-                newCustomerEntity.setWallet(100f);
+                referredByCustomer.setWallet(referredByCustomer.getWallet() + 100.0);
+                newCustomerEntity.setWallet(100.0);
             }
 
         } catch (Exception e) {
@@ -163,7 +163,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
     @Transactional(readOnly = true)
     public List<Customer> getDiscountedCustomer() {
 
-        return customerRepository.findByDiscountGreaterThan(0f);
+        return customerRepository.findByDiscountGreaterThan(0.0);
     }
 
     @Override
@@ -176,14 +176,14 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 
     @Override
     @Transactional(readOnly = true)
-    public Float getWalletAmount(final Long id) {
+    public Double getWalletAmount(final Long id) {
 
         return customerRepository.getWalletAmount(id);
     }
 
     @Override
     @Transactional
-    public Float updateWallet(final Long id, final float amount) {
+    public Double updateWallet(final Long id, final double amount) {
         final Customer customer = customerRepository.findById(id).orElseThrow();
 
         if (customer.getWallet() + amount < 0) {
@@ -197,13 +197,13 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 
     @Override
     @Transactional(readOnly = true)
-    public Float getDiscount(final Long id) {
+    public Double getDiscount(final Long id) {
         return customerRepository.getDiscount(id);
     }
 
     @Override
     @Transactional
-    public Float setDiscount(final Long id, final float amount) {
+    public Double setDiscount(final Long id, final double amount) {
         if (amount < 0) {
             throw new RuntimeException("Cannot be set to negative");
         }
@@ -319,7 +319,7 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 
     @Override
     @Transactional
-    public void setRewardForCustomer(Long customerId, Float discount) {
+    public void setRewardForCustomer(Long customerId, Double discount) {
         final Customer customer = customerRepository.findById(customerId).orElseThrow();
         customer.setDiscount(discount);
 

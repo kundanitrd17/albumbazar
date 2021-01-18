@@ -16,6 +16,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.albumbazaar.albumbazar.controller.FileUploadController;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+
 import com.albumbazaar.albumbazar.form.customer.BasicCustomerDetailForm;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -33,6 +36,8 @@ public class Customer {
     @Column(name = "id", unique = true, updatable = false)
     private Long id;
 
+    private String profilePhoto;
+
     private String name;
 
     @Email(message = "Invalid email")
@@ -47,8 +52,8 @@ public class Customer {
     @Column(name = "referral_code", unique = true)
     private String referralCode;
 
-    @Column(columnDefinition = "float default 0.0")
-    private Float wallet;
+    @Column(columnDefinition = "double default 0.0")
+    private Double wallet;
 
     @Column(columnDefinition = "boolean default false")
     private Boolean active;
@@ -60,8 +65,8 @@ public class Customer {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @Column(columnDefinition = "float default 0.0")
-    private Float discount;
+    @Column(columnDefinition = "double default 0.0")
+    private Double discount;
 
     @OneToMany(fetch = FetchType.LAZY)
     private Set<AddressEntity> address;
@@ -79,10 +84,10 @@ public class Customer {
             this.active = false;
         }
         if (this.discount == null) {
-            this.discount = 0f;
+            this.discount = 0.0;
         }
         if (this.wallet == null) {
-            this.wallet = 0f;
+            this.wallet = 0.0;
         }
     }
 
@@ -91,6 +96,17 @@ public class Customer {
         this.email = customerDetail.getEmail();
         this.contactNo = customerDetail.getPhone();
         this.password = customerDetail.getPassword();
+    }
+
+    public String getGrofilePhoto() {
+
+        if (profilePhoto != null && !profilePhoto.isBlank()) {
+            return MvcUriComponentsBuilder.fromMethodName(FileUploadController.class, "serveFile", profilePhoto).build()
+                    .toUri().toString();
+        }
+
+        return profilePhoto;
+
     }
 
 }

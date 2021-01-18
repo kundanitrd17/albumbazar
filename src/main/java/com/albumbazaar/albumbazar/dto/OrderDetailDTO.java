@@ -45,7 +45,7 @@ public class OrderDetailDTO {
     private Boolean paymentStatus;
     // Change it to just the ID of the cover and get the pricing of the album from
     // the database
-    private Float coverPrice;
+    private Double coverPrice;
 
     private Integer noOfSheets;
 

@@ -14,6 +14,7 @@ insert into branch(id, active, contact_no, date, name, address_id) values(1, tru
 insert into employee(name, email, password, joining_date, personal_contact, role, branch_id) VALUES("harsh", "harsh@gmail.com", "123123123", "2020-10-10", "243", "ROLE_CUSTOMER_CARE", "1");
 insert into employee(name, email, password, joining_date, personal_contact, role, branch_id) VALUES("prince", "prince@gmail.com", "123123123", "2020-10-10", "98372342387", "ROLE_EMPLOYEE", "1");
 insert into employee(name, email, password, joining_date, personal_contact, role, branch_id) VALUES("moon", "princewillz2013@gmail.com", "123123123", "2020-10-10", "98372342380", "ROLE_ADMIN", "1");
+insert into employee(name, email, password, joining_date, personal_contact, role, branch_id) VALUES("moon", "nishigupta726@gmail.com", "123123123", "2020-10-10", "9837242380", "ROLE_DELIVERY", "1");
 
 
 insert into cover(cover_name, cover_size, cover_price, association_id) values("digital_cover", "12*24", 450, 1);

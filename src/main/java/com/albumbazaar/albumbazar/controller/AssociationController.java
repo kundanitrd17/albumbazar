@@ -68,6 +68,13 @@ public final class AssociationController {
         return modelAndView;
     }
 
+    @GetMapping(value = "/login")
+    public ModelAndView associationLoginView(final Model model) {
+        final ModelAndView modelAndView = new ModelAndView("association/association_login");
+
+        return modelAndView;
+    }
+
     @GetMapping("/order-list/new-arrived-order")
     public ModelAndView newlyArrivedOrderView() {
         final ModelAndView modelAndView = new ModelAndView("association/newly_arrived_orders");

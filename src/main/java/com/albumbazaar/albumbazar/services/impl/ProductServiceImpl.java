@@ -178,4 +178,51 @@ public class ProductServiceImpl implements ProductService {
 
     }
 
+    @Override
+    @Transactional
+    public void changeCoverPrice(final Long coverId, final double price) {
+
+        if (price <= 0.0) {
+            throw new RuntimeException("Price is invalid");
+        }
+
+        final Cover cover = coverRepository.findById(coverId).orElseThrow();
+
+        cover.setCoverPrice(price);
+
+    }
+
+    @Override
+    @Transactional
+    public void changePaperPrice(final Long paperId, final double price) {
+        if (price <= 0.0) {
+            throw new RuntimeException("Price is invalid");
+        }
+
+        final Paper paper = paperRepository.findById(paperId).orElseThrow();
+
+        paper.setPaperPrice(price);
+
+    }
+
+    @Override
+    @Transactional
+    public void deletePaperDetail(final Long paperId) {
+
+        final Paper paper = paperRepository.findById(paperId).orElseThrow();
+
+        paper.setActive(false);
+
+    }
+
+    @Override
+    @Transactional
+    public void deleteCoverDetail(final Long coverId) {
+
+        final Cover cover = coverRepository.findById(coverId).orElseThrow();
+
+        cover.setActive(false);
+
+    }
+
 }

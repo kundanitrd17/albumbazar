@@ -68,7 +68,8 @@ public class RazorPayPaymentServiceImpl implements RazorPayPaymentService {
         }
 
         JSONObject options = new JSONObject();
-        options.put("amount", order.getOrderBill().getAmountToPay() * 100);
+        Double amountToPay = order.getOrderBill().getAmountToPay() * 100;
+        options.put("amount", String.format("%.0f", amountToPay));
         options.put("currency", "INR");
         options.put("receipt", "txn_123456");
         options.put("payment_capture", 1);

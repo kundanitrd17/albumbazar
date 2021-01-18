@@ -12,6 +12,7 @@ import com.albumbazaar.albumbazar.model.Association;
 import com.albumbazaar.albumbazar.model.Employee;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
+import com.albumbazaar.albumbazar.principals.AssociationPrincipal;
 import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.OrderService;
 import com.albumbazaar.albumbazar.services.storage.ImageStorageService;
@@ -22,6 +23,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Qualifier("associationService")
-public class AssociationServiceImpl implements AssociationService {
+public class AssociationServiceImpl implements AssociationService, UserDetailsService {
     private final Logger logger = LoggerFactory.getLogger(AssociationServiceImpl.class);
 
     private final AssociationRepository associationRepository;
@@ -126,7 +130,7 @@ public class AssociationServiceImpl implements AssociationService {
         final String saved_file_name = imageStorageService.store(photoFile, fileName);
 
         association.setProfilePhoto(saved_file_name);
-        
+
     }
 
     @Override
@@ -150,14 +154,12 @@ public class AssociationServiceImpl implements AssociationService {
 
         final Association association = this.getAssociation(associationId);
 
-        List<String> orderDetailStatusList = Arrays.asList(
-            OrderDetailStatus.COMPLETED.toString(), OrderDetailStatus.DELIVERY_UNDER_PROCESS.toString(), OrderDetailStatus.DELIVER.toString(), OrderDetailStatus.SENT_TO_DELIVERY_PARTNER.toString(),
-           OrderDetailStatus.DELIVERED.toString()
-        );
+        List<String> orderDetailStatusList = Arrays.asList(OrderDetailStatus.COMPLETED.toString(),
+                OrderDetailStatus.DELIVERY_UNDER_PROCESS.toString(), OrderDetailStatus.DELIVER.toString(),
+                OrderDetailStatus.SENT_TO_DELIVERY_PARTNER.toString(), OrderDetailStatus.DELIVERED.toString());
 
-    
-
-        return applicationContext.getBean(OrderService.class).getOrdersWithAssociationAndStatus(association, orderDetailStatusList);
+        return applicationContext.getBean(OrderService.class).getOrdersWithAssociationAndStatus(association,
+                orderDetailStatusList);
     }
 
     @Override
@@ -194,6 +196,16 @@ public class AssociationServiceImpl implements AssociationService {
         final OrderDetail order = orderService.getOrder(orderId);
 
         order.setOrderStatus(OrderDetailStatus.SENT_TO_DELIVERY_PARTNER.toString());
+
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        final Association association = associationRepository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Association Not Found"));
+
+        return new AssociationPrincipal(association);
 
     }
 

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,6 +38,14 @@ public final class DeliveryController {
             logger.error(e.getMessage());
             modelAndView.addObject("error", "No Deliveries Found!...");
         }
+
+        return modelAndView;
+    }
+
+    @GetMapping(value = "/login")
+    public ModelAndView deliveryLoginView(final Model model) {
+
+        final ModelAndView modelAndView = new ModelAndView("/delivery/delivery_login");
 
         return modelAndView;
     }

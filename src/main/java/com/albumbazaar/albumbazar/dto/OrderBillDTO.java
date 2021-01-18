@@ -4,20 +4,20 @@ import lombok.Data;
 
 @Data
 public class OrderBillDTO {
-    
+
     private Long order_id;
 
-    private Float total_amount;
-    private Float discount;
-    private Float wallet;
+    private Double total_amount;
+    private Double discount;
+    private Double wallet;
 
-    private Float amount_to_pay;
+    private Double amount_to_pay;
 
     public OrderBillDTO() {
-        this.total_amount = 0f;
-        this.discount = 0f;
-        this.wallet = 0f;
-        this.amount_to_pay = 0f;
+        this.total_amount = 0.0;
+        this.discount = 0.0;
+        this.wallet = 0.0;
+        this.amount_to_pay = 0.0;
     }
 
 }
