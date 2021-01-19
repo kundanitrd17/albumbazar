@@ -159,9 +159,9 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
 
 
-            <script type="text/javascript" src="/../customercare/js/customer_care_order_pool.js"></script>
+            <script type="text/javascript" src="/customercare/js/customer_care_order_pool.js"></script>
 
-            <script type="text/javascript" src="http://localhost:8080/customercare/js/data-table.js"></script>
+            <script type="text/javascript" src="/customercare/js/data-table.js"></script>
 
 
             <script type="text/javascript">

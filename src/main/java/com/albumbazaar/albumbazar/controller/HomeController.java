@@ -38,6 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class HomeController {
@@ -65,9 +66,21 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public ModelAndView index() {
+    public ModelAndView index(final HttpServletRequest request) {
 
         final ModelAndView modelAndView = new ModelAndView("index");
+
+        try {
+            modelAndView.addObject("carasouls", utilityService.getAllCarasoul());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        try {
+            modelAndView.addObject("sample_albums", utilityService.getAllSampleAlbum());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
 
         try {
 
@@ -78,11 +91,18 @@ public class HomeController {
                 if (principal instanceof CustomerPrincipal) {
                     final CustomerPrincipal customerPrincipal = (CustomerPrincipal) principal;
                     Customer customer = customerService.getCustomer(customerPrincipal.getId());
-                    CustomerDTO customerDTO = customerMapper.customerEntityToCustomerDTO(customer);
 
-                    modelAndView.addObject("customer", customerDTO);
+                    final CustomerDTO customerDTO = new CustomerDTO();
+                    customerDTO.setName(customer.getName());
+                    customerDTO.setDiscount(customer.getDiscount());
+                    customerDTO.setWallet(customer.getWallet());
+                    customerDTO.setReferralCode(customer.getReferralCode());
+                    customerDTO.setId(customer.getId());
 
-                    modelAndView.addObject("associations", associationService.getAllAssociation());
+                    request.getSession().setAttribute("customer", customerDTO);
+                    // modelAndView.addObject("customer", customerDTO);
+
+                    modelAndView.addObject("associations", associationService.getAssociationWithStatus(true));
                 }
             }
 
@@ -91,6 +111,11 @@ public class HomeController {
         }
 
         return modelAndView;
+    }
+
+    @GetMapping(value = "/contact_us")
+    public ModelAndView getContactUsView() {
+        return new ModelAndView("/contact_us");
     }
 
     @RequestMapping("/login-super")
@@ -208,17 +233,34 @@ public class HomeController {
 
     }
 
+    @PostMapping(value = "/carasoul/update")
+    public RedirectView uploadCarasoul(@RequestParam("id") final Long carasoulId,
+            @RequestParam("image") final MultipartFile carasoul) {
 
-
-    @PostMapping(value = "/carasoul")
-    @ResponseBody
-    public ResponseEntity<?> uploadCarasoul(final MultipartFile carasoul) {
-
+        System.out.println(carasoulId);
         System.out.println(carasoul);
 
-        utilityService.createCarasoul(carasoul);
+        try {
+            utilityService.updateCarasoul(carasoulId, carasoul);
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+        }
+        // utilityService.createCarasoul(carasoul);
 
-        return ResponseEntity.ok().build();
+        return new RedirectView("/misc");
+    }
+
+    @PostMapping(value = "/carasoul")
+    public RedirectView uploadCarasoul(@RequestParam("image") final MultipartFile carasoul) {
+
+        try {
+            utilityService.createCarasoul(carasoul);
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+        }
+        // utilityService.createCarasoul(carasoul);
+
+        return new RedirectView("/misc");
     }
 
     @DeleteMapping(value = "/carasoul")
@@ -232,19 +274,15 @@ public class HomeController {
         return ResponseEntity.ok().build();
     }
 
-
     @PostMapping(value = "/sample-album")
-    @ResponseBody
-    public ResponseEntity<?> uploadSampleAlbum(@ModelAttribute SampleAlbumDTO sampleAlbumDTO) {
+    public RedirectView uploadSampleAlbum(@ModelAttribute SampleAlbumDTO sampleAlbumDTO) {
 
         System.out.println(sampleAlbumDTO);
 
         utilityService.uploadSampleAlbum(sampleAlbumDTO);
 
-
-        return ResponseEntity.ok().build();
+        return new RedirectView("/misc");
     }
-
 
     @DeleteMapping(value = "/sample-album")
     @ResponseBody
@@ -254,20 +292,20 @@ public class HomeController {
 
         utilityService.deleteSampleAlbum(id);
 
-
         return ResponseEntity.ok().build();
     }
-
 
     @PostMapping(value = "/frequent/question")
-    @ResponseBody
-    public ResponseEntity<?> createQuestion(@ModelAttribute final FrequentQuestionEntity frequentQuestion) {
+    public RedirectView createQuestion(@ModelAttribute final FrequentQuestionEntity frequentQuestion) {
 
-        utilityService.createQuestion(frequentQuestion);
+        try {
+            utilityService.createQuestion(frequentQuestion);
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+        }
 
-        return ResponseEntity.ok().build();
+        return new RedirectView("/misc");
     }
-
 
     @DeleteMapping(value = "/frequent/question")
     @ResponseBody
@@ -278,5 +316,33 @@ public class HomeController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping(value = "/misc")
+    public ModelAndView websiteSettingView() {
+        final ModelAndView modelAndView = new ModelAndView("/superuser/miscelleneous");
+
+        try {
+
+            modelAndView.addObject("carasouls", utilityService.getAllCarasoul());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        try {
+
+            modelAndView.addObject("sample_albums", utilityService.getAllSampleAlbum());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        try {
+
+            modelAndView.addObject("frequent_questions", utilityService.getAllFrequentQuestions());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return modelAndView;
+
+    }
 
 }

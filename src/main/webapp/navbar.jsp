@@ -27,13 +27,23 @@
             </ul>
             <ul class="navbar-nav">
                 <li class="nav-item mx-2">
-                    <a class="nav-link" href="#"><strong>Hi User!</strong></a>
+                    <a class="nav-link" href="#">
+                        <strong>
+                            <c:if test="${customer != null &&  customer.name != null}">
+                                Hi ${customer.name}!
+                            </c:if>
+                            <c:if test="${$customer == null &&  customer.name == null}">
+                                Hi User!
+                            </c:if>
+
+                        </strong>
+                    </a>
                 </li>
                 <li class="nav-item mx-2">
                     <a class="nav-link" href="/" style="color: aliceblue;">Home</a>
                 </li>
                 <li class="nav-item mx-2">
-                    <a class="nav-link" href="#" style="color: aliceblue;">Contact Us</a>
+                    <a class="nav-link" href="/contact_us" style="color: aliceblue;">Contact Us</a>
                 </li>
 
                 <c:choose>
@@ -47,12 +57,14 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="dropdown-item" href="/customer/my-account">Profile</a>
                                 <a class="dropdown-item" href="/customer/my-order">Orders</a>
-                                <a class="dropdown-item" href="#">wallet</a>
+                                <a class="dropdown-item" href="#" data-toggle="modal"
+                                    data-target="#walletModal">wallet</a>
                                 <a class="dropdown-item" href="#" data-toggle="modal"
                                     data-target="#exampleModalCenter">Your
                                     Referral Code</a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#">Something Else Here</a>
+                                <a class="dropdown-item" href="/customer/my-address">
+                                    Manage Address</a>
                             </div>
                         </li>
 
@@ -111,6 +123,49 @@
         </div>
     </div>
 
+
+    <!-- Wallet modal -->
+
+    <div class="modal fade" id="walletModal" tabindex="-1" role="dialog" aria-labelledby="walletModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+
+                        <div class="form-group alert alert-primary">
+                            <label>Your Referral Code</label>
+                            <input type="text" class="form-control alert alert-primary" value="${customer.referralCode}"
+                                disabled>
+                        </div>
+
+                        <div class="form-group alert alert-danger">
+                            <label>Your Discount</label>
+                            <input type="text" class="form-control alert alert-danger" value="${customer.discount}"
+                                disabled>
+                        </div>
+
+                        <div class="form-group alert alert-warning">
+                            <label>Your Balance</label>
+                            <input type="text" class="form-control alert alert-warning" value="${customer.wallet}"
+                                disabled>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End of wallet modal -->
 
     <!-- login modal Section -->
     <%@include file="login-customer.jsp" %>

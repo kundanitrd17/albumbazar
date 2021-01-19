@@ -14,7 +14,7 @@
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-        <link rel="stylesheet" href="http://localhost:8080/css/upload_file.css">
+        <link rel="stylesheet" href="/css/upload_file.css">
         <!-- <link rel="stylesheet" href="./css/upload_file.css"> -->
 
 
@@ -162,7 +162,7 @@ Design a file upload element. Is it the loading screen and icon? A progress elem
                 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
-                <script src="http://localhost:8080/js/upload_file.js"></script>
+                <script src="/js/upload_file.js"></script>
 
 
 

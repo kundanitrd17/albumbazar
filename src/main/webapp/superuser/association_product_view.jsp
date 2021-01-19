@@ -323,7 +323,7 @@ text-align: center;
                     $('#largeModal #selected_association_id').val(associationId);
 
 
-                    const URI = "http://localhost:8080/api/product/company/" + associationId;
+                    const URI = "/api/product/company/" + associationId;
 
                     $.ajax({
                         url: URI,
@@ -505,7 +505,7 @@ text-align: center;
 
 
                     const xhr = new XMLHttpRequest();
-                    const url = "http://localhost:8080/api/superuser/cover/" + id;
+                    const url = "/api/superuser/cover/" + id;
                     xhr.open('DELETE', url, true);
                     xhr.setRequestHeader('Content-type', 'application/json');
                     xhr.setRequestHeader(header, token);
@@ -536,7 +536,7 @@ text-align: center;
                     console.log(id);
 
                     const xhr = new XMLHttpRequest();
-                    const url = "http://localhost:8080/api/superuser/paper/" + id;
+                    const url = "/api/superuser/paper/" + id;
                     xhr.open('DELETE', url, true);
                     xhr.setRequestHeader('Content-type', 'application/json');
                     xhr.setRequestHeader(header, token);
@@ -571,7 +571,7 @@ text-align: center;
                     console.log(paperPrice);
 
                     const xhr = new XMLHttpRequest();
-                    const url = "http://localhost:8080/api/superuser/paper/price/" + id;
+                    const url = "/api/superuser/paper/price/" + id;
                     xhr.open('PUT', url, true);
                     xhr.setRequestHeader('Content-type', 'application/json');
                     xhr.setRequestHeader(header, token);
@@ -604,7 +604,7 @@ text-align: center;
                     console.log(id);
                     let coverPrice = $("#coverPriceTd" + id).text();
                     const xhr = new XMLHttpRequest();
-                    const url = "http://localhost:8080/api/superuser/cover/price/" + id;
+                    const url = "/api/superuser/cover/price/" + id;
                     xhr.open('PUT', url, true);
                     xhr.setRequestHeader('Content-type', 'application/json');
                     xhr.setRequestHeader(header, token);

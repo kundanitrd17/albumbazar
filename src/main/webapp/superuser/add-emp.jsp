@@ -10,7 +10,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" type="text/css" href="http://localhost:8080/superuser/css/form.css" />
+    <link rel="stylesheet" type="text/css" href="/superuser/css/form.css" />
     <style type="text/css"></style>
   </head>
 
@@ -181,7 +181,7 @@
         </div>
       </div>
     </section>
-    <script type="text/javascript" src="http://localhost:8080/superuser/js/add-branch.js"></script>
+    <script type="text/javascript" src="/superuser/js/add-branch.js"></script>
     <script type="text/javascript">
       // image uploader scripts
     </script>

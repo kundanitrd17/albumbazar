@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
 function updateProfileInfo(event) {
     event.preventDefault();
+    document.querySelector('#Loading').style.display = 'block';
     console.log("form submitted!");
 
     const customerDetailInfo = {};
@@ -36,7 +37,7 @@ function updateProfileInfo(event) {
 
     console.log(customerDetailInfo);
 
-    var URL = 'http://localhost:8080/api/secured/customer/info';
+    var URL = '/api/secured/customer/info';
     var xhr = new XMLHttpRequest();
     xhr.open("PUT", URL, true);
     xhr.setRequestHeader('Content-type', 'application/json');
@@ -50,5 +51,9 @@ function updateProfileInfo(event) {
     }
     xhr.send(JSON.stringify(customerDetailInfo))
 
+
+    window.setInterval(function () {
+        document.querySelector('#Loading').style.display = 'none';
+    }, 500);
 
 }

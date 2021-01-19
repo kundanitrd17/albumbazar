@@ -28,7 +28,7 @@
         <style type="text/css">
 
         </style>
-        <link rel="stylesheet" href="./css/super-admin.css">
+        <link rel="stylesheet" href="/superuser/css/super-admin.css">
 
 
     </head>
@@ -115,44 +115,43 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                 </thead>
                                 <tbody>
                                     <c:forEach items="${branches}" var="branch">
-                                        <c:if test="${branch.active}"> 
+                                        <c:if test="${branch.active}">
                                             <tr id="row${branch.id}">
                                         </c:if>
-                                        <c:if test="${!branch.active}"> 
+                                        <c:if test="${!branch.active}">
                                             <tr id="row${branch.id}" style="background-color: gray;">
                                         </c:if>
 
-                                            
-                                                <td id="branchId${branch.id}" class="branchId" data-branch-id="${branch.id}">
-                                                    ${branch.id}
-                                                </td>
-                                                <td id="branchName${branch.id}">
-                                                    ${branch.name}
-                                                </td>
-                                                <td id="branchCode">ASN-AB</td>
-                                                <td id="adminId"><a href="" id="link_adminId" data-toggle="modal"
-                                                        data-target="#adminDetails" onclick="adminLink(2)">adminId</a>
-                                                </td>
-                                                <td id="contact${branch.id}">${branch.contactNo}</td>
-                                                <td id="address"><a href="" data-toggle="modal"
-                                                        data-target="#branchAddress" id="link_address"
-                                                        onclick="addrLink(1)">Address Id</a></td>
-                                                <td id="date">20/12/2004</td>
-                                                <td> <a href="api/order?branchId=${branch.id}">click</a> </td>
 
-                                                <c:if test="${branch.active}">
-                                                    <td class=""> 
-                                                        <a href="#" class="btn btn-success s-icon "
-                                                            style="display: none;" onclick="saveBranch('${branch.id}')">Save</a>
-                                                        <button class="btn btn-warning e-icon">Edit</button>
-                                                    </td>
-                                                    <td><a class="btn btn-danger d-icon">Delete</button></a></td>
-                                                </c:if>
-                                                
+                                        <td id="branchId${branch.id}" class="branchId" data-branch-id="${branch.id}">
+                                            ${branch.id}
+                                        </td>
+                                        <td id="branchName${branch.id}">
+                                            ${branch.name}
+                                        </td>
+                                        <td id="branchCode">ASN-AB</td>
+                                        <td id="adminId"><a href="" id="link_adminId" data-toggle="modal"
+                                                data-target="#adminDetails" onclick="adminLink(2)">adminId</a>
+                                        </td>
+                                        <td id="contact${branch.id}">${branch.contactNo}</td>
+                                        <td id="address"><a href="" data-toggle="modal" data-target="#branchAddress"
+                                                id="link_address" onclick="addrLink(1)">Address Id</a></td>
+                                        <td id="date">20/12/2004</td>
+                                        <td> <a href="api/order?branchId=${branch.id}">click</a> </td>
 
-                                            </tr>
+                                        <c:if test="${branch.active}">
+                                            <td class="">
+                                                <a href="#" class="btn btn-success s-icon " style="display: none;"
+                                                    onclick="saveBranch('${branch.id}')">Save</a>
+                                                <button class="btn btn-warning e-icon">Edit</button>
+                                            </td>
+                                            <td><a class="btn btn-danger d-icon">Delete</button></a></td>
+                                        </c:if>
 
-                                        </c:forEach>
+
+                                        </tr>
+
+                                    </c:forEach>
                                 </tbody>
                             </table>
                         </div>
@@ -300,14 +299,14 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                 // Delete Branch
                 $('.table tbody tr td').on('click', '.d-icon', function () {
 
-                    if(!confirm("Confirm to delete this branch")) {
+                    if (!confirm("Confirm to delete this branch")) {
                         return;
                     }
 
                     $(this).hide();
                     $(this).parent().prev().hide();
                     $(this).parent().prevAll().css("background-color", "gray").focus();
-                    
+
 
 
                     event.preventDefault();
@@ -320,7 +319,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                     // console.log(JSON.stringify(data));
 
                     var xhr = new XMLHttpRequest();
-                    var url = 'http://localhost:8080/api/superuser/branch-delete';
+                    var url = '/api/superuser/branch-delete';
                     xhr.open("DELETE", url, true);
                     xhr.setRequestHeader('Content-type', 'application/json');
                     xhr.setRequestHeader(header, token);
@@ -331,7 +330,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                             console.log(this.response);
                             console.log(JSON.parse(this.response));
 
-                            
+
                         }
                     }
                     xhr.send(JSON.stringify(data["id"]))
@@ -423,7 +422,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                 function adminLink(id) {
                     $('#adminDetails #hidden_admin_id').val(id);
                     console.log("Admin", id);
-                    url = "http://localhost:8080/api/superuser/admin-detail/" + id;
+                    url = "/api/superuser/admin-detail/" + id;
                     $.get(url, function (data) {
 
                         console.log("Here", data);
@@ -447,19 +446,19 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                 //save Branch
                 function saveBranch(id) {
 
-                    var childs = $('#row'+id).children();
+                    var childs = $('#row' + id).children();
                     console.log();
 
                     var data = {
                         "id": id,
-                        "name": childs.siblings('#branchName'+id).text(),
+                        "name": childs.siblings('#branchName' + id).text(),
                         "code": "code",
-                        "contactNo": childs.siblings('#contact'+id).text()
+                        "contactNo": childs.siblings('#contact' + id).text()
                     }
                     console.log(data);
 
                     var xhr = new XMLHttpRequest();
-                    var url = 'http://localhost:8080/api/superuser/branch-info';
+                    var url = '/api/superuser/branch-info';
                     xhr.open("PUT", url, true);
                     xhr.setRequestHeader('Content-type', 'application/json');
                     xhr.setRequestHeader(header, token);

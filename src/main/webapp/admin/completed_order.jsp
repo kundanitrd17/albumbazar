@@ -33,7 +33,7 @@
 
 
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-        <link rel="stylesheet" type="text/css" href="http://localhost:8080/customercare/css/dashboard-superuser.css">
+        <link rel="stylesheet" type="text/css" href="/customercare/css/dashboard-superuser.css">
 
         <style type="text/css">
             #associationProductViewDetails table tr th {
@@ -111,7 +111,8 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                         <th><input type="text" class="form-control" placeholder="Id" disabled></th>
                                         <th><input type="text" class="form-control" placeholder="Product" disabled>
                                         </th>
-                                        <th><input type="text" class="form-control" placeholder="Association" disabled></th>
+                                        <th><input type="text" class="form-control" placeholder="Association" disabled>
+                                        </th>
 
                                         <th><input type="text" class="form-control" placeholder="Delivery" disabled>
                                         </th>
@@ -129,10 +130,10 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                         <tr id="orderRow${eachOrder.id}">
                                             <td class="orderId" id="orderId${eachOrder.id}"
                                                 data-orderId="${eachOrder.id}">${eachOrder.id}</td>
-                                            <td>${eachOrder.productName}</td>    
-                                            <td >${eachOrder.associationName}</td>
-                                            <td >${eachOrder.deliveryDate}</td>
-                                            <td >${eachOrder.orderBill.totalAmount}</td>
+                                            <td>${eachOrder.productName}</td>
+                                            <td>${eachOrder.associationName}</td>
+                                            <td>${eachOrder.deliveryDate}</td>
+                                            <td>${eachOrder.orderBill.totalAmount}</td>
 
                                         </tr>
 
@@ -150,7 +151,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
 
 
-            <script type="text/javascript" src="http://localhost:8080/customercare/js/data-table.js"></script>
+            <script type="text/javascript" src="/customercare/js/data-table.js"></script>
 
 
             <script type="text/javascript">

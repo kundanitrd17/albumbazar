@@ -14,7 +14,7 @@
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-        <link rel="stylesheet" href="http://localhost:8080/superuser/css/super-admin.css">
+        <link rel="stylesheet" href="/superuser/css/super-admin.css">
 
 
     </head>
@@ -102,7 +102,7 @@
             </div>
         </div>
 
-        <script src='http://localhost:8080/superuser/js/super-admin.js'></script>
+        <script src='/superuser/js/super-admin.js'></script>
     </body>
 
     </html>

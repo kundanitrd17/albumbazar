@@ -12,12 +12,16 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-        <link rel="stylesheet" href="http://localhost:8080/css/my_account.css">
-        <link rel="stylesheet" href="http://localhost:8080/css/navbar.css">
+        <link rel="stylesheet" href="/css/my_account.css">
+        <link rel="stylesheet" href="/css/navbar.css">
 
+        <link rel="stylesheet" href="/css/loading.css">
     </head>
 
     <body>
+
+        <div class="loading" id="Loading" style="display: none;">Loading&#8230;</div>
+
         <!-- Navbar Section -->
 
         <%@include file="navbar.jsp" %>
@@ -35,7 +39,7 @@
                                 <h1 class="h2">Profile Information</h1>
 
                                 <div>
-                                    <img src="http://localhost:8080/img/slide1.svg" alt=""
+                                    <img src="/img/slide1.svg" alt=""
                                         style="height: 80px; width: 80px; border-radius: 50%;">
                                 </div>
                             </div>
@@ -122,9 +126,9 @@
 
                                     <div class="w-100">
                                         <div class="my-3" style="text-align: center;">
-                                            <button class="btn btn-light w-75"
+                                            <a href="/customer/change-password" class="btn btn-light w-75"
                                                 style="background-color: antiquewhite;">Change
-                                                Password</button>
+                                                Password</a>
                                         </div>
                                     </div>
 
@@ -137,11 +141,15 @@
                 </div>
             </div>
 
-            <script src="http://localhost:8080/js/customer_account.js"></script>
+            <%@include file="footer.jsp" %>
 
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+                <script src="/js/customer_account.js"></script>
+
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     </body>
 

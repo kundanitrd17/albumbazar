@@ -14,6 +14,7 @@ import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
 import com.albumbazaar.albumbazar.form.order.OrderDetailFormDTO;
 import com.albumbazaar.albumbazar.model.AddressEntity;
 import com.albumbazaar.albumbazar.model.Association;
+import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 
@@ -35,7 +36,7 @@ public interface OrderService {
      * @return an object of OrderDetail if everything goes fine orElse thrown
      *         Runtime exception
      */
-    public OrderDetail createNewOrder(final OrderDetailFormDTO orderDetailFormDTO, final Long customerId);
+    public OrderDetail createNewOrder(final OrderDetailFormDTO orderDetailFormDTO, final Customer customer);
 
     /**
      * @param id of the order
@@ -135,6 +136,5 @@ public interface OrderService {
 
     void changeDeliveryStatus(final Long orderId, final OrderDetailStatus orderDetailStatus);
 
-	List<OrderDetail> getOrdersWithAssociationAndStatus(Association association,
-			List<String> orderDetailStatusList);
+    List<OrderDetail> getOrdersWithAssociationAndStatus(Association association, List<String> orderDetailStatusList);
 }

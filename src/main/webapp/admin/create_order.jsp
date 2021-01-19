@@ -24,7 +24,8 @@
 
 
         <!-- <link rel="stylesheet" href="/superuser/css/super-admin.css"> -->
-        <link rel="stylesheet" href="./css/sidebar.css">
+        <link rel="stylesheet" href="/admin/css/sidebar.css">
+        <link rel="stylesheet" href="/css/loading.css">
         <script type="text/javascript">
             // Other important pens.
             // Map: https://codepen.io/themustafaomar/pen/ZEGJeZq
@@ -81,14 +82,17 @@
             });
         </script>
 
-        <link rel="stylesheet" href="../css/index.css">
+        <link rel="stylesheet" href="/css/index.css">
     </head>
 
     <body>
 
+        <div class="loading" id="Loading">Loading&#8230;</div>
+
+
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="mx-2">
-                <a class="btn" href="#"><i data-show="show-side-navigation1" class="fa fa-bars show-side-btn"></i></a>
+                <a href="#" data-show="show-side-navigation1" class="btn fa fa-bars show-side-btn"></a>
             </div>
             <!-- Image and text -->
             <a class="navbar-brand" href="/">
@@ -146,33 +150,36 @@
                 <section style="margin-bottom: 5rem; padding-top: 5px; padding-bottom: 50px;">
                     <div class="container">
                         <div class="row">
-                            <div class="col-md-4 col-lg-4 col-xl-4">
-                                <div class="fancy-cards">
+                            <c:forEach items="${associations}" var="association">
+                                <div class="col-md-4 col-lg-4 col-xl-4">
+                                    <div class="fancy-cards">
 
-                                    <div class="fancy-card">
-                                        <div class="top" id="t">
-                                            <div class="caption">
-                                                <h3 class="title">Company Name</h3>
-                                                <input type="text" name="associationId" value="1" hidden>
+                                        <div class="fancy-card">
+                                            <div class="top" id="t">
+                                                <div class="caption">
+                                                    <h3 class="title">${association.name}</h3>
+                                                    <input type="text" name="associationId" value="${association.id}"
+                                                        hidden>
 
-                                                <button type="button" id=""
-                                                    class="btn btn-primary button associationSelection"
-                                                    data-toggle="modal" data-target="#myModal">
-                                                    Select
-                                                </button>
-                                                <a type="button" id="associationViewPrice"
-                                                    class="btn btn-primary button1 associationViewPrice"
-                                                    data-toggle="modal" data-target="#largeModal">
-                                                    View Price
-                                                </a>
+                                                    <button type="button" id=""
+                                                        class="btn btn-primary button associationSelection"
+                                                        data-toggle="modal" data-target="#myModal">
+                                                        Select
+                                                    </button>
+                                                    <a type="button" id="associationViewPrice"
+                                                        class="btn btn-primary button1 associationViewPrice"
+                                                        data-toggle="modal" data-target="#largeModal">
+                                                        View Price
+                                                    </a>
+                                                </div>
                                             </div>
+                                            <div class="middle" id="m"></div>
+                                            <div class="bottom" id="b"></div>
                                         </div>
-                                        <div class="middle" id="m"></div>
-                                        <div class="bottom" id="b"></div>
                                     </div>
                                 </div>
-                            </div>
 
+                            </c:forEach>
                         </div>
                     </div>
                 </section>
@@ -193,15 +200,15 @@
                         <div class="modal-body">
 
                             <form class="" id="CreateOrderForm">
-                                <input type="text" name="selectedAssociationId" id="selectedAssociationId">
+                                <input type="text" name="selectedAssociationId" id="selectedAssociationId" hidden>
                                 <h4>Select Album</h4>
                                 <!-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> -->
 
                                 <div class="container">
                                     <div class="row">
 
-                                        <input class="form-control col-md-4 col-xl-4 col-lg-4" type="text"
-                                            name="customerId" placeholder="customer ID" required>
+                                        <input class="form-control col-md-4 col-xl-4 col-lg-4" type="email"
+                                            name="customerIdentifier" placeholder="customer Email" required>
 
                                         <select name="productCategory" id="albumType"
                                             class="form-control col-md-4 col-xl-4 col-lg-4">
@@ -353,9 +360,29 @@
 
             </script>
 
-            <script src="./js/create_order.js"></script>
-            <script src="./js/create_order_setup.js"></script>
+            <script src="/admin/js/create_order.js"></script>
+            <script src="/admin/js/create_order_setup.js"></script>
 
+
+            <script>
+                function onReady(callback) {
+                    var intervalId = window.setInterval(function () {
+                        if (document.getElementsByTagName('body')[0] !== undefined) {
+                            window.clearInterval(intervalId);
+                            callback.call(this);
+                        }
+                    }, 500);
+                }
+
+                function setVisible(selector, visible) {
+                    document.querySelector(selector).style.display = visible ? 'block' : 'none';
+                }
+
+                onReady(function () {
+                    // setVisible('body', true);
+                    setVisible('#Loading', false);
+                });
+            </script>
 
             <!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW"

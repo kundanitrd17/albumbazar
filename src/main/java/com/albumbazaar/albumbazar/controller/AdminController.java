@@ -9,6 +9,7 @@ import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
+import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.CustomerCareEmployeeService;
 import com.albumbazaar.albumbazar.services.CustomerService;
 import com.albumbazaar.albumbazar.services.EmployeeService;
@@ -40,14 +41,17 @@ public final class AdminController {
     private final OrderService orderService;
     private final EmployeeService employeeService;
     private final CustomerService customerService;
+    private final AssociationService associationService;
 
     @Autowired
     public AdminController(@Qualifier("employeeService") EmployeeService employeeService,
             @Qualifier("customerService") final CustomerService customerService,
+            @Qualifier("associationService") final AssociationService associationService,
             @Qualifier("orderService") final OrderService orderService) {
         this.employeeService = employeeService;
         this.customerService = customerService;
         this.orderService = orderService;
+        this.associationService = associationService;
     }
 
     @Autowired
@@ -107,8 +111,13 @@ public final class AdminController {
         // detail
         if (!paymentStatus.isBlank()) {
             try {
-                modelAndView.addObject("order_details",
-                        orderService.getOrderByPaymentStatus(Boolean.parseBoolean(paymentStatus)));
+                final boolean paymentStatusBoolean = Boolean.parseBoolean(paymentStatus);
+                if (paymentStatusBoolean) {
+                    modelAndView.addObject("title", "Paid Orders");
+                } else {
+                    modelAndView.addObject("title", "Un-Paid Orders");
+                }
+                modelAndView.addObject("order_details", orderService.getOrderByPaymentStatus(paymentStatusBoolean));
             } catch (Exception e) {
                 logger.error(e.getMessage());
                 modelAndView.addObject("order_details", null);
@@ -119,6 +128,7 @@ public final class AdminController {
             // If payment status is not specified then send order details based on order
             // status
             try {
+                modelAndView.addObject("title", orderStatus + " Orders");
                 modelAndView.addObject("order_details", orderService.getAllOrderWithStatus(orderStatus));
             } catch (Exception e) {
                 logger.error(e.getMessage());
@@ -253,6 +263,12 @@ public final class AdminController {
     public ModelAndView createNewOrderView() {
 
         final ModelAndView modelAndView = new ModelAndView("admin/create_order");
+
+        try {
+            modelAndView.addObject("associations", associationService.getAssociationWithStatus(true));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
 
         return modelAndView;
     }

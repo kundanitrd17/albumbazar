@@ -8,9 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
 import com.albumbazaar.albumbazar.form.order.OrderDetailFormDTO;
+import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
+import com.albumbazaar.albumbazar.services.CustomerService;
 import com.albumbazaar.albumbazar.services.GoogleDriveService;
 import com.albumbazaar.albumbazar.services.OrderService;
 
@@ -37,13 +39,16 @@ public final class OrderController {
 
     private OrderService orderService;
     private GoogleDriveService googleDriveService;
+    private CustomerService customerService;
 
     @Autowired
     public OrderController(@Qualifier("orderService") OrderService orderService,
+            @Qualifier("customerService") final CustomerService customerService,
             @Qualifier("googleDriveService") final GoogleDriveService googleDriveService) {
 
         this.googleDriveService = googleDriveService;
         this.orderService = orderService;
+        this.customerService = customerService;
     }
 
     @GetMapping(value = "/order")
@@ -70,7 +75,9 @@ public final class OrderController {
             if (customerObj instanceof CustomerPrincipal) {
                 final CustomerPrincipal customerPrincipal = (CustomerPrincipal) customerObj;
 
-                final OrderDetail order = orderService.createNewOrder(orderDetailFormDTO, customerPrincipal.getId());
+                final Customer customer = customerService.getCustomer(customerPrincipal.getId());
+
+                final OrderDetail order = orderService.createNewOrder(orderDetailFormDTO, customer);
                 redirectAttributes.addFlashAttribute("order_id", order.getId());
             } else {
                 throw new AuthenticationException();

@@ -307,7 +307,7 @@
       $("#myModal .modal-header .modal-title").text(companyName);
       $("#myModal form #selectedAssociationId").val(companyId);
 
-      const URI = "http://localhost:8080/api/product/company/" + companyId;
+      const URI = "/api/product/company/" + companyId;
 
       $.ajax({
         url: URI,

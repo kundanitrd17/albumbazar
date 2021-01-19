@@ -76,6 +76,11 @@ public final class CustomerController {
         return modelAndView;
     }
 
+    @GetMapping(value = "/customer/change-password")
+    public ModelAndView changeCustomerPasswordView() {
+        return new ModelAndView("/forgot_password");
+    }
+
     @GetMapping(value = "/customer/my-address")
     public ModelAndView myAccountManageAddress() {
         final ModelAndView modelAndView = new ModelAndView("manage_address");
@@ -115,9 +120,11 @@ public final class CustomerController {
             System.out.println(customerDTO.getReferralCode());
             final Customer savedCustomer = customerService.registerCustomer(customerDTO);
 
-            // List<GrantedAuthority> authorities = Arrays.asList(new SimpleGrantedAuthority(AvailableRoles.Code.USER));
+            // List<GrantedAuthority> authorities = Arrays.asList(new
+            // SimpleGrantedAuthority(AvailableRoles.Code.USER));
             // CustomerPrincipal principal = new CustomerPrincipal(savedCustomer);
-            // Authentication authentication = new UsernamePasswordAuthenticationToken(principal, null, authorities);
+            // Authentication authentication = new
+            // UsernamePasswordAuthenticationToken(principal, null, authorities);
             // SecurityContextHolder.getContext().setAuthentication(authentication);
             System.out.println(savedCustomer);
         } catch (Exception e) {
@@ -193,8 +200,5 @@ public final class CustomerController {
 
         return redirectView;
     }
-
-
-
 
 }

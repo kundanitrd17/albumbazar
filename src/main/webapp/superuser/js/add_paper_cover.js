@@ -134,7 +134,7 @@ function uploadPaperInfo(associationId, paper) {
     }
 
     const xhr = new XMLHttpRequest();
-    const url = "http://localhost:8080/api/superuser/product/paper/add";
+    const url = "/api/superuser/product/paper/add";
     xhr.open('POST', url, true)
     xhr.setRequestHeader(header, token);
 
@@ -173,7 +173,7 @@ function uploadPaperInfo(associationId, paper) {
 //     var xhr = new XMLHttpRequest();
 
 //     // Replace 1 with current order id
-//     var url = 'http://localhost:8080/superuser/product/paper/add';
+//     var url = '/superuser/product/paper/add';
 //     xhr.open("POST", url, true);
 //     xhr.setRequestHeader('Content-type', 'application/json');
 //     xhr.setRequestHeader(header, token);
@@ -315,7 +315,7 @@ function uploadCoverInfo(associationId, cover) {
     }
 
     const xhr = new XMLHttpRequest();
-    const url = "http://localhost:8080/api/superuser/product/cover/add";
+    const url = "/api/superuser/product/cover/add";
     xhr.open('POST', url, true)
     xhr.setRequestHeader(header, token);
 

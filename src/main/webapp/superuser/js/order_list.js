@@ -16,7 +16,7 @@ function fetchDeliveryAddressFromServer(orderId) {
     modal.querySelector('input[name="orderId"]').value = orderId;
 
     const xhr = new XMLHttpRequest();
-    const url = "http://localhost:8080/api/secured/order/" + orderId + "/delivery/address";
+    const url = "/api/secured/order/" + orderId + "/delivery/address";
     xhr.open('GET', url, true);
 
     xhr.onreadystatechange = function () {
@@ -57,7 +57,7 @@ function orderProductView(order_id) {
 
     console.log("loading...");
     const xhr = new XMLHttpRequest();
-    const url = "http://localhost:8080/api/secured/order/" + order_id + "/product/details";
+    const url = "/api/secured/order/" + order_id + "/product/details";
 
     xhr.open('GET', url, true);
 
@@ -114,7 +114,7 @@ function fetchCustomerDetails(id) {
     var customerDetailModal = document.getElementById('customerDetailModal');
 
     const xhr = new XMLHttpRequest();
-    const url = "http://localhost:8080/api/secured/employee/customer/info/" + id;
+    const url = "/api/secured/employee/customer/info/" + id;
     xhr.open('GET', url, true);
 
     xhr.onreadystatechange = function () {

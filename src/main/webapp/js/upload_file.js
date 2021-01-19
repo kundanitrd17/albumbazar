@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function checkGoogleAuth() {
 
     const xhr = new XMLHttpRequest();
-    const url = "http://localhost:8080/api/secured/customer/is-google-auth-allowed";
+    const url = "/api/secured/customer/is-google-auth-allowed";
     xhr.open('GET', url, true);
 
     xhr.onreadystatechange = function () {
@@ -127,7 +127,7 @@ function uploadFilesToServer() {
     var xhr_outer = new XMLHttpRequest();
 
     // url for creating folder
-    var outer_url = 'http://localhost:8080/api/secured/order/' + currentOrderId + '/create-folder';
+    var outer_url = '/api/secured/order/' + currentOrderId + '/create-folder';
 
     xhr_outer.open("GET", outer_url, true);
 
@@ -138,7 +138,7 @@ function uploadFilesToServer() {
             var xhr = new XMLHttpRequest();
 
             // Replace 1 with current order id
-            var url = 'http://localhost:8080/api/secured/order/' + currentOrderId + '/photos';
+            var url = '/api/secured/order/' + currentOrderId + '/photos';
             xhr.open("POST", url, true);
             // xhr.setRequestHeader('Content-type', 'application/json');
             // xhr.setRequestHeader(header, token);
@@ -183,7 +183,7 @@ function generateBillForOrder() {
 
     var xhr = new XMLHttpRequest();
 
-    var url = 'http://localhost:8080/api/secured/bill/generate';
+    var url = '/api/secured/bill/generate';
     xhr.open("POST", url, true);
     xhr.setRequestHeader('Content-type', 'application/json');
     xhr.setRequestHeader(header, token);
@@ -303,7 +303,7 @@ function send_payment_info_to_server(response) {
 
     var xhr = new XMLHttpRequest();
 
-    var url = 'http://localhost:8080/api/secured/bill/paid';
+    var url = '/api/secured/bill/paid';
     xhr.open("POST", url, true);
     xhr.setRequestHeader('Content-type', 'application/json');
     xhr.setRequestHeader(header, token);

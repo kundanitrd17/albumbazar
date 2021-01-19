@@ -21,24 +21,24 @@ public interface UtilityService {
 
     public void resetEmployeePassword(ResetPasswordDTO resetPasswordDTO) throws UsernameNotFoundException;
 
-	void createCarasoul(MultipartFile carasoul);
+    void createCarasoul(MultipartFile carasoul);
 
     void deleteCarasoul(Long id);
-    
+
     List<CarasoulEntity> getAllCarasoul();
 
     List<SampleAlbumEntity> getAllSampleAlbum();
 
-	void uploadSampleAlbum(SampleAlbumDTO sampleAlbumDTO);
+    void uploadSampleAlbum(SampleAlbumDTO sampleAlbumDTO);
 
-	void deleteSampleAlbum(Long id);
+    void deleteSampleAlbum(Long id);
 
     List<FrequentQuestionEntity> getAllFrequentQuestions();
 
-	void createQuestion(FrequentQuestionEntity frequentQuestion);
+    void createQuestion(FrequentQuestionEntity frequentQuestion);
 
+    void deleteFrequentQuestion(final Long id);
 
-     void deleteFrequentQuestion(final Long id);
-
+    void updateCarasoul(Long carasoulId, MultipartFile carasoul);
 
 }

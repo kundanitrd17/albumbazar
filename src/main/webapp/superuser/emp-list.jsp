@@ -227,7 +227,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
 
           var xhr = new XMLHttpRequest();
-          var url = 'http://localhost:8080/api/superuser/employee-delete';
+          var url = '/api/superuser/employee-delete';
           xhr.open("DELETE", url, true);
           xhr.setRequestHeader('Content-type', 'application/json');
           xhr.setRequestHeader(header, token);
@@ -258,7 +258,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
 
           var xhr = new XMLHttpRequest();
-          var url = 'http://localhost:8080/api/superuser/employee-restore';
+          var url = '/api/superuser/employee-restore';
           xhr.open("PUT", url, true);
           xhr.setRequestHeader('Content-type', 'application/json');
           xhr.setRequestHeader(header, token);

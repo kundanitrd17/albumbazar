@@ -24,9 +24,9 @@
 
 
             <li class="nav-item">
-                <a href="#" class="nav-link">
+                <a href="#" class="nav-link" data-toggle="modal" data-target="#walletModal">
                     <i class="fa fa-money fa-fw" aria-hidden="true"></i>
-                    Wallet
+                    wallet
                 </a>
             </li>
 

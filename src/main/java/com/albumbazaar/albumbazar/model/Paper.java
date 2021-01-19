@@ -38,6 +38,7 @@ public class Paper {
     @Column(name = "paper_price")
     private Double paperPrice;
 
+    @Column(name = "gst", columnDefinition = "double default 0.0")
     private Double GST;
 
     private String image;
@@ -53,8 +54,13 @@ public class Paper {
 
     @PrePersist
     void prePersist() {
-        if (this.active == null)
+        if (this.active == null) {
             this.active = true;
+        }
+
+        if (this.GST == null) {
+            this.GST = 0.0;
+        }
     }
 
     @Override

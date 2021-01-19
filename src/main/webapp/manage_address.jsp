@@ -17,8 +17,8 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-        <link rel="stylesheet" href="http://localhost:8080/css/my_account.css">
-        <link rel="stylesheet" href="http://localhost:8080/css/navbar.css">
+        <link rel="stylesheet" href="/css/my_account.css">
+        <link rel="stylesheet" href="/css/navbar.css">
 
 
     </head>
@@ -40,7 +40,7 @@
                                 <h1 class="h2">Your Addresses</h1>
 
                                 <div>
-                                    <img src="http://localhost:8080/img/slide1.svg" alt=""
+                                    <img src="/img/slide1.svg" alt=""
                                         style="height: 80px; width: 80px; border-radius: 50%;">
                                 </div>
                             </div>
@@ -83,7 +83,7 @@
                                                     Edit
                                                 </button>
                                                 <a href="#" class="card-link btn btn-danger DeleteAddressBtn"
-                                                    onclick="deleteAddress('${address.id}', '${customer.id}')">Delete</a>
+                                                    onclick="deleteAddress('${address.id}', '${customer.id}'); event.preventDefault();">Delete</a>
                                             </div>
                                         </div>
 
@@ -289,19 +289,20 @@
             </div>
 
 
+            <%@include file="footer.jsp" %>
 
 
 
 
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+                <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
 
 
-            <script src="/js/manage_address.js">
+                <script src="/js/manage_address.js">
 
-            </script>
+                </script>
 
 
 

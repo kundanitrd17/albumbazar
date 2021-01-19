@@ -15,7 +15,7 @@ function createNewOrder(e) {
 
 
     const xhr = new XMLHttpRequest();
-    const url = "http://localhost:8080/api/secured/order/create";
+    const url = "/api/secured/order/create";
     xhr.open('POST', url, true);
     // xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     // xhr.setRequestHeader('Content-type', 'multipart/form-data');
@@ -99,7 +99,7 @@ function uploadImagesToServer(e) {
     var xhr_outer = new XMLHttpRequest();
 
     // url for creating folder
-    var outer_url = 'http://localhost:8080/api/secured/order/' + order_id + '/create-folder';
+    var outer_url = '/api/secured/order/' + order_id + '/create-folder';
 
     xhr_outer.open("GET", outer_url, true);
 
@@ -109,7 +109,7 @@ function uploadImagesToServer(e) {
             console.log("Folder Created....!");
             var xhr = new XMLHttpRequest();
 
-            var url = 'http://localhost:8080/api/secured/order/' + order_id + '/photos';
+            var url = '/api/secured/order/' + order_id + '/photos';
             xhr.open("POST", url, true);
             xhr.setRequestHeader(header, token);
 

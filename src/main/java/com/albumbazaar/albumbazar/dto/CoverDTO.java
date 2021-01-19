@@ -3,9 +3,11 @@ package com.albumbazaar.albumbazar.dto;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
+import com.albumbazaar.albumbazar.controller.FileUploadController;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import lombok.Data;
 
@@ -34,5 +36,13 @@ public class CoverDTO {
     private Long associationId;
 
     private MultipartFile uploadImageFile;
+
+    public String getImage() {
+        if (image == null || image.isBlank())
+            return null;
+
+        return MvcUriComponentsBuilder.fromMethodName(FileUploadController.class, "serveFile", image).build().toUri()
+                .toString();
+    }
 
 }

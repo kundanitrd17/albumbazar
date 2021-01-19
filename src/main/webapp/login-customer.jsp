@@ -45,12 +45,12 @@
                         <input name="password" class="form-control py-4" id="inputPassword" type="password"
                             aria-describedby="passwordHelp" placeholder="Enter password" />
                     </div>
-                    
+
                     <div class="form-group mt-4 mb-0"><button class="btn btn-primary btn-block" type="submit"">Login</button>
                     </div>
 
                     <div>
-                        <a href="forgot-password" class="small" style="margin-left: auto;">Forgot Password</a>
+                        <a href=" forgot-password" class="small" style="margin-left: auto;">Forgot Password</a>
                     </div>
 
                 </form>
@@ -58,15 +58,15 @@
 
             <!-- Footer -->
             <div class="modal-footer">
-                            <div class="mx-auto small"><a data-dismiss="modal" href="#" data-toggle="modal"
-                                    data-target="#RegisterCustomerModal">Don't have an account? Register here</a>
-                            </div>
-                    </div>
-
+                <div class="mx-auto small"><a data-dismiss="modal" href="#" data-toggle="modal"
+                        data-target="#RegisterCustomerModal">Don't have an account? Register here</a>
+                </div>
             </div>
+
         </div>
-
-
     </div>
 
-    <!-- End of Login Page Modal -->
+
+</div>
+
+<!-- End of Login Page Modal -->

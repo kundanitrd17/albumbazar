@@ -8,7 +8,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Page Title - SB Admin</title>
-    <link href="css/login_logout.css" rel="stylesheet" />
+    <link href="/superuser/css/login_logout.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"
         crossorigin="anonymous"></script>
 </head>

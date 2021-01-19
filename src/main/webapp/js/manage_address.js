@@ -8,7 +8,7 @@ function deleteAddress(address_id) {
 
 
     // Replace 1 with current order id
-    var url = 'http://localhost:8080/api/secured/customer/address';
+    var url = '/api/secured/customer/address';
     xhr.open("DELETE", url, true);
     xhr.setRequestHeader('Content-type', 'application/json');
     xhr.setRequestHeader(header, token);

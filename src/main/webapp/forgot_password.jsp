@@ -12,7 +12,7 @@
     <meta name="description" content="" />
     <meta name="author" content="" />
     <title>Page Title - SB Admin</title>
-    <link href="./css/login_logout.css" rel="stylesheet" />
+    <link href="/css/login_logout.css" rel="stylesheet" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"
         crossorigin="anonymous"></script>
 </head>
@@ -105,7 +105,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
         crossorigin="anonymous"></script>
 
-    <script src="./js/forgot_password.js">
+    <script src="/js/forgot_password.js">
     </script>
 
 </body>

@@ -2,7 +2,7 @@
 function loadDeliveryAddressCards() {
 
     const xhr = new XMLHttpRequest();
-    const url = "http://localhost:8080/api/secured/customer/address";
+    const url = "/api/secured/customer/address";
     xhr.open('GET', url, true);
 
     xhr.onreadystatechange = function () {

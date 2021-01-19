@@ -3,7 +3,7 @@
 function checkGoogleAuth() {
 
     const xhr = new XMLHttpRequest();
-    const url = "http://localhost:8080/api/admin/is-google-auth-allowed";
+    const url = "/api/admin/is-google-auth-allowed";
 
     xhr.open('GET', url, true);
 
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function () {
         $("#myModal .modal-header .modal-title").text(companyName);
         $("#myModal form #selectedAssociationId").val(companyId);
 
-        const URI = "http://localhost:8080/api/product/company/" + companyId;
+        const URI = "/api/product/company/" + companyId;
 
         $.ajax({
             url: URI,
@@ -301,7 +301,7 @@ function loadAssociationPriceView() {
         $('#largeModal #selected_association_id').val(associationId);
 
 
-        const URI = "http://localhost:8080/api/product/company/" + associationId;
+        const URI = "/api/product/company/" + associationId;
 
         $.ajax({
             url: URI,

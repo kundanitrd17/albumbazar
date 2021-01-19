@@ -173,7 +173,7 @@
 
 
                     var xhr = new XMLHttpRequest();
-                    var url = 'http://localhost:8080/api/superuser/customer-delete';
+                    var url = '/api/superuser/customer-delete';
                     xhr.open("DELETE", url, true);
                     xhr.setRequestHeader('Content-type', 'application/json');
                     xhr.setRequestHeader(header, token);
@@ -204,7 +204,7 @@
 
 
                     var xhr = new XMLHttpRequest();
-                    var url = 'http://localhost:8080/api/superuser/customer-restore';
+                    var url = '/api/superuser/customer-restore';
                     xhr.open("PUT", url, true);
                     xhr.setRequestHeader('Content-type', 'application/json');
                     xhr.setRequestHeader(header, token);
@@ -225,7 +225,7 @@
 
 
 
-            <script type="text/javascript" src="http://localhost:8080/superuser/js/data-table.js"></script>
+            <script type="text/javascript" src="/superuser/js/data-table.js"></script>
 
 
             <script src='http://code.jquery.com/jquery-latest.js'></script>
@@ -233,7 +233,7 @@
                 integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
                 crossorigin="anonymous"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
-            <script src='http://localhost:8080/superuser/js/super-admin.js'></script>
+            <script src='/superuser/js/super-admin.js'></script>
 
     </body>
 

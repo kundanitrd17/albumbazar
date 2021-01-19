@@ -104,7 +104,7 @@ $(document).ready(function () {
 function checkGoogleAuth() {
 
     const xhr = new XMLHttpRequest();
-    const url = "http://localhost:8080/api/secured/customer/is-google-auth-allowed";
+    const url = "/api/secured/customer/is-google-auth-allowed";
     xhr.open('GET', url, true);
 
     xhr.onreadystatechange = function () {
@@ -162,9 +162,21 @@ var availableCovers = []
 
 
 document.addEventListener('DOMContentLoaded', function () {
-    $('.carousel').carousel({
-        interval: 5000
-    })
+    try {
+
+        document.querySelector('.carousel-item').className += " active";
+
+        $('.carousel').carousel({
+            interval: 500
+        })
+
+        $(function () {
+            $('[data-toggle="popover"]').popover()
+        })
+
+    } catch (error) {
+
+    }
 
 
 
@@ -201,7 +213,7 @@ document.addEventListener('DOMContentLoaded', function () {
         $("#myModal .modal-header .modal-title").text(companyName);
         $("#myModal form #selectedAssociationId").val(companyId);
 
-        const URI = "http://localhost:8080/api/product/company/" + companyId;
+        const URI = "/api/product/company/" + companyId;
 
         $.ajax({
             url: URI,
@@ -439,7 +451,7 @@ function loadAssociationPriceView() {
         $('#largeModal #selected_association_id').val(associationId);
 
 
-        const URI = "http://localhost:8080/api/product/company/" + associationId;
+        const URI = "/api/product/company/" + associationId;
 
         $.ajax({
             url: URI,

@@ -17,149 +17,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" href="./css/navbar.css">
-    <link rel="stylesheet" href="./css/index.css">
+    <link rel="stylesheet" href="/css/navbar.css">
+    <link rel="stylesheet" href="/css/index.css">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
       integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-    <style>
-      .wyc-container {
-        max-width: 600px;
-        margin: 0 auto;
-      }
 
-      .wyc {
-        background-color: transparent;
-        border: 1px solid #9fa4a8;
-        border-radius: 10px;
-        margin: 20px 0;
-        padding: 30px;
-        position: relative;
-        overflow: hidden;
-        transition: 0.3 ease;
-      }
-
-      .wyc.active {
-        background-color: #fff;
-        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1), 0 3px 6px rgba(0, 0, 0, 0.1);
-      }
-
-      .wyc.active::before,
-      .wyc.active::after {
-        content: "\f075";
-        font-family: "Font Awesome 5 Free";
-        color: #2ecc71;
-        font-size: 7rem;
-        position: absolute;
-        opacity: 0.2;
-        top: 20px;
-        left: 20px;
-        z-index: 0;
-      }
-
-      .wyc.active::before {
-        color: #3498db;
-        top: -10px;
-        left: -30px;
-        transform: rotateY(180deg);
-      }
-
-      .wyc-title {
-        margin: 0 35px 0 0;
-      }
-
-      .wyc-text {
-        display: none;
-        margin: 30px 0 0;
-      }
-
-      .wyc.active .wyc-text {
-        display: block;
-      }
-
-      .wyc-toggle {
-        background-color: transparent;
-        border: 0;
-        border-radius: 50%;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 16px;
-        padding: 0;
-        position: absolute;
-        top: 30px;
-        right: 30px;
-        height: 30px;
-        width: 30px;
-      }
-
-      .wyc-toggle:focus {
-        outline: 0;
-      }
-
-      .wyc-toggle .fa-times {
-        display: none;
-      }
-
-      .wyc.active .wyc-toggle .fa-times {
-        color: #fff;
-        display: block;
-      }
-
-      .wyc.active .wyc-toggle .fa-chevron-down {
-        display: none;
-      }
-
-      .wyc.active .wyc-toggle {
-        background-color: #9fa4a8;
-      }
-    </style>
-
-    <style>
-      #carouselExampleSlidesOnly {
-        padding-top: 20px;
-        padding-left: 50px;
-        padding-right: 50px;
-        height: 80vh !important;
-        width: 100% !important;
-      }
-
-      /* .item, */
-      .card img {
-        /* padding: 50px; */
-        height: 80vh !important;
-        width: 100% !important;
-      }
-
-      .association-card {
-        max-width: 20rem;
-      }
-
-      .association-card p {
-        font-size: 12px;
-      }
-
-      .association-card .card-img-top {
-        height: 250px !important;
-        width: 500px;
-      }
-
-      .accordion-body {
-        font-weight: 400;
-        font-size: 13px;
-        text-align: left;
-      }
-
-      .accordion-item h2 button {
-        font-weight: 700;
-        font-size: 14px;
-      }
-    </style>
+    <link rel="stylesheet" href="/css/loading.css">
 
   </head>
 
 
   <body>
+
+    <div class="loading" id="Loading">Loading&#8230;</div>
 
     <!-- Navbar Section -->
     <%@include file="navbar.jsp" %>
@@ -167,24 +37,31 @@
 
       <!-- Carousel -->
       <!-- Slides -->
-      <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+      <div id="carouselExampleSlidesOnly" class="carousel slide " data-ride="carousel">
         <!-- Indicators -->
         <ol class="carousel-indicators">
-          <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
-          <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-          <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+
+          <li data-target="#carouselExampleIndicators" data-slide-to="0"></li>
+          <c:forEach begin="1" end="${carasouls.size()}" varStatus="loop">
+            <li data-target="#carouselExampleIndicators" data-slide-to="${loop.index}"></li>
+          </c:forEach>
+
         </ol>
         <!-- slide show -->
         <div class="carousel-inner">
-          <div class="carousel-item active">
-            <img class="d-block w-100" src="./img/slide1.svg" alt="First slide">
-          </div>
+
+
           <div class="carousel-item">
-            <img class="d-block w-100" src="./img/slide2.svg" alt="Second slide">
+            <img class="d-block w-100" src="/img/slide1.svg" alt="First slide">
           </div>
-          <div class="carousel-item">
-            <img class="d-block w-100" src="./img/slide3.svg" alt="Third slide">
-          </div>
+          <c:forEach items="${carasouls}" var="carasoul">
+
+            <div class="carousel-item">
+              <img class="d-block w-100" src="${carasoul.image}" alt="First slide">
+            </div>
+
+          </c:forEach>
+
         </div>
 
         <!-- prev Next Control -->
@@ -199,6 +76,7 @@
 
       </div>
       <!-- End of Slides -->
+
 
 
       <section style=" margin-bottom: 5rem; padding-top: 50px; padding-bottom: 50px;">
@@ -248,7 +126,7 @@
 
 
 
-        <!-- The Modal -->
+        <!-- The order Modal -->
         <div class="modal fade" id="myModal">
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -331,6 +209,7 @@
               <!-- Modal footer -->
               <div class="modal-footer">
 
+                <span> <strong>Total</strong> <span style="color: rgb(157, 157, 157);"> (gst included)</span> </span>
                 <input id="orderTotalInput" type="number" class="form-control" style="width: 100px;" disabled>
                 <button type=" button" class="btn btn-primary btn-order-next">
                   Select Address
@@ -456,19 +335,26 @@
 
           <div class="container">
             <div class="row">
-              <div class="col-sm">
-                <div class="card association-card" style="">
-                  <img
-                    src="https://www.albumsremembered.com/wp-content/uploads/2018/10/AlbumsRemembered_Product-acrylic-sq.jpg"
-                    class="card-img-top" style="" alt="BACKGROUND">
-                  <div class="card-body">
-                    <h5 class="card-title">Photo Books</h5>
-                    <p>Metallic album</p>
-                    <a href="#" class="btn btn-primary">Go somewhere</a>
+
+              <c:forEach items="${sample_albums}" var="sample_album">
+                <div class="col-sm">
+                  <div class="card association-card" style="">
+                    <img src="${sample_album.image}" class="card-img-top" style="" alt="BACKGROUND">
+                    <div class="card-body">
+                      <h5 class="card-title">${sample_album.title}</h5>
+                      <button type="button" class="btn btn-primary" data-container="body" data-toggle="popover"
+                        data-placement="bottom" data-content="${sample_album.description}">
+                        Popover on bottom
+                      </button>
+
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="col-sm">
+
+              </c:forEach>
+
+
+              <!-- <div class="col-sm">
                 <div class="card association-card">
                   <img
                     src="https://www.photojaanic.com/blog/wp-content/uploads/sites/2/2017/06/Wedding-photo-albums.jpg"
@@ -479,7 +365,8 @@
                     <a href="#" class="btn btn-primary">Go somewhere</a>
                   </div>
                 </div>
-              </div>
+              </div> -->
+              <!-- 
               <div class="col-sm">
                 <div class="card association-card">
                   <img
@@ -492,6 +379,7 @@
                   </div>
                 </div>
               </div>
+               -->
             </div>
           </div>
 
@@ -581,7 +469,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6" style="margin-left: 70px;">
+              <div class="col col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
                 <h4 style="text-align:left ;font-size: 18px; margin-bottom: 30px;">What customers say about us</h4>
                 <div class="card">
                   <div class="card-body">
@@ -616,112 +504,73 @@
 
 
 
-      <!-- Footer -->
-      <footer class="footers text-center text-lg-start mt-5 bg-dark" style="color: white">
-        <!-- Grid container -->
-        <div class="container p-5">
-          <!--Grid row-->
-          <div class="row">
-            <!--Grid column-->
-            <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-              <h5 class="text-uppercase">Newsletter Sign Up</h5>
+      <%@include file="footer.jsp" %>
 
-              <p style="color: gray;">
-                Just register with us, and get updates and special offers for you by venusalbum.com
-              </p>
-              <button type="button" class="btn btn-primary">click here to sign up</button>
-            </div>
-            <!--Grid column-->
-
-            <!--Grid column-->
-            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-              <h5 class="text-uppercase">Latest Updates</h5>
-
-              <ul class="list-unstyled mb-0">
-                <li>
-                  <a href="#!" class="text-light">HP Awarded Venus album a Star Company</a>
-                </li>
-              </ul>
-            </div>
-            <!--Grid column-->
-
-            <!--Grid column-->
-            <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-              <h5 class="text-uppercase mb-0"> Quick Links</h5>
-
-              <ul class="list-unstyled">
-                <li>
-                  <a href="#!" class="text-light">Home</a>
-                </li>
-                <li>
-                  <a href="#!" class="text-light">About</a>
-                </li>
-                <li>
-                  <a href="#!" class="text-light">Services</a>
-                </li>
-                <li>
-                  <a href="#!" class="text-light">Contact us</a>
-                </li>
-              </ul>
-            </div>
-            <!--Grid column-->
-          </div>
-          <!--Grid row-->
-        </div>
-        <!-- Grid container -->
-
-        <!-- Copyright -->
-        <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
-          © 2020 Copyright:
-          <a class="text-light" href="#">Company Name</a>
-        </div>
-        <!-- Copyright -->
-      </footer>
-      <!-- Footer -->
-
-      <!-- Footer Section -->
-      <!-- <nav class="navbar sticky-bottom navbar-dark bg-dark">
+        <!-- Footer Section -->
+        <!-- <nav class="navbar sticky-bottom navbar-dark bg-dark">
         <a class="navbar-brand" href="#" style="height: 40vh; font-size: medium;"> All rights reserved
           &#169; </a>
       </nav> -->
 
-      <!-- End of Footer section -->
+        <!-- End of Footer section -->
 
 
 
 
 
 
-      <script src="./js/index.js"></script>
+        <script src="./js/index.js"></script>
 
-      <script src="./js/delivery_address_handler.js"></script>
+        <script src="./js/delivery_address_handler.js"></script>
 
-      <script>
-        const toggles = document.querySelectorAll(".wyc-toggle");
+        <script>
+          const toggles = document.querySelectorAll(".wyc-toggle");
 
-        toggles.forEach((toggle) => {
-          toggle.addEventListener("click", () => {
-            toggle.parentNode.classList.toggle("active");
+          toggles.forEach((toggle) => {
+            toggle.addEventListener("click", () => {
+              toggle.parentNode.classList.toggle("active");
+            });
           });
-        });
-      </script>
+        </script>
 
-      <script type="text/javascript">
-
-
-
-        $(document).ready(function () {
-          var custjs = '${customer}';
-          console.log(custjs);
-
-          $(".fancy-card #t").css("background-image", "url('https://static-1.gumroad.com/res/gumroad/assets/collections/food_and_cooking_thumb-34fb9ef316a7b01177529839891c3a03.jpg')");
-        });
+        <script type="text/javascript">
 
 
 
+          $(document).ready(function () {
+            var custjs = '${customer}';
+            console.log(custjs);
 
-      </script>
-      <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+            $(".fancy-card #t").css("background-image", "url('https://static-1.gumroad.com/res/gumroad/assets/collections/food_and_cooking_thumb-34fb9ef316a7b01177529839891c3a03.jpg')");
+          });
+
+
+
+
+        </script>
+
+
+        <script>
+          function onReady(callback) {
+            var intervalId = window.setInterval(function () {
+              if (document.getElementsByTagName('body')[0] !== undefined) {
+                window.clearInterval(intervalId);
+                callback.call(this);
+              }
+            }, 500);
+          }
+
+          function setVisible(selector, visible) {
+            document.querySelector(selector).style.display = visible ? 'block' : 'none';
+          }
+
+          onReady(function () {
+            // setVisible('body', true);
+            setVisible('#Loading', false);
+          });
+        </script>
+
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
 
   </body>
 

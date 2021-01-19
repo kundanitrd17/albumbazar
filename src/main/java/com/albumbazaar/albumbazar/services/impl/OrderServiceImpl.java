@@ -70,7 +70,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDetail createOrderByBranchOrAdmin(OrderDetailFormDTO orderDetailFormDTO) {
 
-        final OrderDetail orderDetail = this.createNewOrder(orderDetailFormDTO, orderDetailFormDTO.getCustomerId());
+        final Customer customer = context.getBean(CustomerService.class)
+                .loadByEmail(orderDetailFormDTO.getCustomerIdentifier());
+
+        final OrderDetail orderDetail = this.createNewOrder(orderDetailFormDTO, customer);
 
         return orderDetail;
 
@@ -78,7 +81,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional
-    public OrderDetail createNewOrder(final OrderDetailFormDTO orderDetailFormDTO, final Long customerId) {
+    public OrderDetail createNewOrder(final OrderDetailFormDTO orderDetailFormDTO, final Customer customer) {
 
         final OrderDetail orderDetail = new OrderDetail();
         final Association association = context.getBean(AssociationService.class)
@@ -92,6 +95,7 @@ public class OrderServiceImpl implements OrderService {
 
         final Cover cover = productService.getCoverEntity(orderDetailFormDTO.getCoverId());
         totalAmount += cover.getCoverPrice();
+        totalAmount += cover.getGST();
         orderDetail.setCover(cover);
 
         orderDetail.setDescription(orderDetailFormDTO.getDescription());
@@ -105,26 +109,32 @@ public class OrderServiceImpl implements OrderService {
 
             final JSONObject paperIdAndNumberOfSheet = new JSONObject();
 
-            System.out.println("paper: " + orderDetailFormDTO.getPaperId()[index] + "\nsheets: "
-                    + orderDetailFormDTO.getNumberOfSheet()[index]);
+            final long noOfSheets = orderDetailFormDTO.getNumberOfSheet()[index];
+
+            if (noOfSheets < 0) {
+                throw new IllegalStateException("Sheet not allowed");
+            }
+
+            System.out.println("paper: " + orderDetailFormDTO.getPaperId()[index] + "\nsheets: " + noOfSheets);
 
             final Long paperId = orderDetailFormDTO.getPaperId()[index];
 
             final Paper paper = productService.getPaperEntity(paperId);
 
             paperIdAndNumberOfSheet.put("paper_id", paper.getId());
-            paperIdAndNumberOfSheet.put("sheets", orderDetailFormDTO.getNumberOfSheet()[index]);
+            paperIdAndNumberOfSheet.put("sheets", noOfSheets);
 
             paperAndNumberOfPaperDetailList.put(paperIdAndNumberOfSheet);
 
-            totalAmount += paper.getPaperPrice() * Math.abs(orderDetailFormDTO.getNumberOfSheet()[index]);
+            totalAmount += (paper.getPaperPrice() + paper.getGST()) * noOfSheets;
 
         }
 
         orderDetail.setPaperDetailsWithNumberOfSheetsList(paperAndNumberOfPaperDetailList.toString());
 
-        final CustomerService customerService = context.getBean(CustomerService.class);
-        final Customer customer = customerService.getCustomer(customerId);
+        // final CustomerService customerService =
+        // context.getBean(CustomerService.class);
+        // final Customer customer = customerService.getCustomer(customerId);
 
         // Creating the object for OrderBillEmbeddable to return
         final OrderBillEmbeddable orderBill = new OrderBillEmbeddable();

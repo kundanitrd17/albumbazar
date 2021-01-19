@@ -48,6 +48,10 @@ public class Cover {
             this.active = true;
         }
 
+        if (this.GST == null) {
+            this.GST = 0.0;
+        }
+
     }
 
     @Override

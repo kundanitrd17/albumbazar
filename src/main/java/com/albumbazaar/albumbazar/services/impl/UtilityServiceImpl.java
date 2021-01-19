@@ -46,20 +46,20 @@ public class UtilityServiceImpl implements UtilityService {
     private final CarasoulRepository carasoulRepository;
 
     // Dependent services
-    private CustomerService customerService;
-    private EmployeeService employeeService;
-    private MailService gmailService;
-    private StorageService imageStorageService;
-    private SampleAlbumRespository sampleAlbumRespository;
-    private FrequentQuestionRespository frequentQuestionRespository;
-
+    private final CustomerService customerService;
+    private final EmployeeService employeeService;
+    private final MailService gmailService;
+    private final StorageService imageStorageService;
+    private final SampleAlbumRespository sampleAlbumRespository;
+    private final FrequentQuestionRespository frequentQuestionRespository;
 
     @Autowired
     protected UtilityServiceImpl(@Qualifier("customerService") final CustomerService customerService,
             @Qualifier("gmailService") final MailService gmailService,
             @Qualifier("imageStorageService") final StorageService imageStorageService,
             @Qualifier("employeeService") final EmployeeService employeeService,
-            final CarasoulRepository carasoulRepository,
+            final CarasoulRepository carasoulRepository, final SampleAlbumRespository sampleAlbumRespository,
+            final FrequentQuestionRespository frequentQuestionRespository,
             final ResetPasswordCodeRepository resetPasswordCodeRepository) {
 
         this.customerService = customerService;
@@ -68,6 +68,9 @@ public class UtilityServiceImpl implements UtilityService {
         this.employeeService = employeeService;
         this.imageStorageService = imageStorageService;
         this.carasoulRepository = carasoulRepository;
+
+        this.frequentQuestionRespository = frequentQuestionRespository;
+        this.sampleAlbumRespository = sampleAlbumRespository;
 
     }
 
@@ -204,6 +207,18 @@ public class UtilityServiceImpl implements UtilityService {
     }
 
     @Override
+    @Transactional
+    public void updateCarasoul(final Long carasoulId, final MultipartFile carasoul) {
+        final CarasoulEntity carasoulEntity = carasoulRepository.findById(carasoulId).orElseThrow();
+
+        final String imageFileName = imageStorageService.store(carasoul,
+                "carasoul" + new Random().nextInt(10000) + carasoul.getOriginalFilename());
+
+        carasoulEntity.setImage(imageFileName);
+
+    }
+
+    @Override
     public void deleteCarasoul(final Long id) {
 
         carasoulRepository.deleteById(id);
@@ -220,45 +235,37 @@ public class UtilityServiceImpl implements UtilityService {
     @Override
     @Transactional
     public void uploadSampleAlbum(final SampleAlbumDTO sampleAlbumDTO) {
-       
+
         SampleAlbumEntity sampleAlbumEntity;
 
-        if(sampleAlbumDTO.getId() != null) {
+        if (sampleAlbumDTO.getId() != null) {
             sampleAlbumEntity = sampleAlbumRespository.findById(sampleAlbumDTO.getId()).orElseThrow();
+            sampleAlbumEntity.setTitle(sampleAlbumDTO.getTitle());
+            sampleAlbumEntity.setDescription(sampleAlbumDTO.getDescription());
+
         } else {
-            sampleAlbumEntity  = new SampleAlbumEntity();
+            sampleAlbumEntity = new SampleAlbumEntity();
+            sampleAlbumEntity.setTitle(sampleAlbumDTO.getTitle());
+            sampleAlbumEntity.setDescription(sampleAlbumDTO.getDescription());
+            final String imageFileName = imageStorageService.store(sampleAlbumDTO.getImage(),
+                    "sample_album" + new Random().nextInt(10000) + sampleAlbumDTO.getImage().getOriginalFilename());
+
+            sampleAlbumEntity.setImage(imageFileName);
+
+            sampleAlbumRespository.save(sampleAlbumEntity);
         }
 
-        sampleAlbumEntity.setTitle(sampleAlbumDTO.getTitle());
-        sampleAlbumEntity.setDescription(sampleAlbumDTO.getDescription());
-
-        final String imageFileName = imageStorageService.store(sampleAlbumDTO.getImage(), "sample_album" + new Random().nextInt(10000) + sampleAlbumDTO.getImage().getOriginalFilename());
-
-        sampleAlbumEntity.setImage(imageFileName);
-
-
-        sampleAlbumRespository.save(sampleAlbumEntity);
-        
-        
     }
-
 
     @Override
     public void deleteSampleAlbum(final Long id) {
         sampleAlbumRespository.deleteById(id);
     }
 
-
-
     @Override
     public void createQuestion(FrequentQuestionEntity frequentQuestion) {
-        
-
         frequentQuestionRespository.save(frequentQuestion);
-        
-
     }
-
 
     @Override
     public void deleteFrequentQuestion(final Long id) {
@@ -272,8 +279,8 @@ public class UtilityServiceImpl implements UtilityService {
 
     @Override
     public List<FrequentQuestionEntity> getAllFrequentQuestions() {
+
         return frequentQuestionRespository.findAll();
     }
-
 
 }

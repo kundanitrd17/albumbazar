@@ -23,7 +23,7 @@
         <link href="https://fonts.googleapis.com/css?family=Droid+Sans" rel="stylesheet">
 
 
-        <link rel="stylesheet" href="http://localhost:8080/superuser/css/super-admin.css">
+        <link rel="stylesheet" href="/superuser/css/super-admin.css">
 
         <style type="text/css">
             #orderProductViewDetails table tr th {
@@ -175,7 +175,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                             <td><a href="" data-toggle="modal" data-target="#addressModal"
                                                     id="link_address"
                                                     onclick="fetchDeliveryAddressFromServer('${eachOrder.id}')">Address
-                                                    Id</a></td>
+                                                </a></td>
                                             <td>${eachOrder.orientation}</td>
                                             <td><a type="button" href="" id="link_adminId" data-toggle="modal"
                                                     data-target="#orderProductViewDetails"
@@ -183,37 +183,17 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                             <td><a target="_blank"
                                                     href="${eachOrder.photoFolderGoogleDriveLink}">Images</a></td>
 
+                                            <td>
+                                                <!-- <a class="btn btn-danger change-status-icon">a> -->
+                                                <button class="btn btn-danger"
+                                                    disabled>${eachOrder.orderStatus}</button>
+                                            </td>
                                             <c:if
                                                 test="${eachOrder.isForwardedToAssociation == null || !eachOrder.isForwardedToAssociation}">
 
-                                                <td>
-                                                    <!-- <a class="btn btn-danger change-status-icon">${eachOrder.orderStatus}</a> -->
-                                                    <select name="orderStatus" id="orderStatus${eachOrder.id}"
-                                                        class="btn btn-danger change-status-icon orderStatusDropDown">
-                                                        <option value="${eachOrder.orderStatus}" selected>
-                                                            ${eachOrder.orderStatus}</option>
-
-                                                        <c:forEach items="${availableOrderStatus}" var="status">
-                                                            <option value="${status}">${status}</option>
-                                                        </c:forEach>
-
-                                                    </select>
-                                                </td>
                                                 <td><button onclick="forwardOrderToAssociation('${eachOrder.id}')"
                                                         class="btn btn-primary">forward</button></td>
 
-                                            </c:if>
-
-                                            <c:if test="${eachOrder.isForwardedToAssociation}">
-                                                <td>
-                                                    <!-- <a class="btn btn-danger change-status-icon">${eachOrder.orderStatus}</a> -->
-                                                    <select name="orderStatus" id="orderStatus${eachOrder.id}"
-                                                        class="btn btn-danger change-status-icon orderStatusDropDown"
-                                                        disabled>
-                                                        <option value="${eachOrder.orderStatus}" selected>
-                                                            ${eachOrder.orderStatus}</option>
-                                                    </select>
-                                                </td>
                                             </c:if>
 
                                         </tr>
@@ -450,9 +430,9 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
             <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-            <script type="text/javascript" src="http://localhost:8080/customercare/js/data-table.js"></script>
-            <script type="text/javascript" src="http://localhost:8080/customercare/js/order_status.js"></script>
-            <script type="text/javascript" src="http://localhost:8080/admin/js/admin_order.js"></script>
+            <script type="text/javascript" src="/customercare/js/data-table.js"></script>
+            <script type="text/javascript" src="/customercare/js/order_status.js"></script>
+            <script type="text/javascript" src="/admin/js/admin_order.js"></script>
 
 
 
@@ -535,7 +515,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
                     const xhr = new XMLHttpRequest();
 
-                    const url = "http://localhost:8080/api/secured/order/forward/association";
+                    const url = "/api/secured/order/forward/association";
 
                     xhr.open('PUT', url, true);
 
