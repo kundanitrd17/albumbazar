@@ -86,30 +86,10 @@ public class ProductServiceImpl implements ProductService {
             products.setSizes(sizes);
             // Flooding covers
 
-            products.setCovers(covers.stream().map(cover -> {
-                final CoverDTO coverDTO = new CoverDTO();
-
-                coverDTO.setId(cover.getId());
-                coverDTO.setCoverName(cover.getCoverName());
-                coverDTO.setImage(cover.getImage());
-                coverDTO.setCoverPrice(cover.getCoverPrice() + cover.getGST());
-                coverDTO.setCoverSize(cover.getCoverSize());
-
-                return coverDTO;
-            }).collect(Collectors.toList()));
+            products.setCovers(covers.stream().map(coverMapper::coverTCoverDTO).collect(Collectors.toList()));
             // Flooding papers
 
-            products.setPapers(papers.stream().map(paper -> {
-                final PaperDTO paperDTO = new PaperDTO();
-
-                paperDTO.setId(paper.getId());
-                paperDTO.setImage(paper.getImage());
-                paperDTO.setPaperSize(paper.getPaperSize());
-                paperDTO.setPaperQuality(paper.getPaperQuality());
-                paperDTO.setPaperPrice(paper.getPaperPrice() + paper.getGST());
-
-                return paperDTO;
-            }).collect(Collectors.toList()));
+            products.setPapers(papers.stream().map(paperMapper::paperEntityToPaperDTO).collect(Collectors.toList()));
 
             return products;
 

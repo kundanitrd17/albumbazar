@@ -11,11 +11,13 @@
     <meta name="_csrf_header" content="${_csrf.headerName}" />
     <!-- ... -->
 
-    <title>index</title>
+    <title>Album Bazaar</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
 
     <link rel="stylesheet" href="/css/navbar.css">
     <link rel="stylesheet" href="/css/index.css">
@@ -92,7 +94,7 @@
           <div class="row">
 
             <c:forEach items="${associations}" var="association">
-              <div class="col-md-4 col-lg-4 col-xl-4">
+              <div class="col-md-4 col-lg-4 col-xl-4" data-aos="flip-left">
                 <div class="fancy-cards">
                   <!-- <h1>Microinteraction on active</h1>
       <p>It triggers a subtle micro-interaction (scales and adjusts) when the user interacts with it.</p>-->
@@ -157,18 +159,41 @@
                     </div>
                     <hr>
                     <h4>Cover Page</h4>
-                    <div class="row">
+
+                    <div class="form-group row">
+                      <div class="col-lg-4 col-xl-4 col-md-4 col-sm-12 col-xs-12 col-12">
+                        <label>cover</label>
+                        <select name="coverId" id="coverPageQuality" class="form-control">
+                          <option value="gold">gold</option>
+                        </select>
+                      </div>
+                      <div class="col-lg-2 col-xl-2 col-md-4 col-sm-4 col-xs-4 col-4">
+                        <label>price</label>
+                        <input class="form-control" type="text" id="coverPrice" name="coverPrice" value="" disabled>
+                      </div>
+                      <div class="col-lg-2 col-xl-2 col-md-4 col-sm-4 col-xs-4 col-4">
+                        <label>Tax</label>
+                        <input class="form-control" type="text" id="coverGST" name="coverGST" value="" disabled>
+                      </div>
+                      <div class="col-lg-2 col-xl-2 col-md-4 col-sm-4 col-xs-4 col-4">
+                        <label>Total</label>
+                        <input class="form-control" type="text" id="coverTotal" name="coverTotal" value="" disabled>
+                      </div>
+                    </div>
+
+
+                    <!-- <div class="row">
 
 
                       <select name="coverId" id="coverPageQuality" class="form-control col-md-4 col-xl-4 col-lg-4">
                         <option value="gold">gold</option>
                       </select>
 
-                      <input class="form-control col-4" type="text" id="coverPrice" name="coverPrice" value="" disabled>
-                      <!-- <select name="coverPrice" id="coverPrice" class="form-control col-4">
-                        <option value="">Price</option>
-                      </select> -->
-                    </div>
+                      <input class="form-control col" type="text" id="coverPrice" name="coverPrice" value="" disabled>
+                      <input class="form-control col" type="text" id="coverGST" name="coverGST" value="" disabled>
+                      <input class="form-control col" type="text" id="coverTotal" name="coverTotal" value="" disabled>
+                      
+                    </div> -->
 
                     <hr>
                     <h4>Photo Pages</h4>
@@ -185,6 +210,10 @@
                           <th>
                             <h6>Price</h6>
                           </th>
+                          <th>
+                            <h6>Tax</h6>
+                          </th>
+
                         </tr>
 
                         <tbody id="test-body">
@@ -209,8 +238,15 @@
               <!-- Modal footer -->
               <div class="modal-footer">
 
-                <span> <strong>Total</strong> <span style="color: rgb(157, 157, 157);"> (gst included)</span> </span>
-                <input id="orderTotalInput" type="number" class="form-control" style="width: 100px;" disabled>
+                <!-- <span> <strong>Total</strong> <span style="color: rgb(157, 157, 157);"> (gst included)</span> </span>
+                <input id="orderTotalPrice" type="number" class="form-control" style="width: 100px;" disabled>
+                <input id="orderTotalTax" type="number" class="form-control" style="width: 100px;" disabled>
+                <input id="orderTotalInput" type="number" class="form-control" style="width: 100px;" disabled> -->
+
+                <span>Total Without Gst :</span><span id="orderTotalWithoutGST"></span>
+                <span>Total Gst :</span><span id="orderTotalTax"></span>
+                <span>Total With Gst :</span><span id="orderTotalWithGST"></span>
+
                 <button type=" button" class="btn btn-primary btn-order-next">
                   Select Address
                 </button>
@@ -337,7 +373,7 @@
             <div class="row">
 
               <c:forEach items="${sample_albums}" var="sample_album">
-                <div class="col-sm">
+                <div class="col-sm" data-aos="zoom-in">
                   <div class="card association-card" style="">
                     <img src="${sample_album.image}" class="card-img-top" style="" alt="BACKGROUND">
                     <div class="card-body">
@@ -408,8 +444,8 @@
 
       <section>
         <center>
-          <h3>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</h3>
-          <p>Awamet consectetur adipisicing elit.P.</p>
+          <h3 data-aos="zoom-in">Lorem ipsum dolor sit, amet consectetur adipisicing elit.</h3>
+          <p data-aos="flip-left">Awamet consectetur adipisicing elit.P.</p>
           <hr style="width: 50%; 
           margin-top:50px; 
           margin-bottom:50px;">
@@ -418,7 +454,7 @@
               <div class="col-12 col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
                 <h4 style="text-align:left ;font-size: 18px; margin-bottom: 30px;">Why choose us.</h4>
                 <div class="wyc-container">
-                  <div class="wyc ">
+                  <div class="wyc " data-aos="flip-up">
                     <h4 class="wyc-title">Why shouldn't we trust atoms?</h4>
                     <p class="wyc-text">They make up everything</p>
                     <button class="wyc-toggle">
@@ -569,6 +605,17 @@
             setVisible('#Loading', false);
           });
         </script>
+
+        <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+        <script>
+          AOS.init({
+
+            offset: 220, // offset (in px) from the original trigger point
+            delay: 400, // values from 0 to 3000, with step 50ms
+            duration: 1000,
+          });
+        </script>
+
 
         <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
 

@@ -14,18 +14,6 @@ public interface CoverMapper {
 
     Cover coverDTOToCover(CoverDTO coverDTO);
 
-    @Mapping(source = "image", target = "image", qualifiedByName = "coverImageMapper")
     CoverDTO coverTCoverDTO(Cover cover);
-
-    @Named("coverImageMapper")
-    public static String coverImageMapper(final String image) {
-
-        if (image == null || image.isBlank())
-            return null;
-
-        return MvcUriComponentsBuilder.fromMethodName(FileUploadController.class, "serveFile", image).build().toUri()
-                .toString();
-
-    }
 
 }

@@ -1,27 +1,41 @@
 
 var totalOrderAmount = 0;
+var totalOrderTax = 0;
 
 function setOrderTotalAmount() {
     let coverPrice = $("#myModal form #coverPrice").val();
+    let coverTax = $("#myModal form #coverGST").val();
 
-    let amount = parseFloat(coverPrice);
-    console.log("1st: ", amount);
+    let amount = parseFloat(coverPrice) + parseFloat(coverTax);
+    totalOrderTax = parseFloat(coverTax);
 
     for (let index = 0; index < paperRow; index++) {
         try {
-            let paperPriceEle = document.querySelector("#PaperRow" + index + " td input[name='sheetPrice']");
-            let paperPrice = 0;
-            if (paperPriceEle !== null)
-                paperPrice = paperPriceEle.value;
-            let noOfSheetsEle = document.querySelector("#PaperRow" + index + " td input[name='numberOfSheet']")
+
+            let noOfSheetsEle = document.querySelector("#PaperRow" + index + " td input[name='numberOfSheet']");
+
             let noOfSheets = 0;
             if (noOfSheetsEle !== null)
-                noOfSheets = noOfSheetsEle.value;
-            let temp = parseFloat(paperPrice) * parseInt(noOfSheets);
-            if (temp !== null && temp > 0) {
-                amount += temp;
+                noOfSheets = parseInt(noOfSheetsEle.value);
+
+            if (noOfSheets > 0) {
+                let paperPriceEle = document.querySelector("#PaperRow" + index + " td input[name='sheetPrice']");
+                let paperTaxEle = document.querySelector("#PaperRow" + index + " td input[name='sheetGST']");
+                let paperPrice = 0;
+                if (paperPriceEle !== null) {
+                    paperPrice = parseFloat(paperPriceEle.value);
+                    if (paperTaxEle != null) {
+                        paperPrice += parseFloat(paperTaxEle.value);
+                        totalOrderTax += noOfSheets * parseFloat(paperTaxEle.value);
+                    }
+                }
+                let temp = parseFloat(paperPrice) * parseInt(noOfSheets);
+                if (temp !== null && temp > 0) {
+                    amount += temp;
+                }
+
             }
-            console.log(amount);
+
         } catch (error) {
             console.log(error);
         }
@@ -29,7 +43,9 @@ function setOrderTotalAmount() {
 
     totalOrderAmount = amount;
 
-    $("#orderTotalInput").val(totalOrderAmount);
+    $("#orderTotalWithoutGST").text(totalOrderAmount - totalOrderTax);
+    $("#orderTotalTax").text(totalOrderTax);
+    $("#orderTotalWithGST").text(totalOrderAmount);
 }
 function getOrderTotalAmount() {
     return totalOrderAmount;
@@ -37,6 +53,7 @@ function getOrderTotalAmount() {
 
 
 // ENd of total state management
+
 
 
 
@@ -102,6 +119,7 @@ $(document).ready(function () {
 
 // Check auth to google
 function checkGoogleAuth() {
+
 
     const xhr = new XMLHttpRequest();
     const url = "/api/secured/customer/is-google-auth-allowed";
@@ -276,7 +294,7 @@ function changeCoverAndPaperOptions(selectedProductSize) {
     availableCovers = [];
     allCovers.forEach(cover => {
         if (cover["coverSize"] === selectedProductSize) {
-            const data = { "id": cover["id"], "name": cover["coverName"], "price": cover["coverPrice"] };
+            const data = { "id": cover["id"], "name": cover["coverName"], "price": cover["coverPrice"], "gst": cover["gst"] };
             availableCovers.push(data);
         }
     });
@@ -284,7 +302,7 @@ function changeCoverAndPaperOptions(selectedProductSize) {
     availablePapers = [];
     allPapers.forEach(paper => {
         if (paper["paperSize"] === selectedProductSize) {
-            const data = { "id": paper["id"], "name": paper["paperQuality"], "price": paper["paperPrice"] };
+            const data = { "id": paper["id"], "name": paper["paperQuality"], "price": paper["paperPrice"], "gst": paper["gst"] };
             availablePapers.push(data);
         }
     });
@@ -312,6 +330,9 @@ function setCoverPriceInInput() {
         // console.log(parseInt(cover["id"]), parseInt(id));
         if (parseInt(cover["id"]) === parseInt(id)) {
             $("#myModal form #coverPrice").val(cover["price"]);
+            $("#myModal form #coverGST").val(cover["gst"]);
+            $("#myModal form #coverTotal").val(parseFloat(cover["price"]) + parseFloat(cover["gst"]));
+
             setOrderTotalAmount();
         }
     })
@@ -342,6 +363,8 @@ function addCoverOptions() {
 
 // $('#myModal form .sheet-paper-type').on('change', setPaperPriceOnChange);
 
+
+
 function setPaperPriceOnChange(id) {
     // console.log(id);
     const paperId = $("#myModal form #sheetType" + id + " option:selected").val();
@@ -349,9 +372,9 @@ function setPaperPriceOnChange(id) {
 
     availablePapers.forEach(paper => {
         if (parseInt(paper["id"]) === parseInt(paperId)) {
-            // console.log(paper);
-            const sheetPriceInput = document.querySelector("#PaperRow" + id + " td input[name='sheetPrice']");
-            sheetPriceInput.value = paper["price"];
+            $("#PaperRow" + id + " td input[name='sheetPrice']").val(paper["price"]);
+            $("#PaperRow" + id + " td input[name='sheetGST']").val(paper["gst"]);
+            $("#PaperRow" + id + " td input[name='sheetTotal']").val(parseFloat(paper["price"]) + parseFloat(paper["gst"]));
 
             setOrderTotalAmount();
         }
@@ -385,7 +408,21 @@ function appendPaperRow() {
         return false;
     }
 
-    var new_row = '<tr id="PaperRow' + paperRow + '"><td> <select onchange="setPaperPriceOnChange(' + paperRow + ')" class="form-control" name="paperId" id="sheetType' + paperRow + '"  style="width: 160px;"><option value="">Paper Type</option></select></td><td><input onchange="setOrderTotalAmount();" name="numberOfSheet" value="" type="number" class="form-control input-md"  placeholder=""  style="width: 80px;" required /></td><td><input name="sheetPrice" type="number" class="form-control" placeholder=""  style="width: 80px;" disabled/></td><td><input id="add-row" class="btn btn-primary" type="button" value="+" /></td><td><input class="delete-row btn btn-danger" type="button" value="X" /></td></tr>';
+    var new_row = `
+    <tr id="PaperRow` + paperRow + `">
+    <td> 
+    <select onchange="setPaperPriceOnChange(` + paperRow + `)" class="form-control" name="paperId" id="sheetType` + paperRow + `"  style="width: 160px;">
+    <option value="">Paper Type</option>
+    </select>
+    </td>
+    <td>
+    <input onchange="setOrderTotalAmount();" name="numberOfSheet" value="" type="number" class="form-control input-md"  placeholder=""  style="width: 80px;" required />
+    </td>
+    <td><input name="sheetPrice" type="number" class="form-control" placeholder=""  style="width: 80px;" disabled/></td>
+    <td><input name="sheetGST" type="number" class="form-control" placeholder=""  style="width: 80px;" disabled/></td>
+    <td><input id="add-row" class="btn btn-primary" type="button" value="+" /></td>
+    <td><input class="delete-row btn btn-danger" type="button" value="X" /></td>
+    </tr>`;
 
     $('#test-body').append(new_row);
 
