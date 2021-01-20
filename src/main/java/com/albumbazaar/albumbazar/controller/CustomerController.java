@@ -18,10 +18,12 @@ import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.services.CustomerService;
+import com.albumbazaar.albumbazar.services.SMSService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -42,17 +44,20 @@ public final class CustomerController {
 
     private final Logger logger = LoggerFactory.getLogger(CustomerController.class);
 
-    private CustomerService customerService;
-    private CustomerMapper customerMapper;
+    private final CustomerService customerService;
+    private final CustomerMapper customerMapper;
+    private final SMSService smsService;
 
     @Autowired
-    public CustomerController(final CustomerService customerService, final CustomerMapper customerMapper) {
+    public CustomerController(@Qualifier("smsService") final SMSService smsService,
+            @Qualifier("customerService") final CustomerService customerService, final CustomerMapper customerMapper) {
 
+        this.smsService = smsService;
         this.customerService = customerService;
         this.customerMapper = customerMapper;
     }
 
-    @Autowired
+    @Autowired(required = true)
     AddressMapper addressMapper;
 
     @GetMapping(value = "/customer/my-account")
@@ -119,6 +124,8 @@ public final class CustomerController {
             System.out.println(customerDTO);
             System.out.println(customerDTO.getReferralCode());
             final Customer savedCustomer = customerService.registerCustomer(customerDTO);
+
+            // smsService.sendSMSAsync("message", "number");
 
             // List<GrantedAuthority> authorities = Arrays.asList(new
             // SimpleGrantedAuthority(AvailableRoles.Code.USER));

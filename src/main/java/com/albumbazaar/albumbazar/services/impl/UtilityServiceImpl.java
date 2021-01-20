@@ -185,7 +185,7 @@ public class UtilityServiceImpl implements UtilityService {
     // Send OTP via email
     private void sendOTPByEmail(final String email, final String OTP) {
 
-        gmailService.sendEmail("princewillz2013@gmail.com", email, "Reset Password OTP", OTP);
+        gmailService.sendEmail(email, "Reset Password OTP", OTP);
 
     }
 

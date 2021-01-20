@@ -11,7 +11,7 @@
     <meta name="_csrf_header" content="${_csrf.headerName}" />
     <!-- ... -->
 
-    <title>Album Bazaar</title>
+    <title>AlbumBazaar</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -99,7 +99,8 @@
                   <!-- <h1>Microinteraction on active</h1>
       <p>It triggers a subtle micro-interaction (scales and adjusts) when the user interacts with it.</p>-->
                   <div class="fancy-card">
-                    <div class="top" id="t">
+
+                    <div class="top" id="t" style="background-image: url('${association.profilePhoto}');">
                       <div class="caption">
                         <h3 class="title">${association.name}</h3>
                         <input type="text" name="associationId" value="${association.id}" hidden>
@@ -108,8 +109,9 @@
                           data-target="#myModal">
                           Select
                         </a>
-                        <a type="button" id="associationViewPrice" class="btn btn-primary button1 associationViewPrice"
-                          data-toggle="modal" data-target="#largeModal">
+                        <a href="/price_detail?association=${association.id}" type="button" id="associationViewPrice"
+                          class="btn btn-primary button1 associationViewPrice" target="_blank">
+                          <!-- data-toggle="modal" data-target="#largeModal"> -->
                           View Price
                         </a>
                       </div>
@@ -425,12 +427,19 @@
       <section class="w-100 py-3 my-3">
 
         <div class="jumbotron d-flex flex-column align-items-center">
-          <h1 class="display-4">Hello, world!</h1>
-          <p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra
-            attention
-            to featured content or information.</p>
+          <h1 class="display-4">Company Motto And Vision!</h1>
+          <p class="lead">TMaa Creations In Asansol Is A Pioneer In The Domain Of Professional Photography. Since 2002,
+            We Are Serving The People Of Asansol And Surroundings With Our Premium Wedding /Pre Wedding & Corporate
+            Photography, Candid Photography, Photo Editing, Video Editing, Designer Photography Services.
+          </p>
+          <p>With More Than 18 Years Of Supreme Experience, Maa Creations Continues To Work Round The Year And With The
+            Love And Support Of 50,000 Happy Customers, We Have Become The Leading Photography And Editing Service In
+            Asansol And Surroundings.
+          </p>
+          <p>With Our Vision Of Conquering A Whopping Customer Base Of 1,00,000 By The End Of 2020, We Assure Our
+            Conglomerate Printing Service Partners Of Maximum Profit And Prosperity.
+          </p>
           <hr class="my-4">
-          <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
           <p class="lead">
             <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
           </p>
@@ -444,65 +453,28 @@
 
       <section>
         <center>
-          <h3 data-aos="zoom-in">Lorem ipsum dolor sit, amet consectetur adipisicing elit.</h3>
-          <p data-aos="flip-left">Awamet consectetur adipisicing elit.P.</p>
+          <h3 data-aos="zoom-in">Doubts and Reviews</h3>
+          <p data-aos="flip-left">We Assure you to provide world class service.</p>
           <hr style="width: 50%; 
           margin-top:50px; 
           margin-bottom:50px;">
           <div class="container">
             <div class="row">
               <div class="col-12 col-xs-12 col-sm-12 col-md-5 col-lg-5 col-xl-5">
-                <h4 style="text-align:left ;font-size: 18px; margin-bottom: 30px;">Why choose us.</h4>
+                <h4 style="text-align:left ;font-size: 18px; margin-bottom: 30px;">Frequently Asked.</h4>
                 <div class="wyc-container">
-                  <div class="wyc " data-aos="flip-up">
-                    <h4 class="wyc-title">Why shouldn't we trust atoms?</h4>
-                    <p class="wyc-text">They make up everything</p>
-                    <button class="wyc-toggle">
-                      <i class="fa fa-chevron-down" aria-hidden="true"></i>
-                      <i class="fa fa-times"></i>
-                    </button>
-                  </div>
-                  <div class="wyc">
-                    <h3 class="wyc-title">
-                      What do you call someone with no body and no nose?
-                    </h3>
-                    <p class="wyc-text">Nobody knows.</p>
-                    <button class="wyc-toggle">
-                      <i class="fas fa-chevron-down"></i>
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </div>
 
-                  <div class="wyc">
-                    <h3 class="wyc-title">
-                      What's the object-oriented way to become wealthy?
-                    </h3>
-                    <p class="wyc-text">Inheritance.</p>
-                    <button class="wyc-toggle">
-                      <i class="fas fa-chevron-down"></i>
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </div>
+                  <c:forEach items="${frequent_questions}" var="question">
+                    <div class="wyc " data-aos="flip-up">
+                      <h4 class="wyc-title">${question.question}?</h4>
+                      <p class="wyc-text">${question.answer}.</p>
+                      <button class="wyc-toggle">
+                        <i class="fa fa-chevron-down" aria-hidden="true"></i>
+                        <i class="fa fa-times"></i>
+                      </button>
+                    </div>
+                  </c:forEach>
 
-                  <div class="wyc">
-                    <h3 class="wyc-title">
-                      How many tickles does it take to tickle an octopus?
-                    </h3>
-                    <p class="wyc-text">Ten-tickles!</p>
-                    <button class="wyc-toggle">
-                      <i class="fas fa-chevron-down"></i>
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </div>
-
-                  <div class="wyc">
-                    <h3 class="wyc-title">What is: 1 + 1?</h3>
-                    <p class="wyc-text">Depends on who are you asking.</p>
-                    <button class="wyc-toggle">
-                      <i class="fas fa-chevron-down"></i>
-                      <i class="fas fa-times"></i>
-                    </button>
-                  </div>
                 </div>
               </div>
               <div class="col col-12 col-xs-12 col-sm-12 col-md-6 col-lg-6 col-xl-6">
@@ -511,23 +483,23 @@
                   <div class="card-body">
                     <blockquote class="blockquote mb-0">
                       <p style="font-size:12px; text-align : left;">I just wanted to say thank you very much to
-                        VenusAlbum. I got 2 photo books last week and they are fabulous. Quality of photo books is
-                        tremendous. My friends are inspired by seeing these photo books. Thanks again and I will
-                        definitely be making more photo books too.</p>
+                        Albumbazaar. I got 1 Album last week and they are fabulous. Quality of Album is
+                        tremendous. I will
+                        definitely be making more albums too.</p>
                       <footer class="blockquote-footer" style="font-size:13px; text-align:right; margin-top : 10px;">
-                        Ruby Bhatia <cite title="Source Title">Chandigarh</cite></footer>
+                        Kundan Srivastav <cite title="Source Title">Kulti</cite></footer>
                     </blockquote>
                   </div>
                 </div>
                 <div class="card mt-3">
                   <div class="card-body">
                     <blockquote class="blockquote mb-0">
-                      <p style="font-size:12px; text-align : left;">Since 1976 venusalbum is in printing business and
-                        that reflects in their products. Highest level of printing and quality. Your standards are
-                        truly world class, and as a photographer for over 10 years I know great reproduction when I
-                        see it. You do remarkable work. With great appreciation.</p>
+                      <p style="font-size:12px; text-align : left;">Since a long time Albumbazaar is in printing
+                        business and
+                        that reflects in their album. Highest level of printing and quality. Your standards are
+                        truly world class. You do really good work. With great appreciation.</p>
                       <footer class="blockquote-footer" style="font-size:13px; text-align:right; margin-top : 10px;">
-                        Sanjeev Mehta <cite title="Source Title">Ludhiana</cite></footer>
+                        Vishal Singh <cite title="Source Title">Asansol</cite></footer>
                     </blockquote>
                   </div>
                 </div>
@@ -577,7 +549,7 @@
             var custjs = '${customer}';
             console.log(custjs);
 
-            $(".fancy-card #t").css("background-image", "url('https://static-1.gumroad.com/res/gumroad/assets/collections/food_and_cooking_thumb-34fb9ef316a7b01177529839891c3a03.jpg')");
+            // $(".fancy-card #t").css("background-image", "url('https://static-1.gumroad.com/res/gumroad/assets/collections/food_and_cooking_thumb-34fb9ef316a7b01177529839891c3a03.jpg')");
           });
 
 
@@ -610,9 +582,9 @@
         <script>
           AOS.init({
 
-            offset: 220, // offset (in px) from the original trigger point
-            delay: 400, // values from 0 to 3000, with step 50ms
-            duration: 1000,
+            offset: 50, // offset (in px) from the original trigger point
+            delay: 100, // values from 0 to 3000, with step 50ms
+            duration: 500,
           });
         </script>
 

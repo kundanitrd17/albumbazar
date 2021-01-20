@@ -3,13 +3,14 @@
     <sec:authorize access="hasAnyAuthority('ROLE_USER')" var="loggedIn">
     </sec:authorize>
     <!-- Navbar Section -->
-    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark" style="position: relative;">
 
         <!-- Image and text -->
         <a class="navbar-brand" href="/">
-            <img src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30"
-                class="d-inline-block align-top" alt="">
-            AlbumBazaar
+            <img src="/img/logo2.png" width="120" height="60" class="d-inline-block align-top" alt="" style="position:absolute;
+                top:0;
+                left:0;                                
+                ">
         </a>
 
 

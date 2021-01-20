@@ -10,13 +10,12 @@
         <!-- default header name is X-CSRF-TOKEN -->
         <meta name="_csrf_header" content="${_csrf.headerName}" />
         <!-- ... -->
-        <title>Document</title>
+        <title>AlbumBazaar</title>
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
         <link rel="stylesheet" href="/css/upload_file.css">
         <!-- <link rel="stylesheet" href="./css/upload_file.css"> -->
-
 
 
 
@@ -70,41 +69,16 @@ Design a file upload element. Is it the loading screen and icon? A progress elem
                             <i class="far fa-file-pdf"></i>
                             <div class="file">
                                 <div class="file__name">
-                                    <p>lorem_ipsum.pdf</p>
                                     <i class="fas fa-times"></i>
                                 </div>
                                 <div class="progress">
                                     <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
-                                        style="width:100%"></div>
+                                        style="width:0%"></div>
                                 </div>
                             </div>
                         </div>
-                        <div class="uploaded uploaded--two">
-                            <i class="far fa-file-pdf"></i>
-                            <div class="file">
-                                <div class="file__name">
-                                    <p>dolor_sit.pdf</p>
-                                    <i class="fas fa-times"></i>
-                                </div>
-                                <div class="progress">
-                                    <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
-                                        style="width:80%"></div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="uploaded uploaded--three">
-                            <i class="far fa-file-pdf"></i>
-                            <div class="file">
-                                <div class="file__name">
-                                    <p>amet_consectetur.pdf</p>
-                                    <i class="fas fa-times"></i>
-                                </div>
-                                <div class="progress">
-                                    <div class="progress-bar bg-success progress-bar-striped progress-bar-animated"
-                                        style="width:60%"></div>
-                                </div>
-                            </div>
-                        </div>
+
+
                         <!-- End of sample -->
                     </div>
                 </div>

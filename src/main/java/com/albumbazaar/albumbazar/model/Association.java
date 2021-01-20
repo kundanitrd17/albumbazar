@@ -19,6 +19,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+import com.albumbazaar.albumbazar.controller.FileUploadController;
+
 import javax.persistence.PrePersist;
 
 import lombok.Setter;
@@ -87,6 +90,14 @@ public class Association {
         this.email = associationDetail.getEmail();
         this.password = associationDetail.getPassword();
         this.active = true;
+    }
+
+    public String getProfilePhoto() {
+        if (profilePhoto == null || profilePhoto.isBlank())
+            return null;
+
+        return MvcUriComponentsBuilder.fromMethodName(FileUploadController.class, "serveFile", profilePhoto).build()
+                .toUri().toString();
     }
 
 }

@@ -10,7 +10,7 @@
         <!-- default header name is X-CSRF-TOKEN -->
         <meta name="_csrf_header" content="${_csrf.headerName}" />
         <!-- ... -->
-        <title>Document</title>
+        <title>My Orders</title>
 
         <!-- CSS only -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -68,10 +68,10 @@
                                         </div>
                                         <div class="flex-sm-column" style="padding: 20px; margin: auto;">
                                             <li class="nav-item">
-                                                ${eachOrder.productName}
+                                                Product: ${eachOrder.productName}
                                             </li>
                                             <li class="nav-item">
-                                                <Strong>${eachOrder.associationName}</Strong>
+                                                Association: <Strong>${eachOrder.associationName}</Strong>
                                             </li>
                                             <li class="nav-item">
                                                 ${eachOrder.coverName}
@@ -86,17 +86,21 @@
 
                                         <div class="flex-sm-column" style="padding: 20px; margin: auto;">
                                             <li class="nav-item" style="color: red;">
-                                                <strong>Total: ${eachOrder.orderBill.totalAmount}</strong>
+                                                <strong>ToPay: ${eachOrder.orderBill.amountToPay}</strong>
                                             </li>
                                             <li class="nav-item">
                                                 <strike>Discount: ${eachOrder.orderBill.discount}</strike>
                                             </li>
                                             <li class="nav-item">
-                                                <strong>Delivery: 9000</strong>
+                                                <strike>Wallet used: ${eachOrder.orderBill.wallet}</strike>
                                             </li>
                                             <li class="nav-item">
-                                                <strong>Tax: 9000</strong>
+                                                <strong>Total: ${eachOrder.orderBill.totalAmount}</strong>
                                             </li>
+                                            <!-- <li class="nav-item">
+                                                <strong>Delivery: </strong>
+                                            </li> -->
+
                                         </div>
 
                                         <div class="flex-sm-column" style="padding: 20px; margin: auto;">
@@ -108,7 +112,7 @@
                                                 OrderTime: ${eachOrder.orderTime}
                                             </li>
                                             <li>
-                                                Excepted: ${eachOrder.deliveryDate}
+                                                Delivery: ${eachOrder.deliveryDate}
                                             </li>
 
                                         </div>

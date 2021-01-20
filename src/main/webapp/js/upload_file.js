@@ -147,6 +147,8 @@ function uploadFilesToServer() {
             xhr.upload.addEventListener('progress', function (e) {
                 let percent_complete = (e.loaded / e.total) * 100;
 
+                document.querySelector(".progress .progress-bar").style.width = `${percent_complete}%`;
+
                 // percentage of upload completed
                 console.log(percent_complete);
             });
@@ -207,6 +209,7 @@ function generateBillForOrder() {
             // <div class="alert alert-secondary" role="alert">                        
             //             </div>
 
+
             options.amount = res_data.applicationFee;
             options.key = res_data.secretKey;
             options.name = res_data.merchantName;
@@ -227,8 +230,8 @@ function generateBillForOrder() {
                 alert_message.innerHTML += '<div class="alert alert-secondary" role="alert"> email: ' + options.prefill.email + '</div>';
             if (options.prefill.contact != null && options.prefill.contact.length > 0)
                 alert_message.innerHTML += '<div class="alert alert-secondary" role="alert"> contact: ' + options.prefill.contact + '</div>';
-            if (options.amount != null && options.amount.length > 0)
-                alert_message.innerHTML += '<div class="alert alert-secondary" role="alert"> amount: ' + options.amount + '</div>';
+            if (options.amount != null)
+                alert_message.innerHTML += '<div class="alert alert-secondary" role="alert"> amount: ' + res_data.applicationFee / 100 + '</div>';
 
         }
     }

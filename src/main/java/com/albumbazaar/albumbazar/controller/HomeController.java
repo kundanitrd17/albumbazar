@@ -17,7 +17,10 @@ import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
 import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.CustomerService;
 import com.albumbazaar.albumbazar.services.GoogleDriveService;
+import com.albumbazaar.albumbazar.services.MailService;
+import com.albumbazaar.albumbazar.services.ProductService;
 import com.albumbazaar.albumbazar.services.UtilityService;
+import com.albumbazaar.albumbazar.utilities.AllProducts;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,26 +46,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class HomeController {
 
-    private Logger logger = LoggerFactory.getLogger(HomeController.class);
+    private final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-    private CustomerMapper customerMapper;
+    private final CustomerMapper customerMapper;
 
-    private CustomerService customerService;
-    private UtilityService utilityService;
-    private GoogleDriveService googleDriveService;
-    private AssociationService associationService;
+    private final CustomerService customerService;
+    private final UtilityService utilityService;
+    private final GoogleDriveService googleDriveService;
+    private final AssociationService associationService;
+    private final ProductService productService;
+    private final MailService mailService;
 
     @Autowired(required = true)
     private HomeController(@Qualifier("utilityService") final UtilityService utilityService,
             @Qualifier("googleDriveService") final GoogleDriveService googleDriveService,
             @Qualifier("associationService") final AssociationService associationService,
+            @Qualifier("productService") final ProductService productService,
+            @Qualifier("gmailService") final MailService mailService,
             @Qualifier("customerService") final CustomerService customerService, final CustomerMapper customerMapper) {
         this.googleDriveService = googleDriveService;
         this.customerService = customerService;
         this.customerMapper = customerMapper;
         this.utilityService = utilityService;
         this.associationService = associationService;
+        this.productService = productService;
 
+        this.mailService = mailService;
     }
 
     @GetMapping("/")
@@ -78,6 +87,12 @@ public class HomeController {
 
         try {
             modelAndView.addObject("sample_albums", utilityService.getAllSampleAlbum());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        try {
+            modelAndView.addObject("frequent_questions", utilityService.getAllFrequentQuestions());
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
@@ -111,6 +126,24 @@ public class HomeController {
         }
 
         return modelAndView;
+    }
+
+    @GetMapping(value = "/price_detail")
+    public ModelAndView priceMenuView(@RequestParam("association") final String associationId) {
+
+        final ModelAndView modelAndView = new ModelAndView("association_product_menu");
+
+        try {
+            AllProducts allProducts = productService.getAllProducts(associationId);
+            modelAndView.addObject("covers", allProducts.getCovers());
+            modelAndView.addObject("papers", allProducts.getPapers());
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return modelAndView;
+
     }
 
     @GetMapping(value = "/contact_us")
@@ -233,6 +266,35 @@ public class HomeController {
 
     }
 
+    @GetMapping(value = "/misc")
+    public ModelAndView websiteSettingView() {
+        final ModelAndView modelAndView = new ModelAndView("/superuser/miscelleneous");
+
+        try {
+
+            modelAndView.addObject("carasouls", utilityService.getAllCarasoul());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        try {
+
+            modelAndView.addObject("sample_albums", utilityService.getAllSampleAlbum());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        try {
+
+            modelAndView.addObject("frequent_questions", utilityService.getAllFrequentQuestions());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return modelAndView;
+
+    }
+
     @PostMapping(value = "/carasoul/update")
     public RedirectView uploadCarasoul(@RequestParam("id") final Long carasoulId,
             @RequestParam("image") final MultipartFile carasoul) {
@@ -316,33 +378,20 @@ public class HomeController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping(value = "/misc")
-    public ModelAndView websiteSettingView() {
-        final ModelAndView modelAndView = new ModelAndView("/superuser/miscelleneous");
+    @PostMapping(value = "contact_us")
+    public RedirectView sendQueryThroughContactUs(@RequestParam("email") final String email,
+            @RequestParam("mobile") final String mobile, @RequestParam("name") final String name,
+            @RequestParam("query") final String query) {
 
         try {
+            String messageBody = "Name: ".concat(name).concat("\n").concat("Email: ").concat(email).concat("\n")
+                    .concat("Mobile: ").concat(mobile).concat("\n").concat("Query: ").concat(query).concat("\n");
 
-            modelAndView.addObject("carasouls", utilityService.getAllCarasoul());
+            mailService.sendEmail(mailService.getCompanyEmail(), "AlbumBazaar Query", messageBody);
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
-
-        try {
-
-            modelAndView.addObject("sample_albums", utilityService.getAllSampleAlbum());
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-
-        try {
-
-            modelAndView.addObject("frequent_questions", utilityService.getAllFrequentQuestions());
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-        }
-
-        return modelAndView;
-
+        return new RedirectView("/contact_us");
     }
 
 }

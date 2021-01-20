@@ -1,150 +1,195 @@
-<style>
-    #sidebar_navigation {
-        height: 90vh;
-        padding-top: 2rem;
-    }
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
-    .sidebar-sticky .nav .nav-item {
-        margin-top: 1rem;
-    }
+    <!DOCTYPE html>
+    <html lang="en">
 
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="_csrf" content="${_csrf.token}" />
+        <!-- default header name is X-CSRF-TOKEN -->
+        <meta name="_csrf_header" content="${_csrf.headerName}" />
+        <!-- ... -->
+        <title>Price List</title>
 
-    .sidebar-sticky .nav .nav-item .nav-link {
-        color: black;
-    }
+        <!-- CSS only -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-    .card .address-card-info {
-        margin: 20px;
-        padding: 20px;
-    }
+        <!-- <link rel="stylesheet" href="/css/my_account.css"> -->
+        <!-- <link rel="stylesheet" href="/css/navbar.css"> -->
 
-    .card {
-        box-shadow: 0 6px 10px -6px black;
-    }
+        <link rel="stylesheet" href="/css/loading.css">
 
-    .card:hover {
-        box-shadow: 0 10px 10px -6px black;
-    }
+        <style>
+            .image-cover {
+                position: relative;
+                transition: transform .2s;
+                margin: 0;
+            }
 
-    .sidebar-sticky ul li .nav-link {
-        transition: all .2s ease-in-out;
-    }
+            .image-cover:hover {
+                z-index: 2;
+                transform: scale(1.2);
+            }
+        </style>
 
-    .sidebar-sticky ul li .nav-link:hover {
-        overflow: hidden;
-        background-color: lightblue;
-        transform: scale(1.1);
+    </head>
 
-    }
-</style>
-
-<!-- View Price List Of Association-->
-<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title" id="myModalLabel"></h4>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-
-                <div class="card" style="max-width: 97%; margin: 1rem; padding: 5px;">
-                    <ul class="nav nav-pills nav-fill">
-                        <div style="margin: auto; padding: 0.5rem;">
-                            <div class="nav-item">
-                                <img src="https://www.transparenttextures.com/patterns/lyonnette.png"
-                                    alt="Card image cap">
-                            </div>
-                        </div>
-                        <div class="flex-sm-column" style="padding: 20px; margin: auto;">
-                            <li class="nav-item">
-                                lasdjsakdj
-                            </li>
-                            <li class="nav-item">
-                                <Strong>${eachOrder.associationName}</Strong>
-                            </li>
-                            <li class="nav-item">
-                                ${eachOrder.coverName}
-                            </li>
-                            <li class="nav-item">
-                                <small style="font-size: smaller;">${eachOrder.productSize}</small>
-                            </li>
-                            <li class="nav-item">
-                                <small style="font-size: small;">${eachOrder.orientation}</small>
-                            </li>
-                        </div>
-
-                        <div class="flex-sm-column" style="padding: 20px; margin: auto;">
-                            <li class="nav-item" style="color: red;">
-                                <strong>Total: ${eachOrder.orderBill.totalAmount}</strong>
-                            </li>
-                            <li class="nav-item">
-                                <strike>Discount: ${eachOrder.orderBill.discount}</strike>
-                            </li>
-                            <li class="nav-item">
-                                <strong>Delivery: 9000</strong>
-                            </li>
-                            <li class="nav-item">
-                                <strong>Tax: 9000</strong>
-                            </li>
-                        </div>
-
-                        <div class="flex-sm-column" style="padding: 20px; margin: auto;">
-                            <li class="nav-item">
-                                <strong>${eachOrder.orderStatus}</strong>
-                            </li>
-                            <p></p>
-                            <li class="nav-item">
-                                OrderTime: ${eachOrder.orderTime}
-                            </li>
-                            <li>
-                                Excepted: ${eachOrder.deliveryDate}
-                            </li>
-
-                        </div>
-                        <div class="flex-sm-column" style="padding: 20px; margin: auto;">
-
-                            <li class="nav-item">
-                                <c:if test="${!eachOrder.paymentStatus}">
-                                    <a class="nav-link" style="color: rgb(202, 35, 35);">
-                                        Un-Paid <i class="fa fa-credit-card" aria-hidden="true"></i>
-                                    </a>
-                                </c:if>
-                                <c:if test="${eachOrder.paymentStatus}">
-                                    <a class="nav-link" style="color: rgb(30, 186, 30);">
-                                        Paid <i class="fa fa-check" aria-hidden="true"></i>
-                                    </a>
-                                </c:if>
-
-                            </li>
-
-                            <form class="nav-item" action="/customer/my-order/pay-or-upload" method="post">
-                                <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                                <input type="text" name="orderId" value="${eachOrder.id}" hidden>
-                                <c:if test="${!eachOrder.paymentStatus}">
-                                    <button class="btn btn-danger" type="submit">Upload Photo /
-                                        pay</button>
-                                </c:if>
-                                <c:if test="${eachOrder.paymentStatus}">
-                                    <button class="btn btn-success" type="submit">Upload Photo /
-                                        pay</button>
-                                </c:if>
+    <body>
 
 
-                            </form>
+        <div class="loading" id="Loading">Loading&#8230;</div>
+        <!-- Navbar Section -->
 
-                        </div>
-                    </ul>
+
+
+        <!-- End of Navbar section -->
+
+        <div class="container">
+
+
+
+            <div class="hero col-md-9 ml-sm-auto col-lg-10 pt-3">
+                <!-- Header band -->
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Cover</h1>
                 </div>
+                <!-- End of Header band -->
+
+                <c:forEach items="${covers}" var="cover">
 
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    <div class="card" style="max-width: 97%; margin: 1rem; padding: 5px;">
+                        <ul class="nav nav-pills nav-fill">
+                            <div style="margin: auto; padding: 0.5rem;">
+                                <div class="nav-item">
+                                    <img class="image-cover" src="${cover.image}" alt="Cover image ">
+                                </div>
+                            </div>
+                            <div class="flex-sm-column" style="padding: 20px; margin: auto;">
+                                <li class="nav-item">
+                                    ${cover.coverName}
+                                </li>
+
+                            </div>
+
+                            <div class="flex-sm-column" style="padding: 20px; margin: auto;">
+                                <li class="nav-item" style="color: red;">
+                                    <span>Size: </span> <strong>${cover.coverSize}</strong>
+                                </li>
+                            </div>
+
+                            <div class="flex-sm-column" style="padding: 20px; margin: auto;">
+                                <li class="nav-item">
+                                    <span>Price: </span> <strong>${cover.coverPrice}</strong>
+                                </li>
+                            </div>
+                            <div class="flex-sm-column" style="padding: 20px; margin: auto;">
+
+                                <li class="nav-item">
+                                <li class="nav-item">
+                                    <span>GST: </span> <strong>${cover.GST}</strong>
+                                </li>
+                                </li>
+
+                            </div>
+                        </ul>
+                    </div>
+
+                </c:forEach>
 
             </div>
         </div>
-    </div>
-</div>
+
+
+        <div class="container">
+
+
+
+            <div class="hero col-md-9 ml-sm-auto col-lg-10 pt-3">
+                <!-- Header band -->
+                <div
+                    class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+                    <h1 class="h2">Paper</h1>
+                </div>
+
+
+                <c:forEach items="${papers}" var="paper">
+
+
+                    <div class="card" style="max-width: 97%; margin: 1rem; padding: 5px;">
+                        <ul class="nav nav-pills nav-fill">
+                            <div style="margin: auto; padding: 0.5rem;">
+                                <div class="nav-item">
+                                    <img src="https://www.transparenttextures.com/patterns/lyonnette.png"
+                                        alt="Cover image ">
+                                </div>
+                            </div>
+                            <div class="flex-sm-column" style="padding: 20px; margin: auto;">
+                                <li class="nav-item">
+                                    ${paper.paperQuality}
+                                </li>
+
+                            </div>
+
+                            <div class="flex-sm-column" style="padding: 20px; margin: auto;">
+                                <li class="nav-item" style="color: red;">
+                                    <span>Size: </span> <strong>${paper.paperSize}</strong>
+                                </li>
+                            </div>
+
+                            <div class="flex-sm-column" style="padding: 20px; margin: auto;">
+                                <li class="nav-item">
+                                    <span>Price: </span> <strong>${paper.paperPrice}</strong>
+                                </li>
+                            </div>
+                            <div class="flex-sm-column" style="padding: 20px; margin: auto;">
+
+                                <li class="nav-item">
+                                <li class="nav-item">
+                                    <span>GST: </span> <strong>${paper.GST}</strong>
+                                </li>
+                                </li>
+
+                            </div>
+                        </ul>
+                    </div>
+
+                </c:forEach>
+
+            </div>
+        </div>
+
+
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+        <script>
+            function onReady(callback) {
+                var intervalId = window.setInterval(function () {
+                    if (document.getElementsByTagName('body')[0] !== undefined) {
+                        window.clearInterval(intervalId);
+                        callback.call(this);
+                    }
+                }, 500);
+            }
+
+            function setVisible(selector, visible) {
+                document.querySelector(selector).style.display = visible ? 'block' : 'none';
+            }
+
+            onReady(function () {
+                // setVisible('body', true);
+                setVisible('#Loading', false);
+            });
+        </script>
+
+    </body>
+
+    </html>

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 @Qualifier("gmailService")
 public class GmailServiceImpl implements MailService {
 
+    private String COMPANY_EMAIL = "princewillz2013@gmail.com";
+
     private JavaMailSender mailSender;
 
     @Autowired
@@ -30,6 +32,22 @@ public class GmailServiceImpl implements MailService {
 
         mailSender.send(mailMessage);
 
+    }
+
+    @Override
+    public void sendEmail(final String to, String subject, String body) {
+        SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setFrom(COMPANY_EMAIL);
+        mailMessage.setTo(to);
+        mailMessage.setSubject(subject);
+        mailMessage.setText(body);
+
+        mailSender.send(mailMessage);
+    }
+
+    @Override
+    public String getCompanyEmail() {
+        return this.COMPANY_EMAIL;
     }
 
 }

@@ -11,7 +11,8 @@
                 <p style="color: gray;">
                     Just register with us, and get updates and special offers for you by venusalbum.com
                 </p>
-                <button type="button" class="btn btn-primary">click here to sign up</button>
+                <button type="button" data-toggle="modal" data-target="#LoginCustomerModal"
+                    class="btn btn-primary">click here to sign up</button>
             </div>
             <!--Grid column-->
 
@@ -33,16 +34,16 @@
 
                 <ul class="list-unstyled">
                     <li>
-                        <a href="#!" class="text-light">Home</a>
+                        <a href="/" class="text-light">Home</a>
                     </li>
-                    <li>
-                        <a href="#!" class="text-light">About</a>
-                    </li>
-                    <li>
+                    <!-- <li>
+                        <a href="" class="text-light">About</a>
+                    </li> -->
+                    <!-- <li>
                         <a href="#!" class="text-light">Services</a>
-                    </li>
+                    </li> -->
                     <li>
-                        <a href="#!" class="text-light">Contact us</a>
+                        <a href="/contact_us" class="text-light">Contact us</a>
                     </li>
                 </ul>
             </div>

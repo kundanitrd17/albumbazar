@@ -4,7 +4,7 @@
     <html>
 
     <head>
-        <title></title>
+        <title>Contact Us</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -140,11 +140,18 @@
                                         <div class="login">
 
                                             <h3>Request a call back</h3>
-                                            <form class="login-container">
-                                                <input type="text" placeholder="Your Name">
-                                                <input type="email" placeholder="Email">
+                                            <form class="login-container" method="POST" action="/contact_us">
+                                                <input type="hidden" name="${_csrf.parameterName}"
+                                                    value="${_csrf.token}" />
+                                                <input name="name" type="text" placeholder="Your Name">
+                                                <input name="email" type="email" placeholder="Email">
 
-                                                <input type="text" placeholder="Contact no.">
+                                                <input name="mobile" type="text" placeholder="Contact no.">
+                                                <div class="form-group">
+                                                    <label for="exampleFormControlTextarea1">Example textarea</label>
+                                                    <textarea name="query" class="form-control"
+                                                        id="exampleFormControlTextarea1" rows="3"></textarea>
+                                                </div>
                                                 <input type="submit" value="Submit">
                                             </form>
                                         </div>

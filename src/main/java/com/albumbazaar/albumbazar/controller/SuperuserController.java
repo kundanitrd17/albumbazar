@@ -23,6 +23,7 @@ import com.albumbazaar.albumbazar.services.CustomerService;
 import com.albumbazaar.albumbazar.services.EmployeeService;
 import com.albumbazaar.albumbazar.services.OrderService;
 import com.albumbazaar.albumbazar.services.SuperuserService;
+import com.albumbazaar.albumbazar.services.UtilityService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,6 +57,7 @@ public final class SuperuserController {
     private final EmployeeService employeeService;
     private final AssociationService associationService;
     private final CustomerService customerService;
+    private final UtilityService utilityService;
 
     @Autowired
     public SuperuserController(@Qualifier("superuserService") SuperuserService superuserDetailsService,
@@ -63,6 +65,7 @@ public final class SuperuserController {
             @Qualifier("employeeService") EmployeeService employeeService,
             @Qualifier("associationService") AssociationService associationService,
             @Qualifier("customerService") final CustomerService customerService,
+            @Qualifier("utilityService") final UtilityService utilityService,
             @Qualifier("orderService") final OrderService orderService) {
         this.superuserDetailsService = superuserDetailsService;
         this.branchService = branchService;
@@ -70,6 +73,7 @@ public final class SuperuserController {
         this.associationService = associationService;
         this.customerService = customerService;
         this.orderService = orderService;
+        this.utilityService = utilityService;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
