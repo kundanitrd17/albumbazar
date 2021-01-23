@@ -57,7 +57,7 @@ public class Association {
     private String email;
 
     @OneToOne(fetch = FetchType.LAZY, orphanRemoval = true)
-    @JoinColumn(name = "address_id")
+    @JoinColumn(name = "address_id", nullable = false)
     private AddressEntity address;
 
     @NotNull

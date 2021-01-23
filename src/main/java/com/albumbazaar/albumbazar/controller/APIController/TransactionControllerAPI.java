@@ -6,6 +6,7 @@ import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.RazorPayEntity;
+import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
 import com.albumbazaar.albumbazar.services.OrderService;
 import com.albumbazaar.albumbazar.services.RazorPayPaymentService;
 import com.albumbazaar.albumbazar.services.TransactionService;
@@ -18,9 +19,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -37,11 +38,30 @@ public class TransactionControllerAPI {
 
     @Autowired(required = true)
     protected TransactionControllerAPI(@Qualifier("orderService") final OrderService orderService,
-            @Qualifier("razorPayPaymentService") final RazorPayPaymentService razorPayPaymentService, 
-            @Qualifier("transactionService")final TransactionService transactionService) {
+            @Qualifier("razorPayPaymentService") final RazorPayPaymentService razorPayPaymentService,
+            @Qualifier("transactionService") final TransactionService transactionService) {
         this.orderService = orderService;
         this.razorPayPaymentService = razorPayPaymentService;
         this.transactionService = transactionService;
+    }
+
+    @PutMapping(value = "/secured/branch/order/pay")
+    public ResponseEntity<?> makeOrderPaymentSuccessfull(@RequestBody final Long orderId) {
+
+        try {
+
+            final EmployeePrincipal employeePrincipal = (EmployeePrincipal) SecurityContextHolder.getContext()
+                    .getAuthentication().getPrincipal();
+
+            transactionService.setOrderPaymentSuccessfull(orderId, employeePrincipal.getId());
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return ResponseEntity.badRequest().build();
+
     }
 
     @PostMapping(value = "secured/bill/paid")
@@ -117,6 +137,5 @@ public class TransactionControllerAPI {
         error.setMessage("unable to process bill try again");
         return ResponseEntity.badRequest().body(error);
     }
-
 
 }

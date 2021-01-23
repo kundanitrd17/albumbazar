@@ -111,7 +111,7 @@
 
                                         <tr>
                                             <td id="customerId${customer.id}" class="customerId"
-                                                data-customerId="${customer.id}">${customer.id}</td>
+                                                data-customerId="${customer.id}">${customer.getCustomerId()}</td>
                                             <td>${customer.name}</td>
                                             <td>${customer.contactNo}</td>
                                             <td>${customer.email}</td>

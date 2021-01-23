@@ -16,7 +16,6 @@ import com.albumbazaar.albumbazar.model.Cover;
 import com.albumbazaar.albumbazar.model.Paper;
 import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.ProductService;
-import com.albumbazaar.albumbazar.services.storage.ImageStorageService;
 import com.albumbazaar.albumbazar.services.storage.StorageService;
 import com.albumbazaar.albumbazar.utilities.AllProducts;
 
@@ -175,7 +174,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void savePaperDetailsForAssociation(Long associationId, List<PaperDTO> paperDTOs) {
-        // TODO Auto-generated method stub
 
     }
 

@@ -75,4 +75,16 @@ public class TransactionServiceImpl implements TransactionService {
 
     }
 
+    @Override
+    @Transactional
+    public void setOrderPaymentSuccessfull(final Long orderId, final Long employeeId) {
+
+        final OrderDetail orderDetail = orderService.getOrder(orderId);
+
+        orderDetail.setPaymentStatus(true);
+
+        this.addNewIncome(orderDetail);
+
+    }
+
 }

@@ -131,7 +131,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                                 <button class="btn"
                                                     onclick="fetchCustomerDetails('${eachOrder.customer.id}')"
                                                     data-toggle="modal"
-                                                    data-target="#customerDetailModal">${eachOrder.customer.id}</button>
+                                                    data-target="#customerDetailModal">${eachOrder.customer.getCustomerId()}</button>
                                             </td>
                                             <td>${eachOrder.productName}</td>
                                             <td>${eachOrder.orderTime}</td>

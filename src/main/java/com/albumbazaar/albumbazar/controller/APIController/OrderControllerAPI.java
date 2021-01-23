@@ -8,7 +8,6 @@ import java.util.NoSuchElementException;
 import javax.validation.Valid;
 
 import com.albumbazaar.albumbazar.Mapper.AddressMapper;
-import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.dto.ProductDetailDTO;
@@ -22,7 +21,6 @@ import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
 import com.albumbazaar.albumbazar.services.GoogleDriveService;
 import com.albumbazaar.albumbazar.services.OrderService;
 
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,18 +30,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
-import okhttp3.Response;
 
 @RestController
 @RequestMapping(value = "api")
@@ -63,6 +57,31 @@ public class OrderControllerAPI {
         this.orderService = orderService;
         this.googleDriveService = googleDriveService;
 
+    }
+
+    @GetMapping(value = "/secured/order/customer/{customer_id}")
+    public ResponseEntity<?> getCustomerOrders(@PathVariable("customer_id") final Long customerId) {
+
+        try {
+            return ResponseEntity.ok().body(orderService.getOrdersOfCustomer(customerId));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return ResponseEntity.badRequest().build();
+
+    }
+
+    @GetMapping(value = "/secured/order/branch/{branch_id}")
+    public ResponseEntity<?> getBranchOrder(@PathVariable("branch_id") final Long branchId) {
+
+        try {
+            return ResponseEntity.ok().body(orderService.getOrdersOfBranch(branchId));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return ResponseEntity.badRequest().build();
     }
 
     @GetMapping(value = "/secured/order/{order-id}")
@@ -247,7 +266,12 @@ public class OrderControllerAPI {
 
         logger.info(orderDetailFormDTO.toString());
         try {
-            final OrderDetail createdOrder = orderService.createOrderByBranchOrAdmin(orderDetailFormDTO);
+
+            final EmployeePrincipal employeePrincipal = (EmployeePrincipal) SecurityContextHolder.getContext()
+                    .getAuthentication().getPrincipal();
+
+            final OrderDetail createdOrder = orderService.createOrderByBranchOrAdmin(orderDetailFormDTO,
+                    employeePrincipal.getId());
             return ResponseEntity.ok().body(createdOrder);
         } catch (Exception e) {
             logger.error(e.getMessage());

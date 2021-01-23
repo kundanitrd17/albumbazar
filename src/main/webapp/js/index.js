@@ -26,7 +26,8 @@ function setOrderTotalAmount() {
                     paperPrice = parseFloat(paperPriceEle.value);
                     if (paperTaxEle != null) {
                         paperPrice += parseFloat(paperTaxEle.value);
-                        totalOrderTax += noOfSheets * parseFloat(paperTaxEle.value);
+                        totalOrderTax += (noOfSheets * parseFloat(paperTaxEle.value));
+
                     }
                 }
                 let temp = parseFloat(paperPrice) * parseInt(noOfSheets);
@@ -43,9 +44,9 @@ function setOrderTotalAmount() {
 
     totalOrderAmount = amount;
 
-    $("#orderTotalWithoutGST").text(totalOrderAmount - totalOrderTax);
-    $("#orderTotalTax").text(totalOrderTax);
-    $("#orderTotalWithGST").text(totalOrderAmount);
+    $("#orderTotalWithoutGST").text((totalOrderAmount - totalOrderTax).toFixed(2));
+    $("#orderTotalTax").text(totalOrderTax.toFixed(2));
+    $("#orderTotalWithGST").text(totalOrderAmount.toFixed(2));
 }
 function getOrderTotalAmount() {
     return totalOrderAmount;
@@ -185,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelector('.carousel-item').className += " active";
 
         $('.carousel').carousel({
-            interval: 500
+            interval: 3500
         })
 
         $(function () {

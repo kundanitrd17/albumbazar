@@ -54,7 +54,7 @@ public class SMSServiceImpl implements SMSService {
 
     @Override
     public String sendSMSAsync(String message, String number) {
-        // TODO Auto-generated method stub
+
         return null;
     }
 

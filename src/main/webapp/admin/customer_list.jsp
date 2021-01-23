@@ -97,7 +97,7 @@
                                         <th><input type="text" class="form-control" placeholder="Name" disabled></th>
                                         <th><input type="text" class="form-control" placeholder="Phone" disabled></th>
                                         <th><input type="text" class="form-control" placeholder="Email" disabled></th>
-                                        <th><input type="text" class="form-control" placeholder="Address" disabled></th>
+                                        <!-- <th><input type="text" class="form-control" placeholder="Address" disabled></th> -->
                                         <th><input type="text" class="form-control" placeholder="ReferralCode" disabled>
                                         </th>
                                         <th><input type="text" class="form-control" placeholder="Discount" disabled>
@@ -111,11 +111,11 @@
 
                                         <tr>
                                             <td id="customerId${customer.id}" class="customerId"
-                                                data-customerId="${customer.id}">${customer.id}</td>
+                                                data-customerId="${customer.id}">${customer.getCustomerId()}</td>
                                             <td>${customer.name}</td>
                                             <td>${customer.contactNo}</td>
                                             <td>${customer.email}</td>
-                                            <td><a href="#">Address</a></td>
+
                                             <td>${customer.referralCode}</td>
                                             <td>${customer.discount}</td>
 
@@ -150,90 +150,92 @@
             </section>
 
 
+            <%@include file="address_modal.jsp" %>
 
 
 
-            <script type="text/javascript">
 
-                var token = $("meta[name='_csrf']").attr("content");
-                var header = $("meta[name='_csrf_header']").attr("content");
+                <script type="text/javascript">
 
-                // Deactivate an employee
-                $('.table tbody tr td').on('click', '.act', function () {
+                    var token = $("meta[name='_csrf']").attr("content");
+                    var header = $("meta[name='_csrf_header']").attr("content");
 
-                    var customerId = $(this).parent().siblings('.customerId').data();
+                    // Deactivate an employee
+                    $('.table tbody tr td').on('click', '.act', function () {
 
-                    console.log(customerId);
-                    console.log(customerId.customerid);
+                        var customerId = $(this).parent().siblings('.customerId').data();
 
-                    $(this).hide();
-                    $(this).siblings('.de-act').show();
-                    $(this).parent().prevAll().css("background-color", "gray").focus();
-                    $(this).parent().next().hide();
+                        console.log(customerId);
+                        console.log(customerId.customerid);
+
+                        $(this).hide();
+                        $(this).siblings('.de-act').show();
+                        $(this).parent().prevAll().css("background-color", "gray").focus();
+                        $(this).parent().next().hide();
 
 
-                    var xhr = new XMLHttpRequest();
-                    var url = '/api/admin/customer-delete';
-                    xhr.open("DELETE", url, true);
-                    xhr.setRequestHeader('Content-type', 'application/json');
-                    xhr.setRequestHeader(header, token);
+                        var xhr = new XMLHttpRequest();
+                        var url = '/api/admin/customer-delete';
+                        xhr.open("DELETE", url, true);
+                        xhr.setRequestHeader('Content-type', 'application/json');
+                        xhr.setRequestHeader(header, token);
 
-                    xhr.onreadystatechange = function () { // Call a function when the state changes.
-                        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                            // console.log(typeof (JSON.parse(this.response)));
-                            console.log(this.response);
-                            // console.log(JSON.parse(this.response));
+                        xhr.onreadystatechange = function () { // Call a function when the state changes.
+                            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                                // console.log(typeof (JSON.parse(this.response)));
+                                console.log(this.response);
+                                // console.log(JSON.parse(this.response));
+                            }
                         }
-                    }
-                    xhr.send(JSON.stringify(customerId.customerid))
+                        xhr.send(JSON.stringify(customerId.customerid))
 
-                });
+                    });
 
-                // activate an employee
-                $('.table tbody tr td').on('click', '.de-act', function () {
+                    // activate an employee
+                    $('.table tbody tr td').on('click', '.de-act', function () {
 
-                    var customerId = $(this).parent().siblings('.customerId').data();
+                        var customerId = $(this).parent().siblings('.customerId').data();
 
-                    console.log(customerId);
-                    console.log(customerId.customerid);
+                        console.log(customerId);
+                        console.log(customerId.customerid);
 
-                    $(this).hide();
-                    $(this).siblings().show();
-                    $(this).parent().prevAll().css("background-color", "white").focus();
-                    $(this).parent().next().show();
+                        $(this).hide();
+                        $(this).siblings().show();
+                        $(this).parent().prevAll().css("background-color", "white").focus();
+                        $(this).parent().next().show();
 
 
-                    var xhr = new XMLHttpRequest();
-                    var url = '/api/admin/customer-restore';
-                    xhr.open("PUT", url, true);
-                    xhr.setRequestHeader('Content-type', 'application/json');
-                    xhr.setRequestHeader(header, token);
+                        var xhr = new XMLHttpRequest();
+                        var url = '/api/admin/customer-restore';
+                        xhr.open("PUT", url, true);
+                        xhr.setRequestHeader('Content-type', 'application/json');
+                        xhr.setRequestHeader(header, token);
 
-                    xhr.onreadystatechange = function () { // Call a function when the state changes.
-                        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
-                            // console.log(typeof (JSON.parse(this.response)));
-                            console.log(this.response);
-                            // console.log(JSON.parse(this.response));
+                        xhr.onreadystatechange = function () { // Call a function when the state changes.
+                            if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+                                // console.log(typeof (JSON.parse(this.response)));
+                                console.log(this.response);
+                                // console.log(JSON.parse(this.response));
+                            }
                         }
-                    }
-                    xhr.send(JSON.stringify(customerId.customerid))
+                        xhr.send(JSON.stringify(customerId.customerid))
 
-                });
+                    });
 
-            </script>
-
+                </script>
 
 
 
-            <script type="text/javascript" src="/superuser/js/data-table.js"></script>
+
+                <script type="text/javascript" src="/superuser/js/data-table.js"></script>
 
 
-            <script src='http://code.jquery.com/jquery-latest.js'></script>
-            <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
-                integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
-                crossorigin="anonymous"></script>
-            <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
-            <script src='/superuser/js/super-admin.js'></script>
+                <script src='http://code.jquery.com/jquery-latest.js'></script>
+                <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+                    integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+                    crossorigin="anonymous"></script>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.6.0/Chart.bundle.js"></script>
+                <script src='/superuser/js/super-admin.js'></script>
 
     </body>
 

@@ -27,16 +27,17 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = { "order_id", "received_time" }))
+@Table(name = "income")
 @JsonIgnoreProperties(value = { "order" })
 public class Income {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", unique = true, updatable = false)
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id")
+    @JoinColumn(name = "order_id", unique = true)
     @OnDelete(action = OnDeleteAction.NO_ACTION)
     private OrderDetail order;
 

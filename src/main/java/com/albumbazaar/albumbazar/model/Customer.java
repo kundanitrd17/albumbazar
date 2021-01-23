@@ -109,4 +109,8 @@ public class Customer {
 
     }
 
+    public String getCustomerId() {
+        return "CUS_" + this.id;
+    }
+
 }

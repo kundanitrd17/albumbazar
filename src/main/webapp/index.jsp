@@ -54,7 +54,7 @@
 
 
           <div class="carousel-item">
-            <img class="d-block w-100" src="/img/slide1.svg" alt="First slide">
+            <img class="d-block w-100" src="/img/carasoul1.jpg" alt="First slide">
           </div>
           <c:forEach items="${carasouls}" var="carasoul">
 
@@ -83,8 +83,8 @@
 
       <section style=" margin-bottom: 5rem; padding-top: 50px; padding-bottom: 50px;">
         <center>
-          <h3>Lorem ipsum dolor sit, amet consectetur adipisicing elit.</h3>
-          <p>Awamet consectetur adipisicing elit.P.</p>
+          <h3>Yours Truthfully printing solutions.</h3>
+          <p>We work to make you happy and help you create a cherishable memory album with Albumbazaar</p>
           <hr style="width: 50%; 
           margin-top:50px; 
           margin-bottom:50px;">
@@ -382,7 +382,7 @@
                       <h5 class="card-title">${sample_album.title}</h5>
                       <button type="button" class="btn btn-primary" data-container="body" data-toggle="popover"
                         data-placement="bottom" data-content="${sample_album.description}">
-                        Popover on bottom
+                        See description
                       </button>
 
                     </div>

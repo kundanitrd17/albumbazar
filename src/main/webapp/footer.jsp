@@ -6,10 +6,10 @@
         <div class="row">
             <!--Grid column-->
             <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-                <h5 class="text-uppercase">Newsletter Sign Up</h5>
+                <h5 class="text-uppercase">Sign Up</h5>
 
                 <p style="color: gray;">
-                    Just register with us, and get updates and special offers for you by venusalbum.com
+                    Just register with us to get updates and special offers by AlbumBazaar
                 </p>
                 <button type="button" data-toggle="modal" data-target="#LoginCustomerModal"
                     class="btn btn-primary">click here to sign up</button>
@@ -22,7 +22,7 @@
 
                 <ul class="list-unstyled mb-0">
                     <li>
-                        <a href="#!" class="text-light">HP Awarded Venus album a Star Company</a>
+                        <a href="#!" class="text-light">An Upcoming world-class Company</a>
                     </li>
                 </ul>
             </div>
@@ -56,7 +56,7 @@
     <!-- Copyright -->
     <div class="text-center">
         © 2020 Copyright:
-        <a class="text-light" href="#">Company Name</a>
+        <a class="text-light" href="#">AlbumBazaar</a>
     </div>
 
     <div class="py-5">

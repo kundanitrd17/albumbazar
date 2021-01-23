@@ -6,8 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
-import javax.persistence.EntityNotFoundException;
-
 import com.albumbazaar.albumbazar.dao.CarasoulRepository;
 import com.albumbazaar.albumbazar.dao.FrequentQuestionRespository;
 import com.albumbazaar.albumbazar.dao.ResetPasswordCodeRepository;
@@ -24,7 +22,6 @@ import com.albumbazaar.albumbazar.services.CustomerService;
 import com.albumbazaar.albumbazar.services.EmployeeService;
 import com.albumbazaar.albumbazar.services.MailService;
 import com.albumbazaar.albumbazar.services.UtilityService;
-import com.albumbazaar.albumbazar.services.storage.ImageStorageService;
 import com.albumbazaar.albumbazar.services.storage.StorageService;
 
 import org.slf4j.Logger;

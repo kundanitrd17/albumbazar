@@ -60,8 +60,6 @@ public final class ProductControllerAPI {
         System.out.println(companyId);
 
         AllProducts products = productService.getAllProducts(companyId);
-        System.out.println(products);
-        System.out.println(companyId);
 
         return ResponseEntity.ok(products);
     }

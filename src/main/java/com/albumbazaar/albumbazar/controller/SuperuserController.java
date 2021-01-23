@@ -5,18 +5,16 @@ import java.util.NoSuchElementException;
 
 import javax.validation.Valid;
 
-import com.albumbazaar.albumbazar.principals.SuperuserPrincipal;
-import com.albumbazaar.albumbazar.dto.CustomerDTO;
 import com.albumbazaar.albumbazar.dto.EmployeeDTO;
 import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.form.BasicBranchInfoForm;
 import com.albumbazaar.albumbazar.form.ForgotPasswordFormSuperuser;
 import com.albumbazaar.albumbazar.form.LocationForm;
 import com.albumbazaar.albumbazar.form.association.AssociationDetailForm;
-import com.albumbazaar.albumbazar.form.employee.BasicEmployeeDetailForm;
 import com.albumbazaar.albumbazar.model.Association;
 import com.albumbazaar.albumbazar.model.Branch;
 import com.albumbazaar.albumbazar.model.Customer;
+import com.albumbazaar.albumbazar.principals.SuperuserPrincipal;
 import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.BranchService;
 import com.albumbazaar.albumbazar.services.CustomerService;
@@ -36,7 +34,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;

@@ -144,6 +144,32 @@
             <div>
 
                 <section id="OrderListSection" style="padding-top: 20px; margin-top: 20px;">
+
+                    <div class="container-fluid">
+                        <div class="input-group mb-3" id="OrderBoard1">
+
+                            <input type="text" class="form-control" value="Customer: 890890809" disabled>
+                            <input type="text" class="form-control" placeholder="Total: 100" disabled>
+                            <input type="text" class="form-control" placeholder="Discount: 5" disabled>
+                            <input type="text" class="form-control" placeholder="Wallet: 5" disabled>
+                            <input type="text" class="form-control" placeholder="To pay: 100" disabled>
+                            <button class="btn btn-primary" id="orderCreatedSection1"
+                                onclick="makePaymentForOrder(1)">Pay</button>
+                        </div>
+                        <form class="images-upload-form input-group" id="fileUploadForm1" enctype="multipart/form-data">
+                            <input name="order_selected" type="text" value="1" hidden>
+                            <input type="file" class="form-control" name="files"
+                                aria-describedby="inputGroupFileAddon04" aria-label="Upload" multiple>
+                            <button class="btn btn-outline-secondary" type="submit">Upload Images</button>
+                        </form>
+                        <div class="progress" id="progressBar1" hidden>
+                            <div class="progress-bar" role="progressbar" aria-valuenow="75" aria-valuemin="0"
+                                aria-valuemax="100">
+                            </div>
+                        </div>
+                        <hr>
+                    </div>
+
                 </section>
 
 

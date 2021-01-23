@@ -1,16 +1,11 @@
 package com.albumbazaar.albumbazar.services;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import javax.validation.Valid;
 
 import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.OrderDetailDTO;
 import com.albumbazaar.albumbazar.dto.ProductDetailDTO;
 import com.albumbazaar.albumbazar.dto.SheetDetailDTO;
-import com.albumbazaar.albumbazar.form.order.OrderDetailForm;
 import com.albumbazaar.albumbazar.form.order.OrderDetailFormDTO;
 import com.albumbazaar.albumbazar.model.AddressEntity;
 import com.albumbazaar.albumbazar.model.Association;
@@ -110,6 +105,8 @@ public interface OrderService {
      */
     List<OrderDetail> getOrdersOfCustomer(Long customerId);
 
+    List<OrderDetail> getOrdersOfBranch(Long branchId);
+
     List<OrderDetail> getOrderWithAssociationIdAndAssociationStatus(Long associationId, boolean status);
 
     List<OrderDetail> getCompletedOrdersWithAssociationId(Long associationId);
@@ -128,7 +125,7 @@ public interface OrderService {
 
     ProductDetailDTO getProductInfo(Long orderId);
 
-    OrderDetail createOrderByBranchOrAdmin(OrderDetailFormDTO orderDetailFormDTO);
+    OrderDetail createOrderByBranchOrAdmin(OrderDetailFormDTO orderDetailFormDTO, Long employeeId);
 
     void changeDeliveryAddress(AddressDTO addressDTO, Long EmployeeId);
 

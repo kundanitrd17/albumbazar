@@ -102,7 +102,8 @@
                       <td>${order_detail.id}</td>
                       <td class="customerId" data-order-id="${order_detail.customer.id}">
                         <button class="btn" onclick="fetchCustomerDetails('${order_detail.customer.id}')"
-                          data-toggle="modal" data-target="#customerDetailModal">${order_detail.customer.id}</button>
+                          data-toggle="modal"
+                          data-target="#customerDetailModal">${order_detail.customer.getCustomerId()}</button>
                       </td>
                       <td>${order_detail.productName}</td>
                       <td>${order_detail.orderTime}</td>

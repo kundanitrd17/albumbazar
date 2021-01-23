@@ -1,5 +1,38 @@
 document.getElementById("CreateOrderForm").addEventListener('submit', createNewOrder);
 
+
+function makePaymentForOrder(order_id) {
+
+    const isConfirmed = confirm("Confirm payment...");
+    if (isConfirmed == null || !isConfirmed) {
+        return false;
+    }
+
+    const xhr = new XMLHttpRequest();
+    const url = "/api/secured/branch/order/pay";
+    xhr.open("PUT", url, true);
+    var header = document.querySelector("meta[name='_csrf_header']").content;//.attr("content");
+    var token = document.querySelector("meta[name='_csrf']").content;//.attr("content");
+
+    xhr.setRequestHeader('Content-type', 'application/json');
+
+    xhr.setRequestHeader(header, token);
+
+    xhr.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 4) {
+
+            document.getElementById("orderCreatedSection" + order_id).className = "btn btn-danger";
+
+        }
+    }
+
+    xhr.send(17);
+
+
+}
+
+
+
 function createNewOrder(e) {
     e.preventDefault();
     const createdOrderListElement = document.getElementById('OrderListSection');
@@ -34,8 +67,12 @@ function createNewOrder(e) {
             let element = `
             <div class="container-fluid">
                     <div class="input-group mb-3" id="OrderBoard${order_id}">
-                        <input type="text" class="form-control" placeholder="Recipient's username"
-                            aria-label="Recipient's username" aria-describedby="basic-addon2" disabled>
+                        <input type="text" class="form-control" value="Customer: 8989" disabled>
+                        <input type="text" class="form-control" placeholder="Total: ${data.orderBill.totalAmount}" disabled>
+                        <input type="text" class="form-control" placeholder="Discount: ${data.orderBill.discount}" disabled>
+                        <input type="text" class="form-control" placeholder="Wallet: ${data.orderBill.wallet}" disabled>
+                        <input type="text" class="form-control" placeholder="To pay: ${data.orderBill.amountToPay}" disabled>
+                        <button class="btn btn-primary" id="orderCreatedSection${order_id}" onclick="makePaymentForOrder(${order_id})">Pay</button>
                     </div>
                     <form class="images-upload-form input-group" id="fileUploadForm${order_id}"
                         enctype="multipart/form-data">

@@ -22,6 +22,7 @@ public class OrderDetailFormDTO {
 
     private String description;
 
+    private Long employeeId;
     private Long branchId;
 
     private String customerIdentifier;

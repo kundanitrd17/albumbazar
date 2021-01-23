@@ -11,6 +11,7 @@ import java.util.stream.Stream;
 import com.albumbazaar.albumbazar.Mapper.AddressMapper;
 import com.albumbazaar.albumbazar.Mapper.CoverMapper;
 import com.albumbazaar.albumbazar.dao.AddressRepository;
+import com.albumbazaar.albumbazar.dao.BranchRepository;
 import com.albumbazaar.albumbazar.dao.OrderAndCustomerCareRepository;
 import com.albumbazaar.albumbazar.dao.OrderRepository;
 import com.albumbazaar.albumbazar.dto.AddressDTO;
@@ -20,8 +21,10 @@ import com.albumbazaar.albumbazar.dto.SheetDetailDTO;
 import com.albumbazaar.albumbazar.form.order.OrderDetailFormDTO;
 import com.albumbazaar.albumbazar.model.AddressEntity;
 import com.albumbazaar.albumbazar.model.Association;
+import com.albumbazaar.albumbazar.model.Branch;
 import com.albumbazaar.albumbazar.model.Cover;
 import com.albumbazaar.albumbazar.model.Customer;
+import com.albumbazaar.albumbazar.model.Employee;
 import com.albumbazaar.albumbazar.model.OrderAndCustomerCareEntity;
 import com.albumbazaar.albumbazar.model.OrderBillEmbeddable;
 import com.albumbazaar.albumbazar.model.OrderDetail;
@@ -29,6 +32,7 @@ import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 import com.albumbazaar.albumbazar.model.Paper;
 import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.CustomerService;
+import com.albumbazaar.albumbazar.services.EmployeeService;
 import com.albumbazaar.albumbazar.services.OrderService;
 import com.albumbazaar.albumbazar.services.ProductService;
 
@@ -39,6 +43,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
+import org.springframework.data.domain.jaxb.SpringDataJaxb.OrderDto;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,30 +57,106 @@ public class OrderServiceImpl implements OrderService {
     private final OrderAndCustomerCareRepository orderAndCustomerCareRepository;
     private final ProductService productService;
     private final AddressRepository addressRepository;
+    private final BranchRepository branchRepository;
     private final ApplicationContext context;
 
     @Autowired
     public OrderServiceImpl(final OrderRepository orderRepository,
             final OrderAndCustomerCareRepository orderAndCustomerCareRepository,
-            @Qualifier("productService") final ProductService productService, final AddressRepository addressRepository,
-            final ApplicationContext context) {
+            final BranchRepository branchRepository, @Qualifier("productService") final ProductService productService,
+            final AddressRepository addressRepository, final ApplicationContext context) {
 
         this.context = context;
         this.orderAndCustomerCareRepository = orderAndCustomerCareRepository;
         this.orderRepository = orderRepository;
         this.productService = productService;
         this.addressRepository = addressRepository;
+        this.branchRepository = branchRepository;
     }
 
     @Override
-    public OrderDetail createOrderByBranchOrAdmin(OrderDetailFormDTO orderDetailFormDTO) {
+    public OrderDetail createOrderByBranchOrAdmin(final OrderDetailFormDTO orderDetailFormDTO, final Long employeeId) {
 
         final Customer customer = context.getBean(CustomerService.class)
                 .loadByEmail(orderDetailFormDTO.getCustomerIdentifier());
 
-        final OrderDetail orderDetail = this.createNewOrder(orderDetailFormDTO, customer);
+        final OrderDetail orderDetail = this.createNewOrder(orderDetailFormDTO, customer, employeeId);
 
         return orderDetail;
+
+    }
+
+    @Transactional
+    public OrderDetail createNewOrder(final OrderDetailFormDTO orderDetailFormDTO, final Customer customer,
+            final long employeeId) {
+
+        final Employee employee = context.getBean(EmployeeService.class).getEmployee(employeeId);
+
+        final OrderDetail orderDetail = new OrderDetail();
+
+        orderDetail.setEmployee(employee);
+        orderDetail.setBranchId(employee.getBranch().getId());
+
+        final Association association = context.getBean(AssociationService.class)
+                .getAssociation(orderDetailFormDTO.getSelectedAssociationId());
+
+        orderDetail.setAssociationName(orderDetailFormDTO.getAssociationName());
+        orderDetail.setAssociation(association);
+
+        // Calculating total amount of the order
+        double totalAmount = 0.0;
+
+        final Cover cover = productService.getCoverEntity(orderDetailFormDTO.getCoverId());
+        totalAmount += cover.getCoverPrice();
+        totalAmount += cover.getGST();
+        orderDetail.setCover(cover);
+
+        orderDetail.setDescription(orderDetailFormDTO.getDescription());
+        orderDetail.setOrientation(orderDetailFormDTO.getOrientation());
+        orderDetail.setProductName(orderDetailFormDTO.getProductCategory());
+        orderDetail.setProductSize(orderDetailFormDTO.getProductSize());
+
+        final JSONArray paperAndNumberOfPaperDetailList = new JSONArray();
+        int length = orderDetailFormDTO.getPaperId().length;
+        for (int index = 0; index < length; index++) {
+
+            final JSONObject paperIdAndNumberOfSheet = new JSONObject();
+
+            final long noOfSheets = orderDetailFormDTO.getNumberOfSheet()[index];
+
+            if (noOfSheets < 0) {
+                throw new IllegalStateException("Sheet not allowed");
+            }
+
+            System.out.println("paper: " + orderDetailFormDTO.getPaperId()[index] + "\nsheets: " + noOfSheets);
+
+            final Long paperId = orderDetailFormDTO.getPaperId()[index];
+
+            final Paper paper = productService.getPaperEntity(paperId);
+
+            paperIdAndNumberOfSheet.put("paper_id", paper.getId());
+            paperIdAndNumberOfSheet.put("sheets", noOfSheets);
+
+            paperAndNumberOfPaperDetailList.put(paperIdAndNumberOfSheet);
+
+            totalAmount += (paper.getPaperPrice() + paper.getGST()) * noOfSheets;
+
+        }
+
+        orderDetail.setPaperDetailsWithNumberOfSheetsList(paperAndNumberOfPaperDetailList.toString());
+
+        // Creating the object for OrderBillEmbeddable
+        final OrderBillEmbeddable orderBill = new OrderBillEmbeddable();
+        orderBill.setTotalAmount(totalAmount);
+        orderBill.setDiscount(customer.getDiscount());
+        orderBill.setWallet(customer.getWallet());
+        orderBill.setAmountToPay(orderBill.getTotalAmount() - orderBill.getDiscount() - orderBill.getWallet());
+
+        orderDetail.setOrderBill(orderBill);
+
+        orderDetail.setCustomer(customer);
+
+        return orderRepository.save(orderDetail);
 
     }
 
@@ -131,10 +212,6 @@ public class OrderServiceImpl implements OrderService {
         }
 
         orderDetail.setPaperDetailsWithNumberOfSheetsList(paperAndNumberOfPaperDetailList.toString());
-
-        // final CustomerService customerService =
-        // context.getBean(CustomerService.class);
-        // final Customer customer = customerService.getCustomer(customerId);
 
         // Creating the object for OrderBillEmbeddable to return
         final OrderBillEmbeddable orderBill = new OrderBillEmbeddable();
@@ -287,6 +364,13 @@ public class OrderServiceImpl implements OrderService {
     public OrderDetail getOrderWithRazorpayOrderId(String razorpayOrderId) {
 
         return orderRepository.findByRazorpayOrderId(razorpayOrderId).orElseThrow();
+    }
+
+    @Override
+    public List<OrderDetail> getOrdersOfBranch(final Long branchId) {
+
+        final Branch branch = branchRepository.findById(branchId).orElseThrow();
+        return orderRepository.findAllByBranchId(branch.getId());
     }
 
     @Override
