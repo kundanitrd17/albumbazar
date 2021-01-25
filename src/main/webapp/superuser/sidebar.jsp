@@ -55,9 +55,14 @@
             </ul>
         </li>
 
-        <li class="nav-item">
-            <i class="fa fa-money"></i><a href="/superuser/reward"> Reward</a>
+        <li><i class="fa fa-wrench fa-fw"></i><a href="#"> Other</a>
+            <ul class="side-nav-dropdown">
+
+                <li><a href="/superuser/reward"> Reward</a></li>
+                <li><a href="/superuser/misc">Misc</a></li>
+            </ul>
         </li>
+
         <p>Example:</p>
         <li><i class="fa fa-envelope-open-o fa-fw"></i><a href="#"> Messages <span class="num dang">56</span></a></li>
         <li><i class="fa fa-wrench fa-fw"></i><a href="#"> Settings <span class="num prim">6</span></a>

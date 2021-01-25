@@ -266,7 +266,7 @@ public class HomeController {
 
     }
 
-    @GetMapping(value = "/misc")
+    @GetMapping(value = "/superuser/misc")
     public ModelAndView websiteSettingView() {
         final ModelAndView modelAndView = new ModelAndView("/superuser/miscelleneous");
 
@@ -295,24 +295,7 @@ public class HomeController {
 
     }
 
-    @PostMapping(value = "/carasoul/update")
-    public RedirectView uploadCarasoul(@RequestParam("id") final Long carasoulId,
-            @RequestParam("image") final MultipartFile carasoul) {
-
-        System.out.println(carasoulId);
-        System.out.println(carasoul);
-
-        try {
-            utilityService.updateCarasoul(carasoulId, carasoul);
-        } catch (Exception e) {
-            logger.info(e.getMessage());
-        }
-        // utilityService.createCarasoul(carasoul);
-
-        return new RedirectView("/misc");
-    }
-
-    @PostMapping(value = "/carasoul")
+    @PostMapping(value = "/superuser/carasoul")
     public RedirectView uploadCarasoul(@RequestParam("image") final MultipartFile carasoul) {
 
         try {
@@ -322,42 +305,20 @@ public class HomeController {
         }
         // utilityService.createCarasoul(carasoul);
 
-        return new RedirectView("/misc");
+        return new RedirectView("/superuser/misc");
     }
 
-    @DeleteMapping(value = "/carasoul")
-    @ResponseBody
-    public ResponseEntity<?> deleteCarasoul(@RequestBody final Long id) {
-
-        System.out.println(id);
-
-        utilityService.deleteCarasoul(id);
-
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping(value = "/sample-album")
+    @PostMapping(value = "/superuser/sample-album")
     public RedirectView uploadSampleAlbum(@ModelAttribute SampleAlbumDTO sampleAlbumDTO) {
 
         System.out.println(sampleAlbumDTO);
 
         utilityService.uploadSampleAlbum(sampleAlbumDTO);
 
-        return new RedirectView("/misc");
+        return new RedirectView("/superuser/misc");
     }
 
-    @DeleteMapping(value = "/sample-album")
-    @ResponseBody
-    public ResponseEntity<?> deleteSampleAlbum(@RequestBody final Long id) {
-
-        System.out.println(id);
-
-        utilityService.deleteSampleAlbum(id);
-
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping(value = "/frequent/question")
+    @PostMapping(value = "/superuser/frequent/question")
     public RedirectView createQuestion(@ModelAttribute final FrequentQuestionEntity frequentQuestion) {
 
         try {
@@ -366,16 +327,7 @@ public class HomeController {
             logger.info(e.getMessage());
         }
 
-        return new RedirectView("/misc");
-    }
-
-    @DeleteMapping(value = "/frequent/question")
-    @ResponseBody
-    public ResponseEntity<?> deleteQuestion(@RequestBody final Long id) {
-
-        utilityService.deleteFrequentQuestion(id);
-
-        return ResponseEntity.ok().build();
+        return new RedirectView("/superuser/misc");
     }
 
     @PostMapping(value = "contact_us")

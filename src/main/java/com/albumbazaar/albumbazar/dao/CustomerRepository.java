@@ -33,4 +33,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     @Query(value = "DELETE FROM customer_address WHERE customer_id = ?1 AND address_id = ?2", nativeQuery = true)
     void deleteByAddressId(Long customerId, Long addressId);
 
+    @Query(value = "SELECT email FROM customer", nativeQuery = true)
+    List<String> findAllUserName();
+
 }

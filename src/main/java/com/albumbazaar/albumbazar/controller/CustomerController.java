@@ -144,7 +144,6 @@ public final class CustomerController {
                     .getAuthentication().getPrincipal();
 
             List<OrderDetail> orders = customerService.getAllOrderDetails(principal.getId());
-            System.out.println(orders);
 
             modelAndView.addObject("allOrdersForCustomer", orders);
         } catch (Exception e) {

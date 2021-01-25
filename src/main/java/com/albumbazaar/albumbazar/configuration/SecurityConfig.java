@@ -225,7 +225,13 @@ public class SecurityConfig {
         protected void configure(HttpSecurity http) throws Exception {
             http.antMatcher("/api/secured/**").authorizeRequests().antMatchers("/api/secured/customer/**")
                     .hasAuthority(AvailableRoles.Code.USER).antMatchers("/api/secured/customer-care/**")
-                    .hasAuthority(AvailableRoles.Code.CUSTOMER_CARE);
+                    .hasAnyAuthority(AvailableRoles.Code.CUSTOMER_CARE, AvailableRoles.Code.ADMIN)
+                    .antMatchers("/api/secured/branch/**")
+                    .hasAnyAuthority(AvailableRoles.Code.BRANCH, AvailableRoles.Code.ADMIN)
+                    .antMatchers("/api/secured/admin/**").hasAuthority(AvailableRoles.Code.ADMIN)
+                    .antMatchers("/api/secured/delivery/**").hasAuthority(AvailableRoles.Code.DELIVERY)
+                    .antMatchers("/api/secured/superuser/**").hasAuthority(AvailableRoles.Code.SUPERUSER).anyRequest()
+                    .authenticated();
 
         }
 
@@ -272,18 +278,22 @@ public class SecurityConfig {
 
         @Override
         protected void configure(HttpSecurity http) throws Exception {
-            http.authorizeRequests().antMatchers("**/js/**", "**/css/**").authenticated().anyRequest().permitAll();
+            http.authorizeRequests().antMatchers("**/js/**", "**/css/**").permitAll()
 
-            /**
-             * We need to secure api enpoints as they are not secured by defaul;t include
-             * the below line before pushing it to production
-             */
-            // .antMatchers("/api/superuser/**")
-            // .hasAuthority(AvailableRoles.Code.SUPERUSER)
+                    /**
+                     * We need to secure api enpoints as they are not secured by defaul;t include
+                     * the below line before pushing it to production
+                     */
+                    .antMatchers("/api/superuser/**").hasAuthority(AvailableRoles.Code.SUPERUSER)
 
-            // .antMatchers("/orders/pool")
-            // .hasAnyAuthority(AvailableRoles.Code.CUSTOMER_CARE,
-            // AvailableRoles.Code.SUPERUSER)
+                    .antMatchers("/api/branch/**")
+                    .hasAnyAuthority(AvailableRoles.Code.BRANCH, AvailableRoles.Code.ADMIN).antMatchers("/api/admin/**")
+                    .hasAuthority(AvailableRoles.Code.ADMIN).antMatchers("/api/delivery/**")
+                    .hasAuthority(AvailableRoles.Code.DELIVERY)
+
+                    .antMatchers("/orders/pool").hasAnyAuthority(AvailableRoles.Code.CUSTOMER_CARE,
+                            AvailableRoles.Code.ADMIN, AvailableRoles.Code.SUPERUSER)
+                    .anyRequest().permitAll();
 
         }
     }

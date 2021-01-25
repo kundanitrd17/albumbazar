@@ -237,13 +237,13 @@ public class UtilityServiceImpl implements UtilityService {
 
         if (sampleAlbumDTO.getId() != null) {
             sampleAlbumEntity = sampleAlbumRespository.findById(sampleAlbumDTO.getId()).orElseThrow();
-            sampleAlbumEntity.setTitle(sampleAlbumDTO.getTitle());
-            sampleAlbumEntity.setDescription(sampleAlbumDTO.getDescription());
+            sampleAlbumEntity.setTitle(sampleAlbumDTO.getTitle().trim());
+            sampleAlbumEntity.setDescription(sampleAlbumDTO.getDescription().trim());
 
         } else {
             sampleAlbumEntity = new SampleAlbumEntity();
-            sampleAlbumEntity.setTitle(sampleAlbumDTO.getTitle());
-            sampleAlbumEntity.setDescription(sampleAlbumDTO.getDescription());
+            sampleAlbumEntity.setTitle(sampleAlbumDTO.getTitle().trim());
+            sampleAlbumEntity.setDescription(sampleAlbumDTO.getDescription().trim());
             final String imageFileName = imageStorageService.store(sampleAlbumDTO.getImage(),
                     "sample_album" + new Random().nextInt(10000) + sampleAlbumDTO.getImage().getOriginalFilename());
 

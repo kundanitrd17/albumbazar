@@ -92,12 +92,13 @@ public class Association {
         this.active = true;
     }
 
-    public String getProfilePhoto() {
-        if (profilePhoto == null || profilePhoto.isBlank())
-            return null;
+    // public String getProfilePhoto() {
+    // if (profilePhoto == null || profilePhoto.isBlank())
+    // return null;
 
-        return MvcUriComponentsBuilder.fromMethodName(FileUploadController.class, "serveFile", profilePhoto).build()
-                .toUri().toString();
-    }
+    // return MvcUriComponentsBuilder.fromMethodName(FileUploadController.class,
+    // "serveFile", profilePhoto).build()
+    // .toUri().toString();
+    // }
 
 }

@@ -272,7 +272,7 @@
 							<h3>Customise Banner</h3>
 
 							<div>
-								<form action="/carasoul" method="post" enctype="multipart/form-data">
+								<form action="/superuser/carasoul" method="post" enctype="multipart/form-data">
 									<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
 									<div class="file btn btn-file banner-upload" style="" id="UploadNewBanner">
@@ -288,10 +288,10 @@
 
 						<c:forEach items="${carasouls}" var="carasoul">
 
-							<form action="/carasoul/update" method="POST" enctype="multipart/form-data"
+							<div id="carasoul${carasoul.id}"
 								class="container col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
-								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-								<input type="text" name="id" value="${carasoul.id}" hidden>
+								<!-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+								<input type="text" name="id" value="${carasoul.id}" hidden> -->
 								<div class=" container card">
 									<div class="card-header">Banner 1</div>
 									<div class="card-body">
@@ -304,11 +304,12 @@
 											</div>
 
 											<div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
-												<a href="" class="btn btn-danger banner-delete"><i
-														class=" fa fa-trash"></i></a>
+												<button onclick="deleteCarasoul('${carasoul.id}')"
+													class="btn btn-danger banner-delete"><i
+														class=" fa fa-trash"></i></button>
 											</div>
 
-											<div class="col-9 col-xs-9 col-sm-9 col-md-6 col-lg-6 col-xl-6">
+											<!-- <div class="col-9 col-xs-9 col-sm-9 col-md-6 col-lg-6 col-xl-6">
 												<div class="file btn  btn-file banner-upload" style="">
 													Upload Banner
 
@@ -320,17 +321,17 @@
 
 											<div>
 												<button class="btn btn-primary">submit</button>
-											</div>
+											</div> -->
 
-											<div class="col-12 col-xs-12 col-sm-12 col-md-1 col-lg-1 col-xl-1">
+											<!-- <div class="col-12 col-xs-12 col-sm-12 col-md-1 col-lg-1 col-xl-1">
 
-											</div>
+											</div> -->
 
 										</div>
 									</div>
 								</div>
 
-							</form>
+							</div>
 
 						</c:forEach>
 						<!-- 
@@ -419,7 +420,11 @@
 
 						<c:forEach items="${sample_albums}" var="each_sample_album">
 
-							<div class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+							<form enctype="multipart/form-data" action="/superuser/sample-album" method="POST"
+								id="sampleAlbum${each_sample_album.id}"
+								class="col-12 col-xs-12 col-sm-12 col-md-6 col-lg-4 col-xl-4">
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+								<input type="hidden" name="id" value="${each_sample_album.id}" hidden>
 								<div class="card">
 									<div class="card-header">${each_sample_album.title}</div>
 									<div class="card-body">
@@ -430,7 +435,8 @@
 
 											<div class="col-1 col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xl-1"></div>
 											<div class="col-2 col-xs-2 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-												<a href="" class="btn btn-danger banner-delete"><i
+												<a onclick="deleteSampleAlbum('${each_sample_album.id}')" href="#"
+													class="btn btn-danger banner-delete"><i
 														class=" fa fa-trash"></i></a>
 											</div>
 											<div class="col-8 col-xs-8 col-sm-8 col-md-8 col-lg-8 col-xl-8">
@@ -450,13 +456,13 @@
 
 
 										<div class="col-12">
-											<textarea class="form-control" rows="8" cols="40"
+											<textarea class="form-control" rows="8" cols="40" name="description"
 												placeholder="Describe Album here..." style="margin-left: 10px;">
 												${each_sample_album.description}
 											</textarea>
 										</div>
 										<div class="col-12">
-											<button type="button"
+											<button type="submit"
 												class="btn btn-success btn-sm btn-block my-3 mx-2">Save
 												Album</button>
 										</div>
@@ -465,7 +471,7 @@
 
 									</div>
 								</div>
-							</div>
+							</form>
 
 
 						</c:forEach>
@@ -496,12 +502,8 @@
 
 									<div class="row SuperUserAddAlbum" id="AddNewSampleAlbum">
 
-
-
-
-
-
-										<form action="/sample-album" method="POST" enctype="multipart/form-data"
+										<form action="/superuser/sample-album" method="POST"
+											enctype="multipart/form-data"
 											class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
 											<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 											<div class="card">
@@ -576,7 +578,7 @@
 							<h3>Insert Question And Answer</h3>
 						</div>
 
-						<form class="col-12" action="/frequent/question" method="POST">
+						<form class="col-12" action="/superuser/frequent/question" method="POST">
 							<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 							<div class="col-12">
 								<div class="form-group">
@@ -599,7 +601,7 @@
 
 						<c:forEach items="${frequent_questions}" var="each_question">
 
-							<div class="col-12 wyc-container" id="WhyChoose">
+							<div class="col-12 wyc-container" id="frequentQuestion${each_question.id}">
 
 								<div class="wyc ">
 
@@ -614,7 +616,8 @@
 									</button>
 									<button href="#" class="btn btn-danger question-delete"
 										style="padding: 2px 8px;border-radius:20px;margin-left: 40px;position: absolute;top: 0px;left: -40px;"
-										onclick="deleteQuestion()"><i class=" fa fa-trash"></i></button>
+										onclick="deleteQuestion('${each_question.id}')"><i
+											class=" fa fa-trash"></i></button>
 
 								</div>
 
@@ -693,7 +696,90 @@
 	}
 </script>-->
 			<script type="text/javascript">
+
+
+				var header = $("meta[name='_csrf_header']").attr("content");
+				var token = $("meta[name='_csrf']").attr("content");
+
+
+				document.addEventListener('DOMContentLoaded', () => {
+					header = $("meta[name='_csrf_header']").attr("content");
+					token = $("meta[name='_csrf']").attr("content");
+
+				});
+
+
+				function deleteCarasoul(id) {
+
+
+					const xhr = new XMLHttpRequest();
+					const url = "/api/superuser/carasoul";
+					xhr.open('DELETE', url, true);
+					xhr.setRequestHeader('Content-type', 'application/json');
+					xhr.setRequestHeader(header, token);
+
+					xhr.onreadystatechange = function () {
+						if (this.readyState === 4 && this.status === 200) {
+							alert("success");
+							$('#carasoul' + id).remove();
+						} else if (this.readyState === 4 && this.status === 500) {
+							alert("Unable to delete... Try Again!");
+						}
+					}
+
+					xhr.send(id);
+
+				}
+
+				function deleteSampleAlbum(id) {
+
+
+					const xhr = new XMLHttpRequest();
+					const url = "/api/superuser/sample-album";
+					xhr.open('DELETE', url, true);
+					xhr.setRequestHeader('Content-type', 'application/json');
+					xhr.setRequestHeader(header, token);
+
+					xhr.onreadystatechange = function () {
+						if (this.readyState === 4 && this.status === 200) {
+							alert("success");
+							$('#sampleAlbum' + id).remove();
+						} else if (this.readyState === 4 && this.status === 500) {
+							alert("Unable to delete... Try Again!");
+						}
+					}
+
+					xhr.send(id);
+
+				}
+
+
+				function deleteQuestion(id) {
+
+
+					const xhr = new XMLHttpRequest();
+					const url = "/api/superuser/frequent/question";
+					xhr.open('DELETE', url, true);
+					xhr.setRequestHeader('Content-type', 'application/json');
+					xhr.setRequestHeader(header, token);
+
+					xhr.onreadystatechange = function () {
+						if (this.readyState === 4 && this.status === 200) {
+							alert("success");
+							$('#frequentQuestion' + id).remove();
+						} else if (this.readyState === 4 && this.status === 500) {
+							alert("Unable to delete... Try Again!");
+						}
+					}
+
+					xhr.send(id);
+
+				}
+
+
 				const toggles = document.querySelectorAll(".wyc-toggle");
+
+
 
 				toggles.forEach((toggle) => {
 					toggle.addEventListener("click", () => {
@@ -701,10 +787,7 @@
 					});
 				});
 
-				function deleteQuestion() {
-					const ques = document.getElementById('WhyChoose');
-					ques.remove();
-				}
+
 			</script>
 			<script src='/superuser/js/super-admin.js'></script>
 			<script type="text/javascript">

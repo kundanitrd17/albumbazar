@@ -9,9 +9,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -79,6 +81,48 @@ public class HomeAPIController {
         }
 
         return ResponseEntity.badRequest().build();
+
+    }
+
+    @DeleteMapping(value = "/superuser/carasoul")
+    public ResponseEntity<?> deleteCarasoul(@RequestBody final Long carasoulId) {
+
+        try {
+            utilityService.deleteCarasoul(carasoulId);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok().build();
+
+    }
+
+    @DeleteMapping(value = "/superuser/sample-album")
+    public ResponseEntity<?> deleteSampleAlbum(@RequestBody final Long sampleAlbumId) {
+
+        try {
+            utilityService.deleteSampleAlbum(sampleAlbumId);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok().build();
+
+    }
+
+    @DeleteMapping(value = "/superuser/frequent/question")
+    public ResponseEntity<?> deleteFrequentQuestion(@RequestBody final Long questionId) {
+
+        try {
+            utilityService.deleteFrequentQuestion(questionId);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            return ResponseEntity.badRequest().build();
+        }
+
+        return ResponseEntity.ok().build();
 
     }
 
