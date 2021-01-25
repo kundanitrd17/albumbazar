@@ -51,6 +51,7 @@ public class Employee {
 
     private String qualification;
 
+    @Column(name = "salary", columnDefinition = "double default 0.0")
     private Double salary;
 
     @Size(max = 15)
@@ -112,6 +113,9 @@ public class Employee {
     void prePersist() {
         if (this.active == null) {
             this.active = true;
+        }
+        if (this.salary == null) {
+            this.salary = 0.0;
         }
 
     }

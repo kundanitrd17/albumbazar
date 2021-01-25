@@ -17,6 +17,7 @@ import com.albumbazaar.albumbazar.services.BranchService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +31,9 @@ public class BranchServiceImpl implements BranchService {
     final BranchRepository branchRepository;
     final EmployeeRepository employeeRepository;
 
-    public BranchServiceImpl(final BranchRepository branchRepository,
-            final EmployeeRepository employeeRepository) {
+    @Autowired
+    public BranchServiceImpl(final BranchRepository branchRepository, final EmployeeRepository employeeRepository) {
+
         this.branchRepository = branchRepository;
         this.employeeRepository = employeeRepository;
     }
@@ -39,7 +41,6 @@ public class BranchServiceImpl implements BranchService {
     @Override
     public boolean addBranch(final BasicBranchInfoForm branchInfo, final LocationForm locationDetails) {
         try {
-    
 
             // Setting the admin for this branch
             Employee admin;

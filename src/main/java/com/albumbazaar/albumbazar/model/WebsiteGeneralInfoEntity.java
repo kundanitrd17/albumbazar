@@ -1,6 +1,7 @@
 package com.albumbazaar.albumbazar.model;
 
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -10,6 +11,7 @@ import lombok.Data;
 @Data
 public class WebsiteGeneralInfoEntity {
 
+    @Id
     private Long id;
 
     private Double REFERALL_AMOUNT;
