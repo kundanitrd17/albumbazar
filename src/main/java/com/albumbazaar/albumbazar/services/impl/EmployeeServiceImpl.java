@@ -11,10 +11,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.albumbazaar.albumbazar.Mapper.AddressMapper;
+import com.albumbazaar.albumbazar.dao.AddressRepository;
 import com.albumbazaar.albumbazar.dao.EmployeeRepository;
+import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.EmployeeDTO;
 import com.albumbazaar.albumbazar.form.LocationForm;
 import com.albumbazaar.albumbazar.form.employee.BasicEmployeeDetailForm;
+import com.albumbazaar.albumbazar.model.AddressEntity;
 import com.albumbazaar.albumbazar.model.AvailableRoles;
 import com.albumbazaar.albumbazar.model.Branch;
 import com.albumbazaar.albumbazar.model.Employee;
@@ -40,13 +44,19 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
     private Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
     private final EmployeeRepository employeeRepository;
+    private final AddressRepository addressRepository;
+
     private final BranchService branchService;
 
+    private final AddressMapper addressMapper;
+
     @Autowired
-    public EmployeeServiceImpl(final EmployeeRepository employeeRepository, final BranchService branchService) {
+    public EmployeeServiceImpl(final EmployeeRepository employeeRepository, final AddressRepository addressRepository,
+            final AddressMapper addressMapper, final BranchService branchService) {
+        this.addressRepository = addressRepository;
         this.employeeRepository = employeeRepository;
         this.branchService = branchService;
-
+        this.addressMapper = addressMapper;
     }
 
     @Override
@@ -178,6 +188,21 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
             }
             return true;
         }).collect(Collectors.toSet());
+    }
+
+    @Override
+    @Transactional
+    public void updateAddressInfo(final AddressDTO addressDTO, final Long employeeId) {
+        final Employee employee = this.getEmployee(employeeId);
+
+        if (employee.getAddress() != null)
+            addressRepository.delete(employee.getAddress());
+
+        final AddressEntity address = addressMapper.addressDTOToAddressEntity(addressDTO);
+
+        final AddressEntity savedAddressEntity = addressRepository.save(address);
+        employee.setAddress(savedAddressEntity);
+
     }
 
 }

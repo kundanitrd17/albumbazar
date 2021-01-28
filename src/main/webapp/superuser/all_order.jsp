@@ -63,8 +63,7 @@
               <div class="col-md-12">
                 <div class="content">
                   <h2>All Orders</h2>
-                  ${data}
-                  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor.</p>
+
                 </div>
               </div>
             </div>
@@ -76,7 +75,7 @@
           <div class="row">
             <div class="panel panel-primary filterable table-responsive">
               <div class="panel-heading">
-                <h3 class="panel-title">Customers</h3>
+                <h3 class="panel-title">${title}</h3>
                 <div class="pull-right" style="position: relative;top: -20px;"><button
                     class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span>
                     Filter</button></div>

@@ -13,6 +13,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Email;
 
 import com.albumbazaar.albumbazar.form.BasicBranchInfoForm;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -43,6 +44,12 @@ public class Branch {
     private String contactNo;
 
     private Date date;
+
+    @Column(name = "code", nullable = false)
+    private String branchCode;
+
+    @Email
+    private String email;
 
     @Column(columnDefinition = "boolean default true")
     private Boolean active;

@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import javax.validation.Valid;
 
 import com.albumbazaar.albumbazar.dto.AddressDTO;
+import com.albumbazaar.albumbazar.dto.BranchDTO;
 import com.albumbazaar.albumbazar.dto.EmployeeDTO;
 import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.form.BasicBranchInfoForm;
@@ -15,6 +16,7 @@ import com.albumbazaar.albumbazar.form.association.AssociationDetailForm;
 import com.albumbazaar.albumbazar.model.Association;
 import com.albumbazaar.albumbazar.model.Branch;
 import com.albumbazaar.albumbazar.model.Customer;
+import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 import com.albumbazaar.albumbazar.principals.SuperuserPrincipal;
 import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.BranchService;
@@ -134,15 +136,23 @@ public final class SuperuserController {
         return "superuser/add-branch";
     }
 
-    @PostMapping(value = "add-branch")
-    public RedirectView addBranch(@ModelAttribute BasicBranchInfoForm branchDetails,
-            @ModelAttribute AddressDTO locationForm) {
+    @PostMapping(value = "/add-branch")
+    public RedirectView addBranch(@ModelAttribute BranchDTO branchDetails, @ModelAttribute AddressDTO locationForm,
+            final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
 
-        System.out.println(branchDetails);
-        System.out.println(locationForm);
         final RedirectView redirectView = new RedirectView("/superuser/add-branch");
 
-        branchService.addBranch(branchDetails, null); // call the add branch service
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addAttribute("error", "Invalid Inputs");
+            return redirectView;
+        }
+
+        try {
+            branchService.addBranch(branchDetails, locationForm);
+        } catch (Exception e) {
+            redirectAttributes.addAttribute("error", "Unable to create branch! Invalid data");
+            logger.error(e.getMessage());
+        }
 
         return redirectView;
     }
@@ -155,6 +165,27 @@ public final class SuperuserController {
         modelAndView.addObject("branches", allBranch);
 
         return modelAndView;
+    }
+
+    @PostMapping(value = "/branch/address/change")
+    public RedirectView updateAddress(@ModelAttribute @Valid final AddressDTO addressDTO,
+            @RequestParam("branchId") final Long branchId, final RedirectAttributes redirectAttributes,
+            final BindingResult bindingResult) {
+
+        final RedirectView redirectView = new RedirectView("/superuser/list-branch");
+        if (bindingResult.hasErrors()) {
+
+            redirectAttributes.addAttribute("error", "Invalid data");
+            return redirectView;
+        }
+
+        try {
+            branchService.updateAddressInfo(addressDTO, branchId);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return redirectView;
     }
 
     // EndPoints for customer controller
@@ -241,11 +272,31 @@ public final class SuperuserController {
         return "redirect:/superuser/employee/add";
     }
 
+    @PostMapping(value = "/employee/address/update")
+    public RedirectView updateEmployeeAddress(@ModelAttribute @Valid final AddressDTO addressDTO,
+            @RequestParam("employeeId") final Long employeeId, final BindingResult bindingResult,
+            final RedirectAttributes redirectAttributes) {
+        final RedirectView redirectView = new RedirectView("/superuser/employee-list");
+
+        if (bindingResult.hasErrors()) {
+            redirectAttributes.addAttribute("error", "Invalid Data");
+            return redirectView;
+        }
+
+        try {
+            employeeService.updateAddressInfo(addressDTO, employeeId);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return redirectView;
+    }
+
     // Orders endpoints for superuser
 
     @GetMapping(value = "/order-list")
     public ModelAndView orderListView(@RequestParam(value = "payment", defaultValue = "") String paymentStatus,
-            @RequestParam(value = "status", defaultValue = "completed") String orderStatus) {
+            @RequestParam(value = "status", defaultValue = "completed") final String orderStatus) {
 
         System.out.println(paymentStatus.isBlank());
 
@@ -255,8 +306,15 @@ public final class SuperuserController {
         // detail
         if (!paymentStatus.isBlank()) {
             try {
-                modelAndView.addObject("order_details",
-                        orderService.getOrderByPaymentStatus(Boolean.parseBoolean(paymentStatus)));
+
+                final boolean isPaid = Boolean.parseBoolean(paymentStatus);
+
+                if (isPaid)
+                    modelAndView.addObject("title", "Paid Orders");
+                else
+                    modelAndView.addObject("title", "UnPaid Orders");
+
+                modelAndView.addObject("order_details", orderService.getOrderByPaymentStatus(isPaid));
             } catch (Exception e) {
                 logger.error(e.getMessage());
                 modelAndView.addObject("order_details", null);
@@ -265,9 +323,11 @@ public final class SuperuserController {
             return modelAndView;
         }
 
+        modelAndView.addObject("title", orderStatus.toString());
         // If payment status is not specified then send order details based on order
         // status
         try {
+
             modelAndView.addObject("order_details", orderService.getAllOrderWithStatus(orderStatus));
         } catch (Exception e) {
             logger.error(e.getMessage());

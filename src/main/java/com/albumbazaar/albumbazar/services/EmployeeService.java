@@ -3,6 +3,9 @@ package com.albumbazaar.albumbazar.services;
 import java.util.List;
 import java.util.Set;
 
+import javax.validation.Valid;
+
+import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.EmployeeDTO;
 import com.albumbazaar.albumbazar.form.LocationForm;
 import com.albumbazaar.albumbazar.form.employee.BasicEmployeeDetailForm;
@@ -35,5 +38,7 @@ public interface EmployeeService {
      * @return List of AvailableRoles enum class
      */
     Set<AvailableRoles> getAllAvailableEmployeeRole();
+
+    void updateAddressInfo(AddressDTO addressDTO, Long employeeId);
 
 }

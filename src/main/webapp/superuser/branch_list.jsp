@@ -89,7 +89,7 @@
                     <div class="row">
                         <div class="panel panel-primary filterable table-responsive">
                             <div class="panel-heading">
-                                <h3 class="panel-title">Users</h3>
+                                <h3 class="panel-title">Branch Detail</h3>
                                 <div class="pull-right" style="position: relative;
 top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span>
                                         Filter</button></div>
@@ -109,7 +109,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                         </th>
                                         <th><input type="text" class="form-control" placeholder="Order" disabled></th>
                                         <th colspan="2" style="text-align: center;"><a class="btn btn-success"
-                                                href="add-branch.html">Add
+                                                href="/superuser/add-branch">Add
                                                 Branch</a></th>
                                     </tr>
                                 </thead>
@@ -134,8 +134,11 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                                 data-target="#adminDetails" onclick="adminLink(2)">adminId</a>
                                         </td>
                                         <td id="contact${branch.id}">${branch.contactNo}</td>
-                                        <td id="address"><a href="" data-toggle="modal" data-target="#branchAddress"
-                                                id="link_address" onclick="addrLink(1)">Address Id</a></td>
+                                        <td id="address">
+                                            <a href="" data-toggle="modal" data-target="#addressModal" id="link_address"
+                                                onclick="fetchAddressFromServer('${branch.id}', '${branch.getAddress().getId()}')">Address
+                                                Id</a>
+                                        </td>
                                         <td id="date">20/12/2004</td>
                                         <td> <a href="api/order?branchId=${branch.id}">click</a> </td>
 
@@ -160,79 +163,95 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
             </section>
 
+            <!-- Address Modal -->
+            <div class="modal" id="addressModal" tabindex="-1" role="dialog">
+                <form action="/superuser/branch/address/change" method="POST">
 
 
-            <div class="modal" id="branchAddress">
-                <div class="modal-dialog">
-                    <div class="modal-content">
 
-                        <!-- Modal Header -->
-                        <div class="modal-header">
-                            <h4 class="modal-title">Branch Address</h4>
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        </div>
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
-                        <!-- Modal body -->
-                        <div class="modal-body">
-                            <div class="container table-responsive col-12 col-md-12 col-xl-12 col-lg-12">
-                                <table class="table table-borderless">
-                                    <tbody>
-                                        <tr>
-                                            <th>LandMark: </th>
-                                            <td id="landmark"></td>
-                                        </tr>
-                                        <tr>
-                                            <th>Street 1: </th>
-                                            <td id="street1"></td>
-                                        </tr>
-                                        <tr>
-                                            <th>Street 2: </th>
-                                            <td id="street2"></td>
-                                        </tr>
-                                        <tr>
-                                            <th>Post Office: </th>
-                                            <td id="postoffice"></td>
-                                        </tr>
-                                        <tr>
-                                            <th>City: </th>
-                                            <td id="city"></td>
-                                        </tr>
-                                        <tr>
-                                            <th>Pin Code: </th>
-                                            <td id="pincode"></td>
-                                        </tr>
-                                        <tr>
-                                            <th>District: </th>
-                                            <td id="district"></td>
-                                        </tr>
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <!-- Modal Header -->
 
-                                        <tr>
-                                            <th>State</th>
-                                            <td id="state"></td>
-                                        </tr>
-                                        <tr>
-                                            <td> <a href="#" class="btn btn-success save-icon" style="display: none;"
-                                                    onclick="u_address('')">Save</a>
-                                                <button class="btn btn-warning u-icon">Update</button>
-                                                <button type="button" class="btn btn-danger"
-                                                    data-dismiss="modal">Close</button>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <div class="modal-header">
+                                <h5 class="modal-title">Address</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
                             </div>
-                        </div>
+                            <!-- End of Modal Header -->
+                            <div class="modal-body">
+                                <input type="text" name="branchId" hidden>
+                                <input type="text" value="" name="id" hidden>
+                                <div class="form-group">
+                                    <label for="exampleInputName">Name</label>
+                                    <input name="name" type="name" class="form-control" id="exampleInputName" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputMobile">Mobile</label>
+                                    <input name="contactNo" type="text" class="form-control" id="exampleInputMobile"
+                                        value="">
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <label for="exampleInputLandmark">Landmark</label>
+                                    <input name="landmark" type="text" class="form-control" id="exampleInputLandmark"
+                                        value="" placeholder="Landmark">
+                                </div>
 
-                        <!-- Modal footer -->
-                        <div class="modal-footer">
-                            <input type="hidden" name="" id="hidden_address_id" value="1">
-                        </div>
+                                <div class="form-group">
+                                    <label for="exampleInputAddress1">Address</label>
+                                    <input name="line1" type="text" class="form-control" id="exampleInputAddress1"
+                                        value="" placeholder="Address line1">
+                                </div>
 
+                                <div class="form-group">
+                                    <label for="exampleInputAddress2">Address</label>
+                                    <input name="line2" type="text" class="form-control" id="exampleInputAddress2"
+                                        value="" placeholder="Address line2">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputCity">City</label>
+                                    <input name="city" type="text" class="form-control" id="exampleInputCity" value=""
+                                        placeholder="City">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputDistrict">District</label>
+                                    <input name="district" type="text" class="form-control" id="exampleInputDistrict"
+                                        value="" placeholder="District">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputState">State</label>
+                                    <input name="state" type="text" class="form-control mx-200" value=""
+                                        placeholder="State">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputPIN">Pin-Code</label>
+                                    <input name="pincode" type="text" class="form-control mx-200" value=""
+                                        placeholder="PIN">
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Save
+                                    changes</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
 
+            <!-- End of address modal -->
 
+            <!-- Admin Detail Modal -->
             <div class="modal" id="adminDetails">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -283,10 +302,57 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                     </div>
                 </div>
             </div>
+            <!-- Admin Detail Modal END -->
 
 
 
 
+            <script>
+
+
+
+
+                function fetchAddressFromServer(branchId, id) {
+                    const modal = document.querySelector("#addressModal");
+                    modal.querySelectorAll('input').forEach(item => {
+                        if (item.type === "hidden") return;
+                        if (item.hidden === true) return;
+                        item.value = "";
+                    });
+
+                    modal.querySelector('input[name="branchId"]').value = branchId;
+
+                    const xhr = new XMLHttpRequest();
+                    const url = "http://localhost:8080/api/secured/address/" + id;
+                    xhr.open('GET', url, true);
+
+                    xhr.onreadystatechange = function () {
+                        if (this.readyState === 4 && this.status === 200) {
+                            console.log(this.response);
+                            if (this.responseText.length <= 0) {
+                                alert("No address found");
+                                return false;
+                            }
+                            const address = JSON.parse(this.response);
+
+
+                            modal.querySelector('input[name="name"]').value = address["name"];
+                            modal.querySelector('input[name="contactNo"]').value = address["contactNo"];
+                            modal.querySelector('input[name="landmark"]').value = address["landmark"];
+                            modal.querySelector('input[name="line1"]').value = address["line1"];
+                            modal.querySelector('input[name="line2"]').value = address["line2"];
+                            modal.querySelector('input[name="city"]').value = address["city"];
+                            modal.querySelector('input[name="pincode"]').value = address["pincode"];
+                            modal.querySelector('input[name="district"]').value = address["district"];
+                            modal.querySelector('input[name="state"]').value = address["state"];
+                        } else if (this.readyState === 4) {
+                            alert("Address Not found");
+                        }
+                    }
+
+                    xhr.send(null);
+                }
+            </script>
             <script type="text/javascript" src="js/data-table.js"></script>
 
             <script type="text/javascript">
@@ -384,52 +450,35 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
                 //view Branch Address
 
-                function addrLink(id) {
-                    $('#branchAddress #hidden_address_id').val(id);
 
-                    console.log("Address");
-                    // $.Post("url", { id: id }, function (data, status) {
+                // //update branch address
+                // function u_address(id) {
+                //     var id = $('#branchAddress #hidden_address_id').val();
 
-                    //     var addr = JSON.parse(data);
-                    //     $('#landmark').text("kundan").css("text-tranform", "capitalize");
-                    //     $('#street1').text("upper Kulti").css("text-tranform", "capitalize");
-                    //     $('#street2').text().css("text-tranform", "capitalize");
-                    //     $('#postoffice').text().css("text-tranform", "capitalize");
-                    //     $('#city').text().css("text-tranform", "capitalize");
-                    //     $('#pincode').text().css("text-tranform", "capitalize");
-                    //     $('#district').text().css("text-tranform", "capitalize");
-                    //     $('#state').text().css("text-tranform", "capitalize");
+                //     var lendmark = $('#branchAddress #landmark').text("kundan");
+                //     var street1 = $('#branchAddress #street1').text("upper Kulti");
+                //     var street2 = $('#branchAddress #street2').text();
+                //     var postoffice = $('#branchAddress #postoffice').text();
+                //     var city = $('#branchAddress #city').text();
+                //     var pincode = $('#branchAddress #pincode').text();
+                //     var district = $('#branchAddress #district').text();
+                //     var state = $('#branchAddress #state').text();
 
-                    // })
-                }
+                //     alert(id);
+                // }
 
-                //update branch address
-                function u_address(id) {
-                    var id = $('#branchAddress #hidden_address_id').val();
-
-                    var lendmark = $('#branchAddress #landmark').text("kundan");
-                    var street1 = $('#branchAddress #street1').text("upper Kulti");
-                    var street2 = $('#branchAddress #street2').text();
-                    var postoffice = $('#branchAddress #postoffice').text();
-                    var city = $('#branchAddress #city').text();
-                    var pincode = $('#branchAddress #pincode').text();
-                    var district = $('#branchAddress #district').text();
-                    var state = $('#branchAddress #state').text();
-
-                    alert(id);
-                }
                 //show admin details
                 function adminLink(id) {
                     $('#adminDetails #hidden_admin_id').val(id);
                     console.log("Admin", id);
-                    url = "/api/superuser/admin-detail/" + id;
+                    url = "/api/superuser/admin-detail/" + id; yg
                     $.get(url, function (data) {
 
                         console.log("Here", data);
                     }).fail(function (data) {
                         console.log(data.responseText);
                     });
-                    // var url = "";
+                    // var url = "";gggggg
                     // $.Post("url", { id: id }, function (data, status) {
 
                     //     $('#adminDetails #Name').text("kundan").css("text-tranform", "capitalize");

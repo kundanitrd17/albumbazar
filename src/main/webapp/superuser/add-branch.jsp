@@ -63,10 +63,10 @@
               </div>
               <div class="form-group">
                 <label>Branch Code <span>*</span></label>
-                <input type="text" name="code" placeholder="Enter Branch Code " class="form-control required" />
+                <input type="text" name="branchCode" placeholder="Enter Branch Code " class="form-control required" />
                 <div class="form-group">
                   <label>Phone: <span>*</span></label>
-                  <input type="text" name="phone" placeholder="Phone" class="form-control required" />
+                  <input type="text" name="contactNo" placeholder="Phone" class="form-control required" />
                 </div>
               </div>
               <div class="form-group">
@@ -83,8 +83,7 @@
                 <div class="row form-inline">
                   <div class="form-group col-md-5 col-xs-5">
                     <label>Inogration Date </label>
-                    <input type="date" name="inaugrationDate" placeholder="Branch Inaugration Date "
-                      class="form-control" />
+                    <input type="date" name="date" placeholder="Branch Inaugration Date " class="form-control" />
                   </div>
                 </div>
               </div>
@@ -103,8 +102,12 @@
                 <input type="text" name="landmark" placeholder="Landmark" class="form-control required" />
               </div>
               <div class="form-group">
-                <label>Street1: <span>*</span></label>
-                <input type="text" name="street" placeholder="Street" class="form-control required" />
+                <label>Line1: <span>*</span></label>
+                <input type="text" name="line1" placeholder="Street" class="form-control required" />
+              </div>
+              <div class="form-group">
+                <label>Line2: <span>*</span></label>
+                <input type="text" name="line2" placeholder="Street" class="form-control required" />
               </div>
               <div class="form-group">
                 <label>Town: <span>*</span></label>
@@ -118,7 +121,7 @@
 
               <div class="form-group">
                 <label>Pin Code: <span>*</span></label>
-                <input type="text" name="pin" placeholder="Pin Code" class="form-control required" max=6; min=6; />
+                <input type="text" name="pincode" placeholder="Pin Code" class="form-control required" max=6; min=6; />
               </div>
 
 

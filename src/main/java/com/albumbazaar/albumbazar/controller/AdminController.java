@@ -100,7 +100,7 @@ public final class AdminController {
 
     @GetMapping(value = "/order-list")
     public ModelAndView adminOrderListView(@RequestParam(value = "payment", defaultValue = "") String paymentStatus,
-            @RequestParam(value = "status", defaultValue = OrderDetailStatus.Code.COMPLETED) final OrderDetailStatus orderStatus) {
+            @RequestParam(value = "status", defaultValue = "completed") final String orderStatus) {
 
         System.out.println(paymentStatus.isBlank());
 
@@ -128,7 +128,7 @@ public final class AdminController {
             // status
             try {
                 modelAndView.addObject("title", orderStatus + " Orders");
-                modelAndView.addObject("order_details", orderService.getOrdersWithStatus(orderStatus));
+                modelAndView.addObject("order_details", orderService.getAllOrderWithStatus(orderStatus));
             } catch (Exception e) {
                 logger.error(e.getMessage());
                 modelAndView.addObject("order_details", null);

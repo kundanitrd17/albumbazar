@@ -91,7 +91,6 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                     <th><input type="text" class="form-control" placeholder="Phone" disabled></th>
                     <th><input type="text" class="form-control" placeholder="Address" disabled></th>
                     <th><input type="text" class="form-control" placeholder="Salary" disabled></th>
-                    <th><input type="text" class="form-control" placeholder="Attendance" disabled></th>
                     <th><input type="text" class="form-control" placeholder="Join Date" disabled></th>
                     <th><input type="text" class="form-control" placeholder="Status" disabled></th>
                     <th colspan="2" style="text-align: center;"><a class="btn btn-success" href="add-employee">Add
@@ -110,9 +109,11 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                       <td>${employee.name}</td>
                       <td>Account_Id</td>
                       <td>${employee.personal_contact}</td>
-                      <td><a href="#">Address LINK</a></td>
+                      <td><a href="" data-toggle="modal" data-target="#addressModal" id="link_address"
+                          onclick="fetchAddressFromServer('${employee.id}', '${employee.getAddress().getId()}')">Address
+                          Id</a>
+                      </td>
                       <td>Salary ${employee.active}</td>
-                      <td><a href="#">Attendance LINK</a></td>
                       <td>${employee.joining_date}</td>
 
 
@@ -142,10 +143,6 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                       </c:if>
                       </td>
 
-
-
-
-
                       <!-- <td><a class="btn btn-danger d-icon">Delete</button></a></td> -->
                     </tr>
 
@@ -161,8 +158,135 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
       </section>
 
 
+      <!-- Address Modal -->
+      <div class="modal" id="addressModal" tabindex="-1" role="dialog">
+        <form action="/superuser/employee/address/update" method="POST">
+
+          <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <!-- Modal Header -->
+
+              <div class="modal-header">
+                <h5 class="modal-title">Address</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <!-- End of Modal Header -->
+              <div class="modal-body">
+                <input name="employeeId" value="" hidden>
+                <input type="text" value="" name="id" hidden>
+                <div class="form-group">
+                  <label for="exampleInputName">Name</label>
+                  <input name="name" type="name" class="form-control" id="exampleInputName" value="">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputMobile">Mobile</label>
+                  <input name="contactNo" type="text" class="form-control" id="exampleInputMobile" value="">
+                </div>
+                <hr>
+                <div class="form-group">
+                  <label for="exampleInputLandmark">Landmark</label>
+                  <input name="landmark" type="text" class="form-control" id="exampleInputLandmark" value=""
+                    placeholder="Landmark">
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleInputAddress1">Address</label>
+                  <input name="line1" type="text" class="form-control" id="exampleInputAddress1" value=""
+                    placeholder="Address line1">
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleInputAddress2">Address</label>
+                  <input name="line2" type="text" class="form-control" id="exampleInputAddress2" value=""
+                    placeholder="Address line2">
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleInputCity">City</label>
+                  <input name="city" type="text" class="form-control" id="exampleInputCity" value="" placeholder="City">
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleInputDistrict">District</label>
+                  <input name="district" type="text" class="form-control" id="exampleInputDistrict" value=""
+                    placeholder="District">
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleInputState">State</label>
+                  <input name="state" type="text" class="form-control mx-200" value="" placeholder="State">
+                </div>
+
+                <div class="form-group">
+                  <label for="exampleInputPIN">Pin-Code</label>
+                  <input name="pincode" type="text" class="form-control mx-200" value="" placeholder="PIN">
+                </div>
+
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Save
+                  changes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              </div>
+
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- End of address modal -->
 
 
+
+
+      <script>
+
+
+        function fetchAddressFromServer(employeeId, id) {
+          const modal = document.querySelector("#addressModal");
+          modal.querySelectorAll('input').forEach(item => {
+            if (item.type === "hidden") return;
+            if (item.hidden === true) return;
+            item.value = "";
+          });
+
+          modal.querySelector('input[name="employeeId"]').value = employeeId;
+
+          const xhr = new XMLHttpRequest();
+          const url = "http://localhost:8080/api/secured/address/" + id;
+          xhr.open('GET', url, true);
+
+          xhr.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+              console.log(this.response);
+              if (this.responseText.length <= 0) {
+                alert("No address found");
+                return false;
+              }
+              const address = JSON.parse(this.response);
+
+
+              modal.querySelector('input[name="name"]').value = address["name"];
+              modal.querySelector('input[name="contactNo"]').value = address["contactNo"];
+              modal.querySelector('input[name="landmark"]').value = address["landmark"];
+              modal.querySelector('input[name="line1"]').value = address["line1"];
+              modal.querySelector('input[name="line2"]').value = address["line2"];
+              modal.querySelector('input[name="city"]').value = address["city"];
+              modal.querySelector('input[name="pincode"]').value = address["pincode"];
+              modal.querySelector('input[name="district"]').value = address["district"];
+              modal.querySelector('input[name="state"]').value = address["state"];
+            } else if (this.readyState === 4) {
+              alert("Address Not found");
+            }
+          }
+
+          xhr.send(null);
+        }
+      </script>
 
       <script type="text/javascript">
 

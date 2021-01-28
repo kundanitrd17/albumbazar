@@ -1,9 +1,8 @@
 package com.albumbazaar.albumbazar.dto;
 
-import java.util.Date;
+import javax.validation.constraints.Email;
 
 import lombok.Data;
-
 
 @Data
 public class BranchDTO {
@@ -11,8 +10,12 @@ public class BranchDTO {
     private Long id;
     private String name;
     private String contactNo;
-    private Date date;
+    private String date;
     private boolean active;
 
+    private String branchCode;
+
+    @Email
+    private String email;
 
 }

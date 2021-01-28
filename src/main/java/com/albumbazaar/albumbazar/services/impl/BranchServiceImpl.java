@@ -1,18 +1,22 @@
 package com.albumbazaar.albumbazar.services.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import com.albumbazaar.albumbazar.Mapper.AddressMapper;
+import com.albumbazaar.albumbazar.dao.AddressRepository;
 import com.albumbazaar.albumbazar.dao.BranchRepository;
 import com.albumbazaar.albumbazar.dao.EmployeeRepository;
+import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.BranchDTO;
 import com.albumbazaar.albumbazar.form.BasicBranchInfoForm;
-import com.albumbazaar.albumbazar.form.LocationForm;
+import com.albumbazaar.albumbazar.model.AddressEntity;
 import com.albumbazaar.albumbazar.model.Branch;
-import com.albumbazaar.albumbazar.model.Employee;
 import com.albumbazaar.albumbazar.services.BranchService;
 
 import org.slf4j.Logger;
@@ -31,29 +35,40 @@ public class BranchServiceImpl implements BranchService {
     final BranchRepository branchRepository;
     final EmployeeRepository employeeRepository;
 
-    @Autowired
-    public BranchServiceImpl(final BranchRepository branchRepository, final EmployeeRepository employeeRepository) {
+    private final AddressRepository addressRepository;
+    private final AddressMapper addressMapper;
 
+    @Autowired
+    public BranchServiceImpl(final AddressRepository addressRepository, final AddressMapper addressMapper,
+            final BranchRepository branchRepository, final EmployeeRepository employeeRepository) {
+
+        this.addressMapper = addressMapper;
+        this.addressRepository = addressRepository;
         this.branchRepository = branchRepository;
         this.employeeRepository = employeeRepository;
     }
 
     @Override
-    public boolean addBranch(final BasicBranchInfoForm branchInfo, final LocationForm locationDetails) {
+    @Transactional
+    public boolean addBranch(final BranchDTO branchDTO, final AddressDTO locationDetails) {
         try {
 
-            // Setting the admin for this branch
-            Employee admin;
-            try {
-                admin = employeeRepository.findByEmail(branchInfo.getAdmin());
-            } catch (NoSuchElementException e) {
-                admin = null;
-            }
-
             // Working on the branch creation
-            final Branch branch = new Branch(branchInfo); // creating the branch model
-            branch.setAdmin(admin); // mapping to the admin employee
-            // branch.setAddress(address1); // mapping the address column to the address1
+            final Branch branch = new Branch();
+            branch.setActive(true);
+            branch.setBranchCode(branchDTO.getBranchCode());
+            branch.setContactNo(branchDTO.getContactNo());
+            branch.setEmail(branchDTO.getEmail());
+            branch.setName(branchDTO.getName());
+
+            final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            final Date inaugrationDate = dateFormat.parse(branchDTO.getDate());
+            branch.setDate(inaugrationDate);
+
+            final AddressEntity addressEntity = addressMapper.addressDTOToAddressEntity(locationDetails);
+
+            branch.setAddress(addressRepository.save(addressEntity));
+
             branchRepository.save(branch); // saving the branch
 
         } catch (Exception e) {
@@ -139,6 +154,22 @@ public class BranchServiceImpl implements BranchService {
         });
 
         return listOfBranchDTO;
+
+    }
+
+    @Override
+    @Transactional
+    public void updateAddressInfo(final AddressDTO addressDTO, final Long branchId) {
+
+        final Branch branch = this.getbranch(branchId);
+
+        if (branch.getAddress() != null)
+            addressRepository.delete(branch.getAddress());
+
+        final AddressEntity address = addressMapper.addressDTOToAddressEntity(addressDTO);
+
+        final AddressEntity newAddress = addressRepository.save(address);
+        branch.setAddress(newAddress);
 
     }
 
