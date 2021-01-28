@@ -32,7 +32,9 @@
                             <div class="card text-center">
                                 <h5 class="card-header">Set Discount For All</h5>
                                 <!-- <div > -->
+
                                 <form class="card-body" action="/superuser/reward/discount/global" method="POST">
+                                    <label> Current Discount: <Strike>${website_info.DISCOUNT_FOR_ALL}</Strike> </label>
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
@@ -55,8 +57,11 @@
                                         <select name="customerId" class="custom-select" id="inputGroupSelect01">
                                             <option selected>Choose...</option>
                                             <c:forEach items="${customers}" var="customer">
-                                                <option value="${customer.id}">
-                                                    ${customer.id} ${customer.name}
+                                                <option value="${customer.email}">
+                                                    ${customer.email} -
+                                                    <span>
+                                                        ${customer.discount}
+                                                    </span>
                                                 </option>
                                             </c:forEach>
 
@@ -83,6 +88,8 @@
                             <div class="card text-center mx-3" style="max-width: 50%;">
                                 <h5 class="card-header">Set Referral award</h5>
                                 <form class="card-body" action="/superuser/reward/referral" method="POST">
+                                    <label> Current Referral Amount: <Strike>${website_info.REFERALL_AMOUNT}</Strike>
+                                    </label>
                                     <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">

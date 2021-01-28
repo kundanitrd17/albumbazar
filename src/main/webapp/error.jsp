@@ -5,11 +5,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Error</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 
 <body>
-    ${error}
-    <button onclick="history.back()">Go back</button>
+
+    <h1 style="text-align: center;">${error}</h1>
+    <!-- <img src="/img/404-error.webp" alt="" style="height: 100vh; width: 100vw;"> -->
+
+    <button class="btn btn-primary" onclick="history.back()" style="position: absolute; top: 50%; left: 50%;">Go
+        back</button>
 </body>
 
 </html>

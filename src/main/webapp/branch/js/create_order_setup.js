@@ -3,7 +3,7 @@
 function checkGoogleAuth() {
 
     const xhr = new XMLHttpRequest();
-    const url = "http://localhost:8080/api/admin/is-google-auth-allowed";
+    const url = "http://localhost:8080/api/secured/branch/is-google-auth-allowed";
 
     xhr.open('GET', url, true);
 
@@ -12,7 +12,7 @@ function checkGoogleAuth() {
             console.log("fine");
             console.log(this);
             // $('.fancy-cards .fancy-card a .associationSelection').remove();
-        } else if (this.readyState === 4 && this.status === 404) {
+        } else if (this.readyState === 4 && this.status === 403) {
             console.log("Not fine");
             var selectBtn = document.querySelectorAll('.associationSelection');
             selectBtn.forEach(ele => {
@@ -31,12 +31,6 @@ function checkGoogleAuth() {
                 parent.append(signinBtn);
                 console.log(parent);
             })
-        } else if (this.readyState === 4 && this.status === 403) {
-            console.log("Not auth bro");
-            var selectBtn = document.querySelectorAll('.associationSelection');
-            selectBtn.forEach(ele => {
-                ele.remove();
-            });
         }
     }
 

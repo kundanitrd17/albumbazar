@@ -73,11 +73,11 @@
                 <label>Branch Email <span>*</span></label>
                 <input type="text" name="email" placeholder="Branch E-mail " class="form-control" />
               </div>
-
+              <!-- 
               <div class="form-group">
                 <label>Branch Admin <span></span></label>
                 <input type="text" name="admin" placeholder="Admin Id " class="form-control" />
-              </div>
+              </div> -->
 
               <div class="container-fluid">
                 <div class="row form-inline">

@@ -246,15 +246,39 @@
                                     </div>
                                     <hr>
                                     <h4>Cover Page</h4>
-                                    <div class="row">
+
+                                    <div class="form-group row">
+                                        <div class="col-lg-4 col-xl-4 col-md-4 col-sm-12 col-xs-12 col-12">
+                                            <label>cover</label>
+                                            <select name="coverId" id="coverPageQuality" class="form-control">
+                                                <option value="gold">gold</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-2 col-xl-2 col-md-4 col-sm-4 col-xs-4 col-4">
+                                            <label>price</label>
+                                            <input class="form-control" type="text" id="coverPrice" name="coverPrice"
+                                                value="" disabled>
+                                        </div>
+                                        <div class="col-lg-2 col-xl-2 col-md-4 col-sm-4 col-xs-4 col-4">
+                                            <label>Tax</label>
+                                            <input class="form-control" type="text" id="coverGST" name="coverGST"
+                                                value="" disabled>
+                                        </div>
+                                        <div class="col-lg-2 col-xl-2 col-md-4 col-sm-4 col-xs-4 col-4">
+                                            <label>Total</label>
+                                            <input class="form-control" type="text" id="coverTotal" name="coverTotal"
+                                                value="" disabled>
+                                        </div>
+                                    </div>
+
+                                    <!-- <div class="row">
                                         <select name="coverId" id="coverPageQuality"
                                             class="form-control col-md-4 col-xl-4 col-lg-4">
-                                            <!-- <option value="gold">gold</option> -->
                                         </select>
 
                                         <input class="form-control col-md-4 col-xl-4 col-lg-4" type="text"
                                             id="coverPrice" name="coverPrice" value="" disabled>
-                                    </div>
+                                    </div> -->
 
                                     <hr>
                                     <h4>Sheet Detail</h4>
@@ -270,6 +294,10 @@
                                                 </th>
                                                 <th>
                                                     <h6>Price</h6>
+                                                </th>
+
+                                                <th>
+                                                    <h6>Tax</h6>
                                                 </th>
 
                                             </tr>
@@ -296,6 +324,10 @@
 
                         <!-- Modal footer -->
                         <div class="modal-footer">
+                            <span>Total Without Gst :</span><span id="orderTotalWithoutGST"></span>
+                            <span>Total Gst :</span><span id="orderTotalTax"></span>
+                            <span>Total With Gst :</span><span id="orderTotalWithGST"></span>
+
                             <button type="submit" class="btn btn-success">submit</button>
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
 

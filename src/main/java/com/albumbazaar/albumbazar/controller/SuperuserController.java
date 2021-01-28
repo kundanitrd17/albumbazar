@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 
 import javax.validation.Valid;
 
+import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.EmployeeDTO;
 import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.form.BasicBranchInfoForm;
@@ -134,16 +135,16 @@ public final class SuperuserController {
     }
 
     @PostMapping(value = "add-branch")
-    @ResponseBody
-    public String addBranch(@ModelAttribute BasicBranchInfoForm branchDetails,
-            @ModelAttribute LocationForm locationForm) {
+    public RedirectView addBranch(@ModelAttribute BasicBranchInfoForm branchDetails,
+            @ModelAttribute AddressDTO locationForm) {
 
         System.out.println(branchDetails);
         System.out.println(locationForm);
+        final RedirectView redirectView = new RedirectView("/superuser/add-branch");
 
-        branchService.addBranch(branchDetails, locationForm); // call the add branch service
+        branchService.addBranch(branchDetails, null); // call the add branch service
 
-        return "Added branch";
+        return redirectView;
     }
 
     @GetMapping(value = "list-branch")
@@ -284,9 +285,12 @@ public final class SuperuserController {
         try {
             final List<Customer> customers = customerService.getAllCustomer();
             modelAndView.addObject("customers", customers);
+
+            modelAndView.addObject("website_info", superuserDetailsService.getWebsiteInfoEntity());
+
         } catch (Exception e) {
             logger.error(e.getMessage());
-            modelAndView.addObject("error", "No customers Found");
+            modelAndView.addObject("error", "Error Reload Page");
         }
 
         return modelAndView;
@@ -294,10 +298,14 @@ public final class SuperuserController {
 
     // Set Referral amount
     @PostMapping(value = "/reward/referral")
-    public RedirectView setReferralReward(@RequestParam("amount") String amount) {
+    public RedirectView setReferralReward(@RequestParam("amount") final Double amount) {
         final RedirectView redirectView = new RedirectView("/superuser/reward");
 
-        System.out.println(amount);
+        try {
+            superuserDetailsService.updateReferallAmount(amount);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
 
         return redirectView;
 
@@ -305,13 +313,12 @@ public final class SuperuserController {
 
     // Set special discount for a customer
     @PostMapping(value = "/reward/discount/customer")
-    public RedirectView setDiscountForCustomer(@RequestParam("customerId") final String customerId,
-            @RequestParam("amount") final String amount, final RedirectAttributes redirectAttributes) {
+    public RedirectView setDiscountForCustomer(@RequestParam("customerId") final String customerIdentifier,
+            @RequestParam("amount") final Double amount, final RedirectAttributes redirectAttributes) {
         final RedirectView redirectView = new RedirectView("/superuser/reward");
 
-        logger.info(customerId + " " + amount);
         try {
-            customerService.setRewardForCustomer(Long.parseLong(customerId), Double.parseDouble(amount));
+            customerService.setRewardForCustomer(customerIdentifier, amount);
         } catch (NumberFormatException e) {
             redirectAttributes.addAttribute("error", "Invalid Inputs");
         } catch (Exception e) {
@@ -324,10 +331,14 @@ public final class SuperuserController {
 
     // Set discount for all the customer
     @PostMapping(value = "/reward/discount/global")
-    public RedirectView setDiscountForAll(@RequestParam("amount") String amount) {
+    public RedirectView setDiscountForAll(@RequestParam("amount") final Double amount) {
         final RedirectView redirectView = new RedirectView("/superuser/reward");
 
-        System.out.println(amount);
+        try {
+            superuserDetailsService.updateGlobalDiscount(amount);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
 
         return redirectView;
 

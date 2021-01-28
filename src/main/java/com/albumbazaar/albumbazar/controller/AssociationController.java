@@ -2,8 +2,6 @@
 package com.albumbazaar.albumbazar.controller;
 
 import com.albumbazaar.albumbazar.services.AssociationService;
-import com.albumbazaar.albumbazar.services.ProductService;
-import com.albumbazaar.albumbazar.services.storage.StorageService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,16 +26,10 @@ public final class AssociationController {
     private Logger logger = LoggerFactory.getLogger(AssociationController.class);
 
     private AssociationService associationService;
-    private ProductService productService;
-    private final StorageService imageStorageService;
 
     @Autowired
-    public AssociationController(@Qualifier("associationService") final AssociationService associationService,
-            @Qualifier("productService") final ProductService productService,
-            @Qualifier("imageStorageService") final StorageService imageStorageService) {
+    public AssociationController(@Qualifier("associationService") final AssociationService associationService) {
         this.associationService = associationService;
-        this.productService = productService;
-        this.imageStorageService = imageStorageService;
     }
 
     @PostMapping("/dp/change")

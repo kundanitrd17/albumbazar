@@ -319,8 +319,8 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 
     @Override
     @Transactional
-    public void setRewardForCustomer(Long customerId, Double discount) {
-        final Customer customer = customerRepository.findById(customerId).orElseThrow();
+    public void setRewardForCustomer(final String customerIdentifier, Double discount) {
+        final Customer customer = this.loadByEmail(customerIdentifier);
         customer.setDiscount(discount);
 
     }

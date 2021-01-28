@@ -7,7 +7,6 @@ import javax.validation.Valid;
 import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
-import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
 import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.CustomerCareEmployeeService;
@@ -101,7 +100,7 @@ public final class AdminController {
 
     @GetMapping(value = "/order-list")
     public ModelAndView adminOrderListView(@RequestParam(value = "payment", defaultValue = "") String paymentStatus,
-            @RequestParam(value = "status", defaultValue = "completed") String orderStatus) {
+            @RequestParam(value = "status", defaultValue = OrderDetailStatus.Code.COMPLETED) final OrderDetailStatus orderStatus) {
 
         System.out.println(paymentStatus.isBlank());
 
@@ -129,7 +128,7 @@ public final class AdminController {
             // status
             try {
                 modelAndView.addObject("title", orderStatus + " Orders");
-                modelAndView.addObject("order_details", orderService.getAllOrderWithStatus(orderStatus));
+                modelAndView.addObject("order_details", orderService.getOrdersWithStatus(orderStatus));
             } catch (Exception e) {
                 logger.error(e.getMessage());
                 modelAndView.addObject("order_details", null);

@@ -1,9 +1,11 @@
 package com.albumbazaar.albumbazar.services.impl;
 
 import com.albumbazaar.albumbazar.dao.SuperuserRepository;
-import com.albumbazaar.albumbazar.principals.SuperuserPrincipal;
+import com.albumbazaar.albumbazar.dao.WebsiteGeneralInfoRepository;
 import com.albumbazaar.albumbazar.form.api.ForgotPasswordFormAPI;
 import com.albumbazaar.albumbazar.model.Superuser;
+import com.albumbazaar.albumbazar.model.WebsiteGeneralInfoEntity;
+import com.albumbazaar.albumbazar.principals.SuperuserPrincipal;
 import com.albumbazaar.albumbazar.services.SuperuserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 
 @Service
@@ -23,10 +26,14 @@ public class SuperuserServiceImpl implements UserDetailsService, SuperuserServic
 
     private final SuperuserRepository superuserRepo;
 
+    private final WebsiteGeneralInfoRepository websiteGeneralInfoRepository;
+
     @Autowired(required = true)
-    public SuperuserServiceImpl(final SuperuserRepository superuserRepository) {
+    public SuperuserServiceImpl(final SuperuserRepository superuserRepository,
+            final WebsiteGeneralInfoRepository websiteGeneralInfoRepository) {
         this.superuserRepo = superuserRepository;
-        System.out.println("Superuser details service");
+        this.websiteGeneralInfoRepository = websiteGeneralInfoRepository;
+
     }
 
     @Override
@@ -68,6 +75,32 @@ public class SuperuserServiceImpl implements UserDetailsService, SuperuserServic
         } else {
             throw new RuntimeException("Unable to authenticate");
         }
+    }
+
+    @Override
+    @Transactional
+    public void updateGlobalDiscount(final double discount) {
+
+        final WebsiteGeneralInfoEntity websiteGeneralInfoEntity = websiteGeneralInfoRepository.findById(1l)
+                .orElseThrow();
+
+        websiteGeneralInfoEntity.setDISCOUNT_FOR_ALL(discount);
+
+    }
+
+    @Override
+    @Transactional
+    public void updateReferallAmount(final double referralAmount) {
+        final WebsiteGeneralInfoEntity websiteGeneralInfoEntity = websiteGeneralInfoRepository.findById(1l)
+                .orElseThrow();
+
+        websiteGeneralInfoEntity.setREFERALL_AMOUNT(referralAmount);
+
+    }
+
+    @Override
+    public WebsiteGeneralInfoEntity getWebsiteInfoEntity() {
+        return websiteGeneralInfoRepository.findById(1l).orElseThrow();
     }
 
 }

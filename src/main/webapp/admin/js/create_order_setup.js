@@ -1,4 +1,64 @@
 
+var totalOrderAmount = 0;
+var totalOrderTax = 0;
+
+function setOrderTotalAmount() {
+    let coverPrice = $("#myModal form #coverPrice").val();
+    let coverTax = $("#myModal form #coverGST").val();
+
+    let amount = parseFloat(coverPrice) + parseFloat(coverTax);
+    totalOrderTax = parseFloat(coverTax);
+
+    for (let index = 0; index < paperRow; index++) {
+        try {
+
+            let noOfSheetsEle = document.querySelector("#PaperRow" + index + " td input[name='numberOfSheet']");
+
+            let noOfSheets = 0;
+            if (noOfSheetsEle !== null)
+                noOfSheets = parseInt(noOfSheetsEle.value);
+
+            if (noOfSheets > 0) {
+                let paperPriceEle = document.querySelector("#PaperRow" + index + " td input[name='sheetPrice']");
+                let paperTaxEle = document.querySelector("#PaperRow" + index + " td input[name='sheetGST']");
+                let paperPrice = 0;
+                if (paperPriceEle !== null) {
+                    paperPrice = parseFloat(paperPriceEle.value);
+                    if (paperTaxEle != null) {
+                        paperPrice += parseFloat(paperTaxEle.value);
+                        totalOrderTax += (noOfSheets * parseFloat(paperTaxEle.value));
+
+                    }
+                }
+                let temp = parseFloat(paperPrice) * parseInt(noOfSheets);
+                if (temp !== null && temp > 0) {
+                    amount += temp;
+                }
+
+            }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    totalOrderAmount = amount;
+
+    $("#orderTotalWithoutGST").text((totalOrderAmount - totalOrderTax).toFixed(2));
+    $("#orderTotalTax").text(totalOrderTax.toFixed(2));
+    $("#orderTotalWithGST").text(totalOrderAmount.toFixed(2));
+}
+function getOrderTotalAmount() {
+    return totalOrderAmount;
+}
+
+
+// ENd of total state management
+
+
+
+
+
 // Check auth to google
 function checkGoogleAuth() {
 
@@ -153,7 +213,7 @@ function changeCoverAndPaperOptions(selectedProductSize) {
     availableCovers = [];
     allCovers.forEach(cover => {
         if (cover["coverSize"] === selectedProductSize) {
-            const data = { "id": cover["id"], "name": cover["coverName"], "price": cover["coverPrice"] };
+            const data = { "id": cover["id"], "name": cover["coverName"], "price": cover["coverPrice"], "gst": cover["gst"] };
             availableCovers.push(data);
         }
     });
@@ -161,17 +221,21 @@ function changeCoverAndPaperOptions(selectedProductSize) {
     availablePapers = [];
     allPapers.forEach(paper => {
         if (paper["paperSize"] === selectedProductSize) {
-            const data = { "id": paper["id"], "name": paper["paperQuality"], "price": paper["paperPrice"] };
+            const data = { "id": paper["id"], "name": paper["paperQuality"], "price": paper["paperPrice"], "gst": paper["gst"] };
             availablePapers.push(data);
         }
     });
 
     addCoverOptions();
 
-    while (paperRow-- > 0) {
-        document.getElementById('PaperRow' + paperRow).remove();
+    try {
+        $('#test-body').empty();
+    } catch (error) {
+
     }
+
     paperRow = 0;
+    count_of_paper_row = 0;
     appendPaperRow();
 }
 
@@ -185,6 +249,10 @@ function setCoverPriceInInput() {
         // console.log(parseInt(cover["id"]), parseInt(id));
         if (parseInt(cover["id"]) === parseInt(id)) {
             $("#myModal form #coverPrice").val(cover["price"]);
+            $("#myModal form #coverGST").val(cover["gst"]);
+            $("#myModal form #coverTotal").val(parseFloat(cover["price"]) + parseFloat(cover["gst"]));
+
+            setOrderTotalAmount();
         }
     })
 
@@ -214,15 +282,17 @@ function addCoverOptions() {
 // $('#myModal form .sheet-paper-type').on('change', setPaperPriceOnChange);
 
 function setPaperPriceOnChange(id) {
-    console.log(id);
+    // console.log(id);
     const paperId = $("#myModal form #sheetType" + id + " option:selected").val();
-    console.log(paperId);
+    // console.log(paperId);
 
     availablePapers.forEach(paper => {
         if (parseInt(paper["id"]) === parseInt(paperId)) {
-            console.log(paper);
-            const sheetPriceInput = document.querySelector("#PaperRow" + id + " td input[name='sheetPrice']");
-            sheetPriceInput.value = paper["price"];
+            $("#PaperRow" + id + " td input[name='sheetPrice']").val(paper["price"]);
+            $("#PaperRow" + id + " td input[name='sheetGST']").val(paper["gst"]);
+            $("#PaperRow" + id + " td input[name='sheetTotal']").val(parseFloat(paper["price"]) + parseFloat(paper["gst"]));
+
+            setOrderTotalAmount();
         }
     })
 
@@ -250,29 +320,49 @@ var paperRow = 0;
 $(document).on("click", "#add-row", appendPaperRow);
 
 function appendPaperRow() {
-    if (paperRow > 4) {
+    if (count_of_paper_row > 4) {
         return false;
     }
 
-    var new_row = '<tr id="PaperRow' + paperRow + '"><td> <select onchange="setPaperPriceOnChange(' + paperRow + ')" class="form-control" name="paperId" id="sheetType' + paperRow + '"  style="width: 160px;"><option value="">Paper Type</option></select></td><td><input name="numberOfSheet" value="" type="number" class="form-control input-md"  placeholder=""  style="width: 80px;" required /></td><td><input name="sheetPrice" type="number" class="form-control" placeholder=""  style="width: 80px;" disabled/></td><td><input id="add-row" class="btn btn-primary" type="button" value="+" /></td><td><input class="delete-row btn btn-danger" type="button" value="X" /></td></tr>';
+
+    var new_row = `
+    <tr id="PaperRow` + paperRow + `">
+    <td> 
+    <select onchange="setPaperPriceOnChange(` + paperRow + `)" class="form-control" name="paperId" id="sheetType` + paperRow + `"  style="width: 160px;">
+    <option value="">Paper Type</option>
+    </select>
+    </td>
+    <td>
+    <input onchange="setOrderTotalAmount();" name="numberOfSheet" value="" type="number" class="form-control input-md"  placeholder=""  style="width: 80px;" required />
+    </td>
+    <td><input name="sheetPrice" type="number" class="form-control" placeholder=""  style="width: 80px;" disabled/></td>
+    <td><input name="sheetGST" type="number" class="form-control" placeholder=""  style="width: 80px;" disabled/></td>
+    <td><input id="add-row" class="btn btn-primary" type="button" value="+" /></td>
+    <td><input class="delete-row btn btn-danger" type="button" value="X" /></td>
+    </tr>`;
 
     $('#test-body').append(new_row);
 
     ++paperRow;
+    count_of_paper_row++;
     addPaperOptions();
     return false;
 }
 
 // Remove criterion
+
+var count_of_paper_row = 0;
+// Remove criterion
 $(document).on("click", ".delete-row", function () {
     //  alert("deleting row#"+row);
-    if (paperRow > 1) {
+    if (count_of_paper_row > 1) {
         $(this).closest('tr').remove();
-        paperRow--;
+        // paperRow--;
+        count_of_paper_row--;
+        setOrderTotalAmount();
     }
     return false;
 });
-
 
 
 

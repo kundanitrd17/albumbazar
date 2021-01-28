@@ -129,7 +129,7 @@ public interface CustomerService {
      * @param customerId
      * @param discount
      */
-    void setRewardForCustomer(Long customerId, Double discount);
+    void setRewardForCustomer(String customerId, Double discount);
 
     Customer loadByEmail(final String email) throws UsernameNotFoundException;
 
