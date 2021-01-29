@@ -24,8 +24,6 @@ import com.albumbazaar.albumbazar.services.MailService;
 import com.albumbazaar.albumbazar.services.UtilityService;
 import com.albumbazaar.albumbazar.services.storage.StorageService;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -37,7 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Qualifier("utilityService")
 public class UtilityServiceImpl implements UtilityService {
 
-    private Logger logger = LoggerFactory.getLogger(UtilityServiceImpl.class);
+    // private Logger logger = LoggerFactory.getLogger(UtilityServiceImpl.class);
 
     private final ResetPasswordCodeRepository resetPasswordCodeRepository;
     private final CarasoulRepository carasoulRepository;

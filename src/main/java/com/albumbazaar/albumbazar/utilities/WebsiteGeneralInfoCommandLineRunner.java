@@ -29,7 +29,6 @@ public class WebsiteGeneralInfoCommandLineRunner implements CommandLineRunner {
         if (!isPresent) {
             final WebsiteGeneralInfoEntity websiteGeneralInfoEntity = new WebsiteGeneralInfoEntity();
             websiteGeneralInfoEntity.setId(1l);
-            System.out.println(websiteGeneralInfoEntity);
             websiteGeneralInfoRepository.save(websiteGeneralInfoEntity);
         }
 

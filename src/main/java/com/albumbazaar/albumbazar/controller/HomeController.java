@@ -134,7 +134,7 @@ public class HomeController {
         final ModelAndView modelAndView = new ModelAndView("association_product_menu");
 
         try {
-            AllProducts allProducts = productService.getAllProducts(associationId);
+            AllProducts allProducts = productService.getAllProducts(Long.parseLong(associationId));
             modelAndView.addObject("covers", allProducts.getCovers());
             modelAndView.addObject("papers", allProducts.getPapers());
 

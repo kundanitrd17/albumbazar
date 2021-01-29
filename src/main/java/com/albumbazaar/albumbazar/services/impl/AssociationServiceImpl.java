@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import javax.validation.ConstraintViolationException;
-
 import com.albumbazaar.albumbazar.dao.AssociationRepository;
 import com.albumbazaar.albumbazar.form.association.AssociationDetailForm;
 import com.albumbazaar.albumbazar.model.Association;
@@ -15,19 +13,20 @@ import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 import com.albumbazaar.albumbazar.principals.AssociationPrincipal;
 import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.OrderService;
-import com.albumbazaar.albumbazar.services.storage.ImageStorageService;
 import com.albumbazaar.albumbazar.services.storage.StorageService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.ApplicationContext;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -52,24 +51,19 @@ public class AssociationServiceImpl implements AssociationService, UserDetailsSe
 
     @Override
     @Transactional
-    public boolean addAssociation(final AssociationDetailForm associationDetail) {
-        try {
-            final Association association = new Association(associationDetail); // create new object
+    @CachePut(value = "association", key = "#result.getId()")
+    public Association addAssociation(final AssociationDetailForm associationDetail) {
 
-            /** validate and save */
-            associationRepository.save(association); // persist the data
-        } catch (ConstraintViolationException e) {
-            System.out.println("Exception: " + e.getMessage());
-            return false;
-        } catch (Exception e) {
-            System.out.println("Exception: " + e.getMessage());
-            return false;
-        }
+        final Association association = new Association(associationDetail); // create new object
 
-        return true;
+        /** validate and save */
+        return associationRepository.save(association); // persist the data
+
     }
 
     @Override
+    @Transactional(readOnly = true)
+    @Cacheable(value = "association")
     public List<Association> getAssociationWithStatus(final boolean status) {
 
         return associationRepository.findByActive(status);
@@ -77,6 +71,7 @@ public class AssociationServiceImpl implements AssociationService, UserDetailsSe
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "association")
     public List<Association> getAllAssociation() {
         return associationRepository.findAll();
 
@@ -84,6 +79,7 @@ public class AssociationServiceImpl implements AssociationService, UserDetailsSe
 
     @Override
     @Transactional(readOnly = true)
+    @Cacheable(value = "association", key = "#id")
     public Association getAssociation(final Long id) throws NoSuchElementException {
         final Association association = associationRepository.findById(id).get();
 
@@ -91,17 +87,20 @@ public class AssociationServiceImpl implements AssociationService, UserDetailsSe
     }
 
     @Override
+    @CacheEvict(value = "association", key = "#association.id")
     public void updateAssociation(final Association association) {
         associationRepository.save(association);
     }
 
     @Override
+    @CacheEvict(value = "association", key = "#associationId")
     public Association deleteAssociation(final Long associationId) {
         return updateStatusOfAssociation(associationId, false);
 
     }
 
     @Override
+    @CacheEvict(value = "association", key = "#associationId")
     public Association restoreAssociation(final Long associationId) {
         return updateStatusOfAssociation(associationId, true);
     }
@@ -121,6 +120,7 @@ public class AssociationServiceImpl implements AssociationService, UserDetailsSe
 
     @Override
     @Transactional
+    @CacheEvict(value = "association", key = "#associationId")
     public void changeProfilePhoto(final MultipartFile photoFile, final Long associationId) {
 
         final Association association = this.getAssociation(associationId);

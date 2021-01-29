@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -30,7 +29,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.format.datetime.DateFormatter;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -202,6 +200,19 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
 
         final AddressEntity savedAddressEntity = addressRepository.save(address);
         employee.setAddress(savedAddressEntity);
+
+    }
+
+    @Override
+    @Transactional
+    public void updateEmployeeInfo(final EmployeeDTO employeeDTO) {
+
+        final Employee employee = this.getEmployee(employeeDTO.getId());
+
+        employee.setName(employeeDTO.getName());
+        employee.setPersonal_contact(employeeDTO.getPersonal_contact());
+        employee.setSalary(employeeDTO.getSalary());
+        employee.setEmail(employeeDTO.getEmail());
 
     }
 

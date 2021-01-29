@@ -29,130 +29,106 @@
 
 
       <section id="contents">
-        <nav class="navbar navbar-default">
-          <div class="container-fluid">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <i class="fa fa-align-right"></i>
-              </button>
-              <a class="navbar-brand" href="#">my<span class="main-color">Dashboard</span></a>
-            </div>
-            <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
-              <ul class="nav navbar-nav">
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                    aria-expanded="false">My profile <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="#"><i class="fa fa-user-o fw"></i> My account</a></li>
-                    <li><a href="#"><i class="fa fa-envelope-o fw"></i> My inbox</a></li>
-                    <li><a href="#"><i class="fa fa-question-circle-o fw"></i> Help</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li>
-                      <form action="/superuser/logout-super" method="POST">
-                        <div style="left: 200px;">
-                          <i class="fa fa-sign-out"></i><button style="outline: 0mm;">Logout</button>
-                        </div>
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                      </form>
-                    </li>
-                  </ul>
-                </li>
-                <li><a href="#"><i class="fa fa-comments"></i><span>23</span></a></li>
-                <li><a href="#"><i class="fa fa-bell-o"></i><span>98</span></a></li>
-                <li><a href="#"><i data-show="show-side-navigation1" class="fa fa-bars show-side-btn"></i></a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
+
+        <%@include file="header.jsp" %>
 
 
 
 
-
-
-        <div class="container">
-          <div class="row">
-            <div class="panel panel-primary filterable table-responsive">
-              <div class="panel-heading">
-                <h3 class="panel-title">Users</h3>
-                <div class="pull-right" style="position: relative;
+          <div class="container">
+            <div class="row">
+              <div class="panel panel-primary filterable table-responsive">
+                <div class="panel-heading">
+                  <h3 class="panel-title">Employees</h3>
+                  <div class="pull-right" style="position: relative;
 top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span>
-                    Filter</button></div>
-              </div>
-              <table class="table " style="font-size: 12px;">
-                <thead>
-                  <tr class="filters">
-                    <th><input type="text" class="form-control" placeholder="Id" disabled></th>
-                    <th><input type="text" class="form-control" placeholder="Branch" disabled></th>
-                    <th><input type="text" class="form-control" placeholder="Name" disabled></th>
-                    <th><input type="text" class="form-control" placeholder="Account Detail" disabled></th>
-                    <th><input type="text" class="form-control" placeholder="Phone" disabled></th>
-                    <th><input type="text" class="form-control" placeholder="Address" disabled></th>
-                    <th><input type="text" class="form-control" placeholder="Salary" disabled></th>
-                    <th><input type="text" class="form-control" placeholder="Join Date" disabled></th>
-                    <th><input type="text" class="form-control" placeholder="Status" disabled></th>
-                    <th colspan="2" style="text-align: center;"><a class="btn btn-success" href="add-employee">Add
-                        Employee</a></th>
-                  </tr>
-                </thead>
-                <tbody>
+                      Filter</button></div>
+                </div>
+                <table class="table " style="font-size: 12px;">
+                  <thead>
+                    <tr class="filters">
+                      <th><input type="text" class="form-control" placeholder="Id" disabled></th>
+                      <th><input type="text" class="form-control" placeholder="Designation" disabled></th>
+                      <th><input type="text" class="form-control" placeholder="Branch" disabled></th>
+                      <th><input type="text" class="form-control" placeholder="Name" disabled></th>
+                      <th><input type="text" class="form-control" placeholder="Account Detail" disabled></th>
 
-                  <c:forEach items="${employees}" var="employee">
+                      <th><input type="text" class="form-control" placeholder="Phone" disabled></th>
+                      <th><input type="text" class="form-control" placeholder="Address" disabled></th>
+                      <th><input type="text" class="form-control" placeholder="Salary" disabled></th>
+                      <th><input type="text" class="form-control" placeholder="Join Date" disabled></th>
+                      <th><input type="text" class="form-control" placeholder="Status" disabled></th>
+                      <th colspan="2" style="text-align: center;"><a class="btn btn-success" href="add-employee">Add
+                          Employee</a></th>
+                    </tr>
+                  </thead>
+                  <tbody>
 
-                    <tr>
-                      <!-- It should be hidden and a UUID would be displaying here -->
-                      <td id="empId${employee.id}" class="empId" data-empId="${employee.id}">${employee.id}</td>
+                    <c:forEach items="${employees}" var="employee">
 
-                      <td>branch</td>
-                      <td>${employee.name}</td>
-                      <td>Account_Id</td>
-                      <td>${employee.personal_contact}</td>
-                      <td><a href="" data-toggle="modal" data-target="#addressModal" id="link_address"
-                          onclick="fetchAddressFromServer('${employee.id}', '${employee.getAddress().getId()}')">Address
-                          Id</a>
-                      </td>
-                      <td>Salary ${employee.active}</td>
-                      <td>${employee.joining_date}</td>
+                      <tr>
+                        <!-- It should be hidden and a UUID would be displaying here -->
+                        <td id="empId${employee.id}" class="empId employee-email" data-empId="${employee.id}">
+                          ${employee.email}</td>
+
+                        <td>
+                          ${employee.role.substring(5).toUpperCase()}
+                        </td>
+                        <td>
+
+                          <button onclick="fetchBranch('${employee.getBranch().getId()}')" type="button"
+                            class="btn btn-info" data-toggle="modal" data-target="#BranchModal">
+                            View Branch
+                          </button>
+                        </td>
+                        <td class="employee-name">${employee.name}</td>
+                        <td>Account_Id</td>
+
+                        <td class="employee-phone">${employee.personal_contact}</td>
+                        <td><a href="" data-toggle="modal" data-target="#addressModal" id="link_address"
+                            onclick="fetchAddressFromServer('${employee.id}', '${employee.getAddress().getId()}')">Address
+                            Id</a>
+                        </td>
+                        <td class="employee-salary">${employee.salary}</td>
+                        <td>${employee.joining_date}</td>
 
 
 
-                      <td>
-                        <!-- Active  -->
-                        <c:if test="${employee.active}">
-                          <a href="#" class="btn btn-success act">Active</a>
-                          <a href="#" class="btn btn-warning de-act" style="display: none;">Deactive</a>
+                        <td>
+                          <!-- Active  -->
+                          <c:if test="${employee.active}">
+                            <a href="#" class="btn btn-success act">Active</a>
+                            <a href="#" class="btn btn-warning de-act" style="display: none;">Deactive</a>
 
-                          <!-- edit button visible -->
-                      <td class="">
-                        <a href="#" class="btn btn-success s-icon " style="display: none;">Save</a>
-                        <button class="btn btn-warning e-icon">Edit</button>
-                      </td>
-                      </c:if>
-                      <!-- Deactive  -->
-                      <c:if test="${!employee.active}">
-                        <a href="#" class="btn btn-success act" style="display: none;">Active</a>
-                        <a href="#" class="btn btn-warning de-act">Deactive</a>
-
-                        <!-- edit button hidden -->
-                        <td class="" style="display: none;">
+                            <!-- edit button visible -->
+                        <td class="">
                           <a href="#" class="btn btn-success s-icon " style="display: none;">Save</a>
                           <button class="btn btn-warning e-icon">Edit</button>
                         </td>
-                      </c:if>
-                      </td>
+                        </c:if>
+                        <!-- Deactive  -->
+                        <c:if test="${!employee.active}">
+                          <a href="#" class="btn btn-success act" style="display: none;">Active</a>
+                          <a href="#" class="btn btn-warning de-act">Deactive</a>
 
-                      <!-- <td><a class="btn btn-danger d-icon">Delete</button></a></td> -->
-                    </tr>
+                          <!-- edit button hidden -->
+                          <td class="" style="display: none;">
+                            <a href="#" class="btn btn-success s-icon " style="display: none;">Save</a>
+                            <button class="btn btn-warning e-icon">Edit</button>
+                          </td>
+                        </c:if>
+                        </td>
 
-                  </c:forEach>
+                        <!-- <td><a class="btn btn-danger d-icon">Delete</button></a></td> -->
+                      </tr>
 
-                </tbody>
-              </table>
+                    </c:forEach>
+
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
-        </div>
 
 
       </section>
@@ -242,8 +218,69 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
 
 
+      <!-- Branch Modal -->
+
+      <div class="modal" id="BranchModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+              <h4 class="modal-title">Modal Heading</h4>
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+              <table class="table table-str">
+                <tbody>
+                  <tr>
+                    <th>Branch Name: </th>
+                    <td id="name"></td>
+                  </tr>
+                  <tr>
+                    <th>Branch Contact: </th>
+                    <td id="contact"></td>
+                  </tr>
+
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+              <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+
+      <!-- End of Branch Modal -->
+
 
       <script>
+
+        function fetchBranch(id) {
+          const modal = document.querySelector("#BranchModal");
+          modal.querySelectorAll('td').forEach(item => {
+
+            item.value = "";
+          });
+          const xhr = new XMLHttpRequest();
+          const url = "http://localhost:8080/api/secured/branch/" + id;
+          xhr.open("GET", url, true);
+          xhr.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+              const branch = JSON.parse(this.response);
+
+              modal.querySelector('#name').innerHTML = branch["name"];
+              modal.querySelector('#contact').innerHTML = branch["contactNo"];
+            }
+          }
+          xhr.send(null);
+        }
 
 
         function fetchAddressFromServer(employeeId, id) {
@@ -296,7 +333,11 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
           $(this).hide();
           $(this).siblings().show();
-          $(this).parent().prev().prevAll().attr("contenteditable", "true").focus();
+          $(this).parent().siblings(".employee-name").attr("contenteditable", "true").focus().css("background-color", "#e1e1ea");
+          $(this).parent().siblings(".employee-phone").attr("contenteditable", "true").focus().css("background-color", "#e1e1ea");
+          $(this).parent().siblings(".employee-salary").attr("contenteditable", "true").focus().css("background-color", "#e1e1ea");
+
+          $(this).parent().siblings(".employee-email").attr("contenteditable", "true").focus().css("background-color", "#e1e1ea");
 
         });
 
@@ -306,15 +347,42 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
           $(this).hide();
           $(this).siblings().show();
-          $(this).parent().prev().prevAll().attr("contenteditable", "false");
+          $(this).parent().siblings(".employee-name").attr("contenteditable", "false").focus().css("background-color", "white");
+          $(this).parent().siblings(".employee-phone").attr("contenteditable", "false").focus().css("background-color", "white");
+          $(this).parent().siblings(".employee-salary").attr("contenteditable", "false").focus().css("background-color", "white");
+          $(this).parent().siblings(".employee-email").attr("contenteditable", "false").focus().css("background-color", "white");
+
 
           var empId = $(this).parent().siblings('.empId').data();
           console.log(empId);
           console.log(empId.empid);
 
           // Get details of the employee from here and send the json data to a rest endpoint
-          // var data = {};
-          // data["harsh"] = "harsh";
+          var data = {
+            "id": empId.empid,
+            "name": $(this).parent().siblings('.employee-name').text(),
+            "personal_contact": $(this).parent().siblings('.employee-phone').text(),
+            "salary": $(this).parent().siblings('.employee-salary').text(),
+            "email": $(this).parent().siblings('.employee-email').text().trim(),
+          };
+
+          const xhr = new XMLHttpRequest();
+          const url = "/api/superuser/employee/info";
+
+          xhr.open('PUT', url, true);
+          xhr.setRequestHeader('Content-type', 'application/json');
+          xhr.setRequestHeader(header, token);
+
+
+          xhr.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+              alert("Updated Successfully");
+            } else if (this.readyState === 4) {
+              alert("Something wrong... Try again!");
+            }
+          }
+
+          xhr.send(JSON.stringify(data));
 
           console.log(data);
 

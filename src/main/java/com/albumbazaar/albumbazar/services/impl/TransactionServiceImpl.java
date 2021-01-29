@@ -8,7 +8,6 @@ import com.albumbazaar.albumbazar.model.Expense;
 import com.albumbazaar.albumbazar.model.Income;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.services.OrderService;
-import com.albumbazaar.albumbazar.services.ProductService;
 import com.albumbazaar.albumbazar.services.RazorPayPaymentService;
 import com.albumbazaar.albumbazar.services.TransactionService;
 import com.albumbazaar.albumbazar.utilities.PaymentDTORazorpay;
@@ -28,17 +27,14 @@ public class TransactionServiceImpl implements TransactionService {
     private final RazorPayPaymentService razorPayPaymentService;
 
     private final OrderService orderService;
-    private final ProductService productService;
 
     public TransactionServiceImpl(final IncomeRepository incomeRepository, final ExpenseRepository expenseRepository,
             @Qualifier("razorPayPaymentService") final RazorPayPaymentService razorPayPaymentService,
-            @Qualifier("orderService") final OrderService orderService,
-            @Qualifier("productService") final ProductService productService) {
+            @Qualifier("orderService") final OrderService orderService) {
         this.expenseRepository = expenseRepository;
         this.incomeRepository = incomeRepository;
         this.razorPayPaymentService = razorPayPaymentService;
         this.orderService = orderService;
-        this.productService = productService;
     }
 
     @Override

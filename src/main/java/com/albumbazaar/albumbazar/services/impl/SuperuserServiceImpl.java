@@ -10,6 +10,8 @@ import com.albumbazaar.albumbazar.services.SuperuserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -79,6 +81,7 @@ public class SuperuserServiceImpl implements UserDetailsService, SuperuserServic
 
     @Override
     @Transactional
+    @CacheEvict(value = "website_general_info", allEntries = true)
     public void updateGlobalDiscount(final double discount) {
 
         final WebsiteGeneralInfoEntity websiteGeneralInfoEntity = websiteGeneralInfoRepository.findById(1l)
@@ -90,6 +93,7 @@ public class SuperuserServiceImpl implements UserDetailsService, SuperuserServic
 
     @Override
     @Transactional
+    @CacheEvict(value = "website_general_info", allEntries = true)
     public void updateReferallAmount(final double referralAmount) {
         final WebsiteGeneralInfoEntity websiteGeneralInfoEntity = websiteGeneralInfoRepository.findById(1l)
                 .orElseThrow();
@@ -99,6 +103,7 @@ public class SuperuserServiceImpl implements UserDetailsService, SuperuserServic
     }
 
     @Override
+    @Cacheable(value = "website_general_info")
     public WebsiteGeneralInfoEntity getWebsiteInfoEntity() {
         return websiteGeneralInfoRepository.findById(1l).orElseThrow();
     }

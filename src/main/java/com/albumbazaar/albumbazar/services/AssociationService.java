@@ -10,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface AssociationService {
 
-    boolean addAssociation(final AssociationDetailForm associationDetail);
+    Association addAssociation(final AssociationDetailForm associationDetail);
 
     List<Association> getAllAssociation();
 

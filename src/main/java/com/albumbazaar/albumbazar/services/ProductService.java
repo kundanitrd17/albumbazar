@@ -10,7 +10,7 @@ import com.albumbazaar.albumbazar.utilities.AllProducts;
 
 public interface ProductService {
 
-    AllProducts getAllProducts(final String company);
+    AllProducts getAllProducts(final Long associationId);
 
     void savePaperDetailsForAssociation(Long associationId, List<PaperDTO> paperDTOs);
 
@@ -24,12 +24,12 @@ public interface ProductService {
 
     void savePaperDetail(Long associationId, PaperDTO paperInfo);
 
-    void changeCoverPrice(Long coverId, double price);
+    Cover changeCoverPrice(Long coverId, double price);
 
-    void changePaperPrice(Long paperId, double price);
+    Paper changePaperPrice(Long paperId, double price);
 
-    void deletePaperDetail(Long paperId);
+    Paper deletePaperDetail(Long paperId);
 
-    void deleteCoverDetail(Long coverId);
+    Cover deleteCoverDetail(Long coverId);
 
 }

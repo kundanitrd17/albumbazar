@@ -227,7 +227,8 @@ public class SecurityConfig {
                     .hasAuthority(AvailableRoles.Code.USER).antMatchers("/api/secured/customer-care/**")
                     .hasAnyAuthority(AvailableRoles.Code.CUSTOMER_CARE, AvailableRoles.Code.ADMIN)
                     .antMatchers("/api/secured/branch/**")
-                    .hasAnyAuthority(AvailableRoles.Code.BRANCH, AvailableRoles.Code.ADMIN)
+                    .hasAnyAuthority(AvailableRoles.Code.BRANCH, AvailableRoles.Code.ADMIN,
+                            AvailableRoles.Code.SUPERUSER)
                     .antMatchers("/api/secured/admin/**").hasAuthority(AvailableRoles.Code.ADMIN)
                     .antMatchers("/api/secured/delivery/**").hasAuthority(AvailableRoles.Code.DELIVERY)
                     .antMatchers("/api/secured/superuser/**").hasAuthority(AvailableRoles.Code.SUPERUSER).anyRequest()

@@ -56,7 +56,7 @@ public final class ProductControllerAPI {
     }
 
     @GetMapping(value = "/product/company/{companyId}")
-    public ResponseEntity<?> getAllProductsAssociated(@PathVariable("companyId") String companyId) {
+    public ResponseEntity<?> getAllProductsAssociated(@PathVariable("companyId") final Long companyId) {
         System.out.println(companyId);
 
         AllProducts products = productService.getAllProducts(companyId);

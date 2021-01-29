@@ -1,6 +1,9 @@
 package com.albumbazaar.albumbazar.controller.APIController;
 
+import javax.validation.Valid;
+
 import com.albumbazaar.albumbazar.dto.BranchDTO;
+import com.albumbazaar.albumbazar.dto.EmployeeDTO;
 import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.model.Association;
 import com.albumbazaar.albumbazar.model.Branch;
@@ -79,6 +82,20 @@ public class SuperuserControllerAPI {
             return ResponseEntity.badRequest().body(error);
         }
 
+    }
+
+    @PutMapping(value = "/employee/info")
+    public ResponseEntity<?> updateEmployeeInfo(@RequestBody final EmployeeDTO employeeDTO) {
+
+        try {
+            employeeService.updateEmployeeInfo(employeeDTO);
+
+            return ResponseEntity.ok().build();
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return ResponseEntity.badRequest().build();
     }
 
     @DeleteMapping(value = "association-delete")

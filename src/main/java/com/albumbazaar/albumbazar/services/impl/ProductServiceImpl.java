@@ -14,6 +14,7 @@ import com.albumbazaar.albumbazar.dto.PaperDTO;
 import com.albumbazaar.albumbazar.model.Association;
 import com.albumbazaar.albumbazar.model.Cover;
 import com.albumbazaar.albumbazar.model.Paper;
+import com.albumbazaar.albumbazar.model.ProductCategory;
 import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.ProductService;
 import com.albumbazaar.albumbazar.services.storage.StorageService;
@@ -23,6 +24,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,44 +64,55 @@ public class ProductServiceImpl implements ProductService {
         this.imageStorageService = imageStorageService;
     }
 
-    public AllProducts getAllProducts(final String company) {
+    @Cacheable(value = "allProducts", key = "#associationId")
+    public AllProducts getAllProducts(final Long associationId) {
         AllProducts products = new AllProducts();
-        try {
-            final Long associationId = Long.parseLong(company);
 
-            final Association association = associationService.getAssociation(associationId);
+        final Association association = associationService.getAssociation(associationId);
 
-            // Flooding Categories
-            products.setProductCategories(productCategoryRepository.findAllByAssociationAndActive(association, true)
-                    .stream().map(item -> item.getProductName()).collect(Collectors.toList()));
+        // Flooding Categories
+        products.setProductCategories(this.getProductCategoriesForAssociationAndStatus(association, true).stream()
+                .map(item -> item.getProductName()).collect(Collectors.toList()));
 
-            final List<Cover> covers = coverRepository.findAllByAssociationAndActive(association, true);
-            final List<Paper> papers = paperRepository.findAllByAssociationAndActive(association, true);
+        final List<Cover> covers = this.getCoverForAssociationAndStatus(association, true);
+        final List<Paper> papers = this.getPaperForAssociationAndStatus(association, true);
 
-            // Extracting all the size
-            HashSet<String> sizes = new HashSet<>();
-            covers.stream().forEach(cover -> sizes.add(cover.getCoverSize()));
+        // Extracting all the size
+        HashSet<String> sizes = new HashSet<>();
+        covers.stream().forEach(cover -> sizes.add(cover.getCoverSize()));
 
-            // Paper sizes need not be included
-            // papers.stream().forEach(paper -> sizes.add(paper.getPaperSize()));
+        // Paper sizes need not be included
+        // papers.stream().forEach(paper -> sizes.add(paper.getPaperSize()));
 
-            // Flooding sizes
-            products.setSizes(sizes);
-            // Flooding covers
+        // Flooding sizes
+        products.setSizes(sizes);
+        // Flooding covers
 
-            products.setCovers(covers.stream().map(coverMapper::coverTCoverDTO).collect(Collectors.toList()));
-            // Flooding papers
+        products.setCovers(covers.stream().map(coverMapper::coverTCoverDTO).collect(Collectors.toList()));
+        // Flooding papers
 
-            products.setPapers(papers.stream().map(paperMapper::paperEntityToPaperDTO).collect(Collectors.toList()));
+        products.setPapers(papers.stream().map(paperMapper::paperEntityToPaperDTO).collect(Collectors.toList()));
 
-            return products;
-
-        } catch (NumberFormatException e) {
-            System.out.println("Exception: " + e.getMessage());
-        } catch (Exception e) {
-            System.out.println("Exception: " + e.getMessage());
-        }
         return products;
+    }
+
+    @Cacheable(value = "paper")
+    private List<Paper> getPaperForAssociationAndStatus(final Association association, final boolean status) {
+
+        return paperRepository.findAllByAssociationAndActive(association, status);
+    }
+
+    @Cacheable(value = "cover")
+    private List<Cover> getCoverForAssociationAndStatus(final Association association, final boolean status) {
+
+        return coverRepository.findAllByAssociationAndActive(association, status);
+    }
+
+    @Cacheable(value = "product_categories", key = "#association.getId()")
+    private List<ProductCategory> getProductCategoriesForAssociationAndStatus(final Association association,
+            final boolean status) {
+
+        return productCategoryRepository.findAllByAssociationAndActive(association, status);
     }
 
     // @Override
@@ -118,6 +133,8 @@ public class ProductServiceImpl implements ProductService {
     // }
 
     @Override
+    @Caching(evict = { @CacheEvict(value = "cover", allEntries = true),
+            @CacheEvict(value = "allProducts", key = "#associationId") })
     public void saveCoverDetailsForAssociation(Long associationId, List<CoverDTO> coverDTOs) {
         // final Association association = associationService.getAssociation();
 
@@ -163,23 +180,29 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    @Cacheable(value = "paper", key = "#id")
     public Paper getPaperEntity(final Long id) {
         return paperRepository.findById(id).orElseThrow();
     }
 
     @Override
+    @Cacheable(value = "cover", key = "#id")
     public Cover getCoverEntity(Long id) {
         return coverRepository.findById(id).orElseThrow();
     }
 
     @Override
+    @Caching(evict = { @CacheEvict(value = "paper", allEntries = true),
+            @CacheEvict(value = "allProducts", key = "#associationId") })
     public void savePaperDetailsForAssociation(Long associationId, List<PaperDTO> paperDTOs) {
 
     }
 
     @Override
     @Transactional
-    public void changeCoverPrice(final Long coverId, final double price) {
+    @Caching(evict = { @CacheEvict(value = "cover", key = "#coverId"),
+            @CacheEvict(value = "allProducts", key = "#result.getAssociation().getId()") })
+    public Cover changeCoverPrice(final Long coverId, final double price) {
 
         if (price <= 0.0) {
             throw new RuntimeException("Price is invalid");
@@ -189,11 +212,14 @@ public class ProductServiceImpl implements ProductService {
 
         cover.setCoverPrice(price);
 
+        return cover;
     }
 
     @Override
     @Transactional
-    public void changePaperPrice(final Long paperId, final double price) {
+    @Caching(evict = { @CacheEvict(value = "paper", key = "#paperId"),
+            @CacheEvict(value = "allProducts", key = "#result.getAssociation().getId()") })
+    public Paper changePaperPrice(final Long paperId, final double price) {
         if (price <= 0.0) {
             throw new RuntimeException("Price is invalid");
         }
@@ -202,25 +228,34 @@ public class ProductServiceImpl implements ProductService {
 
         paper.setPaperPrice(price);
 
+        return paper;
     }
 
     @Override
     @Transactional
-    public void deletePaperDetail(final Long paperId) {
+    @Caching(evict = { @CacheEvict(value = "paper", key = "#paperId"),
+            @CacheEvict(value = "allProducts", key = "#result.getAssociation().getId()") })
+    public Paper deletePaperDetail(final Long paperId) {
 
         final Paper paper = paperRepository.findById(paperId).orElseThrow();
 
         paper.setActive(false);
 
+        return paper;
+
     }
 
     @Override
     @Transactional
-    public void deleteCoverDetail(final Long coverId) {
+    @Caching(evict = { @CacheEvict(value = "cover", key = "#coverId"),
+            @CacheEvict(value = "allProducts", key = "#result.getAssociation().getId()") })
+    public Cover deleteCoverDetail(final Long coverId) {
 
         final Cover cover = coverRepository.findById(coverId).orElseThrow();
 
         cover.setActive(false);
+
+        return cover;
 
     }
 
