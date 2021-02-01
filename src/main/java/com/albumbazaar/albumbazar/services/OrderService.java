@@ -13,6 +13,9 @@ import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
 public interface OrderService {
 
     /**
@@ -21,6 +24,8 @@ public interface OrderService {
      * @return A list of order details
      */
     List<OrderDetail> getOrdersWithStatus(OrderDetailStatus status);
+
+    Page<OrderDetail> getOrdersWithStatus(final OrderDetailStatus status, int page, int size);
 
     List<OrderDetail> getOrdersWithStatus(List<OrderDetailStatus> allStatus);
 
@@ -134,4 +139,8 @@ public interface OrderService {
     void changeDeliveryStatus(final Long orderId, final OrderDetailStatus orderDetailStatus);
 
     List<OrderDetail> getOrdersWithAssociationAndStatus(Association association, List<String> orderDetailStatusList);
+
+    Long getCountOfAllOrders();
+
+    Page<OrderDetail> getOrdersOfCustomer(Customer customer, Pageable pageable);
 }

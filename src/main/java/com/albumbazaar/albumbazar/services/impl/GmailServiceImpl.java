@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Qualifier("gmailService")
 public class GmailServiceImpl implements MailService {
 
-    private String COMPANY_EMAIL = "princewillz2013@gmail.com";
+    private String COMPANY_EMAIL = "nishigupta726@gmail.com";
 
     private JavaMailSender mailSender;
 

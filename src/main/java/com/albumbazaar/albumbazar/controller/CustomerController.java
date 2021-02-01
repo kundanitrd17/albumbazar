@@ -20,6 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -134,18 +135,25 @@ public final class CustomerController {
     }
 
     @GetMapping(value = "/customer/my-order")
-    public ModelAndView viewAllMyOrders() {
+    public ModelAndView viewAllMyOrders(@RequestParam(value = "page", defaultValue = "0") final Integer page,
+            @RequestParam(value = "size", required = false) Integer size) {
 
         final ModelAndView modelAndView = new ModelAndView("customer_orders");
 
+        modelAndView.addObject("currentPage", page);
+
         try {
+            if (size == null || size < 1) {
+                size = 2;
+            }
+
             // Get Customer id from the pricipal objects
             final CustomerPrincipal principal = (CustomerPrincipal) SecurityContextHolder.getContext()
                     .getAuthentication().getPrincipal();
 
-            List<OrderDetail> orders = customerService.getAllOrderDetails(principal.getId());
+            Page<OrderDetail> orders = customerService.getAllOrderDetails(principal.getId(), page, size);
 
-            modelAndView.addObject("allOrdersForCustomer", orders);
+            modelAndView.addObject("allOrdersForCustomer", orders.getContent());
         } catch (Exception e) {
             logger.error(e.getMessage());
             modelAndView.addObject("error", "No Orders yet!");

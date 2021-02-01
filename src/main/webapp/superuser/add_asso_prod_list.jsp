@@ -83,84 +83,48 @@
 
 
       <section id="contents">
-        <nav class="navbar navbar-default">
-          <div class="container-fluid">
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
-                data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <i class="fa fa-align-right"></i>
-              </button>
-              <a class="navbar-brand" href="#">my<span class="main-color">Dashboard</span></a>
+        <%@include file="header.jsp" %>
+          <main>
+            <!-- Modal -->
+            <div class="modal fade loader" id="exampleModal" tabindex="-1" role="dialog"
+              aria-labelledby="exampleModalLabel" aria-hidden="true">
             </div>
-            <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
-              <ul class="nav navbar-nav">
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                    aria-expanded="false">My profile <span class="caret"></span></a>
-                  <ul class="dropdown-menu">
-                    <li><a href="#"><i class="fa fa-user-o fw"></i> My account</a></li>
-                    <li><a href="#"><i class="fa fa-envelope-o fw"></i> My inbox</a></li>
-                    <li><a href="#"><i class="fa fa-question-circle-o fw"></i> Help</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li>
-
-                      <form action="/superuser/logout-super" method="POST">
-                        <i class="fa fa-sign-out"></i>
-                        <input type="submit" value="logout">
-                        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                      </form>
-                    </li>
-                  </ul>
-                </li>
-                <li><a href="#"><i class="fa fa-comments"></i><span>23</span></a></li>
-                <li><a href="#"><i class="fa fa-bell-o"></i><span>98</span></a></li>
-                <li><a href="#"><i data-show="show-side-navigation1" class="fa fa-bars show-side-btn"></i></a></li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-
-        <main>
-          <!-- Modal -->
-          <div class="modal fade loader" id="exampleModal" tabindex="-1" role="dialog"
-            aria-labelledby="exampleModalLabel" aria-hidden="true">
-          </div>
 
 
-          <div class="container col-md-8">
+            <div class="container col-md-8">
 
-            <div class="form-group">
-              <label for="Association">Association select</label>
-              <select class="form-control" id="Association">
-                <option value="null" selected>--Select--</option>
+              <div class="form-group">
+                <label for="Association">Association select</label>
+                <select class="form-control" id="Association">
+                  <option value="null" selected>--Select--</option>
 
-                <c:forEach items="${availableAssociations}" var="association">
-                  <option value="${association.id}">${association.name}</option>
-                </c:forEach>
+                  <c:forEach items="${availableAssociations}" var="association">
+                    <option value="${association.id}">${association.name}</option>
+                  </c:forEach>
 
-              </select>
-            </div>
-            <div class="table-responsive">
-              <table id="test-table" class="table table-condensed table-bordered">
-                <thead>
-                  <tr>
-                    <th colspan="4" style="text-align: left;padding-left: 20px;">
-                      Add Paper List
-                    </th>
-                  </tr>
-                  <tr>
-                    <th>Paper Type</th>
-                    <th>Paper Size</th>
-                    <th>Paper Price</th>
-                    <th>GST</th>
-                    <th> <input id='addPaper' class='btn btn-primary' type='button' value='Add' /></th>
-                  </tr>
-                </thead>
-                <form action="#" id="paperForm">
-                  <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-                  <tbody id="paperList">
+                </select>
+              </div>
+              <div class="table-responsive">
+                <table id="test-table" class="table table-condensed table-bordered">
+                  <thead>
+                    <tr>
+                      <th colspan="4" style="text-align: left;padding-left: 20px;">
+                        Add Paper List
+                      </th>
+                    </tr>
+                    <tr>
+                      <th>Paper Type</th>
+                      <th>Paper Size</th>
+                      <th>Paper Price</th>
+                      <th>GST</th>
+                      <th> <input id='addPaper' class='btn btn-primary' type='button' value='Add' /></th>
+                    </tr>
+                  </thead>
+                  <form action="#" id="paperForm">
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+                    <tbody id="paperList">
 
-                    <!-- <tr id="paperRow0">
+                      <!-- <tr id="paperRow0">
                       <td>
                         <input name='paperQuality' value='' type='text' class='form-control' placeholder="Paper Type" />
                       </td>
@@ -182,48 +146,48 @@
                         <input class='delete-paper-row btn btn-danger' type='button' value='X' />
                       </td>
                     </tr> -->
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                      <td colspan="4" align="center">
-                        <button type="submit" class='btn btn-success' id="paperListSubmit">Submit</button>
-                      </td>
-                    </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td colspan="4" align="center">
+                          <button type="submit" class='btn btn-success' id="paperListSubmit">Submit</button>
+                        </td>
+                      </tr>
 
-                  </tfoot>
-                </form>
-              </table>
+                    </tfoot>
+                  </form>
+                </table>
+
+              </div>
+
 
             </div>
 
-
-          </div>
-
-          <div class="container col-md-8">
+            <div class="container col-md-8">
 
 
-            <div class="table-responsive">
-              <table id="test-table" class="table table-condensed table-bordered">
-                <thead>
-                  <tr>
-                    <th colspan="4" style="text-align: left;padding-left: 20px;">
-                      Add Cover List
-                    </th>
-                  </tr>
-                  <tr>
-                    <th>Cover Image</th>
-                    <th>Cover Type</th>
-                    <th>Cover Size</th>
-                    <th>Cover Price</th>
-                    <th>GST</th>
-                    <th> <input id='addCover' class='btn btn-primary' type='button' value='Add' /></th>
-                  </tr>
-                </thead>
-                <form id="coverForm" action="#">
-                  <!-- Association Id -->
-                  <!-- <input name="selectedAssociationId" type="text" class="selectedAssociationId" hidden> -->
-                  <tbody id="coverList">
-                    <!-- <tr id="coverRow0">
+              <div class="table-responsive">
+                <table id="test-table" class="table table-condensed table-bordered">
+                  <thead>
+                    <tr>
+                      <th colspan="4" style="text-align: left;padding-left: 20px;">
+                        Add Cover List
+                      </th>
+                    </tr>
+                    <tr>
+                      <th>Cover Image</th>
+                      <th>Cover Type</th>
+                      <th>Cover Size</th>
+                      <th>Cover Price</th>
+                      <th>GST</th>
+                      <th> <input id='addCover' class='btn btn-primary' type='button' value='Add' /></th>
+                    </tr>
+                  </thead>
+                  <form id="coverForm" action="#">
+                    <!-- Association Id -->
+                    <!-- <input name="selectedAssociationId" type="text" class="selectedAssociationId" hidden> -->
+                    <tbody id="coverList">
+                      <!-- <tr id="coverRow0">
                     <td>
                       <div class="image-upload text-center">
                         <label for="file-input">
@@ -251,25 +215,25 @@
                       <input class='delete-cover-row btn btn-danger' type='button' value='X' />
                     </td>
                   </tr> -->
-                  </tbody>
-                  <tfoot>
-                    <tr>
-                      <td colspan="4" align="center">
-                        <button class='btn btn-success' id="coverListSubmit" onclick="">Submit</button>
-                      </td>
-                    </tr>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <td colspan="4" align="center">
+                          <button class='btn btn-success' id="coverListSubmit" onclick="">Submit</button>
+                        </td>
+                      </tr>
 
-                  </tfoot>
-                </form>
-              </table>
+                    </tfoot>
+                  </form>
+                </table>
+
+              </div>
+
 
             </div>
 
 
-          </div>
-
-
-        </main>
+          </main>
 
 
 

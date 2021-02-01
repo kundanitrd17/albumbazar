@@ -1,5 +1,9 @@
 package com.albumbazaar.albumbazar.controller.APIController;
 
+import java.util.Hashtable;
+import java.util.NoSuchElementException;
+import java.util.concurrent.ConcurrentHashMap;
+
 import javax.validation.Valid;
 
 import com.albumbazaar.albumbazar.dto.BranchDTO;
@@ -13,6 +17,7 @@ import com.albumbazaar.albumbazar.services.AssociationService;
 import com.albumbazaar.albumbazar.services.BranchService;
 import com.albumbazaar.albumbazar.services.CustomerService;
 import com.albumbazaar.albumbazar.services.EmployeeService;
+import com.albumbazaar.albumbazar.services.OrderService;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +31,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -38,9 +44,11 @@ public class SuperuserControllerAPI {
     private final BranchService branchService;
     private final AssociationService associationService;
     private final CustomerService customerService;
+    private final OrderService orderService;
 
     @Autowired(required = true)
     protected SuperuserControllerAPI(@Qualifier("employeeService") final EmployeeService employeeService,
+            @Qualifier("orderService") final OrderService orderService,
             @Qualifier("branchService") final BranchService branchService,
             @Qualifier("associationService") final AssociationService associationService,
             @Qualifier("customerService") final CustomerService customerService) {
@@ -48,6 +56,40 @@ public class SuperuserControllerAPI {
         this.branchService = branchService;
         this.associationService = associationService;
         this.customerService = customerService;
+        this.orderService = orderService;
+    }
+
+    @GetMapping(value = "/home-page-info")
+    public ResponseEntity<?> getSuperuserHomeInfo() {
+        final Hashtable<String, Object> info = new Hashtable<>();
+
+        try {
+            // Get Employee count
+            info.put("employee_count", employeeService.getCountOfAllEmployees());
+
+            // Get Admins
+            info.put("admin_list", employeeService.getActiveAdminList());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        try {
+            // Get Customer count
+            info.put("customer_count", customerService.getCountOfAllCustomers());
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        try {
+            // Get Customer count
+            info.put("order_count", orderService.getCountOfAllOrders());
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        return ResponseEntity.ok().body(info);
     }
 
     /**
@@ -121,6 +163,27 @@ public class SuperuserControllerAPI {
             return ResponseEntity.badRequest().body(error);
         }
 
+    }
+
+    @GetMapping(value = "/order/branch")
+    public ResponseEntity<?> getOrdersOfBranch(@RequestParam(value = "code") final String branchCode) {
+
+        try {
+
+            System.out.println(branchCode);
+
+            final Branch branch = branchService.getBranchWithCode(branchCode);
+
+            return ResponseEntity.ok().body(orderService.getOrdersOfBranch(branch.getId()));
+
+        } catch (NoSuchElementException e) {
+            logger.info(e.getMessage());
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+
+        }
+
+        return ResponseEntity.badRequest().build();
     }
 
     @DeleteMapping(value = "branch-delete")

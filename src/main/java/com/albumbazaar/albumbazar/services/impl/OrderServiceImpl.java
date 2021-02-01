@@ -43,6 +43,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -280,6 +283,19 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(readOnly = true)
+    public Page<OrderDetail> getOrdersWithStatus(final OrderDetailStatus status, int page, int size) {
+        try {
+            final Pageable pageable = PageRequest.of(page, size);
+            return orderRepository.findByOrderStatus(status.toString(), pageable);
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            throw new RuntimeException("Unable to get Orders");
+        }
+
+    }
+
+    @Override
+    @Transactional(readOnly = true)
     public List<OrderDetail> getOrdersWithStatus(final List<OrderDetailStatus> statusList) {
 
         if (statusList == null)
@@ -370,6 +386,13 @@ public class OrderServiceImpl implements OrderService {
 
         final Branch branch = branchRepository.findById(branchId).orElseThrow();
         return orderRepository.findAllByBranchId(branch.getId());
+    }
+
+    @Override
+    @Transactional
+    public Page<OrderDetail> getOrdersOfCustomer(final Customer customer, Pageable pageable) {
+
+        return orderRepository.findAllByCustomer(customer, pageable);
     }
 
     @Override
@@ -539,6 +562,12 @@ public class OrderServiceImpl implements OrderService {
         final OrderDetail order = this.getOrder(orderId);
 
         order.setDescription(description);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Long getCountOfAllOrders() {
+        return orderRepository.count();
     }
 
 }

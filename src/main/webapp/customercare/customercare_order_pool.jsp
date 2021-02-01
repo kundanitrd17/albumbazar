@@ -110,16 +110,21 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                 <thead>
                                     <tr class="filters">
                                         <th><input type="text" class="form-control" placeholder="Id" disabled></th>
-                                        <th><input type="text" class="form-control" placeholder=" Name" disabled></th>
-
-                                        <th><input type="text" class="form-control" placeholder="Contact 1" disabled>
+                                        <th><input type="text" class="form-control" placeholder="CustomerId" disabled>
                                         </th>
-                                        <th><input type="text" class="form-control" placeholder="Contact 2" disabled>
+                                        <th><input type="text" class="form-control" placeholder="Product" disabled></th>
+
+                                        <th><input type="text" class="form-control" placeholder="OrderTime" disabled>
                                         </th>
-
-                                        <th><input type="text" class="form-control" placeholder="E-mail" disabled></th>
-
-
+                                        <th><input type="text" class="form-control" placeholder="Description" disabled>
+                                        </th>
+                                        <th><input type="text" class="form-control" placeholder=" Address" disabled>
+                                        </th>
+                                        <th><input type="text" class="form-control" placeholder="Orientation" disabled>
+                                        </th>
+                                        <th><input type="text" class="form-control" placeholder="Product View" disabled>
+                                        </th>
+                                        <th><input type="text" class="form-control" placeholder="Images" disabled></th>
                                         <th colspan="2" style="text-align: center;"><a class="btn btn-success"
                                                 href="/customer-care/accepted-order">View Accepted Order
                                             </a></th>
@@ -133,20 +138,66 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                         <tr id="orderRow${eachOrder.id}">
                                             <td class="orderId" id="orderId${eachOrder.id}"
                                                 data-orderId="${eachOrder.id}">${eachOrder.id}</td>
-                                            <td id="associationName">${eachOrder.associationName}</td>
-                                            <td id="associationPhone1">${eachOrder.orderStatus}</td>
-                                            <td id="associationPhone2">9832177025</td>
 
-                                            <td id="associationEmail">kundanitrd17@gmail.com</td>
+                                            <td class="customerId" data-order-id="${eachOrder.customer.id}">
+                                                <button class="btn"
+                                                    onclick="fetchCustomerDetails('${eachOrder.customer.id}')"
+                                                    data-toggle="modal"
+                                                    data-target="#customerDetailModal">${eachOrder.customer.getCustomerId()}</button>
+                                            </td>
+                                            <td>${eachOrder.productName}</td>
+                                            <td>${eachOrder.orderTime}</td>
+                                            <td>
+                                                <a href="" data-toggle="modal"
+                                                    data-target="#orderDescriptionDialog${eachOrder.id}">
+                                                    click
+                                                </a>
+                                                <div class="modal" tabindex="-1" role="dialog"
+                                                    id="orderDescriptionDialog${eachOrder.id}">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h5 class="modal-title">Order Description</h5>
+                                                                <button type="button" class="close" data-dismiss="modal"
+                                                                    aria-label="Close">
+                                                                    <span aria-hidden="true">&times;</span>
+                                                                </button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="form-group">
+                                                                    <label>Example textarea</label>
+                                                                    <textarea class="form-control"
+                                                                        id="updatableOrderDescription${eachOrder.id}"
+                                                                        rows="3" value="${eachOrder.description}">
+                                                                    </textarea>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-dismiss="modal">Close</button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><a href="" data-toggle="modal" data-target="#addressModal"
+                                                    id="link_address"
+                                                    onclick="fetchDeliveryAddressFromServer('${eachOrder.id}')">Address
+                                                </a></td>
+                                            <td>${eachOrder.orientation}</td>
+                                            <td><a type="button" href="" id="link_adminId" data-toggle="modal"
+                                                    data-target="#orderProductViewDetails"
+                                                    onclick="orderProductView('${eachOrder.id}')">View Product</a></td>
+                                            <td><a target="_blank"
+                                                    href="${eachOrder.photoFolderGoogleDriveLink}">Images</a></td>
+
 
                                             <td><a class="btn btn-danger accept-order-icon">Accept Order</a></td>
                                         </tr>
 
 
                                     </c:forEach>
-
-
-
 
 
                                 </tbody>
@@ -156,6 +207,161 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                 </div>
 
             </section>
+
+
+            <div class="modal" id="orderProductViewDetails">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="myModalLabel">Company Name</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+
+
+                        <div class="modal-body table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th colspan="5">Cover Info</th>
+                                    </tr>
+                                    <tr style="background-color: none;color:black;">
+                                        <th>Product Name</th>
+                                        <th>Product Size</th>
+                                        <th>CoverName</th>
+                                        <th>Cover Size</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td id="productName">album</td>
+                                        <td id="productSize">90*09</td>
+                                        <td id="coverName">John</td>
+                                        <td id="coverSize">Doe</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+
+                        <div class="modal-body table-responsive">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th colspan="5">Paper Info</th>
+                                    </tr>
+                                    <tr style="background-color: none;color:black;">
+                                        <th>Quality</th>
+                                        <th>Size</th>
+                                        <th>No. of Sheets</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="paperListRow">
+                                    <tr>
+                                        <td id="pageQuality">John</td>
+                                        <td id="pageSize">Doe</td>
+                                        <td id="numberOfSheets">200</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Address Modal -->
+            <div class="modal" id="addressModal" tabindex="-1" role="dialog">
+                <form>
+
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <!-- Modal Header -->
+
+                            <div class="modal-header">
+                                <h5 class="modal-title">Address</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <!-- End of Modal Header -->
+                            <div class="modal-body">
+                                <input type="hidden" name="orderId" value="">
+                                <input type="text" value="" name="id" hidden>
+                                <div class="form-group">
+                                    <label for="exampleInputName">Name</label>
+                                    <input name="name" type="name" class="form-control" id="exampleInputName" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputMobile">Mobile</label>
+                                    <input name="contactNo" type="text" class="form-control" id="exampleInputMobile"
+                                        value="">
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <label for="exampleInputLandmark">Landmark</label>
+                                    <input name="landmark" type="text" class="form-control" id="exampleInputLandmark"
+                                        value="" placeholder="Landmark">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputAddress1">Address</label>
+                                    <input name="line1" type="text" class="form-control" id="exampleInputAddress1"
+                                        value="" placeholder="Address line1">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputAddress2">Address</label>
+                                    <input name="line2" type="text" class="form-control" id="exampleInputAddress2"
+                                        value="" placeholder="Address line2">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputCity">City</label>
+                                    <input name="city" type="text" class="form-control" id="exampleInputCity" value=""
+                                        placeholder="City">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputDistrict">District</label>
+                                    <input name="district" type="text" class="form-control" id="exampleInputDistrict"
+                                        value="" placeholder="District">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputState">State</label>
+                                    <input name="state" type="text" class="form-control mx-200" value=""
+                                        placeholder="State">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputPIN">Pin-Code</label>
+                                    <input name="pincode" type="text" class="form-control mx-200" value=""
+                                        placeholder="PIN">
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- End of address modal -->
+
+
 
 
 
@@ -220,7 +426,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                 });
             </script>
 
-
+            <script src="/customercare/js/order_list.js"></script>
     </body>
 
     </html>

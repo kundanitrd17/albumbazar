@@ -13,4 +13,6 @@ public interface BranchRepository extends JpaRepository<Branch, Long> {
     @Query(value = "SELECT branch.id, branch.name FROM branch WHERE active = true", nativeQuery = true)
     Optional<List<Object[]>> getNameOfAllActiveBranches();
 
+    Optional<Branch> findByBranchCode(String branchCode);
+
 }

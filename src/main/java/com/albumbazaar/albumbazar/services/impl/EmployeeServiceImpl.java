@@ -3,6 +3,8 @@ package com.albumbazaar.albumbazar.services.impl;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -22,6 +24,7 @@ import com.albumbazaar.albumbazar.model.AvailableRoles;
 import com.albumbazaar.albumbazar.model.Branch;
 import com.albumbazaar.albumbazar.model.Employee;
 import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
+import com.albumbazaar.albumbazar.services.AddressService;
 import com.albumbazaar.albumbazar.services.BranchService;
 import com.albumbazaar.albumbazar.services.EmployeeService;
 
@@ -42,16 +45,17 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
     private Logger logger = LoggerFactory.getLogger(EmployeeServiceImpl.class);
 
     private final EmployeeRepository employeeRepository;
-    private final AddressRepository addressRepository;
 
+    private final AddressService addressService;
     private final BranchService branchService;
 
     private final AddressMapper addressMapper;
 
     @Autowired
-    public EmployeeServiceImpl(final EmployeeRepository employeeRepository, final AddressRepository addressRepository,
-            final AddressMapper addressMapper, final BranchService branchService) {
-        this.addressRepository = addressRepository;
+    public EmployeeServiceImpl(final EmployeeRepository employeeRepository,
+            @Qualifier("addressService") final AddressService addressService, final AddressMapper addressMapper,
+            final BranchService branchService) {
+        this.addressService = addressService;
         this.employeeRepository = employeeRepository;
         this.branchService = branchService;
         this.addressMapper = addressMapper;
@@ -94,18 +98,20 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
 
     @Transactional
     @Override
-    public void createEmployee(final EmployeeDTO employeeDTO) {
+    public Employee createEmployee(final EmployeeDTO employeeDTO, final LocationForm locationForm) {
 
         final Employee employee = new Employee();
         employee.setName(employeeDTO.getName());
         employee.setEmail(employeeDTO.getEmail());
 
         try {
-            DateFormat format = new SimpleDateFormat();
-            Date date_of_birth = format.parse(employeeDTO.getDate_of_birth());
-            employee.setDate_of_birth(date_of_birth);
+            final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd");
+            final Date joiningdate = dateFormat.parse(employeeDTO.getJoining_date());
+            employee.setJoining_date(joiningdate);
+
         } catch (ParseException e) {
             logger.error(e.getMessage());
+            throw new RuntimeException("Joining Date Not found");
         }
 
         employee.setPersonal_contact(employeeDTO.getPersonal_contact());
@@ -116,7 +122,17 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
         final Branch branch = branchService.getbranch(employeeDTO.getBranchId());
         employee.setBranch(branch);
 
-        employeeRepository.save(employee);
+        try {
+            final AddressEntity addressEntity = new AddressEntity(locationForm);
+            addressEntity.setContactNo(employee.getPersonal_contact());
+            addressEntity.setName(employee.getName());
+
+            employee.setAddress(addressService.saveAddress(addressEntity));
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+        }
+
+        return employeeRepository.save(employee);
 
     }
 
@@ -194,11 +210,11 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
         final Employee employee = this.getEmployee(employeeId);
 
         if (employee.getAddress() != null)
-            addressRepository.delete(employee.getAddress());
+            addressService.deleteAddress(employee.getAddress());
 
         final AddressEntity address = addressMapper.addressDTOToAddressEntity(addressDTO);
 
-        final AddressEntity savedAddressEntity = addressRepository.save(address);
+        final AddressEntity savedAddressEntity = addressService.saveAddress(address);
         employee.setAddress(savedAddressEntity);
 
     }
@@ -214,6 +230,19 @@ public class EmployeeServiceImpl implements UserDetailsService, EmployeeService 
         employee.setSalary(employeeDTO.getSalary());
         employee.setEmail(employeeDTO.getEmail());
 
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Long getCountOfAllEmployees() {
+
+        return employeeRepository.count();
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Employee> getActiveAdminList() {
+        return employeeRepository.findAllByActiveAndRoleIn(true, Arrays.asList(AvailableRoles.ADMIN.toString()));
     }
 
 }

@@ -214,15 +214,14 @@
 
 
 
-			<nav class="navbar navbar-expand-lg navbar-light bg-light">
+			<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 				<div class="mx-2">
-					<a href="#" data-show="show-side-navigation1" class="btn fa fa-bars show-side-btn"></a>
+					<a href="#" data-show="show-side-navigation1" class="btn fa fa-bars show-side-btn"
+						style="color: #fff;"></a>
 				</div>
 				<!-- Image and text -->
 				<a class="navbar-brand" href="/">
-					<img src="https://getbootstrap.com/docs/4.0/assets/brand/bootstrap-solid.svg" width="30" height="30"
-						class="d-inline-block align-top" alt="">
-					AlbumBazaar
+					<img src="/img/logo1.png" width="120" height="50" class="d-inline-block align-top" alt="">
 				</a>
 
 				<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
@@ -246,9 +245,7 @@
 						<li class="nav-item mx-2">
 							<a class="nav-link active" href="/superuser/customer">Customer</a>
 						</li>
-						<li class="nav-item mx-2">
-							<a class="nav-link active" href="/customer-care/order-pool">CMR</a>
-						</li>
+
 						<li class="nav-item mx-2">
 							<form action="/superuser/logout" method="POST">
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />

@@ -1,6 +1,7 @@
 package com.albumbazaar.albumbazar.services;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import com.albumbazaar.albumbazar.dto.AddressDTO;
@@ -24,5 +25,7 @@ public interface BranchService {
     List<BranchDTO> getAllActiveBranchName();
 
     void updateAddressInfo(AddressDTO addressDTO, Long branchId);
+
+    Branch getBranchWithCode(String branchCode) throws NoSuchElementException;
 
 }

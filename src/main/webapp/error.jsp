@@ -1,26 +1,145 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Error</title>
+    <title></title>
+    <style type="text/css">
+        * {
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+        }
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        body {
+            padding: 0;
+            margin: 0;
+        }
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        #notfound {
+            position: relative;
+            height: 100vh;
+        }
+
+        #notfound .notfound {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .notfound {
+            max-width: 520px;
+            width: 100%;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .notfound .notfound-404 {
+            height: 190px;
+        }
+
+        .notfound .notfound-404 h1 {
+            font-family: "Montserrat", sans-serif;
+            font-size: 146px;
+            font-weight: 700;
+            margin: 0px;
+            color: #232323;
+        }
+
+        .notfound .notfound-404 h1>span {
+            display: inline-block;
+            width: 120px;
+            height: 120px;
+            background-image: url("https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/160/mozilla/36/pensive-face_1f614.png");
+            background-size: cover;
+            -webkit-transform: scale(1.4);
+            -ms-transform: scale(1.4);
+            transform: scale(1.4);
+            z-index: -1;
+            animation-name: floating;
+            animation-duration: 4s;
+            animation-iteration-count: infinite;
+            animation-timing-function: ease-in-out;
+        }
+
+        .notfound h2 {
+            font-family: "Montserrat", sans-serif;
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0;
+            text-transform: uppercase;
+            color: #232323;
+        }
+
+        .notfound p {
+            font-family: "Montserrat", sans-serif;
+            color: #787878;
+            font-weight: 300;
+        }
+
+        .notfound a {
+            font-family: "Montserrat", sans-serif;
+            display: inline-block;
+            padding: 12px 30px;
+            font-weight: 700;
+            background-color: #f99827;
+            color: #fff;
+            border-radius: 40px;
+            text-decoration: none;
+            -webkit-transition: 0.2s all;
+            transition: 0.2s all;
+        }
+
+        .notfound a:hover {
+            opacity: 0.8;
+        }
+
+        @media only screen and (max-width: 767px) {
+            .notfound .notfound-404 {
+                height: 115px;
+            }
+
+            .notfound .notfound-404 h1 {
+                font-size: 86px;
+            }
+
+            .notfound .notfound-404 h1>span {
+                width: 86px;
+                height: 86px;
+            }
+        }
+
+        @keyframes floating {
+            from {
+                transform: scale(1.4) translate(0, 0);
+            }
+
+            50% {
+                transform: scale(1.4) translate(0, 15px);
+            }
+
+            to {
+                transform: scale(1.4) translate(0, 0);
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-    <h1 style="text-align: center;">${error}</h1>
-    <!-- <img src="/img/404-error.webp" alt="" style="height: 100vh; width: 100vw;"> -->
+    <div id="notfound">
+        <div class="notfound">
+            <div class="notfound-404">
+                <h1><span></span></h1>
+            </div>
+            <h2>Oops! Page Not Be Found</h2>
+            <p>Sorry but the page you are looking for does not exist, have been removed. name changed or is temporarily
+                unavailable</p>
+            <a href="#" onclick="history.back()">Back to homepage</a>
+        </div>
+    </div>
 
-    <button class="btn btn-primary" onclick="history.back()" style="position: absolute; top: 50%; left: 50%;">Go
-        back</button>
 </body>
 
 </html>

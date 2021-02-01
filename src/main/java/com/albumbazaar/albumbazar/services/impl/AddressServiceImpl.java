@@ -24,4 +24,16 @@ public class AddressServiceImpl implements AddressService {
         return addressRepository.findById(addressId).orElseThrow();
     }
 
+    @Override
+    public AddressEntity saveAddress(final AddressEntity addressEntity) {
+
+        return addressRepository.save(addressEntity);
+    }
+
+    @Override
+    public void deleteAddress(final AddressEntity addressEntity) {
+
+        addressRepository.delete(addressEntity);
+    }
+
 }

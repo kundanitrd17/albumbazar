@@ -63,7 +63,7 @@
             </ul>
         </li>
 
-        <p>Example:</p>
+        <!-- <p>Example:</p>
         <li><i class="fa fa-envelope-open-o fa-fw"></i><a href="#"> Messages <span class="num dang">56</span></a></li>
         <li><i class="fa fa-wrench fa-fw"></i><a href="#"> Settings <span class="num prim">6</span></a>
             <ul class="side-nav-dropdown">
@@ -75,6 +75,6 @@
             </ul>
         </li>
         <li><i class="fa fa-laptop fa-fw"></i><a href="#"> About UI &amp; UX <span class="num succ">43</span></a></li>
-        <li><i class="fa fa-comments-o fa-fw"></i><a href="#"> Something else</a></li>
+        <li><i class="fa fa-comments-o fa-fw"></i><a href="#"> Something else</a></li> -->
     </ul>
 </aside>

@@ -45,7 +45,7 @@ public class Branch {
 
     private Date date;
 
-    @Column(name = "code", nullable = false)
+    @Column(name = "code", nullable = false, unique = true)
     private String branchCode;
 
     @Email

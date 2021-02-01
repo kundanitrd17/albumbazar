@@ -49,14 +49,36 @@
                                     <img src="/img/slide1.svg" alt=""
                                         style="height: 80px; width: 80px; border-radius: 50%;">
                                 </div>
+
                             </div>
                             <!-- End of Header band -->
-                            <c:if test="${allOrdersForCustomer == null && error != null}">
+                            <c:if test="${allOrdersForCustomer == null || error != null}">
                                 <div class="alert alert-danger" role="alert">
+
                                     ${error}
+
+                                    <c:if test="${error == null}">
+                                        No Orders Found
+                                    </c:if>
+
                                 </div>
                             </c:if>
+
+                            <div
+                                class="d-flex justify-content-end flex-wrap flex-md-nowrap align-items-center pb-2 mb-3">
+
+                                <div>
+                                    <a href="/customer/my-order?page=${currentPage+1}"
+                                        class="btn btn-outline-secondary">Prev</a>
+                                    <a href="/customer/my-order?page=${currentPage+1}"
+                                        class="btn btn-outline-secondary">Next</a>
+                                </div>
+
+                            </div>
+
                             <c:forEach items="${allOrdersForCustomer}" var="eachOrder">
+
+
 
                                 <div class="card" style="max-width: 97%; margin: 1rem; padding: 5px;">
                                     <ul class="nav nav-pills nav-fill">

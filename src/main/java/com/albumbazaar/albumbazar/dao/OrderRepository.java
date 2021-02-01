@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Optional;
 
 import com.albumbazaar.albumbazar.model.Association;
+import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -15,6 +18,8 @@ public interface OrderRepository extends JpaRepository<OrderDetail, Long> {
     List<OrderDetail> findByPaymentStatus(boolean paymentStatus);
 
     List<OrderDetail> findByOrderStatus(String orderStatus);
+
+    Page<OrderDetail> findByOrderStatus(String orderStatus, Pageable pageable);
 
     List<OrderDetail> findByOrderStatusIn(Collection<String> orderStatus);
 
@@ -48,4 +53,6 @@ public interface OrderRepository extends JpaRepository<OrderDetail, Long> {
     List<OrderDetail> findByOrderStatusInAndAssociation(Collection<String> orderStatus, Association association);
 
     List<OrderDetail> findAllByBranchId(Long branchId);
+
+    Page<OrderDetail> findAllByCustomer(Customer customer, Pageable pageable);
 }

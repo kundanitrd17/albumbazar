@@ -18,7 +18,7 @@ public interface EmployeeService {
 
     boolean addEmployee(final BasicEmployeeDetailForm employeeDetail, final LocationForm addressDetail);
 
-    void createEmployee(EmployeeDTO employeeDTO);
+    Employee createEmployee(EmployeeDTO employeeDTO, LocationForm locationForm);
 
     Employee deleteEmployee(Long id);
 
@@ -42,5 +42,9 @@ public interface EmployeeService {
     void updateAddressInfo(AddressDTO addressDTO, Long employeeId);
 
     void updateEmployeeInfo(EmployeeDTO employeeDTO);
+
+    Long getCountOfAllEmployees();
+
+    List<Employee> getActiveAdminList();
 
 }

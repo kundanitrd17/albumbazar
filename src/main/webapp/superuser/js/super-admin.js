@@ -1,5 +1,7 @@
- /* By Mostafa Omar
-	https://www.facebook.com/MostafaOmarIbrahiem*/
+/* By Mostafa Omar
+ https://www.facebook.com/MostafaOmarIbrahiem*/
+
+
 
 $(function () {
 
@@ -9,9 +11,9 @@ $(function () {
 
     var aside = $('.side-nav'),
 
-        showAsideBtn = $('.show-side-btn'),
+      showAsideBtn = $('.show-side-btn'),
 
-        contents = $('#contents');
+      contents = $('#contents');
 
     showAsideBtn.on("click", function () {
 
@@ -69,5 +71,5 @@ $(function () {
 
 
 
- 
-  });
+
+});

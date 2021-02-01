@@ -7,6 +7,7 @@ import com.albumbazaar.albumbazar.dto.CustomerDTO;
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 public interface CustomerService {
@@ -106,6 +107,8 @@ public interface CustomerService {
      */
     List<OrderDetail> getAllOrderDetails(Long customerId);
 
+    Page<OrderDetail> getAllOrderDetails(Long customerId, int page, int size);
+
     /**
      * Delete an address for a customer
      * 
@@ -132,5 +135,7 @@ public interface CustomerService {
     void setRewardForCustomer(String customerId, Double discount);
 
     Customer loadByEmail(final String email) throws UsernameNotFoundException;
+
+    Long getCountOfAllCustomers();
 
 }

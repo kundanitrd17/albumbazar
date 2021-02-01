@@ -23,6 +23,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -246,14 +250,26 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
 
     @Override
     @Transactional(readOnly = true)
-    public List<OrderDetail> getAllOrderDetails(Long customerId) {
+    public Page<OrderDetail> getAllOrderDetails(final Long customerId, int page, int size) {
+        if (customerId == null) {
+            throw new RuntimeException("Invalid Customer");
+        }
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").descending());
+
+        return orderService.getOrdersOfCustomer(this.getCustomer(customerId), pageable);
+
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<OrderDetail> getAllOrderDetails(final Long customerId) {
 
         if (customerId == null) {
             throw new RuntimeException("Invalid Customer");
         }
 
-        return orderService.getOrdersOfCustomer(customerId).stream().filter(eachOrder -> eachOrder != null)
-                .collect(Collectors.toList());
+        return orderService.getOrdersOfCustomer(customerId);
 
     }
 
@@ -323,6 +339,11 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
         final Customer customer = this.loadByEmail(customerIdentifier);
         customer.setDiscount(discount);
 
+    }
+
+    @Override
+    public Long getCountOfAllCustomers() {
+        return customerRepository.count();
     }
 
 }

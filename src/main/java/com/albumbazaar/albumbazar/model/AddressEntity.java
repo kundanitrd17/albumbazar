@@ -10,6 +10,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.albumbazaar.albumbazar.form.LocationForm;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
@@ -66,5 +67,20 @@ public class AddressEntity {
     private String cityCode;
 
     private String stateCode;
+
+    public AddressEntity() {
+    }
+
+    public AddressEntity(final LocationForm locationForm) {
+
+        this.landmark = locationForm.getLandmark();
+        this.line1 = locationForm.getLine1();
+        this.line2 = locationForm.getLine2();
+        this.city = locationForm.getCity();
+        this.district = locationForm.getDistrict();
+        this.pincode = locationForm.getPin();
+        this.state = locationForm.getState();
+
+    }
 
 }

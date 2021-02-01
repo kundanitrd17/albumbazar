@@ -16,6 +16,7 @@ import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.BranchDTO;
 import com.albumbazaar.albumbazar.model.AddressEntity;
 import com.albumbazaar.albumbazar.model.Branch;
+import com.albumbazaar.albumbazar.services.AddressService;
 import com.albumbazaar.albumbazar.services.BranchService;
 
 import org.slf4j.Logger;
@@ -34,15 +35,17 @@ public class BranchServiceImpl implements BranchService {
     final BranchRepository branchRepository;
     final EmployeeRepository employeeRepository;
 
-    private final AddressRepository addressRepository;
+    private final AddressService addressService;
     private final AddressMapper addressMapper;
 
     @Autowired
-    public BranchServiceImpl(final AddressRepository addressRepository, final AddressMapper addressMapper,
+    public BranchServiceImpl(@Qualifier("addressService") final AddressService addressService,
+            final AddressMapper addressMapper,
+
             final BranchRepository branchRepository, final EmployeeRepository employeeRepository) {
 
         this.addressMapper = addressMapper;
-        this.addressRepository = addressRepository;
+        this.addressService = addressService;
         this.branchRepository = branchRepository;
         this.employeeRepository = employeeRepository;
     }
@@ -66,7 +69,7 @@ public class BranchServiceImpl implements BranchService {
 
             final AddressEntity addressEntity = addressMapper.addressDTOToAddressEntity(locationDetails);
 
-            branch.setAddress(addressRepository.save(addressEntity));
+            branch.setAddress(addressService.saveAddress(addressEntity));
 
             branchRepository.save(branch); // saving the branch
 
@@ -163,13 +166,19 @@ public class BranchServiceImpl implements BranchService {
         final Branch branch = this.getbranch(branchId);
 
         if (branch.getAddress() != null)
-            addressRepository.delete(branch.getAddress());
+            addressService.deleteAddress(branch.getAddress());
 
         final AddressEntity address = addressMapper.addressDTOToAddressEntity(addressDTO);
 
-        final AddressEntity newAddress = addressRepository.save(address);
+        final AddressEntity newAddress = addressService.saveAddress(address);
         branch.setAddress(newAddress);
 
+    }
+
+    @Override
+    public Branch getBranchWithCode(final String branchCode) throws NoSuchElementException {
+
+        return branchRepository.findByBranchCode(branchCode).orElseThrow();
     }
 
 }

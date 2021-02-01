@@ -93,8 +93,8 @@
                 </div>
 
                 <div class="form-group col-md-5 col-xs-5">
-                  <label>Date of Birth<span> *</span></label>
-                  <input type="date" name="date_of_birth" placeholder="Branch Inougration Date " class="form-control" />
+                  <label>Joining Date<span> *</span></label>
+                  <input type="date" name="joining_date" placeholder="Joining Date " class="form-control" />
                 </div>
 
 
@@ -133,12 +133,16 @@
                   <input type="text" name="landmark" placeholder="Landmark" class="form-control required" />
                 </div>
                 <div class="form-group">
-                  <label>Street1: <span>*</span></label>
-                  <input type="text" name="street" placeholder="Street1" class="form-control required" />
+                  <label>Line1: <span>*</span></label>
+                  <input type="text" name="line1" placeholder="Line1" class="form-control required" />
                 </div>
                 <div class="form-group">
-                  <label>Town: <span>*</span></label>
-                  <input type="text" name="town" placeholder="Town" class="form-control required" />
+                  <label>Line2: <span>*</span></label>
+                  <input type="text" name="Line2" placeholder="Line2" class="form-control required" />
+                </div>
+                <div class="form-group">
+                  <label>City: <span>*</span></label>
+                  <input type="text" name="city" placeholder="City" class="form-control required" />
                 </div>
                 <div class="form-group">
                   <label>Post Office <span>*</span></label>
@@ -158,10 +162,6 @@
                 </div>
 
 
-                <div class="form-group">
-                  <label>City: <span>*</span></label>
-                  <input type="text" name="city" placeholder="City" class="form-control required" />
-                </div>
                 <div class="form-group">
                   <label>State: <span>*</span></label>
                   <input type="text" name="state" placeholder="State" class="form-control required" />

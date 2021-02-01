@@ -3,6 +3,8 @@ package com.albumbazaar.albumbazar.controller;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import com.albumbazaar.albumbazar.dto.AddressDTO;
@@ -30,6 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -100,7 +103,7 @@ public final class SuperuserController {
 
     // Association Endpoints
 
-    @GetMapping(value = "add-association")
+    @GetMapping(value = "/add-association")
     public String viewAddAssociation() {
 
         return "superuser/add-association";
@@ -131,7 +134,7 @@ public final class SuperuserController {
 
     // Superuser Branch Endpoints
 
-    @RequestMapping(value = "add-branch", method = RequestMethod.GET)
+    @RequestMapping(value = "/add-branch", method = RequestMethod.GET)
     public String viewaddBranch() {
         return "superuser/add-branch";
     }
@@ -157,7 +160,7 @@ public final class SuperuserController {
         return redirectView;
     }
 
-    @GetMapping(value = "list-branch")
+    @GetMapping(value = "/list-branch")
     public ModelAndView getAllBranch() {
         ModelAndView modelAndView = new ModelAndView("superuser/branch_list");
         List<Branch> allBranch = branchService.getAllBranch().get();
@@ -252,8 +255,8 @@ public final class SuperuserController {
 
     @PostMapping(value = "/employee/add")
     // @ResponseBody
-    public String addEmployee(@Valid @ModelAttribute EmployeeDTO employeeDetail,
-            @ModelAttribute LocationForm addressDetail, final BindingResult bindingResult,
+    public String addEmployee(@Valid @ModelAttribute final EmployeeDTO employeeDetail,
+            @ModelAttribute final LocationForm addressDetail, final BindingResult bindingResult,
             final RedirectAttributes redirectAttributes) {
 
         if (bindingResult.hasErrors()) {
@@ -263,7 +266,7 @@ public final class SuperuserController {
         System.out.println(employeeDetail);
         // employeeService.addEmployee(employeeDetail, addressDetail);
         try {
-            employeeService.createEmployee(employeeDetail);
+            employeeService.createEmployee(employeeDetail, addressDetail);
         } catch (Exception e) {
             logger.error(e.getMessage());
             redirectAttributes.addAttribute("error", true);
@@ -296,15 +299,41 @@ public final class SuperuserController {
 
     @GetMapping(value = "/order-list")
     public ModelAndView orderListView(@RequestParam(value = "payment", defaultValue = "") String paymentStatus,
-            @RequestParam(value = "status", defaultValue = "completed") final String orderStatus) {
+            @RequestParam(value = "status", defaultValue = "completed") final String orderStatus,
+            @RequestParam(value = "branch_code", defaultValue = "") final String branchCode,
+            final HttpServletRequest request) {
 
         System.out.println(paymentStatus.isBlank());
 
         final ModelAndView modelAndView = new ModelAndView("/superuser/all_order");
 
-        // If payment Option is specified than only send payment info related order
-        // detail
-        if (!paymentStatus.isBlank()) {
+        try {
+            final HttpSession session = request.getSession();
+            if (session.getAttribute("branchCodeAndName") == null) {
+                session.setAttribute("branchCodeAndName", branchService.getAllBranch().orElseThrow());
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+        if (!branchCode.isBlank()) {
+            try {
+
+                final Branch branch = branchService.getBranchWithCode(branchCode);
+
+                modelAndView.addObject("title", branch.getName() + "-" + branchCode);
+
+                modelAndView.addObject("order_details", orderService.getOrdersOfBranch(branch.getId()));
+                // return
+                // ResponseEntity.ok().body(orderService.getOrdersOfBranch(branch.getId()));
+
+            } catch (NoSuchElementException e) {
+                logger.info(e.getMessage());
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+
+            }
+        } else if (!paymentStatus.isBlank()) {
             try {
 
                 final boolean isPaid = Boolean.parseBoolean(paymentStatus);
@@ -320,18 +349,17 @@ public final class SuperuserController {
                 modelAndView.addObject("order_details", null);
             }
 
-            return modelAndView;
-        }
+        } else {
+            modelAndView.addObject("title", orderStatus.toString());
+            // If payment status is not specified then send order details based on order
+            // status
+            try {
 
-        modelAndView.addObject("title", orderStatus.toString());
-        // If payment status is not specified then send order details based on order
-        // status
-        try {
-
-            modelAndView.addObject("order_details", orderService.getAllOrderWithStatus(orderStatus));
-        } catch (Exception e) {
-            logger.error(e.getMessage());
-            modelAndView.addObject("order_details", null);
+                modelAndView.addObject("order_details", orderService.getAllOrderWithStatus(orderStatus));
+            } catch (Exception e) {
+                logger.error(e.getMessage());
+                modelAndView.addObject("order_details", null);
+            }
         }
 
         return modelAndView;
