@@ -1,5 +1,6 @@
 package com.albumbazaar.albumbazar.services.impl;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -87,7 +88,11 @@ public class CustomerCareEmployeeServiceImpl implements CustomerCareEmployeeServ
             throw new RuntimeException("invalid Customer care");
         }
 
-        return orderService.getOrdersAssociatedWithEmployeeAndStatus(customerCareId, OrderDetailStatus.COMPLETED);
+        final Employee employee = employeeService.getEmployee(customerCareId);
+
+        final List<OrderDetailStatus> orderStatusList = Arrays.asList(OrderDetailStatus.COMPLETED);
+
+        return orderService.getOrdersAssociatedWithEmployeeAndStatus(employee, orderStatusList);
     }
 
 }

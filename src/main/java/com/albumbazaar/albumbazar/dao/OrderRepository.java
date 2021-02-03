@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.albumbazaar.albumbazar.model.Association;
 import com.albumbazaar.albumbazar.model.Customer;
+import com.albumbazaar.albumbazar.model.Employee;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 
 import org.springframework.data.domain.Page;
@@ -27,6 +28,8 @@ public interface OrderRepository extends JpaRepository<OrderDetail, Long> {
 
     @Query(value = "SELECT * FROM order_detail WHERE employee_id = ?1 and order_status = ?2", nativeQuery = true)
     List<OrderDetail> findAllByEmployeeId(final Long employeeId, final String status);
+
+    List<OrderDetail> findAllByEmployeeAndOrderStatusIn(Employee employee, List<String> status);
 
     @Query(value = "SELECT * FROM order_detail WHERE customer_id = ?1", nativeQuery = true)
     Optional<List<OrderDetail>> findAllByCustomerId(Long customerId);

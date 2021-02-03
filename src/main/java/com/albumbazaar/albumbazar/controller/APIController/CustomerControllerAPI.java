@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 
 import com.albumbazaar.albumbazar.Mapper.AddressMapper;
+import com.albumbazaar.albumbazar.controller.FileUploadController;
 import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
 import com.albumbazaar.albumbazar.dto.ErrorDTO;
@@ -18,6 +19,7 @@ import com.albumbazaar.albumbazar.services.GoogleDriveService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.info.ProjectInfoProperties.Build;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -27,10 +29,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 @RestController
-@RequestMapping(value = "api/secured/customer")
+@RequestMapping(value = "/api/secured/customer")
 public class CustomerControllerAPI {
 
     private final Logger logger = LoggerFactory.getLogger(CustomerControllerAPI.class);
@@ -58,6 +63,29 @@ public class CustomerControllerAPI {
         customerDTO.setContactNo(customer.getContactNo());
 
         return ResponseEntity.ok().body(customerDTO);
+    }
+
+    @PutMapping("/profile/image")
+    public ResponseEntity<?> photoProfile(@RequestPart("profile_photo") final MultipartFile image) {
+
+        try {
+
+            final CustomerPrincipal customerPrincipal = (CustomerPrincipal) SecurityContextHolder.getContext()
+                    .getAuthentication().getPrincipal();
+
+            final Customer customer = customerService.updateProfileImage(customerPrincipal.getUsername(), image);
+
+            final String imageUrl = MvcUriComponentsBuilder
+                    .fromMethodName(FileUploadController.class, "serveFile", customer.getProfilePhoto()).build().toUri()
+                    .toString();
+
+            return ResponseEntity.ok().body(imageUrl);
+
+        } catch (Exception e) {
+            logger.info(e.getMessage());
+        }
+
+        return ResponseEntity.badRequest().build();
     }
 
     @PutMapping("info")

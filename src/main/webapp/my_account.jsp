@@ -16,6 +16,44 @@
         <link rel="stylesheet" href="/css/navbar.css">
 
         <link rel="stylesheet" href="/css/loading.css">
+
+        <style type="text/css">
+            .profile-pic {
+                position: relative;
+                display: inline-block;
+                cursor: pointer;
+            }
+
+            .profile-pic:hover img {
+                opacity: 0.5;
+
+            }
+
+            .profile-pic:hover .edit {
+                display: block;
+
+            }
+
+            .profile-pic .edit i {
+                transform: scale(1.8);
+            }
+
+            .edit {
+                position: absolute;
+                right: 0;
+                top: 0;
+                display: none;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                -ms-transform: translate(-50%, -50%);
+                text-align: center;
+            }
+
+            .edit .icon {
+                color: #000;
+            }
+        </style>
     </head>
 
     <body>
@@ -34,15 +72,29 @@
                         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
 
                             <!-- Header band -->
+
+                            <input id="csrfInput" type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
                             <div
                                 class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-                                <h1 class="h2">Profile Information</h1>
+                                <h1 class="h2">Your Orders</h1>
 
-                                <div>
-                                    <img src="/img/slide1.svg" alt=""
+
+                                <div class="profile-pic">
+
+                                    <img src="./img/carasoul1.jpg" alt="Avatar" class="image"
+                                        id="customerProfilePictureId"
                                         style="height: 80px; width: 80px; border-radius: 50%;">
+
+                                    <div class="edit">
+                                        <div class="icon" title="Edit Profile">
+                                            <i class="fa fa-camera"></i>
+                                        </div>
+                                    </div>
                                 </div>
+
                             </div>
+
                             <!-- End of Header band -->
 
 
@@ -143,6 +195,75 @@
 
             <%@include file="footer.jsp" %>
 
+
+                <script>
+
+
+                    document.querySelector('.profile-pic').addEventListener('click', openFileDialog);
+
+                    function openFileDialog(accept) {  // this function must be called from  a user
+                        // activation event (ie an onclick event)
+
+                        console.log(accept);
+                        // Create an input element
+                        var inputElement = document.createElement("input");
+                        inputElement.type = "file";
+                        // inputElement.hidden = true; 
+                        // document.querySelector(".profile-pic").append(inputElement);
+                        // Set accept to the file types you want the user to select. 
+                        // Include both the file extension and the mime type
+                        inputElement.accept = accept;
+
+                        // set onchange event to call selectedFiles when user has selected file
+                        inputElement.addEventListener("change", () => {
+                            console.log("selected files to upload");
+                            // Append the selected files and keep them hidden
+
+                            console.log(inputElement);
+
+                            const file = inputElement.files[0];
+
+                            changeProfilePic(file);
+
+                        });
+
+                        // dispatch a click event to open the file dialog
+                        inputElement.dispatchEvent(new MouseEvent("click"));
+                    }
+
+                    function changeProfilePic(photo) {
+
+                        //if the file isn't a image nothing happens.
+                        //you are free to implement a fallback
+                        if (!photo || !photo.type.match(/image.*/)) return;
+
+                        console.log(photo);
+
+                        const formData = new FormData();
+                        formData.append("profile_photo", photo);
+
+                        const xhr = new XMLHttpRequest();
+                        const url = "/api/secured/customer/profile/image";
+
+                        xhr.open('PUT', url, true);
+
+                        const csrfEle = document.getElementById("csrfInput");
+                        console.log(csrfEle.name, csrfEle.value);
+                        formData.append(csrfEle.name, csrfEle.value);
+
+
+                        xhr.onreadystatechange = function () {
+                            if (this.readyState === 4 && this.status === 200) {
+                                console.log(this.response);
+                                document.getElementById('customerProfilePictureId').src = this.response;
+                            }
+                        }
+
+                        xhr.send(formData);
+
+
+                    }
+                </script>
 
 
                 <script src="/js/customer_account.js"></script>

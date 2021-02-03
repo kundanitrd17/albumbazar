@@ -9,6 +9,7 @@ import com.albumbazaar.albumbazar.model.OrderDetail;
 
 import org.springframework.data.domain.Page;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.web.multipart.MultipartFile;
 
 public interface CustomerService {
 
@@ -137,5 +138,7 @@ public interface CustomerService {
     Customer loadByEmail(final String email) throws UsernameNotFoundException;
 
     Long getCountOfAllCustomers();
+
+    Customer updateProfileImage(String username, MultipartFile image);
 
 }

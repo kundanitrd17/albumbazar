@@ -10,6 +10,7 @@ import com.albumbazaar.albumbazar.form.order.OrderDetailFormDTO;
 import com.albumbazaar.albumbazar.model.AddressEntity;
 import com.albumbazaar.albumbazar.model.Association;
 import com.albumbazaar.albumbazar.model.Customer;
+import com.albumbazaar.albumbazar.model.Employee;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
 
@@ -87,6 +88,9 @@ public interface OrderService {
      * @return
      */
     List<OrderDetail> getOrdersAssociatedWithEmployeeAndStatus(Long employeeId, OrderDetailStatus orderDetailStatus);
+
+    List<OrderDetail> getOrdersAssociatedWithEmployeeAndStatus(final Employee employee,
+            final List<OrderDetailStatus> orderDetailStatusList);
 
     /**
      * All available order status

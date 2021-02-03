@@ -6,6 +6,7 @@ import com.albumbazaar.albumbazar.dto.ErrorDTO;
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.RazorPayEntity;
+import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
 import com.albumbazaar.albumbazar.services.OrderService;
 import com.albumbazaar.albumbazar.services.RazorPayPaymentService;
@@ -118,14 +119,10 @@ public class TransactionControllerAPI {
             System.out.println("Order : " + orderDetail.toString());
 
             // Get customer
-            // After adding security gona get this from securitycontext as a principal
-            final Customer customer = new Customer();
-            customer.setName("harsh");
-            customer.setEmail("email@gmail.com");
-            customer.setContactNo("9832145254");
+
             // Get Razorpay entity to be sent to the client
             final RazorPayEntity razorPayEntity = razorPayPaymentService.getRazorPayEntityForNewOrder(orderDetail,
-                    customer);
+                    orderDetail.getCustomer());
 
             return ResponseEntity.ok(razorPayEntity);
 

@@ -301,7 +301,7 @@ public class OrderControllerAPI {
 
         try {
 
-            orderService.changeDeliveryStatus(orderId, OrderDetailStatus.DELIVERED);
+            orderService.changeDeliveryStatus(orderId, OrderDetailStatus.COMPLETED);
             return ResponseEntity.ok().build();
 
         } catch (Exception e) {

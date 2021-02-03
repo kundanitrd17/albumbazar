@@ -80,8 +80,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     public List<DeliveryOrderDTO> completedDeliveries() {
 
-        final List<OrderDetailStatus> allStatus = Arrays.asList(OrderDetailStatus.COMPLETED,
-                OrderDetailStatus.DELIVERED);
+        final List<OrderDetailStatus> allStatus = Arrays.asList(OrderDetailStatus.COMPLETED);
 
         final List<OrderDetail> allOrdersToDeliver = orderService.getOrdersWithStatus(allStatus);
 

@@ -3,6 +3,7 @@ package com.albumbazaar.albumbazar.services.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -367,6 +368,16 @@ public class OrderServiceImpl implements OrderService {
             final OrderDetailStatus orderDetailStatus) {
 
         return orderRepository.findAllByEmployeeId(employeeId, orderDetailStatus.toString());
+
+    }
+
+    @Override
+    public List<OrderDetail> getOrdersAssociatedWithEmployeeAndStatus(final Employee employee,
+            final List<OrderDetailStatus> orderDetailStatusList) {
+
+        final List<String> orderStatusList = orderDetailStatusList.stream().map(it -> it.toString())
+                .collect(Collectors.toList());
+        return orderRepository.findAllByEmployeeAndOrderStatusIn(employee, orderStatusList);
 
     }
 

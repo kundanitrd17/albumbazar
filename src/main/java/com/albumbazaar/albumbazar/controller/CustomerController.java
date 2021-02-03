@@ -136,7 +136,7 @@ public final class CustomerController {
 
     @GetMapping(value = "/customer/my-order")
     public ModelAndView viewAllMyOrders(@RequestParam(value = "page", defaultValue = "0") final Integer page,
-            @RequestParam(value = "size", required = false) Integer size) {
+            @RequestParam(value = "size", defaultValue = "10", required = false) Integer size) {
 
         final ModelAndView modelAndView = new ModelAndView("customer_orders");
 

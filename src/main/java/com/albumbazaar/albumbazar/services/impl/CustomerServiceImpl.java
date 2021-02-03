@@ -10,15 +10,20 @@ import com.albumbazaar.albumbazar.Mapper.AddressMapper;
 import com.albumbazaar.albumbazar.Mapper.CustomerMapper;
 import com.albumbazaar.albumbazar.dao.AddressRepository;
 import com.albumbazaar.albumbazar.dao.CustomerRepository;
+import com.albumbazaar.albumbazar.dao.WebsiteGeneralInfoRepository;
 import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.dto.CustomerDTO;
 import com.albumbazaar.albumbazar.model.AddressEntity;
 import com.albumbazaar.albumbazar.model.Customer;
 import com.albumbazaar.albumbazar.model.OrderDetail;
+import com.albumbazaar.albumbazar.model.WebsiteGeneralInfoEntity;
 import com.albumbazaar.albumbazar.principals.CustomerPrincipal;
 import com.albumbazaar.albumbazar.services.CustomerService;
 import com.albumbazaar.albumbazar.services.OrderService;
+import com.albumbazaar.albumbazar.services.storage.ImageStorageService;
+import com.albumbazaar.albumbazar.services.storage.StorageService;
 
+import org.apache.catalina.core.ApplicationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +37,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 @Qualifier("customerService")
@@ -43,16 +49,23 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
     private final AddressRepository addressRepository;
     private final AddressMapper addressMapper;
     private final CustomerMapper customerMapper;
+    private final WebsiteGeneralInfoRepository websiteGeneralInfoRepository;
+
+    private final StorageService imageStorageService;
 
     @Autowired
     public CustomerServiceImpl(final CustomerRepository customerRepository,
+            @Qualifier("imageStorageService") final StorageService imageStorageService,
             @Qualifier("orderService") final OrderService orderService, final AddressRepository addressRepository,
-            final AddressMapper addressMapper, final CustomerMapper customerMapper) {
+            final WebsiteGeneralInfoRepository websiteGeneralInfoRepository, final AddressMapper addressMapper,
+            final CustomerMapper customerMapper) {
         this.addressRepository = addressRepository;
         this.orderService = orderService;
         this.customerRepository = customerRepository;
         this.addressMapper = addressMapper;
         this.customerMapper = customerMapper;
+        this.websiteGeneralInfoRepository = websiteGeneralInfoRepository;
+        this.imageStorageService = imageStorageService;
     }
 
     @Override
@@ -86,8 +99,13 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
             if (referredByCode != null && !referredByCode.isBlank()) {
                 final Long referredById = Long.parseLong(referredByCode.split("@")[0]);
                 final Customer referredByCustomer = this.getCustomer(referredById);
-                referredByCustomer.setWallet(referredByCustomer.getWallet() + 100.0);
-                newCustomerEntity.setWallet(100.0);
+
+                final WebsiteGeneralInfoEntity websiteGeneralInfoEntity = websiteGeneralInfoRepository.findById(1l)
+                        .orElseThrow();
+
+                referredByCustomer
+                        .setWallet(referredByCustomer.getWallet() + websiteGeneralInfoEntity.getREFERALL_AMOUNT());
+                newCustomerEntity.setWallet(websiteGeneralInfoEntity.getREFERALL_AMOUNT());
             }
 
         } catch (Exception e) {
@@ -344,6 +362,21 @@ public class CustomerServiceImpl implements CustomerService, UserDetailsService 
     @Override
     public Long getCountOfAllCustomers() {
         return customerRepository.count();
+    }
+
+    @Override
+    @Transactional
+    public Customer updateProfileImage(String username, MultipartFile image) {
+
+        final Customer customer = this.loadByEmail(username);
+
+        final String imageName = imageStorageService.store(image,
+                String.format("%sProfileImage%s", username, image.getOriginalFilename()));
+
+        customer.setProfilePhoto(imageName);
+
+        return customer;
+
     }
 
 }

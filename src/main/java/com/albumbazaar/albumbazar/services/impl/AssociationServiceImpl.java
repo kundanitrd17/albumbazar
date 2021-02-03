@@ -156,7 +156,7 @@ public class AssociationServiceImpl implements AssociationService, UserDetailsSe
 
         List<String> orderDetailStatusList = Arrays.asList(OrderDetailStatus.COMPLETED.toString(),
                 OrderDetailStatus.DELIVERY_UNDER_PROCESS.toString(), OrderDetailStatus.DELIVER.toString(),
-                OrderDetailStatus.SENT_TO_DELIVERY_PARTNER.toString(), OrderDetailStatus.DELIVERED.toString());
+                OrderDetailStatus.SENT_TO_DELIVERY_PARTNER.toString(), OrderDetailStatus.COMPLETED.toString());
 
         return applicationContext.getBean(OrderService.class).getOrdersWithAssociationAndStatus(association,
                 orderDetailStatusList);
