@@ -102,6 +102,10 @@
                                         </div>
                                         <div class="flex-sm-column" style="padding: 20px; margin: auto;">
                                             <li class="nav-item">
+                                                <span style="margin-right: 5px; font-weight: bold;">OrderId:</span>
+                                                ${eachOrder.uuid}
+                                            </li>
+                                            <li class="nav-item">
                                                 Product: ${eachOrder.productName}
                                             </li>
                                             <li class="nav-item">

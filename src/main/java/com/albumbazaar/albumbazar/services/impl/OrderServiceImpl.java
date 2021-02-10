@@ -1,9 +1,10 @@
 package com.albumbazaar.albumbazar.services.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -97,6 +98,9 @@ public class OrderServiceImpl implements OrderService {
 
         final OrderDetail orderDetail = new OrderDetail();
 
+        // Generate UUID for order
+        orderDetail.setUuid(generateUUID(customer.getId()));
+
         orderDetail.setEmployee(employee);
         orderDetail.setBranchId(employee.getBranch().getId());
 
@@ -174,6 +178,8 @@ public class OrderServiceImpl implements OrderService {
         orderDetail.setAssociationName(orderDetailFormDTO.getAssociationName());
         orderDetail.setAssociation(association);
 
+        // Generate UUID for order
+        orderDetail.setUuid(generateUUID(customer.getId()));
         // Calculating total amount of the order
         double totalAmount = 0.0;
 
@@ -229,6 +235,12 @@ public class OrderServiceImpl implements OrderService {
 
         return orderRepository.save(orderDetail);
 
+    }
+
+    private String generateUUID(final long customerId) {
+
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss");
+        return String.format("%d%s", customerId, dateFormat.format(new Date()));
     }
 
     @Override

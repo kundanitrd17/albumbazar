@@ -44,6 +44,9 @@ public class OrderDetail {
     @CreationTimestamp
     private Date orderTime;
 
+    @Column(nullable = false, unique = true)
+    private String uuid;
+
     // Finance
     @NotNull
     @Column(nullable = false, columnDefinition = "boolean default false")

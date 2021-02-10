@@ -44,7 +44,7 @@ public class DeliveryServiceImpl implements DeliveryService {
             final Association association = eachOrder.getAssociation();
 
             try {
-                return DeliveryOrderDTO.builder().order_id(eachOrder.getId()).UUID_CODE("UUID_CODE")
+                return DeliveryOrderDTO.builder().order_id(eachOrder.getId()).UUID_CODE(eachOrder.getUuid())
                         .name(address.getName()).contact(address.getContactNo())
                         .pickup_address(association.getAddress().getId()).delivery_address(address.getId()).build();
             } catch (Exception e) {
@@ -66,7 +66,7 @@ public class DeliveryServiceImpl implements DeliveryService {
             final Association association = eachOrder.getAssociation();
 
             try {
-                return DeliveryOrderDTO.builder().order_id(eachOrder.getId()).UUID_CODE("UUID_CODE")
+                return DeliveryOrderDTO.builder().order_id(eachOrder.getId()).UUID_CODE(eachOrder.getUuid())
                         .name(address.getName()).contact(address.getContactNo())
                         .pickup_address(association.getAddress().getId()).delivery_address(address.getId()).build();
             } catch (Exception e) {
@@ -89,7 +89,7 @@ public class DeliveryServiceImpl implements DeliveryService {
             final Association association = eachOrder.getAssociation();
 
             try {
-                return DeliveryOrderDTO.builder().order_id(eachOrder.getId()).UUID_CODE("UUID_CODE")
+                return DeliveryOrderDTO.builder().order_id(eachOrder.getId()).UUID_CODE(eachOrder.getUuid())
                         .name(address.getName()).contact(address.getContactNo())
                         .pickup_address(association.getAddress().getId()).delivery_address(address.getId()).build();
             } catch (Exception e) {

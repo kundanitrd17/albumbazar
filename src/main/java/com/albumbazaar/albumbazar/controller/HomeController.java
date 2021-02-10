@@ -128,6 +128,13 @@ public class HomeController {
         return modelAndView;
     }
 
+    @GetMapping(value = "/my-album")
+    public ModelAndView viewOrderedAlbum() {
+        final ModelAndView modelAndView = new ModelAndView("MyOrderAlbums");
+
+        return modelAndView;
+    }
+
     @GetMapping(value = "/price_detail")
     public ModelAndView priceMenuView(@RequestParam("association") final String associationId) {
 
