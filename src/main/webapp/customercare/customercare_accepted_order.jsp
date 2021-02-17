@@ -82,209 +82,195 @@
         </nav>
 
 
-    <div class="container" >
-        <div class="row">
-            <div class="panel panel-primary filterable table-responsive">
-                <div class="panel-heading">
-                    <h3 class="panel-title">Accepted Order</h3>
-                    <div class="pull-right" style="position: relative;
+
+        <div class="container" style="margin-top: 20px;" id="root">
+            <div class="row">
+
+                <div class="panel panel-primary filterable table-responsive">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Accepted Order</h3>
+                        <div class="pull-right" style="position: relative;
 top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span>
-                            Filter</button></div>
-                </div>
-                <table class="table table-responsive " style="font-size: 12px;">
-                    <thead>
-                        <tr class="filters">
-                            <th><input type="text" class="form-control" placeholder="Id" disabled></th>
-                            <th><input type="text" class="form-control" placeholder=" Name" disabled></th>
-
-                            <th><input type="text" class="form-control" placeholder="Contact 1" disabled></th>
-                            <th><input type="text" class="form-control" placeholder="Contact 2" disabled></th>
-                            <th><input type="text" class="form-control" placeholder=" Address" disabled></th>
-                            <th><input type="text" class="form-control" placeholder="E-mail" disabled></th>
-                            <th><input type="text" class="form-control" placeholder="Product View" disabled></th>
-                            <th><input type="text" class="form-control" placeholder="Order" disabled></th>
-                            <th colspan="2" style="text-align: center;"><a class="btn btn-success"
-                                    href="order-pool">Order Pool</a></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <c:forEach items="${allOrders}" var="eachOrder">
-
-                            <tr>
-                                <td class="orderId" data-order-id="${eachOrder.id}" >${eachOrder.id}</td>
-                                <td >${eachOrder.associationName}</td>
-                                <td >7047261982</td>
-                                <td >9832177025</td>
-                                <td><a href="" data-toggle="modal" data-target="#branchAddress" id="link_address"
-                                        onclick="addrLink(1)">Address Id</a></td>
-                                <td id="associationEmail">kundanitrd17@gmail.com</td>
-                                <td><a type="button" href="" id="link_adminId" data-toggle="modal"
-                                        data-target="#associationProductViewDetails"
-                                        onclick="associationProductView(1)">View Product</a></td>
-                                <td><a href="">Show Order</a></td>
-                                <!-- <td class=""> <a href="#" class="btn btn-success s-icon " style="display: none;"
-                                        onclick="saveBranch(1)">Save</a>
-                                    <button class="btn btn-warning e-icon">Edit</button></td> -->
-                                <td>
-                                    <!-- <a class="btn btn-danger change-status-icon">${eachOrder.orderStatus}</a> -->
-                                    <select name="orderStatus" id="orderStatus${eachOrder.id}" class="btn btn-danger change-status-icon orderStatusDropDown">                                
-                                    <option value="${eachOrder.orderStatus}" selected>${eachOrder.orderStatus}</option>
-
-                                    <c:forEach items="${availableOrderStatus}" var="status">
-                                        <option value="${status}" >${status}</option>
-                                    </c:forEach>
-
-                                    </select>
-                                </td>
-                            </tr>
-
-                        </c:forEach>                                              
-
-
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-
-
-</section>
-
-
-    <div class="modal" id="branchAddress">
-        <div class="modal-dialog">
-            <div class="modal-content">
-
-                <!-- Modal Header -->
-                <div class="modal-header">
-                    <h4 class="modal-title">Branch Address</h4>
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                </div>
-
-                <!-- Modal body -->
-                <div class="modal-body">
-                    <div class="container table-responsive col-12 col-md-12 col-xl-12 col-lg-12">
-                        <table class="table table-borderless">
-                            <tbody>
-                                <tr>
-                                    <th>LandMark: </th>
-                                    <td id="landmark"></td>
-                                </tr>
-                                <tr>
-                                    <th>Street 1: </th>
-                                    <td id="street1"></td>
-                                </tr>
-                                <tr>
-                                    <th>Street 2: </th>
-                                    <td id="street2"></td>
-                                </tr>
-                                <tr>
-                                    <th>Post Office: </th>
-                                    <td id="postoffice"></td>
-                                </tr>
-                                <tr>
-                                    <th>City: </th>
-                                    <td id="city"></td>
-                                </tr>
-                                <tr>
-                                    <th>Pin Code: </th>
-                                    <td id="pincode"></td>
-                                </tr>
-                                <tr>
-                                    <th>District: </th>
-                                    <td id="district"></td>
-                                </tr>
-
-                                <tr>
-                                    <th>State</th>
-                                    <td id="state"></td>
-                                </tr>
-                                <tr>
-                                    <td> <a href="#" class="btn btn-success save-icon" style="display: none;"
-                                            onclick="u_address('')">Save</a>
-                                        <button class="btn btn-warning u-icon">Update</button>
-                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                Filter</button></div>
                     </div>
-                </div>
+                    <table class="table table-responsive" style="font-size: 12px;">
+                        <thead>
+                            <tr class="filters">
+                                <th><input type="text" class="form-control" placeholder="Id" disabled></th>
+                                <th><input type="text" class="form-control" placeholder="CustomerId" disabled>
+                                </th>
+                                <th><input type="text" class="form-control" placeholder="Product" disabled></th>
 
-                <!-- Modal footer -->
-                <div class="modal-footer">
-                    <input type="hidden" name="" id="hidden_address_id" value="1">
-                </div>
+                                <th><input type="text" class="form-control" placeholder="OrderTime" disabled>
+                                </th>
+                                <th><input type="text" class="form-control" placeholder="Description" disabled>
+                                </th>
+                                <th><input type="text" class="form-control" placeholder=" Address" disabled>
+                                </th>
+                                <th><input type="text" class="form-control" placeholder="Orientation" disabled>
+                                </th>
+                                <th><input type="text" class="form-control" placeholder="Product View" disabled>
+                                </th>
+                                <th><input type="text" class="form-control" placeholder="Images" disabled></th>
+                                <th><input type="text" class="form-control" placeholder="Status" disabled></th>
+                                <th colspan="2" style="text-align: center;"><a class="btn btn-success"
+                                        href="order-pool">Order Pool</a></th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
+
+                            <c:forEach items="${allOrders}" var="eachOrder">
+
+                                <tr>
+                                    <td class="orderId" data-order-id="${eachOrder.id}">${eachOrder.id}</td>
+                                    <td class="customerId" data-order-id="${eachOrder.customer.id}">
+                                        <button class="btn"
+                                            onclick="fetchCustomerDetails('${eachOrder.customer.id}')"
+                                            data-toggle="modal"
+                                            data-target="#customerDetailModal">${eachOrder.customer.getCustomerId()}</button>
+                                    </td>
+                                    <td>${eachOrder.productName}</td>
+                                    <td>${eachOrder.orderTime}</td>
+                                    <td>
+                                        <a href="" data-toggle="modal"
+                                            data-target="#orderDescriptionDialog${eachOrder.id}">
+                                            click
+                                        </a>
+                                        <div class="modal" tabindex="-1" role="dialog"
+                                            id="orderDescriptionDialog${eachOrder.id}">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title">Order Description</h5>
+                                                        <button type="button" class="close" data-dismiss="modal"
+                                                            aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <label>Example textarea</label>
+                                                            <input class="form-control"
+                                                                id="updatableOrderDescription${eachOrder.id}"
+                                                                rows="3" value="${eachOrder.description}">
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button
+                                                            onclick="changeOrderDescription('${eachOrder.id}')"
+                                                            type="button" class="btn btn-primary">Save
+                                                            changes</button>
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td><a href="" data-toggle="modal" data-target="#addressModal"
+                                            id="link_address"
+                                            onclick="fetchDeliveryAddressFromServer('${eachOrder.id}')">Address
+                                        </a></td>
+                                    <td>${eachOrder.orientation}</td>
+                                    <td><a type="button" href="" id="link_adminId" data-toggle="modal"
+                                            data-target="#orderProductViewDetails"
+                                            onclick="orderProductView('${eachOrder.id}')">View Product</a></td>
+                                    <td><a target="_blank"
+                                            href="${eachOrder.photoFolderGoogleDriveLink}">Images</a></td>
+
+                                    <td>
+                                        <!-- <a class="btn btn-danger change-status-icon">a> -->
+                                        <button class="btn btn-danger"
+                                            disabled>${eachOrder.orderStatus}</button>
+                                    </td>
+                                    <c:if
+                                        test="${eachOrder.isForwardedToAssociation == null || !eachOrder.isForwardedToAssociation}">
+
+                                        <td><button onclick="forwardOrderToAssociation('${eachOrder.id}')"
+                                                class="btn btn-primary">forward</button></td>
+
+                                    </c:if>
+
+                                </tr>
+
+                            </c:forEach>
+
+
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </div>
 
 
-    <div class="modal" id="associationProductViewDetails">
+
+    </section>
+
+
+
+
+
+    <div class="modal" id="orderProductViewDetails">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="myModalLabel">Comapny Name</h4>
+                    <h4 class="modal-title" id="myModalLabel">Company Name</h4>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
+
+
                 <div class="modal-body table-responsive">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th colspan="5">CoverPage Price List</th>
+                                <th colspan="5">Cover Info</th>
                             </tr>
                             <tr style="background-color: none;color:black;">
-                                <th>Quality</th>
-                                <th>Size</th>
-                                <th>Price</th>
-                                <th colspan="2"></th>
+                                <th>Product Name</th>
+                                <th>Product Size</th>
+                                <th>CoverName</th>
+                                <th>Cover Size</th>
+
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td id="coverQuality">John</td>
+                                <td id="productName">album</td>
+                                <td id="productSize">90*09</td>
+                                <td id="coverName">John</td>
                                 <td id="coverSize">Doe</td>
-                                <td id="coverPrice">john@example.com</td>
-                                <td class=""> <a href="#" class="btn btn-success saveCover " style="display: none;"
-                                        onclick="saveCoverFun(1)">Save</a>
-                                    <button class="btn btn-warning editCover">Edit</button></td>
-                                <td><a class="btn btn-danger deleteCover">Delete</a></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+
+
                 <div class="modal-body table-responsive">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
-                                <th colspan="5">Paper Price List</th>
+                                <th colspan="5">Paper Info</th>
                             </tr>
                             <tr style="background-color: none;color:black;">
                                 <th>Quality</th>
                                 <th>Size</th>
-                                <th>Price</th>
-                                <th colspan="2"></th>
+                                <th>No. of Sheets</th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="paperListRow">
                             <tr>
                                 <td id="pageQuality">John</td>
                                 <td id="pageSize">Doe</td>
-                                <td id="pagePrice">john@example.com</td>
-                                <td class=""> <a href="#" class="btn btn-success savePage " style="display: none;"
-                                        onclick="savePageFun(1)">Save</a>
-                                    <button class="btn btn-warning editPage">Edit</button></td>
-                                <td><a class="btn btn-danger deletePage">Delete</a></td>
-
+                                <td id="numberOfSheets">200</td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
 
@@ -294,12 +280,153 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
     </div>
 
 
-    <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal"
+        aria-hidden="true">
 
     </div>
 
-    <script type="text/javascript" src="http://localhost:8080/customercare/js/data-table.js"></script>
-    <script type="text/javascript" src="http://localhost:8080/customercare/js/order_status.js"></script>
+
+
+            <!-- Customer detail modal -->
+            <div class="modal" id="customerDetailModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Customer</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
+
+                        <!-- Modal body -->
+                        <div class="modal-body">
+                            <table class="table table-borderless">
+                                <tbody>
+                                    <tr>
+                                        <th>Name: </th>
+                                        <td id="name"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Contact: </th>
+                                        <td id="contact"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Email: </th>
+                                        <td id="email"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- End of customer Detail modal -->
+
+
+
+
+
+            <!-- Address Modal -->
+            <div class="modal" id="addressModal" tabindex="-1" role="dialog">
+                <form action="/customer-care/order/address/change" method="POST">
+
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <!-- Modal Header -->
+
+                            <div class="modal-header">
+                                <h5 class="modal-title">Address</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <!-- End of Modal Header -->
+                            <div class="modal-body">
+                                <input type="hidden" name="orderId" value="">
+                                <input type="text" value="" name="id" hidden>
+                                <div class="form-group">
+                                    <label for="exampleInputName">Name</label>
+                                    <input name="name" type="name" class="form-control" id="exampleInputName" value="">
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputMobile">Mobile</label>
+                                    <input name="contactNo" type="text" class="form-control" id="exampleInputMobile"
+                                        value="">
+                                </div>
+                                <hr>
+                                <div class="form-group">
+                                    <label for="exampleInputLandmark">Landmark</label>
+                                    <input name="landmark" type="text" class="form-control" id="exampleInputLandmark"
+                                        value="" placeholder="Landmark">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputAddress1">Address</label>
+                                    <input name="line1" type="text" class="form-control" id="exampleInputAddress1"
+                                        value="" placeholder="Address line1">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputAddress2">Address</label>
+                                    <input name="line2" type="text" class="form-control" id="exampleInputAddress2"
+                                        value="" placeholder="Address line2">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputCity">City</label>
+                                    <input name="city" type="text" class="form-control" id="exampleInputCity" value=""
+                                        placeholder="City">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputDistrict">District</label>
+                                    <input name="district" type="text" class="form-control" id="exampleInputDistrict"
+                                        value="" placeholder="District">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputState">State</label>
+                                    <input name="state" type="text" class="form-control mx-200" value=""
+                                        placeholder="State">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="exampleInputPIN">Pin-Code</label>
+                                    <input name="pincode" type="text" class="form-control mx-200" value=""
+                                        placeholder="PIN">
+                                </div>
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-primary">Save
+                                    changes</button>
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- End of address modal -->
+
+
+
+
+
+
+    <script type="text/javascript" src="/customercare/js/data-table.js"></script>
+    <script type="text/javascript" src="/customercare/js/order_status.js"></script>
+    <script src="/customercare/js/order_utility.js"></script>
 
     <script type="text/javascript">
 
@@ -450,7 +577,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
             var header = $("meta[name='_csrf_header']").attr("content");
 
             var xhr = new XMLHttpRequest();
-            var url = 'http://localhost:8080/api/product/post';
+            var url = '/api/product/post';
             xhr.open("POST", url, true);
             xhr.setRequestHeader('Content-type', 'application/json');
             xhr.setRequestHeader(header, token);

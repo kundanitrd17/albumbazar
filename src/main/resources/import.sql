@@ -4,12 +4,13 @@ INSERT INTO superuser VALUES(1, "harsh", "harsh", "123123123", "s", "ROLE_SUPERU
 
 INSERT INTO superuser VALUES(2, "nishi", "nishi", "123123123", "s", "ROLE_SUEPRUSER");
 
-insert into association(id, active, contact1, contact2, email, name, password) values(1, true, "8918918991", "9821380120", "harsh@gmail.com", "harsh", "123123123");
-
-
 INSERT INTO address(name, contact_no, city, landmark, line1, district, pincode, state) values ("harsh", 8918989090, "manberia", "akjdhadkhsad", "asdhjgsadhgskj", "dslhsalkhdjj", "123453", "asdsa");
 
-insert into branch(id, active, contact_no, date, name, address_id) values(1, true, "8918930230", "2012:12:12", "itrd", 1);
+
+insert into association(id, active, contact1, contact2, email, name, password, address_id) values(1, true, "8918918991", "9821380120", "harsh@gmail.com", "harsh", "123123123", 1);
+
+
+insert into branch(id, code, active, contact_no, date, name, address_id) values(1, "BR_ITRD", true, "8918930230", "2012:12:12", "itrd", 1);
 
 insert into employee(name, email, password, joining_date, personal_contact, role, branch_id) VALUES("harsh", "harsh@gmail.com", "123123123", "2020-10-10", "243", "ROLE_CUSTOMER_CARE", "1");
 insert into employee(name, email, password, joining_date, personal_contact, role, branch_id) VALUES("prince", "prince@gmail.com", "123123123", "2020-10-10", "98372342387", "ROLE_EMPLOYEE", "1");
