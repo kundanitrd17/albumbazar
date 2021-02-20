@@ -60,7 +60,7 @@ public class OrderControllerAPI {
     }
 
     @GetMapping(value = "/secured/order/customer/{customer_id}")
-    public ResponseEntity<?> getCustomerOrders(@PathVariable("customer_id") final Long customerId) {
+    public ResponseEntity<Object> getCustomerOrders(@PathVariable("customer_id") final Long customerId) {
 
         try {
             return ResponseEntity.ok().body(orderService.getOrdersOfCustomer(customerId));
@@ -73,7 +73,7 @@ public class OrderControllerAPI {
     }
 
     @GetMapping(value = "/secured/order/branch/{branch_id}")
-    public ResponseEntity<?> getBranchOrder(@PathVariable("branch_id") final Long branchId) {
+    public ResponseEntity<Object> getBranchOrder(@PathVariable("branch_id") final Long branchId) {
 
         try {
             return ResponseEntity.ok().body(orderService.getOrdersOfBranch(branchId));
@@ -85,10 +85,9 @@ public class OrderControllerAPI {
     }
 
     @GetMapping(value = "/secured/order/{order-id}")
-    public ResponseEntity<?> orderInfo(@PathVariable("order-id") final Long orderId) {
+    public ResponseEntity<Object> orderInfo(@PathVariable("order-id") final Long orderId) {
 
         try {
-            System.out.println(orderId);
             final OrderDetail orderDetail = orderService.getOrder(orderId);
             orderDetail.getCover();
 
@@ -106,7 +105,7 @@ public class OrderControllerAPI {
      * @return ResponseEntity
      */
     @PostMapping(value = "secured/order/status")
-    public ResponseEntity<?> changeStatusOfTheOrder(@RequestBody final OrderDetailDTO order) {
+    public ResponseEntity<Object> changeStatusOfTheOrder(@RequestBody final OrderDetailDTO order) {
 
         try {
 
@@ -126,7 +125,7 @@ public class OrderControllerAPI {
     }
 
     @PutMapping(value = "secured/order/info")
-    public ResponseEntity<?> updateOrderInfo(@RequestBody @Valid final OrderDetailDTO orderDetailInfo) {
+    public ResponseEntity<Object> updateOrderInfo(@RequestBody @Valid final OrderDetailDTO orderDetailInfo) {
 
         try {
             return ResponseEntity.ok().body(orderService.updateOrderInfo(orderDetailInfo.getId(), orderDetailInfo));
@@ -144,7 +143,7 @@ public class OrderControllerAPI {
     }
 
     @GetMapping(value = "secured/order/{order_id}/create-folder")
-    public ResponseEntity<?> createGoogleDriveFolderAndSaveId(
+    public ResponseEntity<Object> createGoogleDriveFolderAndSaveId(
             @PathVariable(name = "order_id") OrderDetail orderDetail) {
 
         try {
@@ -174,7 +173,7 @@ public class OrderControllerAPI {
     }
 
     @PostMapping(value = "secured/order/{order_id}/photos", consumes = { MediaType.MULTIPART_FORM_DATA_VALUE })
-    public ResponseEntity<?> uploadPhotos(@PathVariable(name = "order_id") final OrderDetail orderInfo,
+    public ResponseEntity<Object> uploadPhotos(@PathVariable(name = "order_id") final OrderDetail orderInfo,
             @RequestPart("files") List<MultipartFile> files) {
 
         try {
@@ -208,7 +207,7 @@ public class OrderControllerAPI {
     }
 
     @GetMapping(value = "/secured/order/{order_id}/sheet/details")
-    public ResponseEntity<?> getSheetDetail(@PathVariable("order_id") final Long orderId) {
+    public ResponseEntity<Object> getSheetDetail(@PathVariable("order_id") final Long orderId) {
 
         try {
             final List<SheetDetailDTO> sheetDetailDTOs = orderService.getSheetDetails(orderId);
@@ -224,7 +223,7 @@ public class OrderControllerAPI {
     }
 
     @GetMapping(value = "/secured/order/{order_id}/product/details")
-    public ResponseEntity<?> getProductDetail(@PathVariable("order_id") final Long orderId) {
+    public ResponseEntity<Object> getProductDetail(@PathVariable("order_id") final Long orderId) {
 
         try {
             final ProductDetailDTO productDetailDTO = orderService.getProductInfo(orderId);
@@ -237,7 +236,7 @@ public class OrderControllerAPI {
     }
 
     @GetMapping(value = "/secured/order/{order_id}/delivery/address")
-    public ResponseEntity<?> getOrderDeliveryAddress(@PathVariable("order_id") final Long orderId) {
+    public ResponseEntity<Object> getOrderDeliveryAddress(@PathVariable("order_id") final Long orderId) {
 
         try {
             final AddressEntity addressEntity = orderService.getDeliveryAddress(orderId);
@@ -250,7 +249,7 @@ public class OrderControllerAPI {
     }
 
     @PutMapping(value = "/secured/order/forward/association")
-    public ResponseEntity<?> forwardOrderToAssociation(@RequestBody final long orderId) {
+    public ResponseEntity<Object> forwardOrderToAssociation(@RequestBody final long orderId) {
 
         try {
             orderService.forwardToAssociation(orderId);
@@ -262,7 +261,7 @@ public class OrderControllerAPI {
     }
 
     @PostMapping(value = "/secured/order/create")
-    public ResponseEntity<?> createNewOrder(OrderDetailFormDTO orderDetailFormDTO) {
+    public ResponseEntity<Object> createNewOrder(OrderDetailFormDTO orderDetailFormDTO) {
 
         logger.info(orderDetailFormDTO.toString());
         try {
@@ -282,7 +281,7 @@ public class OrderControllerAPI {
     }
 
     @PutMapping(value = "/secured/delivery/order/{order_id}/under-process")
-    public ResponseEntity<?> orderUnderProcessing(@PathVariable("order_id") final Long orderId) {
+    public ResponseEntity<Object> orderUnderProcessing(@PathVariable("order_id") final Long orderId) {
 
         try {
 
@@ -297,7 +296,7 @@ public class OrderControllerAPI {
     }
 
     @PutMapping(value = "/secured/delivery/order/{order_id}/delivered")
-    public ResponseEntity<?> orderDelivered(@PathVariable("order_id") final Long orderId) {
+    public ResponseEntity<Object> orderDelivered(@PathVariable("order_id") final Long orderId) {
 
         try {
 

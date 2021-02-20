@@ -177,8 +177,17 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                     <td><a type="button" href="" id="link_adminId" data-toggle="modal"
                                             data-target="#orderProductViewDetails"
                                             onclick="orderProductView('${eachOrder.id}')">View Product</a></td>
-                                    <td><a target="_blank"
-                                            href="${eachOrder.photoFolderGoogleDriveLink}">Images</a></td>
+                                    <td>
+
+                                        <c:if test="${eachOrder.photoFolderGoogleDriveLink!=null || eachOrder.photoFolderGoogleDriveLink.length() > 5 }">
+                                            <a target="_blank"
+                                            href="${eachOrder.photoFolderGoogleDriveLink}">Images</a>
+                                        </c:if>
+                                        <c:if test="${eachOrder.photoFolderGoogleDriveLink==null || eachOrder.photoFolderGoogleDriveLink.length() <= 5}">
+                                            <button type="button" class="btn btn-primary" disabled
+                                            >No photos</button>
+                                        </c:if>
+                                    </td>
 
                                     <td>
                                         <!-- <a class="btn btn-danger change-status-icon">a> -->
@@ -210,8 +219,10 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
 
 
+    
 
 
+    <!-- Order product view -->
     <div class="modal" id="orderProductViewDetails">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
