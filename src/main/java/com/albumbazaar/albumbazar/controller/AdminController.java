@@ -43,7 +43,7 @@ public final class AdminController {
     private final AssociationService associationService;
 
     @Autowired
-    public AdminController(@Qualifier("employeeService") EmployeeService employeeService,
+    public AdminController(@Qualifier("employeeService") final EmployeeService employeeService,
             @Qualifier("customerService") final CustomerService customerService,
             @Qualifier("associationService") final AssociationService associationService,
             @Qualifier("orderService") final OrderService orderService) {

@@ -120,7 +120,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                     <c:forEach items="${recentlyReceivedOrders}" var="eachOrder">
                                         <tr id="orderRow${eachOrder.id}">
                                             <td class="orderId" id="orderId${eachOrder.id}"
-                                                data-orderId="${eachOrder.id}">${eachOrder.id}</td>
+                                                data-orderId="${eachOrder.id}">${eachOrder.uuid}</td>
 
                                             <td class="customerId" data-order-id="${eachOrder.customer.id}">
                                                 <button class="btn"
@@ -175,8 +175,20 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                             <td><a type="button" href="" id="link_adminId" data-toggle="modal"
                                                     data-target="#orderProductViewDetails"
                                                     onclick="orderProductView('${eachOrder.id}')">View Product</a></td>
-                                            <td><a target="_blank"
-                                                    href="${eachOrder.photoFolderGoogleDriveLink}">Images</a></td>
+                                            <td>
+                                                <c:choose>
+                                                    <c:when
+                                                    test="${eachOrder.photoFolderGoogleDriveLink != null && eachOrder.photoFolderGoogleDriveLink.length() > 1}"
+                                                    >
+                                                    <a
+                                                        target="_blank"
+                                                        href="${eachOrder.photoFolderGoogleDriveLink}"
+                                                        >Images</a
+                                                    >
+                                                    </c:when>
+                                                    <c:otherwise> No Photo found </c:otherwise>
+                                                </c:choose>
+                                            </td>
 
 
                                             <td><a class="btn btn-danger accept-order-icon">Accept Order</a></td>

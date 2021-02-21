@@ -42,131 +42,167 @@
             <section style="margin-bottom: 5rem; padding-top: 5px; padding-bottom: 50px;">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-4 col-lg-4 col-xl-4">
-                            <div class="fancy-cards">
+                        <c:forEach items="${associations}" var="association">
+                            <div class="col-md-4 col-lg-4 col-xl-4">
+                                <div class="fancy-cards">
 
-                                <div class="fancy-card">
-                                    <div class="top" id="t">
-                                        <div class="caption">
-                                            <h3 class="title">Company Name</h3>
-                                            <input type="text" name="associationId" value="1" hidden>
+                                    <div class="fancy-card">
+                                        <div class="top" id="t">
+                                            <div class="caption">
+                                                <h3 class="title">${association.name}</h3>
+                                                <input type="text" name="associationId" value="${association.id}"
+                                                    hidden>
 
-                                            <button type="button" id=""
-                                                class="btn btn-primary button associationSelection" data-toggle="modal"
-                                                data-target="#myModal">
-                                                Select
-                                            </button>
-                                            <a type="button" id="associationViewPrice"
-                                                class="btn btn-primary button1 associationViewPrice" data-toggle="modal"
-                                                data-target="#largeModal">
-                                                View Price
-                                            </a>
+                                                <button type="button" id=""
+                                                    class="btn btn-primary button associationSelection"
+                                                    data-toggle="modal" data-target="#myModal">
+                                                    Select
+                                                </button>
+                                                <a type="button" id="associationViewPrice"
+                                                    class="btn btn-primary button1 associationViewPrice"
+                                                    data-toggle="modal" data-target="#largeModal">
+                                                    View Price
+                                                </a>
+                                            </div>
                                         </div>
+                                        <div class="middle" id="m"></div>
+                                        <div class="bottom" id="b"></div>
                                     </div>
-                                    <div class="middle" id="m"></div>
-                                    <div class="bottom" id="b"></div>
                                 </div>
                             </div>
-                        </div>
 
+                        </c:forEach>
                     </div>
                 </div>
             </section>
         </div>
 
-        <!-- The Modal -->
-        <div class="modal fade" id="myModal">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
+       
+            <!-- The Modal -->
+            <div class="modal fade" id="myModal">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
 
-                    <!-- Modal Header -->
-                    <div class="modal-header">
-                        <h4 class="modal-title">Company Name</h4>
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    </div>
+                        <!-- Modal Header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">Company Name</h4>
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        </div>
 
-                    <!-- Modal body -->
-                    <div class="modal-body">
+                        <!-- Modal body -->
+                        <div class="modal-body">
 
-                        <form class="" id="CreateOrderForm">
-                            <input type="text" name="selectedAssociationId" id="selectedAssociationId">
-                            <h4>Select Album</h4>
-                            <!-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> -->
+                            <form class="" id="CreateOrderForm">
+                                <input type="text" name="selectedAssociationId" id="selectedAssociationId" hidden>
+                                <h4>Select Album</h4>
+                                <!-- <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" /> -->
 
-                            <div class="container">
-                                <div class="row">
+                                <div class="container">
+                                    <div class="row">
 
-                                    <input class="form-control col-md-4 col-xl-4 col-lg-4" type="text" name="customerId"
-                                        placeholder="customer ID" required>
+                                        <input class="form-control col-md-4 col-xl-4 col-lg-4" type="email"
+                                            name="customerIdentifier" placeholder="customer Email" required>
 
-                                    <select name="productCategory" id="albumType"
-                                        class="form-control col-md-4 col-xl-4 col-lg-4">
-                                    </select>
+                                        <select name="productCategory" id="albumType"
+                                            class="form-control col-md-4 col-xl-4 col-lg-4">
+                                        </select>
 
-                                    <select id="albumSize" name="productSize"
-                                        class="form-control col-md-4 col-xl-4 col-lg-4">
-                                    </select>
-                                </div>
-                                <hr>
-                                <h4>Cover Page</h4>
-                                <div class="row">
-                                    <select name="coverId" id="coverPageQuality"
-                                        class="form-control col-md-4 col-xl-4 col-lg-4">
-                                        <!-- <option value="gold">gold</option> -->
-                                    </select>
+                                        <select id="albumSize" name="productSize"
+                                            class="form-control col-md-4 col-xl-4 col-lg-4">
+                                        </select>
+                                    </div>
+                                    <hr>
+                                    <h4>Cover Page</h4>
 
-                                    <input class="form-control col-md-4 col-xl-4 col-lg-4" type="text" id="coverPrice"
-                                        name="coverPrice" value="" disabled>
-                                </div>
+                                    <div class="form-group row">
+                                        <div class="col-lg-4 col-xl-4 col-md-4 col-sm-12 col-xs-12 col-12">
+                                            <label>cover</label>
+                                            <select name="coverId" id="coverPageQuality" class="form-control">
+                                                <option value="gold">gold</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-2 col-xl-2 col-md-4 col-sm-4 col-xs-4 col-4">
+                                            <label>price</label>
+                                            <input class="form-control" type="text" id="coverPrice" name="coverPrice"
+                                                value="" disabled>
+                                        </div>
+                                        <div class="col-lg-2 col-xl-2 col-md-4 col-sm-4 col-xs-4 col-4">
+                                            <label>Tax</label>
+                                            <input class="form-control" type="text" id="coverGST" name="coverGST"
+                                                value="" disabled>
+                                        </div>
+                                        <div class="col-lg-2 col-xl-2 col-md-4 col-sm-4 col-xs-4 col-4">
+                                            <label>Total</label>
+                                            <input class="form-control" type="text" id="coverTotal" name="coverTotal"
+                                                value="" disabled>
+                                        </div>
+                                    </div>
 
-                                <hr>
-                                <h4>Sheet Detail</h4>
-                                <div class="row table-responsive">
-                                    <table>
-                                        <tr>
-                                            <th>
-                                                <h6>Type</h6>
-                                            </th>
+                                    <!-- <div class="row">
+                                        <select name="coverId" id="coverPageQuality"
+                                            class="form-control col-md-4 col-xl-4 col-lg-4">
+                                        </select>
 
-                                            <th>
-                                                <h6> sheet</h6>
-                                            </th>
-                                            <th>
-                                                <h6>Price</h6>
-                                            </th>
+                                        <input class="form-control col-md-4 col-xl-4 col-lg-4" type="text"
+                                            id="coverPrice" name="coverPrice" value="" disabled>
+                                    </div> -->
 
-                                        </tr>
-
-                                        <tbody id="test-body">
-
-                                        </tbody>
-                                        <tfoot>
-
+                                    <hr>
+                                    <h4>Sheet Detail</h4>
+                                    <div class="row table-responsive">
+                                        <table>
                                             <tr>
-                                                <td colspan="4">
-                                                    <textarea name="description" cols="60" rows="5"
-                                                        placeholder="description"></textarea>
-                                                </td>
+                                                <th>
+                                                    <h6>Type</h6>
+                                                </th>
+
+                                                <th>
+                                                    <h6> sheet</h6>
+                                                </th>
+                                                <th>
+                                                    <h6>Price</h6>
+                                                </th>
+
+                                                <th>
+                                                    <h6>Tax</h6>
+                                                </th>
+
                                             </tr>
-                                        </tfoot>
-                                    </table>
+
+                                            <tbody id="test-body">
+
+                                            </tbody>
+                                            <tfoot>
+
+                                                <tr>
+                                                    <td colspan="4">
+                                                        <textarea name="description" cols="60" rows="5"
+                                                            placeholder="description"></textarea>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+
                                 </div>
 
-                            </div>
 
+                        </div>
 
+                        <!-- Modal footer -->
+                        <div class="modal-footer">
+                            <span>Total Without Gst :</span><span id="orderTotalWithoutGST"></span>
+                            <span>Total Gst :</span><span id="orderTotalTax"></span>
+                            <span>Total With Gst :</span><span id="orderTotalWithGST"></span>
+
+                            <button type="submit" class="btn btn-success">submit</button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+
+                        </div>
+                        </form>
                     </div>
-
-                    <!-- Modal footer -->
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">submit</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-
-                    </div>
-                    </form>
                 </div>
             </div>
-        </div>
 
         <!-- View Price List Of Association-->
         <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="basicModal"

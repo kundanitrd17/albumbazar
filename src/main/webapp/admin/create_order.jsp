@@ -145,7 +145,7 @@
 
                 <section id="OrderListSection" style="padding-top: 20px; margin-top: 20px;">
 
-                    <div class="container-fluid">
+                    <!-- <div class="container-fluid">
                         <div class="input-group mb-3" id="OrderBoard1">
 
                             <input type="text" class="form-control" value="Customer: 890890809" disabled>
@@ -168,7 +168,7 @@
                             </div>
                         </div>
                         <hr>
-                    </div>
+                    </div> -->
 
                 </section>
 
