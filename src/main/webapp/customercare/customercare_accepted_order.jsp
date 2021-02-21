@@ -198,6 +198,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                         test="${eachOrder.isForwardedToAssociation == null || !eachOrder.isForwardedToAssociation}">
 
                                         <td><button onclick="forwardOrderToAssociation('${eachOrder.id}')"
+                                                id="forwardOrderBtn${eachOrder.id}"
                                                 class="btn btn-primary">forward</button></td>
 
                                     </c:if>
@@ -433,7 +434,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
 
 
-
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script type="text/javascript" src="/customercare/js/data-table.js"></script>
     <script type="text/javascript" src="/customercare/js/order_status.js"></script>
@@ -562,6 +563,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
     </script>
 
+
     <!--Edit Page-->
 
     <script type="text/javascript">
@@ -679,6 +681,9 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
 
         });
     </script>
+
+<script src="/customercare/js/forward_order.js"></script>
+
 
 </body>
 

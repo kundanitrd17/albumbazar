@@ -3,10 +3,12 @@ package com.albumbazaar.albumbazar.controller;
 import java.util.List;
 
 import javax.security.sasl.AuthenticationException;
+import javax.validation.Valid;
 
-import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
+import com.albumbazaar.albumbazar.dto.AddressDTO;
 import com.albumbazaar.albumbazar.model.OrderDetail;
 import com.albumbazaar.albumbazar.model.OrderDetailStatus;
+import com.albumbazaar.albumbazar.principals.EmployeePrincipal;
 import com.albumbazaar.albumbazar.services.CustomerCareEmployeeService;
 import com.albumbazaar.albumbazar.services.OrderService;
 
@@ -17,9 +19,14 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 @RequestMapping(value = "customer-care")
@@ -123,6 +130,35 @@ public final class CustomerCareController {
 
         return modelAndView;
 
+    }
+
+
+
+    @PostMapping(value = "/order/address/change")
+    public RedirectView updateAddressForOrder(@Valid @ModelAttribute final AddressDTO addressDTO,
+            final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
+
+        final RedirectView redirectView = new RedirectView("/customer-care/accepted-order");
+        if (bindingResult.hasErrors()) {
+            logger.error("Invalid Address information");
+            redirectAttributes.addAttribute("error", "Invalid Data");
+            return redirectView;
+        }
+
+        try {
+
+            // Get Customer id from the pricipal objects
+            final EmployeePrincipal principal = (EmployeePrincipal) SecurityContextHolder.getContext()
+                    .getAuthentication().getPrincipal();
+
+            orderService.changeDeliveryAddress(addressDTO, principal.getId());
+
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+            redirectAttributes.addAttribute("error", true);
+        }
+
+        return redirectView;
     }
 
 }

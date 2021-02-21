@@ -109,7 +109,7 @@ top: -20px;"><button class="btn btn-default btn-xs btn-filter"><span class="glyp
                                         </th>
                                         <th><input type="text" class="form-control" placeholder="Images" disabled></th>
                                         <th colspan="2" style="text-align: center;"><a class="btn btn-success"
-                                                href="/customer-care/accepted-order">View Accepted Order
+                                                href="/admin/order/accepted">View Accepted Order
                                             </a></th>
                                     </tr>
                                 </thead>
